@@ -56,7 +56,7 @@ class Account {
 		$return["user"] = array(
 			"user_ID" => $r['user_ID'],
 			"user_email" => $r['user_email'],
-			"user_name" => $r['user_name'] != $r['user_email'] ? $r['user_name'] : '',
+			"user_name" => $r['user_name'],
 			"user_name_first" => $r['user_name_first'],
 			"user_name_last" => $r['user_name_last'],
 		);
@@ -111,7 +111,7 @@ class Account {
 		$password_hash = $this->password->hash($request_data["password"], $email);
 		$user = array(
 			"user_email"   		  => $request_data["email"],
-			"user_name"   		  => $request_data["email"],
+			//"user_name"   		  => $request_data["user_name"],
 			"password"     		  => $password_hash,
 			"password_history"    => $password_hash,
 			'password_timestamp'  => $_SERVER['REQUEST_TIME'],
