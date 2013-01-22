@@ -1,7 +1,6 @@
-angular.module('app.controller.dashboard', [])
-.controller('DashboardCtrl',
-['$scope', '$http',
-function($scope, $http) {
+//angular.module('app.controller.dashboard', [])
+//.controller('DashboardCtrl', ['$scope', '$http', function($scope, $http) {
+function DashboardCtrl($scope, $http, $routeParams) {
 	console.log('DashboardCtrl (' + $scope.$id + ')');
 	//-- App Functions Here --//
 	$scope.site = '';
@@ -90,4 +89,5 @@ function($scope, $http) {
 	$scope.require_signin(function() {
 		$scope.loadSites();
 	});
-}]);
+}
+//}]);

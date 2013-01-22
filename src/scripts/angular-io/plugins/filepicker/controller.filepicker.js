@@ -32,8 +32,9 @@
 
 	*/
 //})(filepicker);
-angular.module('io.controller.filepicker', [])
-.controller('FilepickerCtrl', ['$scope', '$http', function($scope, $http) {
+//angular.module('io.controller.filepicker', [])
+//.controller('FilepickerCtrl', ['$scope', '$http', function($scope, $http) {
+function FilepickerCtrl($scope, $http) {
 	console.log('FilepickerCtrl ('+$scope.$id+')');
 	$scope.alerts = [];
 	$scope.errors = {};
@@ -247,5 +248,5 @@ angular.module('io.controller.filepicker', [])
         })
 
     };
-    
-}]);
+}
+//}]);

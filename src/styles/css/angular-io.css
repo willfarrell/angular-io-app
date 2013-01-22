@@ -79,6 +79,9 @@ form { margin:0; }
 	margin-right:0.3em;
 }
 
+.help-block.error, .help-inline.error {
+  color: #b94a48;
+}
 
 /*************** AngularJS Add-ons ***************/
 

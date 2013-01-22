@@ -22,32 +22,32 @@
 		    	</div>
 		    </div>
 
-    		<!--<div class="control-group {{errors.user.user_name.class}}">
+    		<!--<div class="control-group" data-ng-class="{error: (errors.user.user_name)}">
 	          	<label class="control-label" for="user_name">Username</label>
 	          	<div class="controls">
 		            <input type="text" class="span" name="user_name" placeholder="required" data-ng-model="user.user_name" data-ng-minlength="3" data-ng-maxlength="14" data-ng-pattern="/^\w*$/" data-ng-change="check.user_name(user.user_name)" required>
-		            <span class="help-block" data-ng-show="userForm.user_name.$error.pattern">only alphanumeric characters and underscores allowed</span>
-		            <span class="help-block" data-ng-show="userForm.user_name.$error.minlength">too short</span>
-		            <span class="help-block" data-ng-show="userForm.user_name.$error.maxlength">too long</span>
-		            <span class="help-block" data-ng-show="errors.user.user_name">{{errors.user.user_name.message}}</span>
+		            <span class="help-block error" data-ng-show="userForm.user_name.$error.pattern">only alphanumeric characters and underscores allowed</span>
+		            <span class="help-block error" data-ng-show="userForm.user_name.$error.minlength">too short</span>
+		            <span class="help-block error" data-ng-show="userForm.user_name.$error.maxlength">too long</span>
+		            <span class="help-block error" data-ng-show="errors.user.user_name">{{errors.user.user_name.message}}</span>
 	            </div>
 	        </div>-->
 
-	        <div class="control-group {{errors.user_name_first.class}}">
+	        <div class="control-group" data-ng-class="{error: (errors.user_name_first)}">
 	          	<label class="control-label" for="user_name_first">First Name</label>
 	          	<div class="controls">
 		            <input type="text" class="span" name="user_name_first" placeholder="required" data-ng-model="user.user_name_first" required>
-		            <span class="help-block" data-ng-show="errors.user_name_first">{{errors.user_name_first.message}}</span>
-		            <span class="help-block" data-ng-show="userForm.user_name_first.$error.required">Required</span>
+		            <span class="help-block error" data-ng-show="errors.user_name_first">{{errors.user_name_first.message}}</span>
+		            <span class="help-block error" data-ng-show="userForm.user_name_first.$error.required">Required</span>
 	            </div>
 	        </div>
 
-	        <div class="control-group {{errors.user.user_name_last.class}}">
+	        <div class="control-group" data-ng-class="{error: (errors.user.user_name_last)}">
 	          	<label class="control-label" for="user_name_last">Last Name</label>
 	          	<div class="controls">
 		            <input type="text" class="span" name="user_name_last" placeholder="optional" data-ng-model="user.user_name_last">
-		            <span class="help-block" data-ng-show="errors.user.user_name_last">{{errors.user.user_name_last.message}}</span>
-		            <span class="help-block" data-ng-show="userForm.user_name_last.$error.required">Required</span>
+		            <span class="help-block error" data-ng-show="errors.user.user_name_last">{{errors.user.user_name_last.message}}</span>
+		            <span class="help-block error" data-ng-show="userForm.user_name_last.$error.required">Required</span>
 	            </div>
 	        </div>
 

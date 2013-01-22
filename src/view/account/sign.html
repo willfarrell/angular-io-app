@@ -1,6 +1,6 @@
 
 <div class="span4"></div>
-<div class="span4" data-ng-show="!session.user_ID">
+<div class="span4" data-ng-show="!session.user_ID" data-ng-controller="signCtrl">
 
 <!-- Feature Check - Future --
 <div class="alert alert-warning" data-ng-show="settings.browser.html5.localStorage">
@@ -19,7 +19,7 @@
 	    </div>
 	    <div class="control-group" data-ng-class="{error: (errors.signin)}">
 	        <input type="password" name="password" class="span" placeholder="{{i18n.sign_placeholder_password}}" data-ng-model="signin.password" required>
-	    	<span class="help-block" data-ng-show="errors.signin">{{errors.signin.message}}</span>
+	    	<span class="help-block error" data-ng-show="errors.signin">{{errors.signin.message}}</span>
 	    </div>
 	    <div class="control-group">
 		    <label class="checkbox">
@@ -55,21 +55,22 @@
 	    <div class="control-group" data-ng-class="{error: (errors.email)}">
 	    	<input type="email" name="email" class="span" placeholder="{{i18n.sign_placeholder_email}}" data-ng-model="signup.email" required>
 	    	<!--<span class="error" data-ng-show="signinForm.email.$error.required">Email is required</span>-->
-	    	<span class="help-block" data-ng-show="signupForm.email.$error.email">Not valid email</span>
-	    	<span class="help-block" data-ng-show="errors.email">{{errors.email.message}}</span>
+	    	<span class="help-block error" data-ng-show="signupForm.email.$error.email">Not valid email</span>
+	    	<span class="help-block error" data-ng-show="errors.email">{{errors.email.message}}</span>
 	    </div>
 	    
 	    <div class="control-group" data-ng-class="{error: (errors.password)}">
 	        <input type="text" name="password" class="span" placeholder="{{i18n.sign_placeholder_password}}" data-ng-model="signup.password" data-ng-change="validate.password(signupForm.password, signup.password, '', settings.password)"
 	        onfocus="this.type = 'text'" onblur="this.type = 'password'" required>
-	        <!--<span class="help-block" data-ng-show="signinForm.password.$error.required">Password is required</span>-->
-	        <span class="help-block" data-ng-show="signupForm.password.$error.minlength">Password too short, must be {{settings.password.min_length}} or more</span>
-	        <span class="help-block" data-ng-show="signupForm.password.$error.lower">Password needs at least one lower case letter</span>
-	        <span class="help-block" data-ng-show="signupForm.password.$error.upper">Password needs at least one upper case letter</span>
-	        <span class="help-block" data-ng-show="signupForm.password.$error.number">Password needs at least one number</span>
-	        <span class="help-block" data-ng-show="signupForm.password.$error.special">Password needs at least one special character (!"£$%&...)</span>
-	        <span class="help-block" data-ng-show="signupForm.password.$error.identical">Password cannot have more than two identical characters</span>
-	        <span class="help-block" data-ng-show="errors.password">{{errors.password.message}}</span>
+	        <!--<span class="help-block error" data-ng-show="signinForm.password.$error.required">Password is required</span>-->
+	        <span class="help-block">will be viewable while entering it</span>
+	        <span class="help-block error" data-ng-show="signupForm.password.$error.minlength">Password too short, must be {{settings.password.min_length}} or more</span>
+	        <span class="help-block error" data-ng-show="signupForm.password.$error.lower">Password needs at least one lower case letter</span>
+	        <span class="help-block error" data-ng-show="signupForm.password.$error.upper">Password needs at least one upper case letter</span>
+	        <span class="help-block error" data-ng-show="signupForm.password.$error.number">Password needs at least one number</span>
+	        <span class="help-block error" data-ng-show="signupForm.password.$error.special">Password needs at least one special character (!"£$%&...)</span>
+	        <span class="help-block error" data-ng-show="signupForm.password.$error.identical">Password cannot have more than two identical characters</span>
+	        <span class="help-block error" data-ng-show="errors.password">{{errors.password.message}}</span>
 	    </div>
 	    
 	    <button class="btn btn-primary" data-ng-click="account_signup()" data-ng-disabled="signupForm.$invalid || signupForm.password.$invalid">{{i18n.sign_up_button}}</button>

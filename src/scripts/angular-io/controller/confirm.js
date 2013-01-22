@@ -1,7 +1,6 @@
-angular.module('io.controller.confirm', [])
-.controller('ConfirmCtrl',
-['$scope', '$http', '$routeParams',
-function($scope, $http, $routeParams) {
+//angular.module('io.controller.confirm', [])
+//.controller('ConfirmCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
+function ConfirmCtrl($scope, $http, $routeParams) {
 	console.log('ConfirmCtrl ('+$scope.$id+')');
 	
 	$scope.errors = {};
@@ -36,5 +35,5 @@ function($scope, $http, $routeParams) {
 				}
 			});
 	}
-
-}]);
+}
+//}]);

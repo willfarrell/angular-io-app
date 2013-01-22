@@ -1,7 +1,6 @@
-angular.module('io.controller.password', [])
-.controller('PasswordCtrl',
-['$scope', '$http',
-function($scope, $http) {
+//angular.module('io.controller.password', [])
+//.controller('PasswordCtrl', ['$scope', '$http', function($scope, $http) {
+function PasswordCtrl($scope, $http) {
 	console.log('PasswordCtrl ('+$scope.$id+')');
 	
 	$scope.updatePassword = function() {
@@ -19,4 +18,5 @@ function($scope, $http) {
 				$rootScope.http_error();
 			});
 	};
-}]);
+}
+//}]);

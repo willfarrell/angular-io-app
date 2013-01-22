@@ -14,17 +14,18 @@
 <form name="changePasswordForm" class="form-vertical" data-ng-show="state.reset">
 	<legend>Change Password<button class="btn btn-primary pull-right" data-ng-click="reset()" data-ng-disabled="changePasswordForm.$invalid">Save</button></legend>
 
-    <div class="control-group {{errors.password.class}}">
+    <div class="control-group" data-ng-class="{error: (errors.password)}">
         <input type="password" name="password" class="input-large" placeholder="New Password" data-ng-model="password.new_password" data-ng-change="validate.password(changePasswordForm.password, password.new_password, settings.password)"
         	required>
-        <!--<span class="help-block" data-ng-show="signinForm.password.$error.required">Password is required</span>-->
-        <span class="help-block" data-ng-show="changePasswordForm.password.$error.minlength">Password too short, must be {{settings.password.min_length}} or more</span>
-        <span class="help-block" data-ng-show="changePasswordForm.password.$error.upper">Password needs at least one lower case letter</span>
-        <span class="help-block" data-ng-show="changePasswordForm.password.$error.lower">Password needs at least one upper case letter</span>
-        <span class="help-block" data-ng-show="changePasswordForm.password.$error.number">Password needs at least one number</span>
-        <span class="help-block" data-ng-show="changePasswordForm.password.$error.special">Password needs an special character (!"£$%&...)</span>
-        <span class="help-block" data-ng-show="changePasswordForm.password.$error.identical">Password cannot have more than two identical characters</span>
-        <span class="help-block" data-ng-show="errors.password">{{errors.password.message}}</span>
+        <!--<span class="help-block error" data-ng-show="signinForm.password.$error.required">Password is required</span>-->
+        <span class="help-block">will be viewable while entering it</span>
+        <span class="help-block error" data-ng-show="changePasswordForm.password.$error.minlength">Password too short, must be {{settings.password.min_length}} or more</span>
+        <span class="help-block error" data-ng-show="changePasswordForm.password.$error.upper">Password needs at least one lower case letter</span>
+        <span class="help-block error" data-ng-show="changePasswordForm.password.$error.lower">Password needs at least one upper case letter</span>
+        <span class="help-block error" data-ng-show="changePasswordForm.password.$error.number">Password needs at least one number</span>
+        <span class="help-block error" data-ng-show="changePasswordForm.password.$error.special">Password needs an special character (!"£$%&...)</span>
+        <span class="help-block error" data-ng-show="changePasswordForm.password.$error.identical">Password cannot have more than two identical characters</span>
+        <span class="help-block error" data-ng-show="errors.password">{{errors.password.message}}</span>
     </div>
 </form>
 

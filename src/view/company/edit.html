@@ -11,48 +11,48 @@
 				</div>
 	    	</legend>
 
-	    	<div class="control-group {{errors.company_name.class}}">
+	    	<div class="control-group" data-ng-class="{error: (errors.company_name)}">
 	          	<label class="control-label">Company Name</label>
 	          	<div class="controls">
 		            <input type="text" class="span" name="company_name" placeholder="Required" data-ng-model="company.company_name" required>
-		            <!--<span class="help-block" data-ng-show="companyForm.company_name.$error.required">Required</span>-->
-		            <span class="help-block" data-ng-show="errors.company_name">{{errors.company_name.message}}</span>
+		            <!--<span class="help-block error" data-ng-show="companyForm.company_name.$error.required">Required</span>-->
+		            <span class="help-block error" data-ng-show="errors.company_name">{{errors.company_name.message}}</span>
 	            </div>
 	        </div>
 
-	        <div class="control-group {{errors.company_url.class}}">
+	        <div class="control-group" data-ng-class="{error: (errors.company_url)}">
 	          	<label class="control-label" for="company_url">Website</label>
 	          	<div class="controls">
 		            <input type="url" class="span" name="company_url" data-ng-model="company.company_url" placeholder="https://">
-		            <!--<span class="help-block" data-ng-show="onboardCompanyForm.company_name.$error.required">Required</span>-->
-		            <span class="help-block" data-ng-show="companyForm.company_url.$error.url">Not valid url</span>
-		            <span class="help-block" data-ng-show="errors.company_url">{{errors.company_url.message}}</span>
+		            <!--<span class="help-block error" data-ng-show="onboardCompanyForm.company_name.$error.required">Required</span>-->
+		            <span class="help-block error" data-ng-show="companyForm.company_url.$error.url">Not valid url</span>
+		            <span class="help-block error" data-ng-show="errors.company_url">{{errors.company_url.message}}</span>
 	            </div>
 	        </div>
 
-	        <div class="control-group {{errors.company_phone.class}}">
+	        <div class="control-group" data-ng-class="{error: (errors.company_phone)}">
 	          	<label class="control-label" for="company_phone">Phone</label>
 	          	<div class="controls">
 		          	<div class="input-prepend">
 		                <span class="add-on">+{{json.calling_codes[country_code]}}</span><input type="text" class="" name="company_phone" placeholder="(000) 000-0000" data-ng-model="company.company_phone" data-input-mask="(999) 999-9999 x999999">
 		            </div>
-		            <span class="help-block" data-ng-show="errors.company_phone">{{errors.company_phone.message}}</span>
+		            <span class="help-block error" data-ng-show="errors.company_phone">{{errors.company_phone.message}}</span>
 	            </div>
 	        </div>
 	        
-	        <div class="control-group {{errors.user_default_ID.class}}">
+	        <div class="control-group" data-ng-class="{error: (errors.user_default_ID)}">
 	          	<label class="control-label" for="user_default_ID">Primary User</label>
 	          	<div class="controls">
 		          	<select class="span" data-ng-model="company.user_default_ID" data-ng-options="value.user_ID as value.user_name_first+' '+value.user_name_last for (key, value) in users" required></select>
-		            <span class="help-block" data-ng-show="errors.user_default_ID">{{errors.user_default_ID.message}}</span>
+		            <span class="help-block error" data-ng-show="errors.user_default_ID">{{errors.user_default_ID.message}}</span>
 	            </div>
 	        </div>
 	        
-	        <div class="control-group {{errors.location_default_ID.class}}">
+	        <div class="control-group" data-ng-class="{error: (errors.location_default_ID)}">
 	          	<label class="control-label" for="location_default_ID">Primary Location</label>
 	          	<div class="controls">
 		          	<select class="span" data-ng-model="company.location_default_ID" data-ng-options="value.location_ID as value.location_name for (key, value) in locations" required></select>
-		            <span class="help-block" data-ng-show="errors.location_default_ID">{{errors.location_default_ID.message}}</span>
+		            <span class="help-block error" data-ng-show="errors.location_default_ID">{{errors.location_default_ID.message}}</span>
 	            </div>
 	        </div>
 
@@ -105,70 +105,70 @@
 	    	
 	    	<div data-ng-show="toggle.location">
 
-		    <div class="control-group {{errors.address_1.class}}">
+		    <div class="control-group" data-ng-class="{error: (errors.address_1)}">
 	          	<label class="control-label" for="address_1">Location Name</label>
 	          	<div class="controls">
 		            <input type="text" class="span" data-ng-model="location.location_name" placeholder="Head Office" required>
-		            <span class="help-block" data-ng-show="errors.address_1">{{errors.address_1.message}}</span>
+		            <span class="help-block error" data-ng-show="errors.address_1">{{errors.address_1.message}}</span>
 	            </div>
 	        </div>
 
-		    <div class="control-group {{errors.address_1.class}}">
+		    <div class="control-group" data-ng-class="{error: (errors.address_1)}">
 	          	<label class="control-label" for="address_1">Address</label>
 	          	<div class="controls">
 		            <input type="text" class="span" data-ng-model="location.address_1" placeholder="street address, P.O. box, c/o" required>
-		            <span class="help-block" data-ng-show="errors.address_1">{{errors.address_1.message}}</span>
+		            <span class="help-block error" data-ng-show="errors.address_1">{{errors.address_1.message}}</span>
 	            </div>
 	        </div>
 
-	        <div class="control-group {{errors.address_2.class}}">
+	        <div class="control-group" data-ng-class="{error: (errors.address_2)}">
 	          	<label class="control-label" for="address_2"></label>
 	          	<div class="controls">
 		            <input type="text" class="span" data-ng-model="location.address_2" placeholder="apartment, suite, unit, building, floor, etc.">
-		            <span class="help-block" data-ng-show="errors.address_2">{{errors.address_2.message}}</span>
+		            <span class="help-block error" data-ng-show="errors.address_2">{{errors.address_2.message}}</span>
 	            </div>
 	        </div>
 
-	        <div class="control-group {{errors.city.class}}">
+	        <div class="control-group" data-ng-class="{error: (errors.city)}">
 	          	<label class="control-label" for="city">City</label>
 	          	<div class="controls">
 		            <input type="text" class="span" data-ng-model="location.city" required>
-		            <span class="help-block" data-ng-show="errors.city">{{errors.city.message}}</span>
-		            <p class="help-block"></p>
+		            <span class="help-block error" data-ng-show="errors.city">{{errors.city.message}}</span>
+		            <p class="help-block error"></p>
 	            </div>
 	        </div>
 
-	        <div class="control-group {{errors.region_code.class}}">
+	        <div class="control-group" data-ng-class="{error: (errors.region_code)}">
 	          	<label class="control-label" for="region_code">Province/Region/State</label>
 	          	<div class="controls">
 		            <select class="span" data-ng-model="location.region_code" data-ng-options="key as value for (key, value) in json.regions[location.country_code]" required></select>
-		            <span class="help-block" data-ng-show="errors.region_code">{{errors.region_code.message}}</span>
+		            <span class="help-block error" data-ng-show="errors.region_code">{{errors.region_code.message}}</span>
 	            </div>
 	        </div>
 
-	        <div class="control-group {{errors.country_code.class}}">
+	        <div class="control-group" data-ng-class="{error: (errors.country_code)}">
 	          	<label class="control-label" for="country_code">Country</label>
 	          	<div class="controls">
 		            <select class="span" data-ng-model="location.country_code" data-ng-options="key as value for (key, value) in json.countries" data-ng-change="loadRegions(location.country_code)" required></select>
-		            <span class="help-block" data-ng-show="errors.country_code">{{errors.country_code.message}}</span>
+		            <span class="help-block error" data-ng-show="errors.country_code">{{errors.country_code.message}}</span>
 	            </div>
 	        </div>
 	        
-	        <div class="control-group {{errors.mail_code.class}}">
+	        <div class="control-group" data-ng-class="{error: (errors.mail_code)}">
 	          	<label class="control-label" for="mail_code">Postal/Zip Code</label>
 	          	<div class="controls">
 		            <input type="text" class="span" data-ng-model="location.mail_code" required>
-		            <span class="help-block" data-ng-show="errors.mail_code">{{errors.mail_code.message}}</span>
+		            <span class="help-block error" data-ng-show="errors.mail_code">{{errors.mail_code.message}}</span>
 	            </div>
 	        </div>
 	        
-	        <div class="control-group {{errors.location_phone.class}}">
+	        <div class="control-group" data-ng-class="{error: (errors.location_phone)}">
 	          	<label class="control-label" for="location_phone">Phone</label>
 	          	<div class="controls">
 		          	<div class="input-prepend">
 		                <span class="add-on">+{{json.calling_codes[location.country_code]}}</span><input type="text" class="" name="location_phone" placeholder="(000) 000-0000" data-ng-model="location.location_phone" data-input-mask="(999) 999-9999 x999999">
 		            </div>
-		            <span class="help-block" data-ng-show="errors.location_phone">{{errors.location_phone.message}}</span>
+		            <span class="help-block error" data-ng-show="errors.location_phone">{{errors.location_phone.message}}</span>
 	            </div>
 	        </div>
 	        
@@ -233,13 +233,13 @@
 	    <legend>About Details<button class="btn btn-primary pull-right" data-ng-click="updateCompany()"><i class="icon-ok"></i>&nbsp;Save</button></legend>
 
 	    <textarea class="span" rows="15" data-ng-model="company.company_details"></textarea>
-		<div class="help-block">Markdown Syntax Supported<br>(&nbsp;<b>**bold**</b>,&nbsp;<i>_emphasis_</i>&nbsp;)</div>
+		<div class="help-block error">Markdown Syntax Supported<br>(&nbsp;<b>**bold**</b>,&nbsp;<i>_emphasis_</i>&nbsp;)</div>
 	</div>
 	
 	<div class="span6">
 		<legend>About Preview</legend>
 		<div ng-bind-html-unsafe="compileMarkdown(company.company_details)"></div>
-		<div class="help-block" data-ng-show="company.company_details == ''">
+		<div class="help-block error" data-ng-show="company.company_details == ''">
 			Enter text to the left to have a preview generated here.
 		</div>
 	</div>

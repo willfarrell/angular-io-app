@@ -1,7 +1,6 @@
-angular.module('io.controller.company', [])
-.controller('CompanyCtrl',
-['$scope', '$http',
-function($scope, $http) {
+//angular.module('io.controller.company', [])
+//.controller('CompanyCtrl', ['$scope', '$http', function($scope, $http) {
+function CompanyCtrl($scope, $http) {
 	console.log('CompanyCtrl ('+$scope.$id+')');
 
 	$scope.errors = {};
@@ -206,4 +205,5 @@ function($scope, $http) {
 		$scope.loadUsers();
 		$scope.loadLocations();
 	});
-}]);
+}
+//}]);

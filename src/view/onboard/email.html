@@ -21,15 +21,15 @@
 		<p>Please check your email inbox and click the confirm link or paste the confirmation code below.</p>
 		
 		<form name="confirmCodeForm" class="center">
-			<div class="control-group {{errors.confirm_code.class}}">
+			<div class="control-group" data-ng-class="{error: (errors.confirm_code)}">
 	          	<!--<label class="control-label">Confirmation Code</label>-->
 	          	<div class="controls">
 	          		<div class="input-append">
 		                <input type="text" class="" name="confirm_code" placeholder="Confirmation Code" data-ng-model="confirm_code" required><button class="btn btn-primary" data-ng-click="check(confirm_code)">Confirm</button>
 		            </div>
 		            
-		            <!--<span class="help-block" data-ng-show="confirmCodeForm.confirm_code.$error.required">Required</span>-->
-		            <span class="help-block" data-ng-show="errors.confirm_code">{{errors.confirm_code.message}}</span>
+		            <!--<span class="help-block error" data-ng-show="confirmCodeForm.confirm_code.$error.required">Required</span>-->
+		            <span class="help-block error" data-ng-show="errors.confirm_code">{{errors.confirm_code.message}}</span>
 	            </div>
 	        </div>
 			

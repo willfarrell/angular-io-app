@@ -17,7 +17,7 @@ angular.module('io.directives', ['io.config', 'io.directive.htmlExtend', 'io.dir
 angular.module('io.filters', ['io.config', 'io.filter.format']);
 angular.module('io.factories', ['io.config', 'io.factory.accessibility', 'io.factory.avatarpicker']);
 angular.module('io.init', ['io.config', 'io.init.settings', 'io.init.rootScope']);
-angular.module('io', ['io.controllers', 'io.directives', 'io.filters', 'io.factories', 'io.init', 'io.config']);
+angular.module('io', ['io.directives', 'io.filters', 'io.factories', 'io.init', 'io.config']);
 
 // app settings
 angular.module('app.config', []).value('app.config', {});
@@ -40,4 +40,4 @@ angular.module('app.factories', ['app.config', 'io.factory.filepicker', 'io.fact
 
 angular.module('app.init', ['app.config', 'app.route']);
 
-var app = angular.module('app', ['io', 'app.controllers', 'app.directives', 'app.filters', 'app.factories', 'app.init', 'app.config']);
+var app = angular.module('app', ['io', 'app.directives', 'app.filters', 'app.factories', 'app.init', 'app.config']);

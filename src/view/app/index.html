@@ -13,7 +13,7 @@
 				<input type="url" name="site" class="input-xlarge" placeholder="Enter URL to license. Include http://" data-ng-model="site" required>
 				<button class="btn" data-ng-click="addSite(site)" data-ng-disabled="siteForm.$invalid">Add</button>
 			</div>
-			<span class="help-block" data-ng-show="siteForm.site.$error.url">Not valid URL.</span>
+			<span class="help-block error" data-ng-show="siteForm.site.$error.url">Not valid URL.</span>
 		</form>
 
 		<ul class="unstyled">

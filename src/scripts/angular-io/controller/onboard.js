@@ -1,7 +1,6 @@
-angular.module('io.controller.onboard', [])
-.controller('OnboardCtrl',
-['$scope', '$http', '$routeParams',
-function($scope, $http, $routeParams) {
+//angular.module('io.controller.onboard', [])
+//.controller('OnboardCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
+function OnboardCtrl($scope, $http, $routeParams) {
 	console.log('OnboardCtrl ('+$scope.$id+') page:'+$routeParams.page);
 	$scope.errors = {};
 
@@ -51,4 +50,5 @@ function($scope, $http, $routeParams) {
 	$scope.require_signin(function() {
 		$scope.BuildProgressTracker($routeParams.page, $routeParams.action);
 	});
-}]);
+}
+//}]);

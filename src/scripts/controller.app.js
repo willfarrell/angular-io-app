@@ -1,8 +1,9 @@
-angular.module('io.controller.root', [])
-.controller('AppCtrl',
-['$rootScope', '$scope', '$http', '$follow', '$filepicker',
-function(rootScope, $scope, $http, follow, filepicker) {
-	
+//angular.module('io.controller.root', [])
+//.controller('AppCtrl',
+//['$rootScope', '$scope', '$http', '$follow', '$filepicker',
+//function(rootScope, $scope, $http, follow, filepicker) {
+AppCtrl.$inject = ['$rootScope', '$scope', '$http', '$follow', '$filepicker'];
+function AppCtrl(rootScope, $scope, $http, follow, filepicker) {
 	console.log('AppCtrl ('+$scope.$id+')');
 	
 	$rootScope = rootScope; // important
@@ -24,5 +25,5 @@ function(rootScope, $scope, $http, follow, filepicker) {
 	});
 	
 	//!-- App Root Scoope Functions --//
-	
-}]);
+}
+//}]);

@@ -1,5 +1,6 @@
-angular.module('io.controller.follow', [])
-.controller('FollowCtrl', ['$scope', '$http', function($scope, $http) {
+//angular.module('io.controller.follow', [])
+//.controller('FollowCtrl', ['$scope', '$http', function($scope, $http) {
+function FollowCtrl($scope, $http) {
 	//$scope = $scope;
 	console.log('FollowCtrl ('+$scope.$id+')');
 	
