@@ -1,0 +1,40 @@
+<!-- !Side Nav -->
+<!--<div class="navbar navbar-fixed-top visible-phone nav-slider-button">
+	<div class="navbar-inner">
+        <div class="container">
+        	<div class="pull-left">
+	        	<div class="btn-group">
+	        		<button class="btn" data-ng-click="sliderNav = sliderNav * -1"><i class="icon-list-ul"></i></button>
+	        	</div>
+        	</div>
+        </div>
+	</div>
+</div>-->
+
+<div data-ng-hide="session.user_ID">
+<ul class="nav nav-tabs nav-stacked">
+	<li><a href="#/sign/in"><i class="icon-signin"></i>&nbsp;Sign In</a></li>
+	<li><a href="#/contact"	><i class="icon-bullhorn"></i>&nbsp;Contact</a></li>
+</ul>
+</div>
+
+<div data-ng-show="session.user_ID">
+<!--<img src="img/user/{{session.user_ID}}.png" style="width:50px; height:50px;" />
+	  	<a href="#/user/profile" data-ng-show="session.user.user_name">&nbsp;{{session.user.user_name}}</a>
+        <a href="#/user/profile" data-ng-show="!session.user.user_name && session.user.user_name_first">&nbsp;{{session.user.user_name_first}}</a>
+        <a href="#/user/profile" data-ng-hide="session.user.user_name || session.user.user_name_first">&nbsp;{{session.user.user_email}}</a>-->
+
+<ul class="nav nav-tabs nav-stacked">
+  	<li class="nav-header">App</li>
+  	<li><a href="#/{{settings.dashboard}}"><i class="icon-dashboard"></i>&nbsp;Dashboard</a></li>
+  	
+  	<li class="nav-header">User</li>
+	<li><a href="#/invite"><i class="icon-share"></i>&nbsp;Invite</a></li>
+	<li><a href="#/account/user"><i class="icon-cogs"></i>&nbsp;User Settings</a></li>
+	
+  	<li class="nav-header">Account</li>
+  	<li><a href="#/account/company"><i class="icon-edit"></i>&nbsp;Edit Account</a></li>
+	<li><a href="#/sign/out"><i class="icon-signout"></i>&nbsp;Sign Out</a></li>
+	<li><a href="#/contact"	><i class="icon-bullhorn"></i>&nbsp;Contact</a></li>
+</ul>
+</div>

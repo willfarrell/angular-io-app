@@ -1,0 +1,50 @@
+
+<div class="row-fluid" data-ng-controller="ContactCtrl">
+  	<div class="span4 offset4 well">
+		<form name="contactForm" class="form-vertical">
+	    	<legend>
+	    		Contact
+		    	<button class="btn btn-primary pull-right" data-ng-click="sendMessage()" data-ng-disabled="contactForm.$invalid">Send</button>
+	    	</legend>
+
+	    	<div class="alert alert-{{alert.class}}" data-ng-repeat="alert in alerts">
+			  	<button class="close" data-dismiss="alert">&times;</button>
+			  	<strong>{{alert.label}}</strong> {{alert.message}}
+			</div>
+
+	    	<div class="control-group">
+	          <label class="control-label">Name</label>
+	          <div class="controls">
+	            <input type="text" name="name" class="span" data-ng-model="contact.name"  autofocus>
+	          </div>
+	        </div>
+
+	        <div class="control-group">
+	          <label class="control-label">Email</label>
+	          <div class="controls">
+	            <input type="email" name="email" class="span" data-ng-model="contact.email" required>
+	            <span class="error" data-ng-show="contactForm.email.$error.email">Not valid email</span>
+	          </div>
+	        </div>
+
+	        <!--<div class="control-group">
+	          <label class="control-label">Subject</label>
+	          <div class="controls">
+	            <input type="text" class="input-large" data-ng-model="contact.subject" required>
+	          </div>
+	        </div>-->
+
+	        <div class="control-group">
+	          <label class="control-label" for="company_type">Message</label>
+	          <div class="controls">
+	            <textarea name="message" class="span" data-ng-model="contact.message" rows="6" required></textarea>
+	          </div>
+	        </div>
+
+	     </form>
+     </div>
+
+  <!--<div class="span6 well">
+
+  </div>-->
+</div>

@@ -1,0 +1,43 @@
+{
+	"domain": "http://angulario.com",
+	"domain_clean": "angulario.com",
+	"title": "Angular.io",
+	"meta_description": "Angular.io - AngularJS Web App Framework",
+	
+	"__anrular_io_replacements__":"",
+	"sign_in_placeholder":"Email or Username",
+	
+	"__nav__":"",
+	"nav_sign_in":"Sign In",
+	"nav_sign_up":"Sign Up",
+	
+	"nav_user":"",
+	"nav_user_profile":"Profile",
+	"nav_user_invite":"Invite",
+	"nav_user_settings":"Settings",
+	
+	"nav_account":"Account",
+	"nav_account_profile":"Account Profile",
+	"nav_account_edit":"Edit Account",
+	"nav_account_sign_out":"Sign Out",
+	"nav_account_faq":"FAQ",
+	"nav_account_contact":"Contact",
+	"nav_account_support":"Support",
+	
+	"__footer__":"",
+	"footer_col1_h3":"Angular.io",
+	"footer_col1_text":"AngularJS + Twitter Bootstrap wrapper for building secure web apps.",
+	"footer_col2_h3":"Support",
+	"footer_tos_title":"Go to Terms of Service",
+	"footer_tos_value":"Terms of Service",
+	"footer_privacy_title":"Go to Privacy Policy",
+	"footer_privacy_value":"Privacy Policy",
+	"footer_security_title":"Go to Security Policy",
+	"footer_security_value":"Security Policy",
+	"footer_contact_title":"Go to Contact & Support",
+	"footer_contact_value":"Contact & Support",
+	"footer_col3_h3":"Newsletter",
+	"footer_col3_text":"Subscribe to our newsletter and be the first to know about our news and special deals!",
+	"footer_email_placeholder":"Enter your E-mail",
+	"footer_email_button":"Ok"
+}

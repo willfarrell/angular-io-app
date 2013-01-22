@@ -1,0 +1,140 @@
+<div data-ng-controller="CompanyCtrl">
+<h2>{{company.company_name}}</h2>
+
+<div class="row-fluid">
+    <div class="span4">
+    	<!-- logo -->
+    	<!--<img data-ng-src="/img/company/{{company.company_ID}}.png" style="width:200px; height:100px;" /><br>-->
+        <a href="" data-ng-click="href(company.company_url, true)" data-ng-show="company.company_url"><i class="icon-link"></i>&nbsp;{{company.company_url}}</a><br>
+        <i class="icon-phone"></i>&nbsp;+{{json.calling_codes[location.country_code]}} {{company.company_phone | phone}}<br>
+        <!--<a href="" onclick="openURL({{company.company_url}})"><i class="icon-linkedin"></i>&nbsp;LinkenIn</a>
+        <a href="" onclick="openURL({{company.company_url}})"><i class="icon-facebook"></i>&nbsp;Facebook</a>
+        <a href="" onclick="openURL({{company.company_url}})"><i class="icon-twitter"></i>&nbsp;Twitter</a>
+        <a href="" onclick="openURL({{company.company_url}})"><i class="icon-google-plus"></i>&nbsp;Google+</a>-->
+        
+        <br>
+        
+        <!-- user -->
+        <legend><i class="icon-user"></i>&nbsp;Primary Contact</legend>
+        <div class="row-fluid">
+	        <div class="span5">
+	            <img data-ng-src="/img/user/{{company.user.user_ID}}.png" class="img-polaroid" style="width:100px; height:100px;" />
+	        </div>
+	        <div class="span1"></div>
+	        <div class="span6">
+	            <h4>{{company.user.user_name_first}} {{company.user.user_name_last}}</h4>
+	            <p data-ng-show="company.user.user_function">{{company.user.user_function}}</p>
+	            <i class="icon-envelope"></i>&nbsp;{{company.user.user_email}}<br>
+	            <span data-ng-show="company.user.user_phone"><i class="icon-phone"></i>&nbsp;+{{json.calling_codes[company.location.country_code]}} {{company.user.user_phone | phone}}<br></span>
+	            
+	        </div>
+        </div>
+        
+        <br>
+        
+        <!-- location -->
+        <legend><i class="icon-map-marker"></i>&nbsp;Primary Location</legend>
+        <div class="row-fluid">
+	        <div class="span5">
+	            <!--<img src="http://placehold.it/100x100" width="100" height="100" />-->
+	            <!--<img data-ng-src="https://maps.google.com/maps/api/staticmap?center={{company.location.latitude}},{{company.location.longitude}}&zoom=14&size=100x100&maptype=terain&markers=color:red%7Clabel:{{company.company_name}}&sensor=false" class="img-polaroid">-->
+	            <img data-ng-src="https://maps.google.com/maps/api/staticmap?zoom=14&size=100x100&maptype=terain&markers=color:red|{{company.location.address_1}},{{company.location.city}},{{company.location.region_code}},{{company.location.country_code}},{{company.location.mail_code}}&sensor=false" class="img-polaroid">
+	        </div>
+	        <div class="span1"></div>
+	        <div class="span6">
+	            <h4>{{company.location.location_name}}</h4>
+	            <span>{{company.location.address_1}}</span><br>
+	            <span data-ng-show="company.location.address_2">{{company.location.address_2}}<br></span>
+	            <span>{{company.location.city}}, {{company.location.region_code}}, {{company.location.country_code}}</span><br>
+	            <span>{{company.location.mail_code}}</span><br>
+	            <span data-ng-show="company.location.location_phone"><i class="icon-phone"></i>&nbsp;+{{json.calling_codes[company.location.country_code]}} {{company.location.location_phone | phone}}<br></span>
+	            <!--<p>{{company.location.latitude}},{{company.location.longitude}}</p>-->
+	        </div>
+        </div>
+
+        <!-- More (stats) -->
+        <!--<legend><i class="icon-info-sign"></i>&nbsp;About</legend>
+        <table class="table"><tbody>
+        	<tr><th>Type</th><td>{{select.company_types[company.company_type]}}</td></tr>
+        	<tr><th>Categories</th><td><span  data-ng-repeat="category in company.categories">{{select.categories[category].name}},<br></span></td></tr>
+        </tbody></table>-->
+
+        <!-- share -->
+        <!--<h3><i class="icon-share"></i>&nbsp;Social</h3>
+        <table class="table"><tbody><tr><td>
+        	<script type="text/javascript" src="https://platform.linkedin.com/in.js"></script><script type="in/share" data-url="http://rfqs.ca/index.php" data-counter="top"></script>
+            </td><td>
+        	<iframe
+src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Frfqs.ca%2Findex.php&amp;layout=box_count&amp;show_faces=true&amp;width=50&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=65" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:50px; height:65px;" allowTransparency="true"></iframe>
+			</td><td>
+			<a
+href="https://twitter.com/share" class="twitter-share-button" data-url="http://rfqs.ca/index.php" data-count="vertical" data-via="rfqs">Tweet</a>
+			<script type="text/javascript" src="https://platform.twitter.com/widgets.js"></script>
+        </td></tr></tbody></table>-->
+    </div>
+
+    <div class="span8">
+    	<div class="tabbable"> <!-- Only required for left/right tabs -->
+		  	<ul class="nav nav-tabs">
+			    <li class="active"><a href="#tab1" data-toggle="tab">About</a></li>
+			    <li><a href="#tab2" data-toggle="tab">Team</a></li>
+			    <!--<li><a href="#tab3" data-toggle="tab">Locations</a></li>-->
+
+			    <!-- Follow Button --
+			    <div data-ng-controller="FollowCtrl" data-ng-init="f = loadFollow(company.company_ID, 'company')" data-ng-show="session.company_ID != profile_ID">
+					<div class="btn-group pull-right" data-ng-hide="following[profile_ID].following">
+					  	<button class="btn btn-primary" data-ng-click="follow(profile_ID, 'company'); following[profile_ID].following = !following[profile_ID].following">Follow</button>
+					</div>
+					<div class="btn-group pull-right" data-ng-show="following[profile_ID].following">
+					  	<button class="btn" data-toggle="dropdown"><i class="icon-pushpin"></i>&nbsp;Following</button>
+					    <button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+					    <ul class="dropdown-menu">
+						    <li data-ng-repeat="group in groups">
+						    	<a data-ng-click="follow(follow_user.ID, 'company', group.group_ID);" data-ng-hide="inArray(group.group_ID, following[profile_ID].groups)">
+						    		<i class="icon-blank"></i>&nbsp;{{group.group_name}}
+						    	</a>
+						    	<a data-ng-click="unfollow(follow_user.ID, 'company', group.group_ID);" data-ng-show="inArray(group.group_ID, following[profile_ID].groups)">
+						    		<i class="icon-ok"></i>&nbsp;{{group.group_name}}
+						    	</a>
+						    </li>
+						    <li class="divider" data-ng-show="objectLength(groups)"></li>
+						    <li><a data-ng-click="unfollow(profile_ID, 'company'); following[profile_ID].following = !following[profile_ID].following">Unfollow</a></li>
+					    </ul>
+					</div>
+				</div>-->
+
+			</ul>
+		    <div class="tab-content">
+			    <div class="tab-pane active" id="tab1">
+			      	<div ng-bind-html-unsafe="compileMarkdown(company.company_details)"></div>
+			    </div>
+			    <div class="tab-pane" id="tab2">
+			      	<div data-ng-repeat="u in users">
+			      		<div class="span3">
+			      			<img data-ng-src="img/user/{{u.user_ID}}.png" class="img-polaroid" style="width:100px; height:100px;"/>
+			      		</div>
+			      		<div class="span9">
+			      			<h4>{{u.user_name_first}} {{u.user_name_last}}</h4>
+			      			<i>{{u.user_function}}</i>
+			      			<div ng-bind-html-unsafe="compileMarkdown(u.user_details)"></div>
+			      		</div>
+			      	</div>
+			    </div>
+			    <div class="tab-pane" id="tab3">
+			      	<p>Interactive map - Future</p>
+			      	<img data-ng-src="https://maps.google.com/maps/api/staticmap?center={{company.location.latitude}},{{company.location.longitude}}&zoom=14&size=360x360&maptype=terain&markers=color:red%7C{{company.company_name}}&sensor=false" class="img-polaroid pull-center"/>
+			    </div>
+		    </div>
+		    
+		    <!--<div data-ng-controller="FollowCtrl">
+			    <ul class="thumbnails well" data-ng-init="loadFollowing(company.company_ID)">
+			    	<li class="img-polaroid ng-click" data-ng-repeat="f in following" data-ng-click="href('#/user/profile/'+f.ID)">
+			    		<img data-ng-src="/img/user/{{f.ID}}.png" style="width:50px;height:50px" /><br>
+			    	</li>
+			    </ul>
+		    </div>-->
+		</div>
+	</div>
+</div>
+
+</div>

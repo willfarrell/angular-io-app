@@ -1,0 +1,57 @@
+
+<div class="row-fluid" data-ng-controller="InviteCtrl">
+	<div class="span6 offset3 well">
+		<legend>
+			Spread the Word...
+			<div class="btn-group pull-right">
+				<button class="btn" data-ng-click="button.skip()">Skip &raquo;</button>
+			</div>
+		</legend>
+
+        <p class="center">Share this link with friends and coworkers</p>
+        <div class="input-append center">
+            <input type="text" class="" value="{{i18n.domain}}/#/?ref={{session.ref}}" />
+            <span class="add-on" onclick="clipboard('{{i18n.domain}}/#/?ref={{session.ref}}')" data-ng-click="copyAlert(i18n.domain+'/#/?ref='+session.ref)"><i class="icon-copy"></i></span>
+        </div>
+        <div class="center">
+            <a class="btn" href="mailto:?subject={{i18n.invite_mail_subject}}&body={{i18n.invite_mail_body}} {{i18n.domain}}/#/?ref={{session.ref}}" target="_blank"><i class="icon-envelope"></i>&nbsp;Share via Email</a>
+            <a class="btn" href="https://twitter.com/intent/tweet?url={{i18n.domain}}/%23/?ref={{session.ref}}&text={{i18n.invite_twitter_tweet}}" target="_blank">
+              	<i class="icon-twitter"></i>&nbsp;Share via Twitter
+            </a>
+        </div>
+	</div>
+	</div>
+</div>
+
+<script>
+
+InviteCtrl.$inject = ['$scope'];
+function InviteCtrl($scope) {
+	console.log('InviteCtrl');
+	
+	/*$scope.copyAlert = function(site_url) {
+		console.log('copyAlert("'+site_url+'")');
+		$rootScope.modal = {
+			hide:{
+				header:true,
+				close:false,
+				footer:false
+			},
+			header:"",
+			content:'Copy to clipboard: Ctrl+C, enter<br><input value="'+site_url+'" />',
+			buttons:[
+				{
+					"class":"",
+					value:"Close",
+					callback:function() {}
+				}
+			]
+		};
+		console.log($rootScope.modal);
+		$('#alertModal').modal('show');
+	};*/
+	
+	$scope.require_signin();
+}
+
+</script>

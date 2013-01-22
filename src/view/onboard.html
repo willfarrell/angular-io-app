@@ -1,0 +1,19 @@
+<div data-ng-controller="OnboardCtrl">
+	<div id="progress_tracker" class="wizard center">
+	    <a href="#/onboard/email"><span class="badge" data-ng-hide="true"></span> <i class="icon-envelope"></i></a>
+	    <!--<a href="#/onboard/password"><span class="badge"></span> Create Password</a>-->
+	    <a href="#/onboard/user"><span class="badge"></span> User Profile</a>
+	    <a href="#/onboard/company" data-ng-show="settings.account.company && !session.company_ID"><span class="badge"></span> Company Info</a>
+	    <!--<a class="" href="#/onboard/security">2. Security Settings</a>-->
+	    <!--<a class="" href="#/onboard/package">3. Choose Package</a>-->
+	    <a href="#/onboard/follow"><span class="badge"></span> Follow</a>
+	    <a href="#/onboard/invite"><span class="badge"></span> Invite Others</a>
+	    <!--<a href="#/onboard/tour"><span class="badge"></span> Tour</a>-->
+	</div><br>
+
+	<div class="row-fluid">
+	    <div class="span12">
+	    	<ng:include src="page_url"></ng:include>
+	    </div>
+	</div>
+</div>

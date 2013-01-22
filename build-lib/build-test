@@ -1,0 +1,7 @@
+#!/bin/sh
+
+sh build
+
+yeoman test --force
+
+

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns		= "http://www.w3.org/ns/widgets"
+	xmlns:gap		= "http://phonegap.com/ns/1.0"
+	id				= "com.farrell.angular-io"
+	version 		= "1.0.0">
+	<!-- https://build.phonegap.com/docs/config-xml -->
+	<name>Angular.io</name>
+
+	<description>
+		Angular.io
+	</description>
+
+	<author href="http://farrelllabs.com"
+			email="iam@willfarrell.ca">
+			will Farrell
+	</author>
+
+	<!-- Default -->
+	<icon 		src="img/icons/icon.png" />
+	<!-- iOS -->
+	<icon 		src="img/icons/ios/icon.png" 				gap:platform="ios" width="57" height="57" />
+	<icon 		src="img/icons/ios/icon-72.png" 			gap:platform="ios" width="72" height="72" />
+	<!-- Android -->
+	<icon 		src="img/icons/android/ldpi.png" 			gap:platform="android" gap:density="ldpi" />
+	<icon 		src="img/icons/android/mdpi.png" 			gap:platform="android" gap:density="mdpi" />
+	<icon 		src="img/icons/android/hdpi.png" 			gap:platform="android" gap:density="hdpi" />
+	<!-- BlackBerry (<16kb) -->
+	<icon 		src="img/icons/bb/icon.png" 				gap:platform="blackberry" />
+	<icon 		src="img/icons/bb/icon_hover.png" 			gap:platform="blackberry" gap:state="hover"/>
+	<!-- Windows Phone -->
+	<icon 		src="img/icons/winphone/icon.png" 			gap:platform="winphone" />
+	<icon 		src="img/icons/winphone/tileicon.png" 		gap:platform="winphone" gap:role="background" />
+	<!-- WebOS -->
+	<icon 		src="img/icons/webos/icon.png" 				gap:platform="webos" />
+	<icon 		src="img/icons/webos/miniicon.png" 			gap:platform="webos" gap:role="mini" />
+
+	<!-- Default -->
+	<gap:splash src="img/splash/splash.png" />
+	<!-- iOS -->
+	<gap:splash src="img/splash/ios/Default.png" 			gap:platform="ios" width="320" height="480" />
+	<gap:splash src="img/splash/ios/Default_at_2x.png" 		gap:platform="ios" width="640" height="960" />
+	<gap:splash src="img/splash/ios/Default-Landscape.png" 	gap:platform="ios" width="1024" height="768" />
+	<gap:splash src="img/splash/ios/Default-Portrait.png" 	gap:platform="ios" width="768" height="1024" />
+	<!-- Android -->
+	<gap:splash src="img/splash/android/ldpi.png" 			gap:platform="android" gap:density="ldpi" />
+	<gap:splash src="img/splash/android/mdpi.png" 			gap:platform="android" gap:density="mdpi" />
+	<gap:splash src="img/splash/android/hdpi.png" 			gap:platform="android" gap:density="hdpi" />
+	<!-- BlackBerry (<16kb) -->
+	<gap:splash src="img/splash/bb/splash.png" 				gap:platform="blackberry" />
+	<!-- Windows Phone -->
+	<gap:splash src="img/splash/winphone/splash.jpg" 		gap:platform="winphone" />
+
+	<!-- PhoneGap APIs -->
+	<!--<feature 	name="http://api.phonegap.com/1.0/battery"/>-->
+	<!--<feature 	name="http://api.phonegap.com/1.0/camera"/>-->
+	<feature 	name="http://api.phonegap.com/1.0/contacts"/>
+	<feature 	name="http://api.phonegap.com/1.0/file"/>
+	<feature 	name="http://api.phonegap.com/1.0/geolocation"/>
+	<!--<feature 	name="http://api.phonegap.com/1.0/media"/>-->
+	<feature 	name="http://api.phonegap.com/1.0/network"/>
+	<feature 	name="http://api.phonegap.com/1.0/notification"/>
+	<feature 	name="http://api.phonegap.com/1.0/device"/>
+
+	<!-- PhoneGap Plugins (https://build.phonegap.com/docs/plugins) -->
+	<feature 	name="http://plugins.phonegap.com/ChildBrowser/2.0.1" />
+
+	<access origin="*" /><!-- origin="https://build.phonegap.com" OR origin="http://phonegap.com" subdomains="true" browserOnly="true"-->
+
+	<preference name="phonegap-version" 		value="2.1.0" /><!-- 2.1.0 -->
+	<preference name="orientation" 				value="default" /><!-- default -->
+	<preference name="target-device" 			value="universal" /><!-- universal -->
+	<preference name="fullscreen" 				value="false" /><!-- false -->
+	<!-- iOS Specific -->
+	<preference name="webviewbounce" 			value="false" /><!-- true -->
+	<preference name="prerendered-icon" 		value="true" /><!-- false -->
+	<preference name="stay-in-webview" 			value="false" /><!-- false -->
+	<preference name="ios-statusbarstyle"		value="black-opaque" /><!-- default -->
+	<!-- BlackBerry Specific -->
+	<preference name="disable-cursor" 			value="true" /><!-- false -->
+	<!-- Android Specific -->
+	<preference name="android-minSdkVersion" 	value="10" /><!-- 7 -->
+	<preference name="android-installLocation" 	value="internalOnly" /><!-- internalOnly -->
+
+</widget>

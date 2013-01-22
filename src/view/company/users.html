@@ -1,0 +1,36 @@
+<div class="row-fluid" data-ng-controller="CompanyCtrl" data-ng-init="loadUsers()">
+    <div class="span12">
+        <table class="table table-striped table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th class="sortable">Username</th>
+                    <th class="sortable">First Name</th>
+                    <th class="sortable">Last Name</th>
+                    <th class="sortable">Email</th>
+                    <!--<th class="sortable">Date Of Birth</th>
+                    <th class="header">Address</th>-->
+
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr data-ng-repeat="u in users">
+                    <td>{{u.user_name}}</td>
+                    <td>{{u.user_name_first}}</td>
+                    <td>{{u.user_name_last}}</td>
+                    <td>{{u.user_email}}</td>
+                    <td><!--<select data-ng-options="(key, value) in json.user_levels"></select>--></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!--<div class="span3">
+        <form class="well">
+            <legend>New User</legend>
+
+
+        </form>
+    </div>-->
+</div>

@@ -1,0 +1,87 @@
+
+<!--https://www.filepicker.io/dialog/open/?key=AWMZaQ4koQ9ea1GTMTTX6z&id=1350646123581&iframe=false&version=v1&m=images/*&loc=welcome-->
+<!-- https://filepicker_static.s3.amazonaws.com/7e0ab9f/js/app.js?v=7e0ab9f -->
+
+<div class="modal hide" id="filepickerModal" data-ng-controller="FilepickerCtrl">
+  	<div class="modal-header">
+    	<button type="button" class="close" data-dismiss="modal" data-ng-click="filepicker.close()">&times;</button>
+    	<h3><i class="icon-{{services[filepicker.args.service].icon}}"></i>&nbsp;{{services[filepicker.args.service].name}}</h3>
+    </div>
+    <div class="modal-body">
+
+	    <div class="left alert alert-{{alert.class}}" data-ng-repeat="alert in alerts">
+		  	<button class="close" data-dismiss="alert">&times;</button>
+		  	<strong>{{alert.label}}</strong> {{alert.message}}
+		</div>
+
+	    <!-- none -->
+	    <div data-ng-show="filepicker.args.service == ''">
+	        <h1>File Upload</h1>
+	        <p>Choose an upload source from below.</p>
+	    </div>
+
+	    <!-- computer -->
+	    <div class="center" data-ng-show="filepicker.args.service == 'COMPUTER'">
+		    <div id="dropbox" class="thumbnail {{dropClass}}">
+	            <h2>{{dropText}}</h2>
+	        </div>
+	        <br>
+        	or select a file to upload
+        	<button class="btn btn-success" data-ng-click="button.input()"><i class="icon-upload-alt"></i>&nbsp;Upload</button>
+        	<input class="hidden" type="file" id="file_upload" accept="{{filepicker.accept}}" onchange="angular.element(this).scope().setFilesButton(this)" ng-model-instant />
+        	<!--<input class="hidden"type="file" id="file_multi_upload" accept="{{filepicker.args.mimetype}}" onchange="angular.element(this).scope().setFiles(this)" ng-model-instant multiple />-->
+            <br>
+            <div data-ng-repeat="file in files.slice(0)" class="left" data-ng-show="filepicker.args.multi">
+	            <span>{{file.webkitRelativePath || file.name}}</span>
+	            (<span data-ng-switch="file.size > 1024*1024">
+	                <span data-ng-switch-when="true">{{file.size / 1024 / 1024 | number:2}} MB</span>
+	                <span data-ng-switch-default>{{file.size / 1024 | number:2}} kB</span>
+	            </span>)
+	        </div>
+	        <div ng-show="progressVisible">
+		        <div class="progress progress-striped active">
+		            <div class="bar" data-ng-style="{'width': progress+'%'}">{{progress}}%</div>
+		        </div>
+		    </div>
+	    </div>
+
+	    <!-- url -->
+		<div class="center" data-ng-show="filepicker.args.service == 'URL'">
+			<h2>Files from the Web</h2>
+			<form class="form-horizontal" id="urlForm">
+				<fieldset>
+				<div class="control-group">
+		            <label class="control-label" for="urlInput">URL of the file</label>
+		            <div class="controls">
+		              <input type="text" id="urlInput" name="url" style="width:80%" placeholder="e.g. http://example.com/someImage.jpg">
+		              <p class="help-block">Grab any file off the web. Just provide the link.</p>
+		            </div>
+		          </div>
+				</fieldset>
+			</form>
+		</div>
+
+		<!-- ftp -->
+
+		<!-- webDAV -->
+
+		<!-- service,service_name -->
+		<div class="center" data-ng-show="filepicker.args.service == 'service'">
+		 	<h1>Upload files from {{param.attr}}</h1>
+		 	<a class="btn btn-large btn-primary" href="">Connect to {{param.attr}}</a>
+		 	<p style="margin-top: 10px">We'll open a new page to help you connect your {{param.attr}} account</p>
+		</div>
+	</div>
+	<div class="modal-footer">
+	    <!--<div class="pull-right">Powered by <b>Filepicker.io</b></div>-->
+	    <div class="btn-group pull-left">
+	    	<button class="btn" data-toggle="dropdown">Upload From</button>
+	    	<button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+            <ul class="dropdown-menu left">
+			    <li data-ng-repeat="key in filepicker.args.services" data-ng-show="services[key]">
+			    	<a href="" data-ng-click="location(key)"><i class="icon-{{services[key].icon}}"></i>&nbsp;{{services[key].name}}</a>
+			    </li>
+			</ul>
+        </div>
+    </div>
+</div>

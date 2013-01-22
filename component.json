@@ -1,0 +1,15 @@
+{
+	"name":"Angular.io App",
+	"version":"1.0.0",
+	"dependencies":{
+		"html5-boilerplate":null,
+		"html5-mobile-boilerplate":null,
+		"phonegap":null,
+		"angular":null,
+		"angular-ui":null,
+		"angular-strap":null,
+		"font-awesome":null,
+		"bootstrap":null,
+		"jquery":null
+	}
+}

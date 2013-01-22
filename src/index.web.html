@@ -1,0 +1,207 @@
+<!DOCTYPE HTML>
+<html data-ng-app="app" data-ng-controller="AppCtrl"><!-- manifest="manifest.appcache">-->
+<head>
+  	<meta http-equiv="Content-Type" 					content="text/html; charset=UTF-8">
+    <meta name="robots" 								content="index, follow"><!-- index, noindex, follow, nofollow -->
+
+    <!-- !mobile tags -->
+    <!--<meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">-->
+	<meta name="viewport" 								content="user-scalable=no, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-capable" 			content="yes"><!-- Sets whether a web application runs in full-screen mode. -->
+	<!--<meta name="format-detection" 						content="telephone=no">-->
+    <!--<meta name="apple-mobile-web-app-status=bar-style" 	content="black-translucent">--><!-- black, black-translucent, default -->
+    <!-- http://david-smith.org/blog/2012/09/20/implementing-smart-app-banners/ -->
+    <!--<meta name="apple-itunes-app" content="app-id="/>-->
+  	<!-- !end mobile tags -->
+  	
+  	<link rel="icon" 							sizes="32x32" 	href="img/icons/favicon.png">
+  	<!--<link rel="shortcut icon" type="image/x-icon" 				href="img/icons/favicon.ico">-->
+  	<!--<link rel="fluid-icon" 										href="img/icons/fluidicon.png" title="Angular.io">--><!-- http://fluidapp.com/ 512 x 512 -->
+
+    <link rel="apple-touch-icon-precomposed" 	sizes="57x57" 	href="img/icons/Icon.png">
+    <link rel="apple-touch-icon-precomposed" 	sizes="114x114" href="img/icons/Icon@2x.png">
+    <link rel="apple-touch-icon-precomposed" 	sizes="72x72"	href="img/icons/Icon-72.png">
+    <link rel="apple-touch-icon-precomposed" 	sizes="144x144" href="img/icons/Icon-72@2x.png">
+    <!--<meta name="msapplication-TileImage" 		content="img/icons/windows-tile.png">
+    <meta name="msapplication-TileColor" 		content="#ffffff">-->
+
+  	<title data-ng-bind-template="{{i18n.title}}"></title>
+    <meta name="description" 	content="{{i18n.meta_description}}">
+    <meta name="author" 		content="humans.txt">
+
+    <!-- CSS -->
+    
+    <!-- build:css css/app.min.css -->
+    <link rel="stylesheet" href="styles/css/bootstrap.min.css"><!-- generated from styles/less/bootstrap.less -->
+    <link rel="stylesheet" href="components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="styles/css/angular-io.css">
+    
+    <!-- endbuild -->
+    <!--<link rel="stylesheet" href="styles/css/famfamfam-flags.css"><!-- if using i18n.options -->
+    
+    <!--
+    Only use ng-bind in this file only
+    -->
+    
+</head>
+<!-- Break out of iFrame -->
+<body class="ng-cloak" onload="if(this!=top){top.location.href=this.location.href}">
+
+<!-- !Loading Screen -->
+<div id="init-blanket" data-ng-show="loader.count < loader.total">
+	<div class="span4"></div>
+	<div class="well span4">
+	    <h2 data-ng-bind-template="{{i18n.title}}"></h2>
+		<div class="progress progress-striped active">
+	    	<div class="bar" style="width:{{loader.width}}%;"></div>
+	    </div>
+	    <span data-ng-bind-template="{{loader.details}}"></span>
+    </div>
+</div>
+<!-- !End Loading Screen -->
+
+<!-- to be refactored, parent scope holding sliderNav not reachable in ng-include -->
+<div class="btn-group visible-phone nav-slider-button" data-ng-class="{'1':'page-slider-open', '-1':'page-slider-closed'}[sliderNav]">
+	<button class="btn" data-ng-click="sliderNav = sliderNav * -1"><i class="icon-list-ul"></i></button>
+</div>
+
+<div class="nav-slider visible-phone" data-ng-include="'view/nav.slide.html'" data-ng-class="{'1':'nav-slider-open', '-1':'nav-slider-closed'}[sliderNav]" data-ng-click="sliderNav = sliderNav * -1"></div>
+<div class="page" data-ng-class="{'1':'page-slider-open', '-1':'page-slider-closed'}[sliderNav]" data-ng-click="sliderNav = -1">
+
+	<!-- !Top Nav -->
+	<header class="header" data-ng-include="'view/nav.top.html'"></header>
+	<div class="alert-fixed-top">
+		<div class="alert alert-{{alert.class}}" data-ng-repeat="alert in alerts">
+			<div class="container">
+			  	<button class="close" data-dismiss="alert">&times;</button>
+			  	<strong>{{alert.label}}</strong> {{alert.message}}
+			</div>
+		</div>
+	</div>
+	<!-- !End Top Nav -->
+	
+	<!-- !View -->
+	<div class="wrapper" id="top"><!-- wrapper used for sticky footer -->
+		<div class="container" data-ng-view></div>
+		<div class="footer-push"></div><!-- footer-push used for sticky footer -->
+	</div>
+	<!-- !End View -->
+	
+	<footer class="footer" data-ng-include="'view/footer.html'"></footer>
+</div>
+
+<!-- !Plugin Modals & Partials -->
+<div data-ng-include="'view/partials/follow.html'"></div>
+<div data-ng-include="'view/partials/filepicker.html'"></div>
+
+<!-- alertModal -->
+<div class="modal hide fade" id="alertModal">
+  <div class="modal-header" data-ng-hide="modal.hide.header">
+    <button type="button" class="close" data-dismiss="modal" data-ng-hide="modal.hide.close">&times;</button>
+    <h3 data-ng-bind-template="{{modal.header}}"></h3>
+  </div>
+  <div class="modal-body" data-ng-bind-html-unsafe="modal.content"></div>
+  <div class="modal-footer" data-ng-hide="modal.hide.footer">
+  	<button class="btn {{button.class}}" data-dismiss="modal" data-ng-repeat="button in modal.buttons" data-ng-click="button.callback()" data-ng-bind-template="{{button.value}}"></button>
+  </div>
+</div>
+<!-- !End Plugin Modals & Partials -->
+
+<!--
+<script
+src="https://checkout.stripe.com/v2/checkout.js" class="stripe-button"
+data-key="pk_test_czwzkTp2tactuLOEOqbMTRzG"
+data-amount="2000"
+data-name="Demo Site"
+data-description="2 widgets ($20.00)"
+data-image="/128x128.png">
+</script>
+-->
+
+<!--[if lt IE 9]>
+    <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+<![endif]-->
+
+<!-- !Frameworks -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')</script>
+
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular.min.js"></script>
+<script>window.angular || document.write('<script src="js/vendor/angular.min.js"><\/script>')</script>
+<script>
+	// loads i18n files for Angular
+	locale = JSON.parse(localStorage.getItem('locale'));
+	if (locale) document.write('<script src="js/i18n/angular-locale_'+locale+'.js"><\/script>');
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.2/bootstrap.min.js"></script>
+<script>window.$.fn.button || document.write('<script src="js/vendor/bootstrap.min.js"><\/script>')</script>
+
+
+<!-- build:js js/app.min.js -->
+<!-- !Boilerplate -->
+<script src="components/html5-boilerplate/js/plugins.js"></script>
+
+<!-- !Liabraries -->
+<!-- Markdown (user/edit, user/profile, company/edit, company/profile -->
+<script src="scripts/angular-io/plugins/markdown/Markdown.Converter.min.js"></script>
+<script src="scripts/angular-io/plugins/markdown/Markdown.Sanitizer.min.js"></script>
+
+<!-- !Dependencies - to be phased out -->
+<script src="scripts/lib.obj.js"></script>
+<script src="scripts/lib.global.js"></script>
+<script src="scripts/lib.keydb.js"></script>
+
+<!--<script src="scripts/angular-io/app.wrapper.begin.js"></script>-->
+
+<!-- !Modules -->
+<script src="scripts/angular-io/directive/htmlExtend.js"></script>
+<script src="scripts/angular-io/directive/inputMask.js"></script>
+<script src="scripts/angular-io/directive/markdown.js"></script>
+<script src="scripts/angular-io/filter/format.js"></script>
+<script src="scripts/angular-io/factory/follow.js"></script>
+<script src="scripts/angular-io/factory/filepicker.js"></script>
+<script src="scripts/angular-io/factory/avatarpicker.js"></script>
+<script src="scripts/angular-io/factory/accessibility.js"></script>
+
+<!-- !Angular.io Controllers -->
+<script src="scripts/angular-io/controller/sign.js"></script>
+<script src="scripts/angular-io/controller/page.js"></script>
+<script src="scripts/angular-io/controller/onboard.js"></script>
+<script src="scripts/angular-io/controller/confirm.js"></script>
+<script src="scripts/angular-io/controller/reset.js"></script>
+<script src="scripts/angular-io/controller/user.js"></script>
+<script src="scripts/angular-io/controller/password.js"></script>
+<script src="scripts/angular-io/controller/company.js"></script>
+
+<!-- Angular.io Plugin Controllers -->
+<script src="scripts/angular-io/plugins/contact/controller.contact.js"></script>
+<script src="scripts/angular-io/plugins/follow/controller.follow.js"></script>
+<script src="scripts/angular-io/plugins/filepicker/controller.filepicker.js"></script>
+<!-- Browser (page/sign)-->
+<!--
+<script src="scripts/angular-io/plugins/browser/inc.detect.js"></script>
+<script src="scripts/angular-io/plugins/browser/class.plugin-detect.js"></script>
+<script src="scripts/angular-io/plugins/browser/class.browser-detect.js"></script>
+-->
+
+<!-- init -->
+<script src="scripts/angular-io/app.rootScope.js"></script>
+<script src="scripts/app.settings.js"></script><!-- this is where you put your angular.io settings -->
+<script src="scripts/app.route.js"></script><!-- this is where you put your routing -->
+<script src="scripts/app.module.js"></script><!-- this is where you pick your angular.io modules -->
+
+<!-- !App Controllers -->
+<!-- *************************************************** -->
+<script src="scripts/controller.app.js"></script><!-- all controller must be after this.  use app.controller() -->
+<script src="scripts/controller.dashboard.js"></script>
+
+<!-- *************************************************** -->
+<!-- !End App Controllers -->
+
+
+<!-- endbuild -->
+
+</body>
+</html>

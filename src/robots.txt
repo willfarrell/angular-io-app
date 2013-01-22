@@ -1,0 +1,8 @@
+# robotstxt.org/
+
+User-Agent: *
+Allow: *
+Disallow: /php/
+Sitemap: /sitemap.txt
+Sitemap: /sitemap.xml
+Sitemap: /sitemap.xml.gz

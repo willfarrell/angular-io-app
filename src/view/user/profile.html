@@ -1,0 +1,32 @@
+<div data-ng-controller="UserCtrl">
+<div class="row-fluid">
+    <div class="span2">
+    	<img data-ng-src="/img/user/{{user.user_ID}}.png" class="img-polaroid" style="width:200px; height:200px;" />
+    </div>
+    <div class="span10">
+    	<!-- Follow Button -->
+    	<div class="pull-right" data-ng-show="session.user_ID != user.user_ID" data-ng-init="follow.loadFollow('user', user.user_ID)">
+			<div data-ng-include="'follow-global-button-user'"></div>
+		</div>
+		
+    	<h2 data-ng-show="user.user_name">{{user.user_name}}</h2>
+    	<h2 data-ng-hide="user.user_name">{{user.user_name_first}} {{user.user_name_last}}</h2>
+    	<div data-ng-bind-html-unsafe="compileMarkdown(user.user_details)"></div>
+    	
+    	<div data-ng-controller="FollowCtrl">
+		    <ul class="thumbnails well" data-ng-init="loadFollowing(user.user_ID)">
+		    	<li class="img-polaroid" data-ng-repeat="f in following">
+		    		<a href="#/user/profile/{{f.ID}}">
+		    			<img data-ng-src="/img/user/{{f.ID}}.png" style="width:50px;height:50px" rel="tooltip" title="{{f.name}}" />
+		    		</a>
+		    	</li>
+		    </ul>
+	    </div>
+    </div>
+    
+</div>
+
+
+
+</div>
+

@@ -1,0 +1,27 @@
+<div class="row-fluid" data-ng-controller="InviteCtrl">
+	<div class="span6 offset3 well center">
+		<legend>
+			Spread the Word...
+		</legend>
+
+        <p>Share this link with friends and coworkers</p>
+        <div class="input-append">
+            <input type="text" class="" value="{{i18n.domain}}/#/?ref={{session.ref}}" />
+            <span class="add-on" onclick="clipboard('{{i18n.domain}}/#/?ref={{session.ref}}')"><i class="icon-copy"></i></span>
+        </div>
+        <div>
+            <a class="btn" href="mailto:?subject={{i18n.invite_mail_subject}}&body={{i18n.invite_mail_body}} {{i18n.domain}}/#/?ref={{session.ref}}" target="_blank"><i class="icon-envelope"></i>&nbsp;Share via Email</a>
+            <a class="btn" href="https://twitter.com/intent/tweet?url={{i18n.domain}}/%23/?ref={{session.ref}}&text={{i18n.invite_twitter_tweet}}" target="_blank">
+              	<i class="icon-twitter"></i>&nbsp;Share via Twitter
+            </a>
+        </div>
+	</div>
+</div>
+
+<script>
+InviteCtrl.$inject = ['$scope'];
+function InviteCtrl($scope) {
+	console.log('InviteCtrl');
+	$scope.require_signin();
+}
+</script>

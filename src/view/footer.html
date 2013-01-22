@@ -1,0 +1,63 @@
+<div class="container">
+	<div class="row">
+		<div class="span4">
+			<h3>{{i18n.footer_col1_h3}}</h3>
+			<p>{{i18n.footer_col1_text}}</p>
+			<!--<p>Stay in touch on social networks</p>
+			<a href="#" title="{{i18n.footer_facebook_title}}Follow us on Facebook" class="icon-facebook"></a>
+			<a href="#" title="{{i18n.footer_twitter_title}}Follow us on Twitter" class="icon-twitter"></a>
+			<a href="#" title="{{i18n.footer_google_title}}Follow us on Google Plus" class="icon-google-plus"></a>
+			<a href="#" title="{{i18n.footer_github_title}}Follow us on Github" class="icon-github"></a>-->
+			
+		</div>
+		<div class="span4">
+			<h3>{{i18n.footer_col2_h3}}</h3>
+			<ul>
+				<li><a href="#/tos" title="{{i18n.footer_tos_title}}">{{i18n.footer_tos_value}}</a></li>
+				<li><a href="#/privacy" title="{{i18n.footer_privacy_title}}">{{i18n.footer_privacy_value}}</a></li>
+				<li><a href="#/security" title="{{i18n.footer_security_title}}">{{i18n.footer_security_value}}</a></li>
+				<li><a href="#/contact" title="{{i18n.footer_contact_title}}">{{i18n.footer_contact_value}}</a></li>
+			</ul>
+		</div>
+		<div class="span4">
+			<h3 class="pull-right">&nbsp;
+			
+				<div class="btn-group" data-ng-show="settings.i18n.options.length > 1">
+					<button class="btn dropdown-toggle" data-toggle="dropdown"><!--<i class="flag-{{country_code}}"></i>&nbsp;-->{{json.languages[locale]}}</button>
+				    <ul class="dropdown-menu">
+				    	<li data-ng-repeat="locale in settings.i18n.options">
+			        		<a href="" data-ng-click="changeLocale(locale)"><!--<i class="flag-{{locale.substr(3,2)}}"></i>&nbsp;-->{{json.languages[locale]}}</a>
+			        	</li>
+			        </ul>
+				</div>
+				<div class="btn-group">
+					<button class="btn" data-ng-click="accessibility.toggle()">
+					    <i class="icon-eye-close" data-ng-hide="accessibility.settings.accessibility"></i>
+					    <i class="icon-eye-open" data-ng-show="accessibility.settings.accessibility"></i>
+				    </button>
+				    <!--<button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+				    <ul class="dropdown-menu center">
+				    	<li style="zoom:1; 	MozTransform:scale(0.010)"><a href="" data-ng-click="accessibility.zoom(1)">Default</a></li>
+				    	<li style="zoom:1.2;MozTransform:scale(0.012)"><a href="" data-ng-click="accessibility.zoom(1.2)">Large</a></li>
+				    	<li style="zoom:1.4;MozTransform:scale(0.014)"><a href="" data-ng-click="accessibility.zoom(1.4)">X-Large</a></li>
+			        </ul>-->
+				</div>
+			</h3>
+			<!--<a href="#" title="{{i18n.footer_facebook_title}}Follow us on Facebook" class="btn icon-facebook icon-2x"></a>
+			<a href="#" title="{{i18n.footer_twitter_title}}Follow us on Twitter" class="btn icon-twitter icon-2x"></a>
+			<a href="#" title="{{i18n.footer_google_title}}Follow us on Google Plus" class="btn icon-google-plus icon-2x"></a>
+			<a href="#" title="{{i18n.footer_github_title}}Follow us on Github" class="btn icon-github icon-2x"></a>-->
+		</div>
+	</div> <!-- /row -->
+	<div class="row">
+		<div class="span4">
+			<p>Built By <a href="http://farrelllabs.com" target="_blank">Farrell Labs</a>&nbsp;and&nbsp;<a href="https://twitter.com/#/willfarrell" target="_blank">@willfarrell</a></p>
+		</div>
+		<div class="span4">
+			<p>&copy; 2012 {{i18n.title}}</p>
+		</div>
+		<div class="span4">
+			<p>v{{version}}<!--<a href="#top">Back to top</a>--></p>
+		</div>
+	</div> <!-- end .row -->
+</div>

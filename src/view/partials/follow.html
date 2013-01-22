@@ -1,0 +1,104 @@
+<!-- Requires io.factory.follow -->
+<!-- global requires the passing of type -->
+<script type="text/ng-template" id="follow-global-groups">
+	<span class="label" data-ng-repeat="group_ID in follow.f.groups" data-ng-show="group_ID" style="background-color:#{{follow.db.groups[group_ID].color}}">{{follow.groups[group_ID].group_name}}</span>
+</script>
+
+<script type="text/ng-template" id="follow-global-button-user">
+	<div class="btn-group" data-ng-hide="follow.f.following">
+	  	<button class="btn btn-primary" data-ng-click="follow.addFollow('user', follow.f.ID, 0)">
+	    	<i class="icon-pushpin"></i>&nbsp;Follow
+	    </button>
+	</div>
+	<div class="btn-group" data-ng-show="follow.f.following">
+	  	<button class="btn" data-toggle="dropdown"><i class="icon-pushpin"></i>&nbsp;Following</button>
+	  	<button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+	    <ul class="dropdown-menu">
+		    <li data-ng-repeat="group in follow.db.groups" data-ng-show="group.group_ID">
+		    	<a data-ng-click="follow.addFollow('user', follow.f.ID, group.group_ID);" data-ng-hide="inArray(group.group_ID, follow.f.groups)">
+		    		<i class="icon-blank"></i>&nbsp;{{group.group_name}}
+		    	</a>
+		    	<a data-ng-click="follow.deleteFollow('user', follow.f.ID, group.group_ID);" data-ng-show="inArray(group.group_ID, follow.f.groups)">
+		    		<i class="icon-ok"></i>&nbsp;{{group.group_name}}
+		    	</a>
+		    </li>
+		    <li class="divider" data-ng-show="objectLength(follow.db.groups)"></li>
+		    <li><a data-ng-click="follow.deleteFollow('user', follow.f.ID)"><i class="icon-blank"></i>&nbsp;Unfollow</a></li>
+	    </ul>
+	</div>
+</script>
+
+<!-- Requires io.controller.follow -->
+<script type="text/ng-template" id="follow-groups">
+	<span class="label" data-ng-repeat="group_ID in f.groups" data-ng-show="group_ID" style="background-color:#{{follow.db.groups[group_ID].color}}">{{follow.groups[group_ID].group_name}}</span>
+</script>
+
+<script type="text/ng-template" id="follow-button-user">
+	<div class="btn-group" data-ng-hide="f.following">
+	  	<button class="btn btn-primary" data-ng-click="addFollow(f.ID, 0)">
+	    	<i class="icon-pushpin"></i>&nbsp;Follow
+	    </button>
+	</div>
+	<div class="btn-group" data-ng-show="f.following">
+	  	<button class="btn" data-toggle="dropdown"><i class="icon-pushpin"></i>&nbsp;Following</button>
+	  	<button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+	    <ul class="dropdown-menu">
+		    <li data-ng-repeat="group in follow.db.groups" data-ng-show="group.group_ID">
+		    	<a data-ng-click="addFollow(f.ID, group.group_ID);" data-ng-hide="inArray(group.group_ID, f.groups)">
+		    		<i class="icon-blank"></i>&nbsp;{{group.group_name}}
+		    	</a>
+		    	<a data-ng-click="deleteFollow(f.ID, group.group_ID);" data-ng-show="inArray(group.group_ID, f.groups)">
+		    		<i class="icon-ok"></i>&nbsp;{{group.group_name}}
+		    	</a>
+		    </li>
+		    <li class="divider" data-ng-show="objectLength(follow.groups)"></li>
+		    <li><a data-ng-click="deleteFollow(f.ID)"><i class="icon-blank"></i>&nbsp;Unfollow</a></li>
+	    </ul>
+	</div>
+</script>
+
+
+<!--
+<script type="text/ng-template" id="follow-invite-todo">
+	<h2>Invite Followers To Event/Group/Object Example</h2>
+    <div data-ng-controller="FollowCtrl">
+    	<form class="form-search">
+	    	<input type="text" class="input-medium search-query" data-ng-model="search_keyword" data-ng-change="loadFollowing(0,search_keyword)" data-ng-init="loadFollowing(0,search_keyword)" placeholder="Search" />
+    	</form><br>
+	    <ul class="thumbnails">
+	    	<li data-ng-repeat="f in following" class="img-polaroid" data-ng-click="inviteQue(EVENT_ID, f.ID)">
+	    		<img data-ng-src="/img/user/{{f.ID}}.png" style="width:50px;height:50px" /><br>
+	    		<p>{{f.name}}</p>
+	    		<!--<div data-ng-include="'follow-button-user'"></div>--
+	    		<button class="btn btn-primary">Invite</button>
+	    	</li>
+	    </ul>
+	    <p data-ng-hide="objectLength(following)">You're currently do not have any followers.</p>
+    </div>
+</script>
+
+<!-- Requires parent FollowCtrl --
+<script type="text/ng-template" id="follow-button-company">
+	<div class="btn-group" data-ng-hide="f.following">
+	  	<button class="btn btn-primary" data-ng-click="addFollow(f.ID, 'company', 0); f.following = !f.following">
+	    	<i class="icon-pushpin"></i>&nbsp;Follow
+	    </button>
+	</div>
+	<div class="btn-group" data-ng-show="f.following">
+	  	<button class="btn" data-toggle="dropdown"><i class="icon-pushpin"></i>&nbsp;Following</button>
+	  	<button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+	    <ul class="dropdown-menu">
+		    <li data-ng-repeat="group in follow.groups" data-ng-show="group.group_ID">
+		    	<a data-ng-click="addFollow(f.ID, 'company', group.group_ID);" data-ng-hide="inArray(group.group_ID, f.groups)">
+		    		<i class="icon-blank"></i>&nbsp;{{group.group_name}}
+		    	</a>
+		    	<a data-ng-click="deleteFollow(f.ID, 'company', group.group_ID);" data-ng-show="inArray(group.group_ID, f.groups)">
+		    		<i class="icon-ok"></i>&nbsp;{{group.group_name}}
+		    	</a>
+		    </li>
+		    <li class="divider" data-ng-show="objectLength(follow.groups)"></li>
+		    <li><a data-ng-click="deleteFollow(f.ID, 'company'); f.following = !f.following"><i class="icon-blank"></i>&nbsp;Unfollow</a></li>
+	    </ul>
+	</div>
+</script>
+-->

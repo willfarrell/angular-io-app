@@ -1,0 +1,96 @@
+
+<div class="span4"></div>
+<div class="span4" data-ng-show="!session.user_ID">
+
+<!-- Feature Check - Future --
+<div class="alert alert-warning" data-ng-show="settings.browser.html5.localStorage">
+  <strong>Warning!</strong> This app requires localStorage to be supported by your browser. Parts of the app may not work as expected.
+</div>
+<!-- End Feature Check -->
+
+<div class="pull-center" data-ng-show="action == 'in'">
+	<form class="well" name="signinForm">
+	    <legend>{{i18n.sign_in_legend}}</legend>
+	
+	    <!--<div class="control-group center"><img data-ng-src="img/user/{{session.user_ID}}.png" class="img-polaroid pull-center" width="100" height="100" /></div>-->
+	    
+	    <div class="control-group" data-ng-class="{error: (errors.signin)}">
+	        <input type="text" name="email" class="span" placeholder="{{i18n.sign_in_placeholder}}" data-ng-model="signin.email" required>
+	    </div>
+	    <div class="control-group" data-ng-class="{error: (errors.signin)}">
+	        <input type="password" name="password" class="span" placeholder="{{i18n.sign_placeholder_password}}" data-ng-model="signin.password" required>
+	    	<span class="help-block" data-ng-show="errors.signin">{{errors.signin.message}}</span>
+	    </div>
+	    <div class="control-group">
+		    <label class="checkbox">
+		        <input type="checkbox" data-ng-model="signin.remember"> {{i18n.sign_in_label_remember}}
+		    </label>
+	    </div>
+	    <button class="btn btn-success" data-ng-click="account_signin()" data-ng-disabled="signinForm.$invalid">{{i18n.sign_in_button}}</button>
+	
+	</form>
+	
+	<a href="" data-ng-click="action = 'up'">{{i18n.sign_up_nav_button}}</a>
+	<a href="" class="pull-right" data-ng-click="action = 'reset'">{{i18n.sign_reset_nav_button}}</a>
+
+</div>
+
+<div class="pull-center" data-ng-show="action == 'reset'">
+	<form class="well" name="resetForm">
+	    <legend>{{i18n.sign_reset_legend}}</legend>
+	    <div class="control-group" data-ng-class="{error: (errors.email)}">
+		    <input type="text" name="email" class="span" placeholder="{{i18n.sign_placeholder_email}}" data-ng-model="signin.email" required>
+		    <span class="error" data-ng-show="resetForm.email.$error.email">Not valid email</span>
+	    </div>
+	    <!-- CAPTCHA HERE? -->
+	    <button class="btn btn-primary" data-ng-click="reset_password()" data-ng-disabled="resetForm.$invalid">{{i18n.sign_reset_button}}</button>
+	    
+	</form>
+	<a href="" data-ng-click="action = 'in'">{{i18n.sign_in_nav_button}}</a>
+</div>
+
+<div class="pull-center" data-ng-show="action == 'up'">
+	<form class="well" name="signupForm">
+	    <legend>{{i18n.sign_up_legend}}</legend>
+	    <div class="control-group" data-ng-class="{error: (errors.email)}">
+	    	<input type="email" name="email" class="span" placeholder="{{i18n.sign_placeholder_email}}" data-ng-model="signup.email" required>
+	    	<!--<span class="error" data-ng-show="signinForm.email.$error.required">Email is required</span>-->
+	    	<span class="help-block" data-ng-show="signupForm.email.$error.email">Not valid email</span>
+	    	<span class="help-block" data-ng-show="errors.email">{{errors.email.message}}</span>
+	    </div>
+	    
+	    <div class="control-group" data-ng-class="{error: (errors.password)}">
+	        <input type="text" name="password" class="span" placeholder="{{i18n.sign_placeholder_password}}" data-ng-model="signup.password" data-ng-change="validate.password(signupForm.password, signup.password, '', settings.password)"
+	        onfocus="this.type = 'text'" onblur="this.type = 'password'" required>
+	        <!--<span class="help-block" data-ng-show="signinForm.password.$error.required">Password is required</span>-->
+	        <span class="help-block" data-ng-show="signupForm.password.$error.minlength">Password too short, must be {{settings.password.min_length}} or more</span>
+	        <span class="help-block" data-ng-show="signupForm.password.$error.lower">Password needs at least one lower case letter</span>
+	        <span class="help-block" data-ng-show="signupForm.password.$error.upper">Password needs at least one upper case letter</span>
+	        <span class="help-block" data-ng-show="signupForm.password.$error.number">Password needs at least one number</span>
+	        <span class="help-block" data-ng-show="signupForm.password.$error.special">Password needs at least one special character (!"£$%&...)</span>
+	        <span class="help-block" data-ng-show="signupForm.password.$error.identical">Password cannot have more than two identical characters</span>
+	        <span class="help-block" data-ng-show="errors.password">{{errors.password.message}}</span>
+	    </div>
+	    
+	    <button class="btn btn-primary" data-ng-click="account_signup()" data-ng-disabled="signupForm.$invalid || signupForm.password.$invalid">{{i18n.sign_up_button}}</button>
+	</form>
+	<a href="" data-ng-click="action = 'in'">{{i18n.sign_in_nav_button}}</a>
+</div>
+
+
+<!-- Security Check --
+<div class="alert alert-warning" data-ng-hide="settings.browser.latest">
+  <strong>Warning!</strong> We've detected that you are using {{settings.browser.name}} {{settings.browser.version}}. You may be susceptible to security vulnerabilities. We recommend that you upgrade to the latest version before signing in.
+</div>
+
+<div class="alert alert-warning" data-ng-show="settings.browser.plugins.flash">
+  <strong>Warning!</strong> Flash is known to have vulnerabilities. We recommend that you disable it before signing in.
+</div>
+
+<div class="alert alert-warning" data-ng-show="settings.browser.plugins.java">
+  <strong>Warning!</strong> Java is known to have vulnerabilities. We recommend that you disable it before signing in.
+</div>
+<!-- End Security Check -->
+
+
+</div>

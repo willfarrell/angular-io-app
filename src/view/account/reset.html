@@ -1,0 +1,34 @@
+<div data-ng-controller="ResetCtrl">
+
+<div class="alert alert-{{alert.class}}" data-ng-repeat="alert in alerts">
+  <button class="close" data-dismiss="alert">&times;</button>
+  <strong>{{alert.label}}</strong> {{alert.message}}
+</div>
+
+<form name="verifyUserForm" class="form-vertical" data-ng-show="state.verify">
+	<legend>Verify Identity<button class="btn btn-primary pull-right" data-ng-click="verify()" data-ng-disabled="verifyUserForm.$invalid">Save</button></legend>
+
+	Coming Soon: RSA SecureID, SMS verification code, secret answer and <!--credit card numbers-->. If using a mobile -> SMS code is not allowed.
+</form>
+
+<form name="changePasswordForm" class="form-vertical" data-ng-show="state.reset">
+	<legend>Change Password<button class="btn btn-primary pull-right" data-ng-click="reset()" data-ng-disabled="changePasswordForm.$invalid">Save</button></legend>
+
+    <div class="control-group {{errors.password.class}}">
+        <input type="password" name="password" class="input-large" placeholder="New Password" data-ng-model="password.new_password" data-ng-change="validate.password(changePasswordForm.password, password.new_password, settings.password)"
+        	required>
+        <!--<span class="help-block" data-ng-show="signinForm.password.$error.required">Password is required</span>-->
+        <span class="help-block" data-ng-show="changePasswordForm.password.$error.minlength">Password too short, must be {{settings.password.min_length}} or more</span>
+        <span class="help-block" data-ng-show="changePasswordForm.password.$error.upper">Password needs at least one lower case letter</span>
+        <span class="help-block" data-ng-show="changePasswordForm.password.$error.lower">Password needs at least one upper case letter</span>
+        <span class="help-block" data-ng-show="changePasswordForm.password.$error.number">Password needs at least one number</span>
+        <span class="help-block" data-ng-show="changePasswordForm.password.$error.special">Password needs an special character (!"£$%&...)</span>
+        <span class="help-block" data-ng-show="changePasswordForm.password.$error.identical">Password cannot have more than two identical characters</span>
+        <span class="help-block" data-ng-show="errors.password">{{errors.password.message}}</span>
+    </div>
+</form>
+
+<a class="btn btn-primary" href="#/app" data-ng-show="state.signin">Sign In &raquo;</a>
+
+</div>
+<script src="js/angular-io/controller/reset.js"></script>

@@ -1,0 +1,41 @@
+
+<!-- User Profile -->
+<div class="row-fluid" data-ng-controller="ConfirmCtrl">
+	<div class="span6 offset3 well" data-ng-show="session.email_confirm">
+		<legend>
+    		Email Confirmed
+    		<div class="btn-group pull-right">
+				<button class="btn" data-ng-disabled="!session.email_confirm" data-ng-click="button.skip()">Next &raquo;</button>
+			</div>
+    	</legend>
+	</div>
+	
+	<div class="span6 offset3 well" data-ng-hide="session.email_confirm">
+		<legend>
+    		Confirm Email
+    		<div class="btn-group pull-right">
+				<button class="btn btn-primary" data-ng-click="resend()"><i class="icon-envelope"></i>&nbsp;Resend</button>
+			</div>
+    	</legend>
+		
+		<p>Please check your email inbox and click the confirm link or paste the confirmation code below.</p>
+		
+		<form name="confirmCodeForm" class="center">
+			<div class="control-group {{errors.confirm_code.class}}">
+	          	<!--<label class="control-label">Confirmation Code</label>-->
+	          	<div class="controls">
+	          		<div class="input-append">
+		                <input type="text" class="" name="confirm_code" placeholder="Confirmation Code" data-ng-model="confirm_code" required><button class="btn btn-primary" data-ng-click="check(confirm_code)">Confirm</button>
+		            </div>
+		            
+		            <!--<span class="help-block" data-ng-show="confirmCodeForm.confirm_code.$error.required">Required</span>-->
+		            <span class="help-block" data-ng-show="errors.confirm_code">{{errors.confirm_code.message}}</span>
+	            </div>
+	        </div>
+			
+		</form>
+		
+	</div>
+	
+	
+</div>

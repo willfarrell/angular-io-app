@@ -1,0 +1,10 @@
+#!/bin/sh
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+if [ $1 ]; then
+	sh build-lib/build-$1
+else
+	sh build-lib/build
+fi
