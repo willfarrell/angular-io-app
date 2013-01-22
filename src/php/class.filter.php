@@ -186,7 +186,7 @@ class Filter {
   		$alerts = array();
   		foreach ($this->_field_data as $key => $value) {
 	  		//if ($value['error']) $errors[$key] = $value['error'];
-	  		if ($value['error']) $alerts[$key] = array('class' => $class, 'label' => $value['label'], 'message' => $value['error']);
+	  		if ($value['error']) $alerts[$key] = array('label' => $value['label'], 'message' => $value['error']);
   		}
   		
 	  	return $alerts;
