@@ -4,8 +4,7 @@
 	"title": "Angular.io",
 	"meta_description": "Angular.io - AngularJS Web App Framework",
 	
-	"__anrular_io_replacements__":"",
-	"sign_in_placeholder":"Email or Username",
+	"__angular_io_replacements__":"",
 	
 	"__nav__":"",
 	"nav_sign_in":"Sign In",

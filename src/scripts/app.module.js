@@ -15,7 +15,7 @@ angular.module('io.controllers', [
 ]);
 angular.module('io.directives', ['io.config', 'io.directive.htmlExtend', 'io.directive.markdown']);
 angular.module('io.filters', ['io.config', 'io.filter.format']);
-angular.module('io.factories', ['io.config', 'io.factory.accessibility', 'io.factory.avatarpicker']);
+angular.module('io.factories', ['io.config', 'io.factory.accessibility']);
 angular.module('io.init', ['io.config', 'io.init.settings', 'io.init.rootScope']);
 angular.module('io', ['io.directives', 'io.filters', 'io.factories', 'io.init', 'io.config']);
 

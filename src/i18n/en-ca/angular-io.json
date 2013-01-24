@@ -18,6 +18,13 @@
 	"alert_XXX_label":"",
 	"alert_XXX_message":"",
 	
+	"alert_offline_":"",
+	"alert_online_offline_label":"Offline",
+	"alert_online_offline_message":"The server seems to be not responding or you're currently offline.  Please try again in a few minutes.",
+	"alert_offline_online_label":"Online",
+	"alert_offline_online_message":"Welcome back to the online world.  We saved your requests while you were offline and are executing them as you read this.",
+	
+	
 	"sign_":"",
 	"sign_placeholder_email":"Email",
 	"sign_placeholder_password":"Password",

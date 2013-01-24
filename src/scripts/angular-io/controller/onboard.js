@@ -1,5 +1,6 @@
 //angular.module('io.controller.onboard', [])
 //.controller('OnboardCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
+OnboardCtrl.$inject = ['$scope', '$http', '$routeParams'];
 function OnboardCtrl($scope, $http, $routeParams) {
 	console.log('OnboardCtrl ('+$scope.$id+') page:'+$routeParams.page);
 	$scope.errors = {};

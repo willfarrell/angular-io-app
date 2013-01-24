@@ -2,6 +2,7 @@
 //.controller('UserCtrl',
 //['$scope', '$http', '$routeParams',
 //function($scope, $http, $routeParams) {
+UserCtrl.$inject = ['$scope', '$http', '$routeParams'];
 function UserCtrl($scope, $http, $routeParams) {
 	console.log('UserCtrl ('+$scope.$id+')');
 	$routeParams.profile_ID || ($routeParams.profile_ID = 0);

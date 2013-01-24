@@ -78,7 +78,16 @@ class Account {
 
 		return $return;
 	}
-
+	
+	/**
+     * 
+     * Check if a user_name is unique
+     *
+     * @param string $value query string
+     *
+     * @return true
+     * @aceess puiblic
+     */
 	function get_unique($value=NULL) {	// $type=NULL,
 		// for user_name only
 

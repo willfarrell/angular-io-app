@@ -6,30 +6,40 @@ require_once 'php/api.img.php';
 
 
 class Filepicker {
-	private $profile = array(
-		'ext' => 'png',
-		'width' => '200',
-		'height' => '200',
+	
+	private $action_default = "file";
+	private $actions = array(
+		'file' => array(
+			// list of valid types, ex. array("image/*", "text/*") or array("*/*") for any
+			"types" => '*/*',
+			// list of valid extensions, ex. array("jpeg", "xml", "bmp") or array() for any
+			"extensions" => array(),
+			// max file size in bytes (1024 x 1024 = 1048576 = MB)
+			"size" => 10485760,
+		),
+		'profile_user' => array(
+			"types" => array('image/*'),
+			"extensions" => array("jpg", "jpeg", "gif", "bmp", "png"),
+			"size" => 2097152,	// 2 MB
+			"path" => "img/user",
+		),
+		'profile_company' => array(
+			"types" => array('image/*'),
+			"extensions" => array("jpg", "jpeg", "gif", "bmp", "png"),
+			"size" => 2097152,	// 2 MB
+			"path" => "img/company",
+		),
+		
 	);
-	private $img_allowed = array(
-		// list of valid types, ex. array("image/*", "text/*") or array("*/*") for any
-		"types" => array('image/*'),
-		// list of valid extensions, ex. array("jpeg", "xml", "bmp") or array() for any
-		"extensions" => array("jpg", "jpeg", "gif", "bmp", "png"),
-		// max file size in bytes (1024 x 1024 = 1048576 = MB)
-		"size" => 2097152,	// 2 MB
-	);
-
-	private $file_allowed = array(
-		"types" => '*/*',
-		"extensions" => array(),
-		"size" => 10485760,
-	);
-
+	
 	function __construct() {
 		global $filter;
 		$this->filter = $filter;
+		
+		// dev
 		$this->timer = new Timers;
+		
+		ini_set('memory_limit', '-1');
 	}
 
 	function __destruct() {
@@ -41,91 +51,79 @@ class Filepicker {
 
 	}
 
-	function get_fetch() {
-
-	}
-
 	// upload from computer
-	function post_upload($action = '', $request_data=NULL) {
-		ini_set('memory_limit', '-1');
-
+	function post_computer($action = '', $request_data=NULL) {
+		if (!$action) $action = $this->action_default;
+		
+		$uploader = new FileUploader($this->actions[$action]);
 		switch ($action) {
-			case 'profile_user':	// 200 x 100
-				$uploader = new FileUploader($this->img_allowed);
-				$upload_name = md5(USER_ID.$uploader->getFileName().$_SERVER['REQUEST_TIME']);
-				$uploader->setName($upload_name);
-
-				$file_dir = getcwd().'/img/user/';
-				$file_ext = $uploader->getFileExt();
-
-				$result = $uploader->handleUpload($file_dir, TRUE);
-
-				$from = $file_dir.$upload_name.'.'.$file_ext;
-				$to   = $file_dir.USER_ID.'.'.$this->profile['ext'];
-
-				$img = new Img;
-				$image = $img->loadImage($from);
-				$image = $img->convert($image, $from, $to, TRUE, TRUE);
-				//$image = $img->resize($image, $this->profile['width'], $this->profile['height']);
-				$img->saveImage($image, $to);
-
+			case 'profile_user':
+				$uploader->setName(USER_ID);
 				break;
-			case 'profile_company':	// 200 x 100
-				$uploader = new FileUploader($this->img_allowed);
-				$upload_name = md5(USER_ID.$uploader->getFileName().$_SERVER['REQUEST_TIME']);
-				$uploader->setName($upload_name);
-
-				$file_dir = getcwd().'/img/company/';
-				$file_name = COMPANY_ID;
-				$file_ext = $uploader->getFileExt();
-
-				$result = $uploader->handleUpload($file_dir, TRUE);
-
-				$from = $file_dir.$upload_name.'.'.$file_ext;
-				$to   = $file_dir.$file_name.'.'.$this->profile['ext'];
-
-				$img = new Img;
-				$image = $img->loadImage($from);
-				$image = $img->convert($image, $from, $to, TRUE, TRUE);
-				//$image = $img->resize($image, $this->profile['width'], $this->profile['height']);
-				$img->saveImage($image, $to);
-
+			case 'profile_company':
+				$uploader->setName(COMPANY_ID);
 				break;
-			/*case 'file_user':
-				$uploader = new FileUploader($this->file_allowed);
-				$file_hash = sha1($uploader->getFileName());
-				$file = array(
-					"file_hash" => $file_hash,
-					"tender_ID" => $_GET['id'],
-					"user_ID" 	=> $session->cookie['user_ID'],
-					"file_name" => $uploader->getFileName(),
-					"file_ext" 	=> $uploader->getFileExt(),
-					"file_timestamp" => $_SERVER['REQUEST_TIME']
-				);
-				//$uploader->setName($file_hash);
-				$result = $uploader->handleUpload(getcwd().'/files/tender/'.$_GET['id'].'/', TRUE);
-
-				// save to DB
-				$result['file_ID'] = $database->insert('tender_files', $file);
-
-				break;*/
 			default:
-				$uploader = new FileUploader($this->file_allowed);
-				$result = $uploader->handleUpload(getcwd().'/files/', TRUE);
 				break;
 		}
-
+		$result = $uploader->handleUpload(getcwd().'/'.$this->actions[$action]['path'].'/', TRUE);
 		return $result;
 	}
-
-	// upload from FTP, FTP (TLS), SFTP, webDAV
-	function post_server($request_data=NULL) {
-
+	
+	// files paths for type
+	function post_get($type = 'URL', $request_data=NULL) {
+		$return = array();
+		/*
+		$request_data
+		- param - ftp url, webdav url
+		- user
+		- pass
+		- path
+		*/
+		
+		switch ($type) {
+			case 'profile_user':
+				$server = new FTP;
+				break;
+			default:
+				$server = NULL;
+				break;
+		}
+		
+		if (!$server) {
+			// return error
+		}
+		
+		if ($request_data['user'] && $request_data['pass']) {
+			$errors = $server->connect($request_data['user'], $request_data['pass']);
+			if (!$errors) {
+				// return error
+			}
+		}
+		
+		$return = $server->fileList($request_data['path']);
+		
+		return $return;
+	}
+	
+	// upload from URL, FTP, FTP (TLS), SFTP, webDAV
+	function post_server($action = '', $request_data=NULL) {
+		if (!$action) $action = $this->action_default;
+		
+		/*
+		$request_data
+		- user
+		- pass
+		- path
+		*/
+		
 	}
 
 	// upload from Dropbox, Evernote, etc
-	function post_service($request_data=NULL) {
-
+	function post_service($action = '', $request_data=NULL) {
+		if (!$action) $action = $this->action_default;
+		
+		// load 3rd pary class, run like _server
 	}
 
 
@@ -211,7 +209,11 @@ class UploadedFileForm {
     }
 
     function getName() {
-        return preg_replace("/([^\w-\.]*)/", "", $_FILES['file']['name']);
+        if ($_FILES['file']['name'] == 'blob') {
+	        return str_replace("/", ".", $this->getType());
+        } else {
+        	return preg_replace("/([^\w-\.]*)/", "", $_FILES['file']['name']);
+        }
     }
 
     function getSize() {
@@ -231,7 +233,7 @@ class FileUploader {
 
     private $file;
     private $file_name = "";
-
+    
     function __construct(array $allowed = array("types" => array("*/*"),"extensions" => array(),"size" => 1048576)){
         //$extensions = array_map("strtolower", $allowedExtensions);
         $this->types = $allowed['types'];

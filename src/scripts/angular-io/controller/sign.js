@@ -1,8 +1,7 @@
 //angular.module('io.controller.sign', [])
-//.controller('SignCtrl',
-//['$scope', '$http', '$routeParams',
-//function($scope, $http, $routeParams) {
-function signCtrl($scope, $http, $routeParams) {
+//.controller('SignCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
+SignCtrl.$inject = ['$scope', '$http', '$routeParams'];
+function SignCtrl($scope, $http, $routeParams) {
 	console.log('SignCtrl ('+$scope.$id+') '+$routeParams.action+' '+$routeParams.redirect);
 	$scope.errors = {};		// form errors
 

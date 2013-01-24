@@ -1,16 +1,17 @@
 angular.module('io.init.rootScope', [])
 .run(
-	['$rootScope', '$locale', '$http', '$window', '$location', '$accessibility', '$avatarpicker',
-	function($rootScope, $locale, $http, $window, $location, accessibility, avatarpicker) {
+	['$rootScope', '$locale', '$http', '$window', '$location', '$accessibility', '$filepicker',
+	function($rootScope, $locale, $http, $window, $location, accessibility, filepicker) {
 	console.log('io.init.rootScope ('+$rootScope.$id+')');
  	
  	// factories
  	$rootScope.accessibility = accessibility;
- 	$rootScope.avatarpicker = avatarpicker;
+ 	$rootScope.filepicker = filepicker;
  	
 	$rootScope.default_settings = {
-		'client'			:'',	// https://static.domain.com
-		'server'			:'',	// https://api.domain.com
+		'client'			:'',	// https://static.domain.com/
+		'server'			:'',	// https://api.domain.com/
+		'proxy'				:'',	// https://proxy.domain.com/ // for importing photos into filepicker
 		'dashboard'			:'app', // app dashboard ie #/app
 		//'offline'			:[],	// name of object that will be stored offline
 		//'class':{},
@@ -390,8 +391,8 @@ angular.module('io.init.rootScope', [])
 				close:false,
 				footer:false
 			},
-			header:"Offline",
-			content:"The server seems to be not responding or you're currently offline. Please try again in a few minutes.",
+			header:$rootScope.i18n.alert_online_offline_label,
+			content:$rootScope.i18n.alert_online_offline_message,
 			buttons:[
 				{
 					"class":"btn-primary",
@@ -411,8 +412,8 @@ angular.module('io.init.rootScope', [])
 				close:false,
 				footer:false
 			},
-			header:"Online",
-			content:"Welcome back the online world. We saved your requests while you were offline and are excuting them as you read this.",
+			header:$rootScope.i18n.alert_offline_online_label,
+			content:$rootScope.i18n.alert_offline_online_message,
 			buttons:[
 				{
 					"class":"btn-primary",
@@ -514,11 +515,13 @@ angular.module('io.init.rootScope', [])
 				allCtrl[i].parentNode.removeChild(allCtrl[i]);
 		}	
 	};
-	$rootScope.loadScript = function(filename) {
+	$rootScope.loadScript = function(filename, callback) {
 		var headID = document.getElementsByTagName("head")[0];         
 		var newScript = document.createElement('script');
 		newScript.type = 'text/javascript';
 		newScript.src = filename;
+		newScript.onreadystatechange = callback;
+		newScript.onload = callback;
 		headID.appendChild(newScript);
 	};
 	

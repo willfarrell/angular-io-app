@@ -1,5 +1,6 @@
 //angular.module('app.controller.dashboard', [])
 //.controller('DashboardCtrl', ['$scope', '$http', function($scope, $http) {
+DashboardCtrl.$inject = ['$scope', '$http', '$routeParams'];
 function DashboardCtrl($scope, $http, $routeParams) {
 	console.log('DashboardCtrl (' + $scope.$id + ')');
 	//-- App Functions Here --//

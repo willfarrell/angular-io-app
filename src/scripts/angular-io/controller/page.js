@@ -1,5 +1,6 @@
 //angular.module('io.controller.page', [])
 //.controller('PageCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
+PageCtrl.$inject = ['$scope', '$http', '$routeParams'];
 function PageCtrl($scope, $http, $routeParams) {
  	console.log('PageCtrl '+$routeParams.page);
  	$scope.page_url = 'view/page/'+encodeURIComponent($routeParams.page)+'.html';

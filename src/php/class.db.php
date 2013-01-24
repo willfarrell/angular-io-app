@@ -21,7 +21,7 @@ Additional Notes:
 
  */
 
-//require_once "inc.config.php";
+require_once "inc.config.php";
 
 /**
  * Database
@@ -38,8 +38,8 @@ Additional Notes:
 
 class MySQL
 {
-    var $connection_mysql; //The MySQL database connection
-
+    private $connection_mysql; //The MySQL database connection
+    public $last_query = "";
     
     /**
      * Constructor
@@ -173,7 +173,9 @@ class MySQL
                 $query = preg_replace("/{{".$key."}}/i", $value, $query);
             }*/
         }
-
+        
+        $this->last_query = $query;
+        
         $select = (substr($query, 0, 6) == 'SELECT');
         $result = $this->_run($query);
         $result = ($select)?$this->resultCheck($result):$result;

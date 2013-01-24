@@ -1,5 +1,6 @@
 //angular.module('io.controller.reset', [])
 //.controller('ResetCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
+ResetCtrl.$inject = ['$scope', '$http', '$routeParams'];
 function ResetCtrl($scope, $http, $routeParams) {
 	console.log('ResetCtrl ('+$scope.$id+')');
 	

@@ -1,7 +1,7 @@
-angular.module('io.controller.contact', [])
-.controller('ContactCtrl',
-['$scope', '$http', '$routeParams',
-function($scope, $http, $routeParams) {
+//angular.module('io.controller.contact', [])
+//.controller('ContactCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
+ContactCtrl.$inject = ['$scope', '$http'];
+function ContactCtrl($scope, $http) {
 	console.log('ContactCtrl ('+$scope.$id+')');
 	$scope.errors = {};
 	$scope.contact = {};
@@ -36,5 +36,5 @@ function($scope, $http, $routeParams) {
 				}
 			});
 	};
-
-}]);
+}
+//}]);

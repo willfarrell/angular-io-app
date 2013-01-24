@@ -11,7 +11,17 @@
 			  	<strong>{{alert.label}}</strong> {{alert.message}}
 			</div>
 
-	    	<div class="control-group center">
+	    	<!--<div class="control-group center">
+	    		<label class="control-label" for="user_img">
+	    			<button class="btn btn-success" data-ng-click="filepicker.open(filepicker.profile_user);"><i class="icon-upload-alt"></i>&nbsp;Upload</button>
+	    		</label>
+
+				<div class="controls">
+		    		<img data-ng-src="img/user/{{session.user_ID}}.png?{{filepicker.timestamp}}" class="img-polaroid" style="width:100px; height:100px;"/>
+		    	</div>
+		    </div>-->
+		    
+		    <div class="control-group center">
 	    		<label class="control-label" for="user_img">
 	    			<button class="btn btn-success" data-ng-click="filepicker.open(filepicker.profile_user);"><i class="icon-upload-alt"></i>&nbsp;Upload</button>
 	    		</label>
@@ -189,13 +199,13 @@
 	    <legend>About Details<button class="btn btn-primary pull-right" data-ng-click="updateUser()"><i class="icon-ok"></i>&nbsp;Save</button></legend>
 
 	    <textarea class="span" rows="15" data-ng-model="user.user_details" placeholder=""></textarea>
-		<div class="help-block error">Markdown Syntax Supported<br>(&nbsp;<b>**bold**</b>,&nbsp;<i>_emphasis_</i>&nbsp;)</div>
+		<div class="help-block">Markdown Syntax Supported<br>(&nbsp;<b>**bold**</b>,&nbsp;<i>_emphasis_</i>&nbsp;)</div>
 	</div>
 	<div class="span2">&nbsp;</div>
 	<div class="span4">
 		<legend>About Preview</legend>
 		<div data-ng-bind-html-unsafe="compileMarkdown(user.user_details)"></div>
-		<div class="help-block error" data-ng-show="user.user_details == ''">
+		<div class="help-block" data-ng-show="user.user_details == ''">
 			Enter text to the left to have a preview generated here.
 		</div>
 	</div>

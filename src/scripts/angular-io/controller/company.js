@@ -1,5 +1,6 @@
 //angular.module('io.controller.company', [])
 //.controller('CompanyCtrl', ['$scope', '$http', function($scope, $http) {
+CompanyCtrl.$inject = ['$scope', '$http'];
 function CompanyCtrl($scope, $http) {
 	console.log('CompanyCtrl ('+$scope.$id+')');
 

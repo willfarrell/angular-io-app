@@ -1,5 +1,6 @@
 //angular.module('io.controller.follow', [])
 //.controller('FollowCtrl', ['$scope', '$http', function($scope, $http) {
+FollowCtrl.$inject = ['$scope', '$http'];
 function FollowCtrl($scope, $http) {
 	//$scope = $scope;
 	console.log('FollowCtrl ('+$scope.$id+')');
@@ -138,4 +139,5 @@ function FollowCtrl($scope, $http) {
 	$scope.require_signin(function(){
 		$scope.loadGroups();
 	});
-}]);
+}
+//}]);

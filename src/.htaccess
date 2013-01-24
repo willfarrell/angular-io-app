@@ -631,7 +631,7 @@ ServerSignature Off
 <IfModule mod_rewrite.c>
 	RewriteCond %{REQUEST_URI} \.(json)$
 	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteRule ^lang/(.*)-(.*)/(.*) lang/$1/$3
+	RewriteRule ^i18n/(.*)-(.*)/(.*) i18n/$1/$3
 </IfModule>
 
 # Redirect all requests through index.php
