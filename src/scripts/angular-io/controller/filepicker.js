@@ -116,9 +116,11 @@ function FilepickerCtrl($scope, $http, filepicker) {
 
 		        reader.onload = function(evt) {
 		            console.log('reader.onload');
-		            $scope.filepicker.args.service = 'RESIZECROP';
 		            $scope.resizecrop.initParams(evt.target.result, file.type)
-		            $scope.resizecrop.generate();
+		            $scope.$apply(function(){
+		            	$scope.resizecrop.generate();
+		            	$scope.filepicker.args.service = 'RESIZECROP';
+		            });
 		        };
 		        reader.readAsDataURL(file);
 		        
@@ -354,7 +356,7 @@ function FilepickerCtrl($scope, $http, filepicker) {
 				  	y = crop_top + height/2;
 			  	}
 			  	
-			  	console.log('('+x+','+y+')');
+			  	//console.log('('+x+','+y+')');
 			  	draw();
 			}
 			
