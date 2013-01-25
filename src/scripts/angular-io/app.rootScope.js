@@ -167,6 +167,7 @@ angular.module('io.init.rootScope', [])
 			+$rootScope.settings.i18n['lang'].length
 			+$rootScope.settings.i18n['lang-locale'].length
 			+$rootScope.settings.i18n['json'].length
+			//+$rootScope.settings['json'].length
 			+objectLength($rootScope.settings.json)
 		)
 	};
@@ -238,12 +239,12 @@ angular.module('io.init.rootScope', [])
 		$rootScope.locale 	= db.get('locale', $locale.id);							// en-ca
 	 	$rootScope.language = db.get('language', $rootScope.locale.substr(0,2)); 	// en
 		db.set('language', $rootScope.language);
-	 	if ($rootScope.locale > 2) {
+	 	if ($rootScope.locale.length > 2) {
 			$rootScope.country_code = locale.substr(3,2).toUpperCase();
-			db.set('country_code', $rootScope.country_code);
 		} else {
-			$rootScope.country_code = '';
+			$rootScope.country_code = db.get('country_code', $rootScope.i18n.default.substr(3,2).toUpperCase());
 		}
+		db.get('country_code', $rootScope.country_code);
 	};
 	$rootScope.changeLocale = function(locale) {
 		db.set('locale', locale);

@@ -31,4 +31,16 @@ API ready dist.
 ## Plugins
 ### Follow
 
+
 ### Filepicker
+#### Supports
+- file upload (single / multi) via select or drag and drop.
+- image upload with resizing and cropping before saving.
+#### To Do
+- AWS CORS support
+- upload file from URL (requires proxy server due to browser security)
+- support upload from third party services
+- file download
+- refactor code - seperate pages into services, remove controller.
+#### Bugs
+- When panning an image it snaps to the center (low priority)

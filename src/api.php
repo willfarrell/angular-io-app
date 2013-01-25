@@ -22,16 +22,19 @@
 require_once 'php/inc.config.php';		// config vars
 require_once 'php/lib.global.php';		// collection of php missing function
 
-require_once 'php/class.db.php';		// MySQL class
-//require_once 'php/class.redis.php';	// redis class
-require_once 'php/class.filter.php';	// input validation and sanitation
-
 // Dev Tools
 require_once 'php/class.timer.php';		// benchmark fucntions (optional)
 require_once 'php/FirePHPCore/FirePHP.class.php';	// FirePHP debugging tool
 
+// core
+require_once 'php/class.db.php';		// MySQL class
+//require_once 'php/class.redis.php';	// redis class
+require_once 'php/class.filter.php';	// input validation and sanitation
 require_once 'php/class.password.php';	// password validation, hashing, and checking
 require_once 'php/class.session.php';	// User session
+
+
+
 
 
 // Include API Classes
@@ -48,7 +51,7 @@ require_once 'php/api.location.php';
 require_once 'php/api.follow.php';
 
 require_once 'php/api.filepicker.php';
-require_once 'php/api.img.php';
+//require_once 'php/api.img.php';
 
 //-- Add-ons --//
 require_once 'php/api.contact.php';
@@ -63,7 +66,7 @@ $r->setSupportedFormats('JsonpFormat');
 // services
 $r->addAPIClass('Account');
 $r->addAPIClass('Contact');
-$r->addAPIClass('Img');
+//$r->addAPIClass('Img');
 
 //if ($session->cookie['user_ID']) {	// Users Only
 	$r->addAPIClass('User');

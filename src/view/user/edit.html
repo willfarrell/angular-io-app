@@ -21,13 +21,15 @@
 		    	</div>
 		    </div>-->
 		    
-		    <div class="control-group center">
-	    		<label class="control-label" for="user_img">
-	    			<button class="btn btn-success" data-ng-click="filepicker.open(filepicker.profile_user);"><i class="icon-upload-alt"></i>&nbsp;Upload</button>
+		    <div class="control-group">
+	    		<label class="control-label pull-right" for="user_img">
+	    			
 	    		</label>
 
 				<div class="controls">
 		    		<img data-ng-src="img/user/{{session.user_ID}}.png?{{filepicker.timestamp}}" class="img-polaroid" style="width:100px; height:100px;"/>
+	    			<button class="btn" data-ng-click="filepicker.open(filepicker.profile_user);">Change photo</button>
+	    			<!--<span class="help-block">This photo is your identity and appears with your content.</span>-->
 		    	</div>
 		    </div>
 
@@ -59,7 +61,7 @@
 		            <span class="help-block error" data-ng-show="errors.user.user_name_last">{{errors.user.user_name_last.message}}</span>
 	            </div>
 	        </div>
-
+	        
 	        <div class="control-group" data-ng-class="{error: (errors.user.user_email)}">
 	          	<label class="control-label" for="user_email">Email</label>
 	          	<div class="controls">
@@ -83,6 +85,22 @@
 		            <span class="help-block error" data-ng-show="errors.user_phone">{{errors.user_phone.message}}</span>
 	            </div>
 	        </div>
+	        
+	        <!--<div class="control-group" data-ng-class="{error: (errors.user_url)}">
+	          	<label class="control-label" for="user_url">Website</label>
+	          	<div class="controls">
+		            <input type="url" class="span" name="user_url" data-ng-model="user.user_url" placeholder="https://">
+		            <span class="help-block error" data-ng-show="userForm.user_url.$error.url">Not valid url</span>
+		            <span class="help-block error" data-ng-show="errors.user_url">{{errors.user_url.message}}</span>
+	            </div>
+	        </div>-->
+	        
+	        <div class="control-group">
+		        <label class="control-label" for="user_details">Bio</label>
+			    <textarea class="span" rows="4" data-ng-model="user.user_details" placeholder=""></textarea>
+				<span class="help-block pull-right">{{160 - user.user_details.length}}</span>
+				<span class="help-block">About yourself in 160 characters or less.</span>
+			</div>
 		</form>
 
 		<br>
@@ -193,7 +211,7 @@
 
 </div>
 
-<div class="row-fluid">
+<!--<div class="row-fluid">
 	<div class="span1">&nbsp;</div>
 	<div class="span4">
 	    <legend>About Details<button class="btn btn-primary pull-right" data-ng-click="updateUser()"><i class="icon-ok"></i>&nbsp;Save</button></legend>
@@ -210,6 +228,6 @@
 		</div>
 	</div>
 	<div class="span1">&nbsp;</div>
-</div>
+</div>-->
 
 </div>

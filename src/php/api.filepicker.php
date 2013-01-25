@@ -2,7 +2,6 @@
 
 require_once 'php/lib.global.php';
 require_once 'php/class.db.php';
-require_once 'php/api.img.php';
 
 
 class Filepicker {
