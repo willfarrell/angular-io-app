@@ -306,8 +306,8 @@ class Account {
 		// update user
 		$password_hash = $this->password->hash($request_data['new_password'], $user_email);
 		$query = "UPDATE users SET"
-				." password = '{{password}}'"
-				." password_timestamp = '{{password_timestamp}}'"
+				." password = '{{password}}',"
+				." password_timestamp = '{{password_timestamp}}',"
 				." password_history = CONCAT(password_history, \",{{password}}\" ),"
 				." timestamp_update = '{{timestamp_update}}'"
 				." WHERE user_ID = '{{user_ID}}'";
@@ -362,10 +362,10 @@ class Account {
 		}
 		
 		if ($user_ID) {
-			$password_hash = $this->password->hash($request_data['new_password'], $user_email);
+			$password_hash = $this->password->hash($request_data['new_password'], USER_EMAIL);
 			$query = "UPDATE users SET"
-					." password = '{{password}}'"
-					." password_timestamp = '{{password_timestamp}}'"
+					." password = '{{password}}',"
+					." password_timestamp = '{{password_timestamp}}',"
 					." password_history = CONCAT(password_history, \",{{password}}\" ),"
 					." timestamp_update = '{{timestamp_update}}'"
 					." WHERE user_ID = '{{user_ID}}'";

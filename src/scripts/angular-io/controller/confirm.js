@@ -5,7 +5,7 @@ function ConfirmCtrl($scope, $http, $routeParams) {
 	console.log('ConfirmCtrl ('+$scope.$id+')');
 	
 	$scope.errors = {};
-	$scope.hash = $routeParams.hash;
+	$scope.hash = ($routeParams && $routeParams.hash) ? $routeParams.hash : '';
 	$scope.status = false; // used on confirm page
 	
 	$scope.check = function(hash) {

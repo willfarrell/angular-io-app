@@ -7,8 +7,8 @@ function ResetCtrl($scope, $http, $routeParams) {
 	$scope.errors = {};
 	$scope.hash = $routeParams.hash;
 	$scope.state = {
-		verify:false,
-		reset:false,
+		verify:true,
+		reset:true,
 		signin:false
 	};
 

@@ -84,6 +84,57 @@ $filter_function = array (
       'label' => 'User Details',
       'rules' => '',
     ),
+    'user_url' => 
+    array (
+      'field' => 'user_url',
+      'label' => 'User Url',
+      'rules' => '',
+    ),
+  ),
+  'account_reset_email' => 
+  array (
+    'email' => 
+    array (
+      'field' => 'email',
+      'label' => 'Email',
+      'rules' => '',
+    ),
+  ),
+  'account_put_password_change' => 
+  array (
+    'old_password' => 
+    array (
+      'field' => 'old_password',
+      'label' => 'Old Password',
+      'rules' => '',
+    ),
+    'new_password' => 
+    array (
+      'field' => 'new_password',
+      'label' => 'New Password',
+      'rules' => '',
+    ),
+  ),
+  'account_put_reset_password' => 
+  array (
+    'hash' => 
+    array (
+      'field' => 'hash',
+      'label' => 'Hash',
+      'rules' => '',
+    ),
+    'password' => 
+    array (
+      'field' => 'password',
+      'label' => 'Password',
+      'rules' => '',
+    ),
+    'new_password' => 
+    array (
+      'field' => 'new_password',
+      'label' => 'New Password',
+      'rules' => '',
+    ),
   ),
 );
 ?>

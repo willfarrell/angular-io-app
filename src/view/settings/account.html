@@ -1,0 +1,86 @@
+
+<form name="userForm" class="form-horizontal" data-ng-controller="UserCtrl">
+    
+    <legend>Account</legend>
+    <hr>
+    <div class="control-group" data-ng-class="{error: (errors.user.user_name)}">
+      	<label class="control-label" for="user_name">Username</label>
+      	<div class="controls">
+            <input type="text" class="span" name="user_name" placeholder="" data-ng-model="user.user_name" data-ng-minlength="3" data-ng-maxlength="14" data-ng-pattern="/^[\w]*$/" data-ng-change="check.user_name(user.user_name)">
+          	<span class="help-block"><a href="/#/profile/{{user.user_name}}">{{i18n.domain}}/#/profile/{{user.user_name}}</a></span>
+            <span class="help-block error" data-ng-show="userForm.user_name.$error.pattern">only alphanumeric characters and underscores allowed</span>
+            <span class="help-block error" data-ng-show="userForm.user_name.$error.minlength">too short</span>
+            <span class="help-block error" data-ng-show="userForm.user_name.$error.maxlength">too long</span>
+            <span class="help-block error" data-ng-show="errors.user.user_name">{{errors.user.user_name.message}}</span>
+            
+        </div>
+    </div>
+    
+    
+    <div class="control-group">
+      	<label class="control-label" for="user_email">Email</label>
+      	<div class="controls">
+          	<input type="email" class="span" name="user_email" data-ng-model="user.user_email" disabled>
+          	<span class="help-block">Email will not be publicly displayed.  <a href="#/settings/email">Change</a></span>
+
+        </div>
+    </div>
+    
+	<script>/*
+    <hr>
+    
+    <div class="control-group" data-ng-class="{error: (errors.email.password)}">
+      	<label class="control-label" for="password.password">Language</label>
+      	<div class="controls">
+      		<select class="span" data-ng-model="country_code" data-ng-options="key as value for (key, value) in json.countries"></select>
+      		<div class="btn-group">
+				<button class="btn dropdown-toggle" data-toggle="dropdown"><!--<i class="flag-{{country_code}}"></i>&nbsp;-->{{json.languages[locale]}}</button>
+			    <ul class="dropdown-menu">
+			    	<li data-ng-repeat="locale in settings.i18n.options">
+		        		<a href="" data-ng-click="changeLocale(locale)"><!--<i class="flag-{{locale.substr(3,2)}}"></i>&nbsp;-->{{json.languages[locale]}}</a>
+		        	</li>
+		        </ul>
+			</div>
+      	</div>
+    </div>
+    
+    <div class="control-group" data-ng-class="{error: (errors.country_code)}">
+      	<label class="control-label" for="country_code">Country</label>
+      	<div class="controls">
+            <select class="span" data-ng-model="country_code" data-ng-options="key as value for (key, value) in json.countries"></select>
+            <span class="help-block">Select your country. This setting is saved to this browser.</span>
+        </div>
+    </div>
+
+    <div class="control-group" data-ng-class="{error: (errors.accessibility)}">
+      	<label class="control-label" for="accessibility">Accessibility</label>
+      	<div class="controls">
+            <div class="btn-group">
+					<button class="btn" data-ng-click="accessibility.toggle()">
+					    <i class="icon-eye-close" data-ng-hide="accessibility.settings.accessibility"></i>
+					    <i class="icon-eye-open" data-ng-show="accessibility.settings.accessibility"></i>
+				    </button>
+				    <!--<button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+				    <ul class="dropdown-menu center">
+				    	<li style="zoom:1; 	MozTransform:scale(0.010)"><a href="" data-ng-click="accessibility.zoom(1)">Default</a></li>
+				    	<li style="zoom:1.2;MozTransform:scale(0.012)"><a href="" data-ng-click="accessibility.zoom(1.2)">Large</a></li>
+				    	<li style="zoom:1.4;MozTransform:scale(0.014)"><a href="" data-ng-click="accessibility.zoom(1.4)">X-Large</a></li>
+			        </ul>-->
+				</div>
+        </div>
+    </div>
+    */
+    </script>
+    
+    
+    <hr>
+    
+    <div class="control-group">
+      	<div class="controls">
+          	<button class="btn" data-ng-click="updateUser()" data-ng-disabled="userForm.$invalid">Save changes</button>
+        </div>
+    </div>
+    
+</form>
+
+<a href="" data-ng-click="deleteUser()" data-ng-hide="true">Deactivate my account</button>

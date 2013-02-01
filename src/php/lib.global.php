@@ -56,6 +56,28 @@ function br2nl($text)
     return  preg_replace('/<br\\s*?\/??>/i', "\n", $text);
 }
 
+function get_timestamp($tz, $timestamp) {
+	$offset = get_timezone_offset($tz, $timestamp);
+	$timestamp -= $offset;
+	return $timestamp;
+}
+
+function get_timezone_offset($remote_tz, $timestamp = null, $origin_tz = null) {
+    if ($timestamp == null) $timestamp = time();
+    if($origin_tz === null) {
+        if(!is_string($origin_tz = date_default_timezone_get())) {
+            return false; // A UTC timestamp was returned -- bail out!
+        }
+    }
+    $origin_dtz = new DateTimeZone($origin_tz);
+    $remote_dtz = new DateTimeZone($remote_tz);
+    $origin_dt = new DateTime("@$timestamp", $origin_dtz);
+    $remote_dt = new DateTime("@$timestamp", $remote_dtz);
+    $offset = $origin_dtz->getOffset($origin_dt) - $remote_dtz->getOffset($remote_dt);
+    $offset *= -1;
+    return $offset;
+}
+
 /*function set_cookie_fix_domain($Name, $Value = '', $Expires = 0, $Path = '', $Domain = '', $Secure = false, $HTTPOnly = false)
 {
     if (!empty($Domain)) {

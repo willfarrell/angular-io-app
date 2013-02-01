@@ -42,5 +42,6 @@ API ready dist.
 - support upload from third party services
 - file download
 - refactor code - seperate pages into services, remove controller.
+- Connect into camerea to take photo
 #### Bugs
 - When panning an image it snaps to the center (low priority)

@@ -240,7 +240,7 @@ angular.module('io.init.rootScope', [])
 	 	$rootScope.language = db.get('language', $rootScope.locale.substr(0,2)); 	// en
 		db.set('language', $rootScope.language);
 	 	if ($rootScope.locale.length > 2) {
-			$rootScope.country_code = locale.substr(3,2).toUpperCase();
+			$rootScope.country_code = $rootScope.locale.substr(3,2).toUpperCase();
 		} else {
 			$rootScope.country_code = db.get('country_code', $rootScope.i18n.default.substr(3,2).toUpperCase());
 		}

@@ -35,7 +35,7 @@
 
 </div>
 
-<div class="pull-center" data-ng-show="action == 'reset'">
+<div class="pull-center" data-ng-show="action == 'reset'" data-ng-controller="PasswordCtrl">
 	<form class="well" name="resetForm">
 	    <legend>{{i18n.sign_reset_legend}}</legend>
 	    <div class="control-group" data-ng-class="{error: (errors.email)}">
@@ -43,7 +43,7 @@
 		    <span class="error" data-ng-show="resetForm.email.$error.email">Not valid email</span>
 	    </div>
 	    <!-- CAPTCHA HERE? -->
-	    <button class="btn btn-primary" data-ng-click="reset_password()" data-ng-disabled="resetForm.$invalid">{{i18n.sign_reset_button}}</button>
+	    <button class="btn btn-primary" data-ng-click="resetPassword(signin.email)" data-ng-disabled="resetForm.$invalid">{{i18n.sign_reset_button}}</button>
 	    
 	</form>
 	<a href="" data-ng-click="action = 'in'">{{i18n.sign_in_nav_button}}</a>
@@ -71,6 +71,7 @@
 	        <span class="help-block error" data-ng-show="signupForm.password.$error.special">Password needs at least one special character (!"£$%&...)</span>
 	        <span class="help-block error" data-ng-show="signupForm.password.$error.identical">Password cannot have more than two identical characters</span>
 	        <span class="help-block error" data-ng-show="errors.password">{{errors.password.message}}</span>
+	        <span class="help-block" data-ng-show="objectLength(signupForm.password.$error) > 1">Our intern could crack that password, best to be safe and make it stronger.</span>
 	    </div>
 	    
 	    <button class="btn btn-primary" data-ng-click="account_signup()" data-ng-disabled="signupForm.$invalid || signupForm.password.$invalid">{{i18n.sign_up_button}}</button>

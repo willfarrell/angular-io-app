@@ -5,19 +5,15 @@
 UserCtrl.$inject = ['$scope', '$http', '$routeParams'];
 function UserCtrl($scope, $http, $routeParams) {
 	console.log('UserCtrl ('+$scope.$id+')');
-	$routeParams.profile_ID || ($routeParams.profile_ID = 0);
 	
 	$scope.errors = {
 		user:{},
-		email:{},
-		password:{}
+		email:{}
 	};
 
 	// forms
 	//$scope.forms
-	$scope.user = {
-		'user_ID':$routeParams.profile_ID
-	};
+	$scope.user = {};
 	$scope.email = {};
 	$scope.password = {};
 
@@ -39,7 +35,25 @@ function UserCtrl($scope, $http, $routeParams) {
 				console.log('loadUser.get.error');
 				$rootScope.http_error();
 			});
-
+	};
+	$scope.loadUserName = function(profile_name) {
+		console.log('loadUser('+profile_name+')');
+		profile_name || (profile_name = '');
+		
+		$http.get($scope.settings.server+'user/name/'+profile_name)
+			.success(function(data) {
+				console.log('loadUser.get.success');
+				console.log(data);
+				$scope.errors.user	= (data.errors) ? data.errors : {};
+				$rootScope.alerts 	= (data.alerts) ? data.alerts : [];
+				if (!data.alerts && !data.errors) {
+					$scope.user = data;
+				}
+			})
+			.error(function() {
+				console.log('loadUser.get.error');
+				$rootScope.http_error();
+			});
 	};
 
 	$scope.updateUser = function() {
@@ -133,7 +147,15 @@ function UserCtrl($scope, $http, $routeParams) {
 	$scope.require_signin(function(){
 		console.log('UserCtrl require_signin');
 		//$scope.user = $rootScope.session.user ? $rootScope.session.user : {};
-		$scope.loadUser($routeParams.profile_ID);
+		if ($routeParams.profile_name) {
+			$scope.loadUser($routeParams.profile_name);
+		} else {
+			$routeParams.profile_ID || ($routeParams.profile_ID = 0);
+			$scope.user = {
+				'user_ID':$routeParams.profile_ID
+			};
+			$scope.loadUser($routeParams.profile_ID);
+		}
 		console.log($scope.user);
 	});
 }

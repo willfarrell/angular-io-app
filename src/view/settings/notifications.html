@@ -1,0 +1,28 @@
+
+<form name="userForm" class="form-horizontal" data-ng-controller="UserCtrl">
+    <legend>Notifications</legend>
+    <hr>
+    
+    <div class="control-group">
+      	<label class="control-label" for="user_name">Account Changes</label>
+      	<div class="controls">
+      		<label class="checkbox">
+            	<input type="checkbox" checked disabled>Password change notification.
+      		</label>
+      		<label class="checkbox">
+            	<input type="checkbox" checked disabled>Email change notification.
+            </label>
+        </div>
+    </div>
+    
+    
+    
+    <hr>
+    
+    <div class="control-group">
+      	<div class="controls">
+          	<button class="btn" data-ng-click="updateNotifications()" data-ng-disabled="userEmailForm.$invalid">Save changes</button>
+        </div>
+    </div>
+    
+</form>

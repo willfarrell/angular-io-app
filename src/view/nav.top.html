@@ -46,43 +46,33 @@
 			        <a href="#" class="dropdown-toggle" data-ng-show="!session.user.user_name && session.user.user_name_first" data-toggle="dropdown">{{session.user.user_name_first}} <b class="caret"></b></a>
 			        <a href="#" class="dropdown-toggle" data-ng-hide="session.user.user_name || session.user.user_name_first" data-toggle="dropdown">{{session.user.user_email}} <b class="caret"></b></a>
 			        <ul class="dropdown-menu" data-ng-click="selectedNav = 'user'">
-			        	<!--<li><a href="#/user/mail"><i class="icon-envelope"></i>&nbsp;Mail<span class="badge badge-inverse pull-right">10</span></a></li>-->
-			        	<!--<li><a href="" data-ng-click="sync(0)"><i class="icon-refresh"></i>&nbsp;Sync Offline</a></li>-->
-			        	<!--<li><a href="#/inbox"><i class="icon-inbox"></i>&nbsp;Inbox<span class="badge pull-right">1</span></a></li>-->
+			        	<!--<li><a href="#/messages"><i class="icon-envelope"></i>&nbsp;Messages<span class="badge badge-inverse pull-right">10</span></a></li>-->
+			        	
 			        	<li><a href="#/user/profile"><i class="icon-user"></i>&nbsp;Profile</a></li>
 			        	<!--<li><a href="#/user/follow"><i class="icon-group"></i>&nbsp;Follow</a></li>-->
 			        	<li><a href="#/user/invite"><i class="icon-share"></i>&nbsp;Invite</a></li>
-			        	<li><a href="#/user/edit"><i class="icon-cogs"></i>&nbsp;User Settings</a></li>
+			        	<li><a href="#/settings/profile"><i class="icon-cogs"></i>&nbsp;Edit Profile</a></li>
 			        </ul>
 			    </li>
 			    <li class="divider-vertical"></li>
 			    <li class="dropdown" data-ng-class="{active: selectedNav=='account'}">
 			        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <b class="caret"></b></a>
 			        <ul class="dropdown-menu" data-ng-click="selectedNav = 'account'">
-			        	<li><a href="#/company/profile"><i class="icon-user"></i>&nbsp;Account Profile</a></li>
-			            <li><a href="#/company/edit"><i class="icon-edit"></i>&nbsp;Edit Account</a></li>
+			        	<!--<li><a href="#/company/profile"><i class="icon-user"></i>&nbsp;Account Profile</a></li>-->
 			            <!--<li><a href="#/billing"><i class="icon-credit-card"></i>&nbsp;Billing</a></li>-->
 			            <!--<li><a href="#/api/">API</a></li>-->
+			            <!--<li><a href="#/setings/user">
+			            	<img data-ng-src="img/user/{{session.user_ID}}.png?{{filepicker.timestamp}}" class="img-rounded" style="width:40px; height:40px;"/><span>&nbsp;{{session.user.user_name_first}} {{session.user.user_name_last}}<br>Edit Profile</span>
+			            </a></li>-->
+			            
 			            <li class="divider"></li>
+			            <li><a href="#/support/faq"><i class="icon-bullhorn"></i>&nbsp;Help</a></li>
+			            <li class="divider"></li>
+			            <li><a href="#/settings/account"><i class="icon-cogs"></i>&nbsp;Settings</a></li>
 			            <li><a href="#/sign/out"><i class="icon-signout"></i>&nbsp;Sign Out</a></li>
-			            <li class="divider"></li>
-			            <li><a href="#/faq"><i class="icon-question-sign"></i>&nbsp;FAQ</a></li>
-			            <li><a href="#/contact"><i class="icon-bullhorn"></i>&nbsp;Contact</a></li>
 			            <!--<li><a href="#/help/faq"><i class="icon-question-sign"></i>&nbsp;Help</a></li>-->
 			        </ul>
 			    </li>
-			    <!--<li class="dropdown">
-			        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-wrench"></i></a>
-			        <ul class="dropdown-menu">
-			            <li class="nav-header">Session</li>
-			            <li><a href="" data-ng-click="regenSession()"><i class="icon-refresh"></i>&nbsp;Regen </a></li>
-			            <li><a href="" data-ng-click="checkSession()"><i class="icon-search"></i>&nbsp;Check Session</a></li>
-			            <li><a href="" data-ng-click="resetSession()"><i class="icon-trash"></i>&nbsp;Reset Session</a></li>
-			            <li><a href="" data-ng-click="saveSession()"><i class="icon-save"></i>&nbsp;Save Session</a></li>
-			            <li><a href="" data-ng-click="updateSession()"><i class="icon-refresh"></i>&nbsp;Update Session</a></li>
-			            <li class="divider"></li>
-			        </ul>
-			    </li>-->
 			</ul>
         </div><!-- /container -->
 	</div>

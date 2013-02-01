@@ -118,7 +118,8 @@ class MySQL
         }
         return $return;
     }
-
+    
+    //** Functions **//
     /**
      *    checks the output of a MySQL query
      *
@@ -127,7 +128,7 @@ class MySQL
      * @return MySQL Object
      *    @aceess    puiblic
      */
-    function resultCheck($result)
+    private function resultCheck($result)
     {
         if (!$result || (mysql_num_rows($result) < 1)) {
             return null;
@@ -135,7 +136,6 @@ class MySQL
         return $result;
     }
 
-    //** Functions **//
     /**
      * cleans all values of SQL injections
      *
@@ -145,7 +145,7 @@ class MySQL
      * @return array of cleaned values
      * @aceess puiblic
      */
-    function cleanArray($array)
+    private function cleanArray($array)
     {
         //print_r($array);
         $array = array_map('trim', $array);
@@ -154,6 +154,26 @@ class MySQL
         return $array;
     }
 
+    /**
+     *  makes a unique ID fron N INT
+     *  used as ID in shared tables between two objs
+     *  ie table with user_ID, friend_ID for chat threads, friending, etc
+     *  use: list(user_ID, $friend_ID) = $this->db->sort($user_ID_1, $user_ID_2);
+     * 
+     * @param integer $
+     *
+     * @return Array of Ints
+     * @aceess    puiblic
+     */
+    public function sort() {
+	
+		//$numargs = func_num_args();
+		$arg_list = func_get_args();
+	    sort($arg_list, SORT_NUMERIC);
+	    
+		return $arg_list;
+    }
+    
     /**
      * Custom Query
      * runs a templates written query

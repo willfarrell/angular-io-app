@@ -34,10 +34,11 @@ if (!defined("COOKIE_SECURE")) 			define("COOKIE_SECURE", 	(getenv("HTTPS") == "
 if (!defined("COOKIE_HTTPONLY")) 		define("COOKIE_HTTPONLY", 	TRUE);
 
 //-- Password --//
-if (!defined("PASSWORD_HASH")) 		define("PASSWORD_HASH", 	"bcrypt");	// PBKDF2, bcrypt, scrypt
+if (!defined("PASSWORD_HASH")) 		define("PASSWORD_HASH", 	"bcrypt");	// PBKDF2, bcrypt, scrypt (recommended)
 if (!defined("PASSWORD_SALT")) 		define("PASSWORD_SALT", 	'');		// Added to password (Stored in Code - same for all)
 //if (!defined("PASSWORD_PEPPER")) 	define("PASSWORD_PEPPER", 	FALSE);		// Added to password (Stored in DB)
 //if (!defined("PASSWORD_CAYENNE")) define("PASSWORD_CAYENNE", 	FALSE);		// Added to password (Stored in File)
+//if (!defined("PASSWORD_NONCE")) define("PASSWORD_NONCE", 	TRUE);
 
 // PBKDF2 - Require NIST compliance [https://github.com/P54l0m5h1k/PBKDF2-implementation-PHP]
 if (!defined("PBKDF2_SALT")) 		define("PBKDF2_SALT", 		'');
@@ -51,7 +52,7 @@ if (!defined("BCRYPT_WORK_FACTOR")) define("BCRYPT_WORK_FACTOR", 8);		// work_fa
 
 //scrypt - longest to break (2012-10), requires extra work server side to implement [https://github.com/DomBlack/php-scrypt]
 if (!defined("SCRYPT_SALT")) 		define("SCRYPT_SALT", 		NULL);		// NULL to grenerate random
-if (!defined("SCRYPT_PEPPER")) 		define("SCRYPT_PEPPER", 	'');	//
+if (!defined("SCRYPT_PEPPER")) 		define("SCRYPT_PEPPER", 	'');		//
 if (!defined("SCRYPT_SALT_LENGTH")) define("SCRYPT_SALT_LENGTH", 8);		// The length of the salt
 if (!defined("SCRYPT_KEY_LENGTH")) 	define("SCRYPT_KEY_LENGTH", 32);		// The key length
 if (!defined("SCRYPT_CPU")) 		define("SCRYPT_CPU", 		16384);		// The CPU difficultly (must be a power of 2,  > 1) pow(2,14)

@@ -14,12 +14,12 @@ angular.module('io.init.settings', [])
 			//'follow':{},					// follow
 		//},
 		'i18n':{
-			'default'	:'en-ca',				// default locale
-			'lang'		:[						// array of file names, in lang only folder ie en
-				//'countries',					// {'country_code':'country_name'}
-				//'languages'					// {'en-ca':'English (Canadian)'}
+			'default'	:'en',				// default locale
+			'lang'		:[					// array of file names, in lang only folder ie en
+				//'countries',				// {'country_code':'country_name'}
+				//'languages'				// {'en-ca':'English (Canadian)'}
 			],
-			'lang-locale':[						// array of file names, in locale folder ie en-ca
+			'lang-locale':[					// array of file names, in locale folder ie en-ca
 				'angular-io',
 				'app'
 			],
@@ -28,7 +28,7 @@ angular.module('io.init.settings', [])
 				'countries',					// {'country_code':'country_name'}
 				'languages'						// {'en-ca':'English (Canadian)'}
 			],
-			'options'	:['en-ca', 'en-us']		// which locales to allow
+			'options'	:['en']					// which locales to allow
 		},
 		'json':{								// load json files into $rootScope.json[key] = JSON.parse(file);
 			'calling_codes'	:'calling_codes',	// {'country_code':'calling_code'}

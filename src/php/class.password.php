@@ -198,11 +198,11 @@ class Password {
 		$r = $this->db->select("users", array("user_ID" => USER_ID), array("password_history"));
 		if (!$r) return false;
 		
-		$history_csv = $this->db->fetch_assoc($r);
-		$history = explode(",", $history_csv);
+		$user = $this->db->fetch_assoc($r);
+		$history = explode(",", $user['password_history']);
 		
 		foreach ($history as $hash) {
-			if (!$this->password_check($password, $hash, USER_EMAIL)) {
+			if (!$this->check($password, $hash, USER_EMAIL)) {
 				$this->errors['user_past_password'] = true;
 				return false;
 			}
