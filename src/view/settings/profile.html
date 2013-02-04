@@ -17,7 +17,7 @@
       	<div class="controls">
             <input type="text" class="span" name="user_name_first" placeholder="" data-ng-model="user.user_name_first">
             <!--<span class="help-block error" data-ng-show="userForm.user_name_first.$error.required">Required</span>-->
-            <span class="help-block error" data-ng-show="errors.user.user_name_first">{{errors.user.user_name_first.message}}</span>
+            <span class="help-block error" data-ng-show="errors.user.user_name_first">{{errors.user.user_name_first}}</span>
         </div>
     </div>
 
@@ -26,7 +26,7 @@
       	<div class="controls">
             <input type="text" class="span" name="user_name_last" placeholder="" data-ng-model="user.user_name_last"/>
             <!--<span class="help-block error" data-ng-show="userForm.user_name_last.$error.required">Required</span>-->
-            <span class="help-block error" data-ng-show="errors.user.user_name_last">{{errors.user.user_name_last.message}}</span>
+            <span class="help-block error" data-ng-show="errors.user.user_name_last">{{errors.user.user_name_last}}</span>
         </div>
     </div>
     
@@ -37,7 +37,7 @@
           	<div class="input-prepend">
                 <span class="add-on">+{{json.calling_codes[country_code]}}</span><input type="text" class="" name="user_phone" placeholder="(000) 000-0000" data-ng-model="user.user_phone" data-input-mask="(999) 999-9999 x999999">
             </div>
-            <span class="help-block error" data-ng-show="errors.user_phone">{{errors.user_phone.message}}</span>
+            <span class="help-block error" data-ng-show="errors.user_phone">{{errors.user_phone}}</span>
         </div>
     </div>-->
     
@@ -46,7 +46,7 @@
       	<div class="controls">
             <input type="url" class="span" name="user_url" data-ng-model="user.user_url" placeholder="https://">
             <span class="help-block error" data-ng-show="userForm.user_url.$error.url">Not valid url</span>
-            <span class="help-block error" data-ng-show="errors.user_url">{{errors.user_url.message}}</span>
+            <span class="help-block error" data-ng-show="errors.user_url">{{errors.user_url}}</span>
         </div>
     </div>
     

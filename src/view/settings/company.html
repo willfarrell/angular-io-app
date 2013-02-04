@@ -8,7 +8,7 @@
       	<div class="controls">
             <input type="text" class="span" name="company_name" placeholder="Required" data-ng-model="company.company_name" required>
             <!--<span class="help-block error" data-ng-show="companyForm.company_name.$error.required">Required</span>-->
-            <span class="help-block error" data-ng-show="errors.company_name">{{errors.company_name.message}}</span>
+            <span class="help-block error" data-ng-show="errors.company_name">{{errors.company_name}}</span>
         </div>
     </div>
 
@@ -18,7 +18,7 @@
             <input type="url" class="span" name="company_url" data-ng-model="company.company_url" placeholder="https://">
             <!--<span class="help-block error" data-ng-show="onboardCompanyForm.company_name.$error.required">Required</span>-->
             <span class="help-block error" data-ng-show="companyForm.company_url.$error.url">Not valid url</span>
-            <span class="help-block error" data-ng-show="errors.company_url">{{errors.company_url.message}}</span>
+            <span class="help-block error" data-ng-show="errors.company_url">{{errors.company_url}}</span>
         </div>
     </div>
 
@@ -28,7 +28,7 @@
           	<div class="input-prepend">
                 <span class="add-on">+{{json.calling_codes[country_code]}}</span><input type="text" class="" name="company_phone" placeholder="(000) 000-0000" data-ng-model="company.company_phone" data-input-mask="(999) 999-9999 x999999">
             </div>
-            <span class="help-block error" data-ng-show="errors.company_phone">{{errors.company_phone.message}}</span>
+            <span class="help-block error" data-ng-show="errors.company_phone">{{errors.company_phone}}</span>
         </div>
     </div>
     
@@ -36,7 +36,7 @@
       	<label class="control-label" for="user_default_ID">Primary User</label>
       	<div class="controls">
           	<select class="span" data-ng-model="company.user_default_ID" data-ng-options="value.user_ID as value.user_name_first+' '+value.user_name_last for (key, value) in users" required></select>
-            <span class="help-block error" data-ng-show="errors.user_default_ID">{{errors.user_default_ID.message}}</span>
+            <span class="help-block error" data-ng-show="errors.user_default_ID">{{errors.user_default_ID}}</span>
         </div>
     </div>
     
@@ -44,7 +44,7 @@
       	<label class="control-label" for="location_default_ID">Primary Location</label>
       	<div class="controls">
           	<select class="span" data-ng-model="company.location_default_ID" data-ng-options="value.location_ID as value.location_name for (key, value) in locations" required></select>
-            <span class="help-block error" data-ng-show="errors.location_default_ID">{{errors.location_default_ID.message}}</span>
+            <span class="help-block error" data-ng-show="errors.location_default_ID">{{errors.location_default_ID}}</span>
         </div>
     </div>
     

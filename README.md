@@ -31,6 +31,11 @@ API ready dist.
 ## Plugins
 ### Follow
 
+### Massaging
+#### To Do
+- all
+#### Wishlist
+- encrypt client side, unreadable by web app
 
 ### Filepicker
 #### Supports
@@ -45,3 +50,9 @@ API ready dist.
 - Connect into camerea to take photo
 #### Bugs
 - When panning an image it snaps to the center (low priority)
+#### Wishlist
+- User side encryption
+
+## Core To Do
+- PGP emailing
+

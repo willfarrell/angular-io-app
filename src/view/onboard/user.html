@@ -31,7 +31,7 @@
 		            <span class="help-block error" data-ng-show="userForm.user_name.$error.pattern">only alphanumeric characters and underscores allowed</span>
 		            <span class="help-block error" data-ng-show="userForm.user_name.$error.minlength">too short</span>
 		            <span class="help-block error" data-ng-show="userForm.user_name.$error.maxlength">too long</span>
-		            <span class="help-block error" data-ng-show="errors.user.user_name">{{errors.user.user_name.message}}</span>
+		            <span class="help-block error" data-ng-show="errors.user.user_name">{{errors.user.user_name}}</span>
 	            </div>
 	        </div>-->
 
@@ -39,7 +39,7 @@
 	          	<label class="control-label" for="user_name_first">First Name</label>
 	          	<div class="controls">
 		            <input type="text" class="span" name="user_name_first" placeholder="required" data-ng-model="user.user_name_first" required>
-		            <span class="help-block error" data-ng-show="errors.user_name_first">{{errors.user_name_first.message}}</span>
+		            <span class="help-block error" data-ng-show="errors.user_name_first">{{errors.user_name_first}}</span>
 		            <span class="help-block error" data-ng-show="userForm.user_name_first.$error.required">Required</span>
 	            </div>
 	        </div>
@@ -48,7 +48,7 @@
 	          	<label class="control-label" for="user_name_last">Last Name</label>
 	          	<div class="controls">
 		            <input type="text" class="span" name="user_name_last" placeholder="optional" data-ng-model="user.user_name_last">
-		            <span class="help-block error" data-ng-show="errors.user.user_name_last">{{errors.user.user_name_last.message}}</span>
+		            <span class="help-block error" data-ng-show="errors.user.user_name_last">{{errors.user.user_name_last}}</span>
 		            <span class="help-block error" data-ng-show="userForm.user_name_last.$error.required">Required</span>
 	            </div>
 	        </div>

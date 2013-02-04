@@ -94,7 +94,7 @@ class Account {
 		$query = "SELECT * FROM users WHERE user_name = '{{user_name}}' && user_ID != '{{user_ID}}' LIMIT 0,1";
 		$result = $this->db->query($query, array('user_name' => strtolower($value), 'user_ID' => USER_ID));
 		if ($result) {
-			$return["errors"]["user_name"] = array("class" => "error","message"=>"Not unique");
+			$return["errors"]["user_name"] = "Not unique";
 			return $return;
 		}
 	}
@@ -174,7 +174,7 @@ class Account {
 			return $this->get_session();
 		}
 
-		$return["errors"]['signin'] = array("class" => "error", "message"=>"Sign in information invalid.");
+		$return["errors"]['signin'] = "Sign in information invalid.";
 		return $return;
 	}
 
@@ -199,7 +199,7 @@ class Account {
 			$this->db->delete('user_confirm', array('hash' => $hash));
 		} else {
 			$return["alerts"][] = array("class" => "error", "label" => "Error", "message"=>"Confirmation code invalid.");
-			$return["errors"]["confirm_code"] = array("class" => "error", "label" => "Error", "message"=>"Confirmation code invalid.");
+			$return["errors"]["confirm_code"] = "Confirmation code invalid.";
 		}
 		return $return;
 	}
@@ -295,7 +295,10 @@ class Account {
 		$user_ID = $result['user_ID'];
 		
 		// validate password
-		//$this->password->validate($request_data['new_password']);
+		if ($this->password->validate($request_data['new_password'])) {
+			$return["errors"]["new_password"] = $this->password->get_errors();
+			return $return;
+		}
 		
 		// get user email
 		$result = $this->db->select('users', array('user_ID' => $user_ID));
@@ -303,22 +306,8 @@ class Account {
 		$result = $this->db->fetch_assoc($result);
 		$user_email = $result['user_email'];
 		
-		// update user
-		$password_hash = $this->password->hash($request_data['new_password'], $user_email);
-		$query = "UPDATE users SET"
-				." password = '{{password}}',"
-				." password_timestamp = '{{password_timestamp}}',"
-				." password_history = CONCAT(password_history, \",{{password}}\" ),"
-				." timestamp_update = '{{timestamp_update}}'"
-				." WHERE user_ID = '{{user_ID}}'";
-		$this->db->query($query,
-			array(
-				'password' => $password_hash,
-				'password_timestamp' => $_SERVER['REQUEST_TIME'],
-				'timestamp_update' => $_SERVER['REQUEST_TIME'],
-				'user_ID' => $user_ID
-			)
-		);
+		// update user password
+		$this->password->update($request_data['new_password'], $user_email);
 		
 		// remove reset request
 		$this->db->delete('user_reset', array('hash' => $request_data['hash']));
@@ -347,7 +336,6 @@ class Account {
 		// validate password
 		if ($this->password->validate($request_data['new_password'])) {
 			$return["errors"]["new_password"] = $this->password->get_errors();
-			return $return;
 		}
 
 		$query = "SELECT password FROM users WHERE user_ID = '{{user_ID}}' LIMIT 0,1";
@@ -357,26 +345,15 @@ class Account {
 		$r = $this->db->fetch_assoc($result);
 
 		if (!$this->password->check($request_data['old_password'], $r['password'], $this->session->cookie['user_email'])) {
-			$return["errors"]["old_password"] = array("class" => "error","message"=>"Your old password does not match.");
+			$return["errors"]["old_password"] = "Your current password does not match.";
+		}
+		
+		if (count($return)) {	// return errors
 			return $return;
 		}
 		
 		if ($user_ID) {
-			$password_hash = $this->password->hash($request_data['new_password'], USER_EMAIL);
-			$query = "UPDATE users SET"
-					." password = '{{password}}',"
-					." password_timestamp = '{{password_timestamp}}',"
-					." password_history = CONCAT(password_history, \",{{password}}\" ),"
-					." timestamp_update = '{{timestamp_update}}'"
-					." WHERE user_ID = '{{user_ID}}'";
-			$this->db->query($query,
-				array(
-					'password' => $password_hash,
-					'password_timestamp' => $_SERVER['REQUEST_TIME'],
-					'timestamp_update' => $_SERVER['REQUEST_TIME'],
-					'user_ID' => $user_ID
-				)
-			);
+			$this->password->update($request_data['new_password'], USER_EMAIL);
 
 			// mail user confirming a password change
 			$mail = new Mail;
@@ -394,30 +371,28 @@ class Account {
 		// unique email?
 		$result = $this->db->select('users', array('user_email' => $email));
 		if ($result) {
-			$return["errors"]["user_email"] = array("class" => "error","message"=>"Not unique");
+			$return["errors"]["user_email"] = "Not unique";
 		}
 
 		$check = $this->session->login($this->session->cookie['user_email'], $request_data['password'], $this->session->cookie['remember']);
 		if (!$check) {	// valid password
-			$return["errors"]["password"] = array("class" => "error","message"=>"Password Invalid");
+			$return["errors"]["password"] = "Password Invalid";
 		}
 
-		if ($result || !$check) {	// return errors
+		if (count($return)) {	// return errors
 			return $return;
 		}
-
-		$this->db->update('users',
-			array(
-				'user_email' => $email,
-				'password' => $this->password->hash($request_data['password'], $request_data['email']),
-				'password_timestamp' => $_SERVER['REQUEST_TIME'],
-				'timestamp_confirm' => 0,
-				'timestamp_update' => $_SERVER['REQUEST_TIME'],
-			),
-			array('user_ID' => USER_ID)
-		);
+		
+		// update email
+		$this->db->update('users', array('user_email' => $email), array('user_ID' => USER_ID));
+		
+		// updte password
+		$this->password->update($request_data['password'], $email);
+		
+		// update session
 		$this->session->update();	// update user_email into session
-
+		
+		// confirm email
 		$hash = hash("sha512", $email);
 		
 		$insert = array('user_ID' => USER_ID, 'hash' => $hash);

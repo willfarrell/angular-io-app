@@ -65,7 +65,6 @@ class User {
 		
 		// check user_ID
 		$db_where = array();
-		$db_select = array();
 		if ($user_name) {
 			$db_where['user_name'] = $user_name;
 		} else {

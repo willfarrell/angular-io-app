@@ -17,7 +17,7 @@
 	          	<div class="controls">
 		            <input type="text" class="span" name="company_name" placeholder="required" data-ng-model="company.company_name" required>
 		            <span class="help-block error" data-ng-show="onboardCompanyForm.company_name.$error.required">Required</span>
-		            <span class="help-block error" data-ng-show="errors.company_name">{{errors.company_name.message}}</span>
+		            <span class="help-block error" data-ng-show="errors.company_name">{{errors.company_name}}</span>
 	            </div>
 	        </div>
 
@@ -25,7 +25,7 @@
 	          	<label class="control-label" for="company_type">Company Type</label>
 	          	<div class="controls">
 		            <select class="input-large" data-ng-model="company.company_type" data-ng-options="key as value for (key, value) in select.company_types" required></select>
-		            <span class="help-block error" data-ng-show"errors.company_type">{{errors.company_type.message}}</span>
+		            <span class="help-block error" data-ng-show"errors.company_type">{{errors.company_type}}</span>
 	            </div>
 	        </div>-->
 
@@ -35,7 +35,7 @@
 		            <input type="url" class="span" name="company_url" data-ng-model="company.company_url" placeholder="http://">
 		            <!--<span class="help-block error" data-ng-show="onboardCompanyForm.company_name.$error.required">Required</span>-->
 		            <span class="help-block error" data-ng-show="onboardCompanyForm.company_url.$error.url">Not valid url</span>
-		            <span class="help-block error" data-ng-show="errors.company_url">{{errors.company_url.message}}</span>
+		            <span class="help-block error" data-ng-show="errors.company_url">{{errors.company_url}}</span>
 	            </div>
 	        </div>
 
@@ -43,7 +43,7 @@
 	          	<label class="control-label" for="address_1">Address</label>
 	          	<div class="controls">
 		            <input type="text" class="span" data-ng-model="company.address_1" placeholder="street address, P.O. box, c/o" required>
-		            <span class="help-block error" data-ng-show="errors.address_1">{{errors.address_1.message}}</span>
+		            <span class="help-block error" data-ng-show="errors.address_1">{{errors.address_1}}</span>
 	            </div>
 	        </div>
 
@@ -51,7 +51,7 @@
 	          	<label class="control-label" for="address_2"></label>
 	          	<div class="controls">
 		            <input type="text" class="span" data-ng-model="company.address_2" placeholder="apartment, suite, unit, building, floor, etc.">
-		            <span class="help-block error" data-ng-show="errors.address_2">{{errors.address_2.message}}</span>
+		            <span class="help-block error" data-ng-show="errors.address_2">{{errors.address_2}}</span>
 	            </div>
 	        </div>
 
@@ -59,7 +59,7 @@
 	          	<label class="control-label" for="mail_code">Postal/Zip Code</label>
 	          	<div class="controls">
 		            <input type="text" class="span" data-ng-model="company.mail_code" required>
-		            <span class="help-block error" data-ng-show="errors.mail_code">{{errors.mail_code.message}}</span>
+		            <span class="help-block error" data-ng-show="errors.mail_code">{{errors.mail_code}}</span>
 	            </div>
 	        </div>
 
@@ -67,7 +67,7 @@
 	          	<label class="control-label" for="city">City</label>
 	          	<div class="controls">
 		            <input type="text" class="span" data-ng-model="company.city" required>
-		            <span class="help-block error" data-ng-show="errors.city">{{errors.city.message}}</span>
+		            <span class="help-block error" data-ng-show="errors.city">{{errors.city}}</span>
 		            <p class="help-block error"></p>
 	            </div>
 	        </div>
@@ -76,7 +76,7 @@
 	          	<label class="control-label" for="region_code">Province/Region/State</label>
 	          	<div class="controls">
 		            <select class="span" data-ng-model="company.region_code" data-ng-options="key as value for (key, value) in json.regions[company.country_code]" required></select>
-		            <span class="help-block error" data-ng-show="errors.region_code">{{errors.region_code.message}}</span>
+		            <span class="help-block error" data-ng-show="errors.region_code">{{errors.region_code}}</span>
 	            </div>
 	        </div>-->
 
@@ -84,7 +84,7 @@
 	          	<label class="control-label" for="country_code">Country</label>
 	          	<div class="controls">
 		            <select class="span" data-ng-model="company.country_code" data-ng-options="key as value for (key, value) in json.countries" required></select>
-		            <span class="help-block error" data-ng-show="errors.country_code">{{errors.country_code.message}}</span>
+		            <span class="help-block error" data-ng-show="errors.country_code">{{errors.country_code}}</span>
 	            </div>
 	        </div>
 
@@ -94,7 +94,7 @@
 		          	<div class="input-prepend">
 		                <span class="add-on">+{{json.calling_codes[company.country_code]}}</span><input type="text" class="" name="company_phone" data-ng-model="company.company_phone">
 		            </div>
-		            <span class="help-block error" data-ng-show="errors.company_phone">{{errors.company_phone.message}}</span>
+		            <span class="help-block error" data-ng-show="errors.company_phone">{{errors.company_phone}}</span>
 	            </div>
 	        </div>-->
 

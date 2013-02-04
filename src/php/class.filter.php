@@ -183,13 +183,13 @@ class Filter {
   	}
   	
   	function get_errors($class = 'error') {
-  		$alerts = array();
+  		$errors = array();
   		foreach ($this->_field_data as $key => $value) {
-	  		//if ($value['error']) $errors[$key] = $value['error'];
-	  		if ($value['error']) $alerts[$key] = array('label' => $value['label'], 'message' => $value['error']);
+	  		if ($value['error']) $errors[$key] = $value['error'];
+	  		//if ($value['error']) $errors[$key] = array('label' => $value['label'], 'message' => $value['error']);
   		}
   		
-	  	return $alerts;
+	  	return $errors;
   	}
   	
   	/**

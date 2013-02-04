@@ -48,7 +48,7 @@
       	<label class="control-label" for="address_1">Location Name</label>
       	<div class="controls">
             <input type="text" class="span" data-ng-model="location.location_name" placeholder="Head Office" required>
-            <span class="help-block error" data-ng-show="errors.address_1">{{errors.address_1.message}}</span>
+            <span class="help-block error" data-ng-show="errors.address_1">{{errors.address_1}}</span>
         </div>
     </div>
 
@@ -56,7 +56,7 @@
       	<label class="control-label" for="address_1">Address</label>
       	<div class="controls">
             <input type="text" class="span" data-ng-model="location.address_1" placeholder="street address, P.O. box, c/o" required>
-            <span class="help-block error" data-ng-show="errors.address_1">{{errors.address_1.message}}</span>
+            <span class="help-block error" data-ng-show="errors.address_1">{{errors.address_1}}</span>
         </div>
     </div>
 
@@ -64,7 +64,7 @@
       	<label class="control-label" for="address_2"></label>
       	<div class="controls">
             <input type="text" class="span" data-ng-model="location.address_2" placeholder="apartment, suite, unit, building, floor, etc.">
-            <span class="help-block error" data-ng-show="errors.address_2">{{errors.address_2.message}}</span>
+            <span class="help-block error" data-ng-show="errors.address_2">{{errors.address_2}}</span>
         </div>
     </div>
 
@@ -72,7 +72,7 @@
       	<label class="control-label" for="city">City</label>
       	<div class="controls">
             <input type="text" class="span" data-ng-model="location.city" required>
-            <span class="help-block error" data-ng-show="errors.city">{{errors.city.message}}</span>
+            <span class="help-block error" data-ng-show="errors.city">{{errors.city}}</span>
             <p class="help-block error"></p>
         </div>
     </div>
@@ -81,7 +81,7 @@
       	<label class="control-label" for="region_code">Province/Region/State</label>
       	<div class="controls">
             <select class="span" data-ng-model="location.region_code" data-ng-options="key as value for (key, value) in json.regions[location.country_code]" required></select>
-            <span class="help-block error" data-ng-show="errors.region_code">{{errors.region_code.message}}</span>
+            <span class="help-block error" data-ng-show="errors.region_code">{{errors.region_code}}</span>
         </div>
     </div>
 
@@ -89,7 +89,7 @@
       	<label class="control-label" for="country_code">Country</label>
       	<div class="controls">
             <select class="span" data-ng-model="location.country_code" data-ng-options="key as value for (key, value) in json.countries" data-ng-change="loadRegions(location.country_code)" required></select>
-            <span class="help-block error" data-ng-show="errors.country_code">{{errors.country_code.message}}</span>
+            <span class="help-block error" data-ng-show="errors.country_code">{{errors.country_code}}</span>
         </div>
     </div>
     
@@ -97,7 +97,7 @@
       	<label class="control-label" for="mail_code">Postal/Zip Code</label>
       	<div class="controls">
             <input type="text" class="span" data-ng-model="location.mail_code" required>
-            <span class="help-block error" data-ng-show="errors.mail_code">{{errors.mail_code.message}}</span>
+            <span class="help-block error" data-ng-show="errors.mail_code">{{errors.mail_code}}</span>
         </div>
     </div>
     
@@ -107,7 +107,7 @@
           	<div class="input-prepend">
                 <span class="add-on">+{{json.calling_codes[location.country_code]}}</span><input type="text" class="" name="location_phone" placeholder="(000) 000-0000" data-ng-model="location.location_phone" data-input-mask="(999) 999-9999 x999999">
             </div>
-            <span class="help-block error" data-ng-show="errors.location_phone">{{errors.location_phone.message}}</span>
+            <span class="help-block error" data-ng-show="errors.location_phone">{{errors.location_phone}}</span>
         </div>
     </div>
     

@@ -548,6 +548,7 @@ angular.module('io.init.rootScope', [])
 	// user/edit
 	$rootScope.validate.password = function(scope, value, sameas, settings) {
 		console.log('validate.password(scope, "'+value+'", "'+sameas+'", settings)');
+		console.log(settings);
 		
 		value || (value = '');
 		sameas || (sameas = '');

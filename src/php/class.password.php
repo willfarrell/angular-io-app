@@ -45,8 +45,26 @@ class Password {
 	
 	function get_errors($class = 'error') {
   		// array_walk($words, create_function('&$str', '$str = "<p>$str</p>";'));
-	  	return array('class' => $class, 'message' => implode("<br>", $this->errors));
+	  	return implode("<br>", $this->errors);
   	}
+	
+	function update($password, $email) {
+		$password_hash = $this->hash($password, $email);
+		$query = "UPDATE users SET"
+				." password = '{{password}}',"
+				." password_timestamp = '{{password_timestamp}}',"
+				." password_history = CONCAT(password_history, \",{{password}}\" ),"
+				." timestamp_update = '{{timestamp_update}}'"
+				." WHERE user_ID = '{{user_ID}}'";
+		$this->db->query($query,
+			array(
+				'password' => $password_hash,
+				'password_timestamp' => $_SERVER['REQUEST_TIME'],
+				'timestamp_update' => $_SERVER['REQUEST_TIME'],
+				'user_ID' => USER_ID
+			)
+		);
+	}
 	
 	/**
 	 *	Runs validation checks a password
@@ -55,18 +73,16 @@ class Password {
 		$return = true;
 		$this->timer->start('validate');
 		if ($this->length($password) && $this->charset($password)) {
-			$return = ($return && $this->dictionary($password));
+			$this->dictionary($password);
 			//$this->black_list($password); // passwords on the black list don't meet the OWASP requ, thus not needed to be run
 			
 			if (USER_ID) {
-				$return = ($return && $this->user_past_password($password));
-				$return = ($return && $this->user_input_data($password));
+				$this->user_past_password($password);
+				$this->user_input_data($password);
 			}
-		} else {
-			$return = false;
 		}
 		$this->timer->stop('validate');
-		return $return;
+		return count($this->errors) ? true : false;
 	}
 	
 	/**
@@ -85,7 +101,7 @@ class Password {
 		$length = strlen($password);
 		
 		if ($length < $this->settings['min_length']) {
-			$error["min_length"] = "Password too short, must be {$this->settings['min_length']} or more";
+			$this->errors["min_length"] = "Password too short, must be {$this->settings['min_length']} or more";
 			return false;
 		}
 		return true;
@@ -202,8 +218,8 @@ class Password {
 		$history = explode(",", $user['password_history']);
 		
 		foreach ($history as $hash) {
-			if (!$this->check($password, $hash, USER_EMAIL)) {
-				$this->errors['user_past_password'] = true;
+			if ($this->check($password, $hash, USER_EMAIL)) {
+				$this->errors['user_past_password'] = "You have already used this password.  Please choose a new unique password.";
 				return false;
 			}
 		}

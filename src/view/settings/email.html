@@ -9,7 +9,7 @@
       		<input type="email" class="span" name="user_email" placeholder="" data-ng-model="email.user_email" required/>
         	<!--<span class="help-block error" data-ng-show="userEmailForm.user_email.$error.required">Required</span>-->
         	<span class="help-block error" data-ng-show="userEmailForm.user_email.$error.email">Not valid email.</span>
-        	<span class="help-block error" data-ng-show="errors.email.user_email">{{errors.email.user_email.message}}</span>
+        	<span class="help-block error" data-ng-show="errors.email.user_email">{{errors.email.user_email}}</span>
         </div>
     </div>
 
@@ -18,7 +18,7 @@
       	<div class="controls">
       		<input type="password" name="password" class="span" placeholder="" data-ng-model="email.password" required/>
       		<!--<span class="help-block error" data-ng-show="userEmailForm.password.$error.required">Password is required</span>-->
-      		<span class="help-block error" data-ng-show="errors.email.password">{{errors.email.password.message}}</span>
+      		<span class="help-block error" data-ng-show="errors.email.password">{{errors.email.password}}</span>
       	</div>
     </div>
     
