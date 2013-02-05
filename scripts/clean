@@ -1,4 +1,3 @@
 #!/bin/sh
 
-
 rm -rf temp dist dist-web dist-device dist-api

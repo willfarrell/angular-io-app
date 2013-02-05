@@ -8,5 +8,3 @@
 #rm -rf ~/.bower # cache
 rm -rf components/
 yeoman update --force
-
-#sh build
