@@ -233,7 +233,9 @@ class xmlToArrayParser {
   }
 
   /** Free the parser. */
-  public function __destruct() { xml_parser_free($this->parser);}
+  public function __destruct() { 
+  	//xml_parser_free($this->parser);
+  }
 
   public function getArray() {
 	  return $this->array;

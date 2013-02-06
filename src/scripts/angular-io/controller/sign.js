@@ -1,11 +1,9 @@
 //angular.module('io.controller.sign', [])
-//.controller('SignCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
-SignCtrl.$inject = ['$scope', '$http', '$routeParams'];
-function SignCtrl($scope, $http, $routeParams) {
+//.controller('SignCtrl', ['$scope', '$http', '$cookies', '$routeParams', function($scope, $http, $cookies, $routeParams) {
+SignCtrl.$inject = ['$scope', '$http', '$cookies', '$routeParams'];
+function SignCtrl($scope, $http, $cookies, $routeParams) {
 	console.log('SignCtrl ('+$scope.$id+') '+$routeParams.action+' '+$routeParams.redirect);
 	$scope.errors = {};		// form errors
-
-	$scope.referral = $routeParams.ref;	// referral hash_(32)
 
 	$scope.action = $routeParams.action ? $routeParams.action : 'in';
 
@@ -16,10 +14,14 @@ function SignCtrl($scope, $http, $routeParams) {
 		//country_code: $scope.$locale.id.substr(3,2).toUpperCase(),
 	};
 
-
+	$scope.totp = {
+		value:'',
+		timer:60
+	};
+	
 	$scope.account_signup = function() {
 		console.log('account_signup()');
-		$scope.signup.referral = $scope.referral;
+		$scope.signup.referral = $cookies.referral;
 
 		$http.post($scope.settings.server+'account/signup', $scope.signup)
 			.success(function(data) {

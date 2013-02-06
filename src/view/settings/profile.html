@@ -15,7 +15,7 @@
     <div class="control-group" data-ng-class="{error: (errors.user_name_first)}">
       	<label class="control-label" for="user_name_first">First Name</label>
       	<div class="controls">
-            <input type="text" class="span" name="user_name_first" placeholder="" data-ng-model="user.user_name_first">
+            <input type="text" class="input-block-level" name="user_name_first" placeholder="" data-ng-model="user.user_name_first">
             <!--<span class="help-block error" data-ng-show="userForm.user_name_first.$error.required">Required</span>-->
             <span class="help-block error" data-ng-show="errors.user.user_name_first">{{errors.user.user_name_first}}</span>
         </div>
@@ -24,14 +24,21 @@
     <div class="control-group" data-ng-class="{error: (errors.user.user_name_last)}">
       	<label class="control-label" for="user_name_last">Last Name</label>
       	<div class="controls">
-            <input type="text" class="span" name="user_name_last" placeholder="" data-ng-model="user.user_name_last"/>
+            <input type="text" class="input-block-level" name="user_name_last" placeholder="" data-ng-model="user.user_name_last"/>
             <!--<span class="help-block error" data-ng-show="userForm.user_name_last.$error.required">Required</span>-->
             <span class="help-block error" data-ng-show="errors.user.user_name_last">{{errors.user.user_name_last}}</span>
         </div>
     </div>
     
+    <div class="control-group" data-ng-class="{error: (errors.user_function)}">
+      	<label class="control-label" for="user_function">Title</label>
+      	<div class="controls">
+            <input type="text" class="input-block-level" name="user_function" data-ng-model="user.user_function" placeholder="ie Engineer">
+            <span class="help-block error" data-ng-show="errors.user_function">{{errors.user_function}}</span>
+        </div>
+    </div>
     
-    <!--<div class="control-group" data-ng-class="{error: (errors.user_phone)}">
+    <div class="control-group" data-ng-class="{error: (errors.user_phone)}">
       	<label class="control-label" for="user_phone">Phone</label>
       	<div class="controls">
           	<div class="input-prepend">
@@ -39,21 +46,39 @@
             </div>
             <span class="help-block error" data-ng-show="errors.user_phone">{{errors.user_phone}}</span>
         </div>
-    </div>-->
+    </div>
     
     <div class="control-group" data-ng-class="{error: (errors.user_url)}">
       	<label class="control-label" for="user_url">Website</label>
       	<div class="controls">
-            <input type="url" class="span" name="user_url" data-ng-model="user.user_url" placeholder="https://">
+            <input type="url" class="input-block-level" name="user_url" data-ng-model="user.user_url" placeholder="https://">
             <span class="help-block error" data-ng-show="userForm.user_url.$error.url">Not valid url</span>
             <span class="help-block error" data-ng-show="errors.user_url">{{errors.user_url}}</span>
         </div>
     </div>
     
+    <!--<div class="control-group" data-ng-class="{error: (errors.user_url)}">
+      	<label class="control-label" for="user_url">Date of Birth</label>
+      	<div class="controls form-inline">
+            <select class="input-small" data-ng-model="dob.y" data-ng-options="n for n in [] | range:1900:2013">
+	            <option value="">YYYYY</option>
+            </select>
+            <select class="input-small" data-ng-model="dob.m" data-ng-options="key as value for (key, value) in json.month">
+	            <option value="">MMM</option>
+            </select>
+            <select class="input-small" data-ng-model="dob.d" data-ng-options="key as value for (key, value) in json.day(dob.y,dob.m)">
+	            <option value="">DD</option>
+            </select>
+            <span class="help-block error" data-ng-show="userForm.user_url.$error.url">Not valid url</span>
+            <span class="help-block error" data-ng-show="errors.user_url">{{errors.user_url}}</span>
+        </div>
+    </div>-->
+    
+    
     <div class="control-group">
         <label class="control-label" for="user_details">Bio</label>
 	    <div class="controls">
-		    <textarea class="span" rows="4" data-ng-model="user.user_details" placeholder=""></textarea>
+		    <textarea class="input-block-level" rows="4" data-ng-model="user.user_details" placeholder=""></textarea>
 			<span class="pull-right">{{160 - user.user_details.length}}</span>
 			<span class="help-block">About yourself in 160 characters or less.</span>
 	    </div>

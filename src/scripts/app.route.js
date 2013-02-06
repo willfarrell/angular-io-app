@@ -17,6 +17,8 @@ function($routeProvider) {
 		.when('/profile/:profile_name', {templateUrl:_view_+'user/profile.html'}) // used for profile name
 		.when('/user/edit', 		{templateUrl:_view_+'user/edit.html'})
 		//when('/user/follow', 		{templateUrl:_view_+'user/follow.html'})
+		.when('/user/message', 		{templateUrl:_view_+'user/message.html'})
+		.when('/user/message/:user_ID', {templateUrl:_view_+'user/message.html'})
 		.when('/user/invite', 		{templateUrl:_view_+'user/invite.html'})
 		.when('/user/profile', 		{templateUrl:_view_+'user/profile.html'})
 		.when('/user/profile/:profile_ID', {templateUrl:_view_+'user/profile.html'})

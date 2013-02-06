@@ -24,7 +24,7 @@ function PasswordCtrl($scope, $http) {
 	
 	$scope.resetPassword = function(email) {
 		console.log('reset_password()');
-		$http.get($scope.settings.server+'account/reset_email/'+encodeURIComponent(email))
+		$http.get($scope.settings.server+'account/reset_send/'+encodeURIComponent(email))
 			.success(function(data) {
 				console.log('reset_password.get.success');
 				console.log(data);

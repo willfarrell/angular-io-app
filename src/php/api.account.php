@@ -49,7 +49,8 @@ class Account {
 		$return["user_level"]  = $r['user_level'];
 		$return["password_timestamp"]  = $r['password_timestamp']; // for password reset reminder
 		$return["password_age"] = floor(($_SERVER["REQUEST_TIME"] - $r['password_timestamp'])/86400);
-
+		$return["timestamp_create"]  = $r['timestamp_create']; // for onboard trigger
+		
 		$return["ref"]   = base_convert($r['user_ID'],10,32);
 		$return["email_confirm"] = ($r['timestamp_confirm']) ? true : false;
 
@@ -60,6 +61,7 @@ class Account {
 			"user_name_first" => $r['user_name_first'],
 			"user_name_last" => $r['user_name_last'],
 		);
+		
 		$return["company_ID"] = $r['company_ID'];
 		// company
 		if ($return["company_ID"]) {
@@ -120,13 +122,14 @@ class Account {
 		$password_hash = $this->password->hash($request_data["password"], $email);
 		$user = array(
 			"user_email"   		  => $request_data["email"],
+			"user_level"		  => 9,
 			//"user_name"   		  => $request_data["user_name"],
 			"password"     		  => $password_hash,
 			"password_history"    => $password_hash,
 			'password_timestamp'  => $_SERVER['REQUEST_TIME'],
 			'referral_user_ID'    => $referral_user_ID,
-			'timestamp_create'    => $_SERVER['REQUEST_TIME'],
-			'timestamp_update'    => $_SERVER['REQUEST_TIME'],
+			//'timestamp_create'    => $_SERVER['REQUEST_TIME'],
+			//'timestamp_update'    => $_SERVER['REQUEST_TIME'],
 		);
 		$user_ID = $this->db->insert('users', $user);
 
@@ -137,7 +140,7 @@ class Account {
 		$this->db->insert_update('user_confirm', $insert, $insert);
 
 		$mail = new Mail;
-		$mail->send($email, 'signup_confirm_email', array("hash" => urlencode($hash)));
+		$mail->send($email, 'signup_confirm_email', array("hash" => $hash));
 
 		return $return;
 	}
@@ -149,7 +152,7 @@ class Account {
 		$this->db->insert_update('user_confirm', $insert, $insert);
 
 		$mail = new Mail;
-		$mail->send(USER_EMAIL, 'signup_confirm_email', array("hash" => urlencode($hash)));
+		$mail->send(USER_EMAIL, 'signup_confirm_email', array("hash" => $hash));
 	}
 
 	//
@@ -212,7 +215,7 @@ class Account {
 
 	//!-- Forgot password process --//
 	// Reset Step 1 - Send email to start process
-	function reset_email($email=NULL) {
+	function reset_send($email=NULL) {
 		$return = array();
 
 		$this->filter->set_request_data('email', $email);
@@ -228,9 +231,10 @@ class Account {
 		if ($result) { // user exists
 			$user = $this->db->fetch_assoc($result);
 			$expire_timestamp = $_SERVER['REQUEST_TIME']+360;
-			$hash = preg_replace("/[^\w]/", "", $this->password->hash($email)); // strip special check  to save url encoding
-
-			$mail->send($email, 'password_reset_request', array("hash" => urlencode($hash)));
+			
+			$hash = substr(hash("sha512", $email+$_SERVER['REQUEST_TIME']), 0, 16);
+			
+			$mail->send($email, 'password_reset_request', array("hash" => $hash));
 			
 			$insert = array('user_ID' => $user['user_ID'], 'hash' => $hash, 'expire_timestamp' => $expire_timestamp);
 			//$this->redis->hmset($hash, array('hash' => $hash, 'user_ID' => $user['user_ID'], 'expire_timestamp' => $expire_timestamp));
@@ -288,13 +292,15 @@ class Account {
 		$request_data = $this->filter->get_request_data();
 
 		// check hash
-		$query = "SELECT user_ID FROM user_reset WHERE hash = '{{hash}}' LIMIT 0,1";
+		$query = "SELECT user_ID, timestamp_confirm FROM user_reset WHERE hash = '{{hash}}' LIMIT 0,1";
 		$result = $this->db->query($query, array('hash' => $request_data['hash']));
 		if (!$result) return false; // user / pass combo not found
 		$result = $this->db->fetch_assoc($result);
 		$user_ID = $result['user_ID'];
+		$timestamp_confirm = $result['timestamp_confirm'];
 		
 		// validate password
+		$this->__log($request_data['new_password']);
 		if ($this->password->validate($request_data['new_password'])) {
 			$return["errors"]["new_password"] = $this->password->get_errors();
 			return $return;
@@ -305,6 +311,9 @@ class Account {
 		if (!$result) return false; // will never fire
 		$result = $this->db->fetch_assoc($result);
 		$user_email = $result['user_email'];
+	
+		// new Password w/ $user_ID, $user_email - because not signed in
+		$this->password = new Password($user_ID, $user_email); 
 		
 		// update user password
 		$this->password->update($request_data['new_password'], $user_email);
@@ -315,7 +324,12 @@ class Account {
 		// mail user
 		$mail = new Mail;
 		$mail->send($user_email, 'password_changed_notification');
-
+		
+		// update email confirm timestamp if not already don so - happens when extra users are added to a company
+		if (!$timestamp_confirm) {
+			$this->db->update('users', array('timestamp_confirm' => $_SERVER['REQUEST_TIME']), array('user_ID' => USER_ID));
+		}
+		
 		return $return;
 	}
 	//-- End Forgot password process --//
@@ -393,13 +407,13 @@ class Account {
 		$this->session->update();	// update user_email into session
 		
 		// confirm email
-		$hash = hash("sha512", $email);
+		$hash = substr(hash("sha512", $email+$_SERVER['REQUEST_TIME']), 0, 16);
 		
 		$insert = array('user_ID' => USER_ID, 'hash' => $hash);
 		$this->db->insert_update('user_confirm', $insert, $insert);
 
 		$mail = new Mail;
-		$mail->send($email, 'email_changed_notification', array("hash" => urlencode($hash)));
+		$mail->send($email, 'email_changed_notification', array("hash" => $hash));
 
 		return $return;
 	}

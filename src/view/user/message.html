@@ -1,0 +1,55 @@
+<div class="container" data-ng-init="message.loadMessages()">
+    <div class="row">
+      	<div class="span4">
+      		<input data-ng-model="query" type="text" placeholder="Search" class="input-block-level">
+      		<style >
+      		.active {
+	      		background-color: #333;
+      		}
+      		</style>
+	        <ul class="nav nav-tabs nav-stacked">
+	        	<li data-ng-repeat="m in message.list | filter:query | orderBy:'-timestamp'">
+	        		<a href="" data-ng-click="message.loadThread(m.user.user_ID, m.user.user_name_first+' '+m.user.user_name_last)"><!-- #/user/message/{{m.user.user_ID}} -->
+		        		<p class="pull-right">
+		        			<i data-ng-class="{true:'icon-envelope', false:'icon-blank'}[(m.read == 0 && session.user_ID == m.user.user_ID)]"></i>
+		        			&nbsp;{{m.timestamp*1000 | date:'shortDate'}}</p>
+		        		<img data-ng-src="img/user/{{m.user.user_ID}}.png?{{filepicker.timestamp}}" class="img-rounded" style="width:50px; height:50px; margin-right:10px" align="left"/>
+		        		<b class="">{{m.user.user_name_first}} {{m.user.user_name_last}}&nbsp;</b>
+		        		<p>{{m.message | truncate:20}}</p>
+		        	</a>
+	        	</li>
+	        </ul>
+        </div>
+      	<div class="span7 well-white">
+      		<form name="messageForm" data-ng-show="message.thread.length">
+	      		<legend>{{message.to_name}}</legend>
+	    		<hr>
+	    		
+	    		<ul id="thread" class="unstyled control-group" style="height:400px; overflow-y:scroll;">
+	    			<li data-ng-repeat="m in message.thread | orderBy:'timestamp'" class="well">
+		    			<p class="pull-right">{{m.timestamp*1000 | date:'shortTime'}}</p>
+		    			<img data-ng-src="img/user/{{m.user_from_ID}}.png?{{filepicker.timestamp}}" class="img-rounded inline" style="width:25px; height:25px; margin-right:5px" align="left"/>
+		    			<b data-ng-hide="m.user_from_ID == session.user_ID"><a href="#/user/profile/{{m.user_from_ID}}">{{message.to_name}}</a></b>
+		    			<b data-ng-show="m.user_from_ID == session.user_ID">{{session.user.user_name_first}} {{session.user.user_name_last}}</b><br>
+		    			<p>{{m.message}}</p>
+	    			</li>
+	    		</ul>
+	    		
+	    		<hr>
+	    		<div class="control-group">
+			      	<div class="controls">
+				      	<textarea name="message" class="input-block-level" data-ng-model="message.compose.message" rows="6" data-ng-minlength="1" required></textarea>
+			      	</div>
+	    		</div>
+				<div class="control-group pull-right">
+			      	<div class="controls">
+				      	<button class="btn btn-primary" data-ng-click="message.send()" data-ng-disabled="messageForm.$invalid">Send</button>
+			      	</div>
+				</div>
+      		</form>
+      		<div data-ng-hide="message.thread.length">
+      			<br><p class="center">No conversation selected.</p>
+      		</div>
+	    </div>
+	</div>
+</div>

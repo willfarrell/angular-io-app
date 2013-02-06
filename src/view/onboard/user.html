@@ -13,32 +13,32 @@
     		</legend>
 
     		 <div class="control-group">
-	    		<label class="control-label pull-right" for="user_img">
+	    		<label class="control-label" for="user_img">
 	    			
 	    		</label>
 
-				<div class="controls">
+				<div class="controls center">
 		    		<img data-ng-src="img/user/{{session.user_ID}}.png?{{filepicker.timestamp}}" class="img-polaroid" style="width:100px; height:100px;"/>
 	    			<button class="btn" data-ng-click="filepicker.open(filepicker.profile_user);">Change photo</button>
 	    			<!--<span class="help-block">This photo is your identity and appears with your content.</span>-->
 		    	</div>
 		    </div>
-
-    		<!--<div class="control-group" data-ng-class="{error: (errors.user.user_name)}">
+{{user.user_name}}
+    		<div class="control-group" data-ng-class="{error: (errors.user.user_name)}" data-ui-if="settings.account.user_name">
 	          	<label class="control-label" for="user_name">Username</label>
 	          	<div class="controls">
-		            <input type="text" class="span" name="user_name" placeholder="required" data-ng-model="user.user_name" data-ng-minlength="3" data-ng-maxlength="14" data-ng-pattern="/^\w*$/" data-ng-change="check.user_name(user.user_name)" required>
+		            <input type="text" class="input-block-level" name="user_name" placeholder="required" data-ng-model="user.user_name" data-ng-minlength="3" data-ng-maxlength="14" data-ng-pattern="/^\w*$/" data-ng-change="check.user_name(user.user_name)" required>
 		            <span class="help-block error" data-ng-show="userForm.user_name.$error.pattern">only alphanumeric characters and underscores allowed</span>
 		            <span class="help-block error" data-ng-show="userForm.user_name.$error.minlength">too short</span>
 		            <span class="help-block error" data-ng-show="userForm.user_name.$error.maxlength">too long</span>
 		            <span class="help-block error" data-ng-show="errors.user.user_name">{{errors.user.user_name}}</span>
 	            </div>
-	        </div>-->
+	        </div>
 
 	        <div class="control-group" data-ng-class="{error: (errors.user_name_first)}">
 	          	<label class="control-label" for="user_name_first">First Name</label>
 	          	<div class="controls">
-		            <input type="text" class="span" name="user_name_first" placeholder="required" data-ng-model="user.user_name_first" required>
+		            <input type="text" class="input-block-level" name="user_name_first" placeholder="required" data-ng-model="user.user_name_first" required>
 		            <span class="help-block error" data-ng-show="errors.user_name_first">{{errors.user_name_first}}</span>
 		            <span class="help-block error" data-ng-show="userForm.user_name_first.$error.required">Required</span>
 	            </div>
@@ -47,7 +47,7 @@
 	        <div class="control-group" data-ng-class="{error: (errors.user.user_name_last)}">
 	          	<label class="control-label" for="user_name_last">Last Name</label>
 	          	<div class="controls">
-		            <input type="text" class="span" name="user_name_last" placeholder="optional" data-ng-model="user.user_name_last">
+		            <input type="text" class="input-block-level" name="user_name_last" placeholder="optional" data-ng-model="user.user_name_last">
 		            <span class="help-block error" data-ng-show="errors.user.user_name_last">{{errors.user.user_name_last}}</span>
 		            <span class="help-block error" data-ng-show="userForm.user_name_last.$error.required">Required</span>
 	            </div>

@@ -1,7 +1,7 @@
 angular.module('io.init.settings', [])
 .run(['$rootScope', function($rootScope) {
 	console.log('io.init.settings ('+$rootScope.$id+')');
-	$rootScope.version = "0.1.0";
+	$rootScope.version = "β.3.1";
 	$rootScope.settings = {
 		'client'		:'',				// https://static.domain.com/
 		'server'		:'',				// https://api.domain.com/
@@ -26,7 +26,8 @@ angular.module('io.init.settings', [])
 			// load json files into $rootScope.json[key] = JSON.parse(file);
 			'json'		:[						// array of file names, in lang only folder ie en to be placed in a list
 				'countries',					// {'country_code':'country_name'}
-				'languages'						// {'en-ca':'English (Canadian)'}
+				'languages',					// {'en-ca':'English (Canadian)'}
+				'user_levels'
 			],
 			'options'	:['en']					// which locales to allow
 		},

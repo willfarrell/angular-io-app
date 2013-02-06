@@ -111,6 +111,7 @@ class MySQL
     private function _run($query)
     {
         $return = mysql_query($query, $this->connection_mysql);
+        $this->last_query = $query;
         //echo $query;
         if (mysql_error()) {
             echo $query."<br>";
@@ -193,8 +194,6 @@ class MySQL
                 $query = preg_replace("/{{".$key."}}/i", $value, $query);
             }*/
         }
-        
-        $this->last_query = $query;
         
         $select = (substr($query, 0, 6) == 'SELECT');
         $result = $this->_run($query);

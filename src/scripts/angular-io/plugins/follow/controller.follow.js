@@ -10,7 +10,8 @@ function FollowCtrl($scope, $http) {
 	$scope.type = $scope.follow.type;
 	
 	$scope.follow_suggest = {};
-
+	$scope.following = {};
+	
 	//$scope.group_name = '';	// form
 	$scope.setFollowType = function(type) { $scope.type = type; };
 	
@@ -31,7 +32,29 @@ function FollowCtrl($scope, $http) {
 	};
 
 	$scope.loadFollowing = function(id, query) {
-		$scope.follow.loadFollowing($scope.type, id, query);
+		//$scope.follow.loadFollowing($scope.type, id, query); // session user
+		
+		id || (id = 0);
+		query || (query = '');
+		$http.get('/follow/ing/'+id+'/'+query)
+			.success(function(data) {
+				console.log('loadFollowing.get.success');
+				console.log(data);
+				console.log(typeof data);
+				for (var i in data) {
+					if (i) {
+						data[i].following = true;
+					} else {
+						delete data[i];
+					}
+				}
+				
+				$scope.following = data; // for profile page
+			})
+			.error(function() {
+				console.log('loadFollowing.get.error');
+				$rootScope.http_error();
+			});
 	};
 	
 	$scope.loadSuggestions = function(id) {

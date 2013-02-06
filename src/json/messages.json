@@ -15,6 +15,10 @@
 		"subject": "",
 		"message": "You (or someone else) entered this email address when trying to change the password of an account at {{global:site_name}}.\n\nHowever, this email address is not in our database of registered users and therefore the attempted password change has failed.\n\nIf you are a customer of {{global:site_name}} and were expecting this email, please try again using the email address you gave when you opening your account.\n\nIf you are not an {{global:site_name}} customer, please ignore this email.\n\nFor information about {{global:site_name}}, please visit {{global:site_url}}.\n\nThis action was requested from the IP address {{_SERVER:REMOTE_ADDR}}."
 	},
+	"password_reset_request_new": {
+		"subject": "Account Created",
+		"message": "Hopefully this email doesn't come as a surprise.  An account has just been created for you at {{global:site_name}}.\n\nTo complete your account, proceed to\n {{global:site_url}}#/reset/{{args:hash}}\n\n\nThis action was requested from the IP address {{_SERVER:REMOTE_ADDR}}."
+	},
 	"password_changed_notification": {
 		"subject": "Account Password Changed",
 		"message": "Your {{global:site_name}} account password was just changed.\n\nIf you didn't make this change, request a password reset immediately by visiting {{global:site_url}}#/sign/reset."

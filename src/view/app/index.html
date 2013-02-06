@@ -21,13 +21,39 @@
 		</ul>
 		</div>
 		<div class="span6">
-			<p>Copyright (c) 2012 Farrell Labs</p>
-
-	<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
-
-	<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
-
-	<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+			<form class="form-search">
+				<input data-ng-model="search.query" type="text" class="input-medium search-query inline" placeholder="Search directory" data-ng-change="loadSearch()">
+				
+				<label class="radio inline">
+					<input type="radio" ng-model="search.type" value="company" data-ng-change="loadSearch()">Company
+				</label>
+				<label class="radio inline">
+					<input type="radio" ng-model="search.type" value="user" data-ng-change="loadSearch()">User
+				</label>
+			</form>
+			
+			<table class="table table-striped">
+				<thead><tr><th>&nbsp;</th></tr></thead>
+				<tbody>
+				<tr class="ng-click" data-ng-repeat="r in results">
+					<td data-ng-show="search.type == 'user' && r.user_name_first">
+						<img data-ng-src="img/user/{{r.ID}}.png" class="img-polaroid" width="50" height="50" align="left" style="margin-right:10px">
+						<p><b>{{r.user_name_first}} {{r.user_name_last}}</b></p>
+			            <p data-ng-show="r.user_function">{{r.user_function}}</p>
+			            <div class="btn-group">
+			            	<button class="btn" data-ng-click="message.open(r.user_ID, r.user_name_first+' '+r.user_name_last)"><i class="icon-envelope"></i></button>
+			            	<!--<a class="btn" rel="tooltip" title="+{{json.calling_codes[company.location.country_code]}} {{r.user_phone | phone}}" href="tel:+{{json.calling_codes[company.location.country_code]}} {{r.user_phone}}" data-ng-disabled="r.user_phone == ''"><i class="icon-phone"></i></a>-->
+			            </div>
+					</td>
+					<td data-ng-show="search.type == 'company' && r.company_name">
+						<img data-ng-src="img/company/{{r.company_ID}}.png" class="img-polaroid" width="75" height="50" align="left" style="margin-right:10px">
+						<p><b>{{r.company_name}}</b></p>
+						<p data-ng-show="r.company_url"><i class="icon-link"></i>&nbsp;<a href="" data-ng-click="href(r.company_url, true)">{{r.company_url}}</a></p>
+						<!--<p data-ng-show="r.company_phone"><i class="icon-phone"></i>&nbsp;<a href="tel:+{{json.calling_codes[location.country_code]}} {{r.company_phone}}">+{{json.calling_codes[location.country_code]}} {{company.company_phone | phone}}</a></p>-->
+					</td>
+				</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
 </div>

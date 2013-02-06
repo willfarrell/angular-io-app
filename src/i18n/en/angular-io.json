@@ -43,8 +43,10 @@
 	"sign_up_nav_button":"Sign Up",
 	"sign_in_nav_button":"Sign In",
 	"sign_reset_nav_button":"Reset Password",
+	"sign_out_nav_button":"Sign Out",
 	
-	
+	"sign_totp_legend":"One-time Password",
+	"sign_totp_button":"Verify",
 	
 	"onboard_":"",
 	

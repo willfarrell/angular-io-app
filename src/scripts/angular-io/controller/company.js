@@ -7,12 +7,10 @@ function CompanyCtrl($scope, $http) {
 	$scope.errors = {};
 	$scope.toggle = {};
 	$scope.company = {};
+	
 	$scope.user = {};
 	$scope.users = {};
-	$scope.location = {
-		'primary':true,
-		'country_code':$rootScope.country_code.toUpperCase()
-	};
+	$scope.location = {};
 	$scope.locations = {};
 	
 	//-- Company --//
@@ -61,6 +59,7 @@ function CompanyCtrl($scope, $http) {
 					$rootScope.alerts 	= (data.alerts) ? data.alerts : [];
 					if (!data.alerts && !data.errors) {
 						$scope.company.company_ID = data;
+						$rootScope.session.company_ID = data;
 						$rootScope.session.company = $scope.company;
 						$rootScope.saveSession();
 						//$rootScope.updateSession();
@@ -95,7 +94,7 @@ function CompanyCtrl($scope, $http) {
 		console.log(location);
 		if (!location) {
 			location = {
-				'primary':true,
+				'primary':($scope.locations == {}),
 				'country_code':$rootScope.country_code.toUpperCase()
 			}
 		}
@@ -181,10 +180,53 @@ function CompanyCtrl($scope, $http) {
 		console.log('editUser(user)');
 		console.log(user);
 		if (!user) {
-			user = {}
+			user = {
+				'user_level':0	
+			};
 		}
 		
+		user.user_level = user.user_level.toString(); // for select option
 		$scope.user = user;
+	};
+	
+	$scope.updateUser = function() {
+		console.log('updateLocation');
+		$rootScope.alerts = [];
+		
+		if ($scope.user.user_ID) {	// update
+			$http.put($scope.settings.server+'company/user/', $scope.user)
+				.success(function(data) {
+					console.log('updateUser.put.success');
+					console.log(data);
+					$scope.errors 		= (data.errors) ? data.errors : {};
+					$rootScope.alerts 	= (data.alerts) ? data.alerts : [];
+					if (!data.alerts && !data.errors) {
+						$scope.users[$scope.user.user_ID] = $scope.user;
+						$rootScope.alerts = [{'class':'success', 'label':'User:', 'message':'Saved'}];
+					}
+				})
+				.error(function() {
+					console.log('updateUser.put.error');
+					$rootScope.http_error();
+				});
+		} else {	// create
+			$http.post($scope.settings.server+'company/user/', $scope.user)
+				.success(function(data) {
+					console.log('updateUser.post.success');
+					console.log(data);
+					$scope.errors 		= (data.errors) ? data.errors : {};
+					$rootScope.alerts 	= (data.alerts) ? data.alerts : [];
+					if (!data.alerts && !data.errors) {
+						$scope.user.user_ID = data;
+						$scope.users[$scope.user.user_ID] = $scope.user;
+						$rootScope.alerts = [{'class':'success', 'label':'User:', 'message':'Saved'}];
+					}
+				})
+				.error(function() {
+					console.log('updateUser.post.error');
+					$rootScope.http_error();
+				});
+		}
 	};
 	
 	//-- About Details --//

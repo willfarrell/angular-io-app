@@ -3,10 +3,20 @@
 	<legend>Company Profile</legend>
 	<hr>
 	
+	<div class="control-group">
+		<label class="control-label" for="company_img">Logo</label>
+
+		<div class="controls">
+    		<img data-ng-src="img/company/{{session.company_ID}}.png?{{filepicker.timestamp}}" class="img-polaroid" style="width:75px; height:50px;"/>
+			<button class="btn" data-ng-click="filepicker.open(filepicker.profile_company);">Change logo</button>
+			<!--<span class="help-block">This photo is your identity and appears with your content.</span>-->
+    	</div>
+    </div>
+    
 	<div class="control-group" data-ng-class="{error: (errors.company_name)}">
       	<label class="control-label">Company Name</label>
       	<div class="controls">
-            <input type="text" class="span" name="company_name" placeholder="Required" data-ng-model="company.company_name" required>
+            <input type="text" class="input-block-level" name="company_name" placeholder="Required" data-ng-model="company.company_name" required>
             <!--<span class="help-block error" data-ng-show="companyForm.company_name.$error.required">Required</span>-->
             <span class="help-block error" data-ng-show="errors.company_name">{{errors.company_name}}</span>
         </div>
@@ -15,7 +25,7 @@
     <div class="control-group" data-ng-class="{error: (errors.company_url)}">
       	<label class="control-label" for="company_url">Website</label>
       	<div class="controls">
-            <input type="url" class="span" name="company_url" data-ng-model="company.company_url" placeholder="https://">
+            <input type="url" class="input-block-level" name="company_url" data-ng-model="company.company_url" placeholder="https://">
             <!--<span class="help-block error" data-ng-show="onboardCompanyForm.company_name.$error.required">Required</span>-->
             <span class="help-block error" data-ng-show="companyForm.company_url.$error.url">Not valid url</span>
             <span class="help-block error" data-ng-show="errors.company_url">{{errors.company_url}}</span>
@@ -35,7 +45,7 @@
     <div class="control-group" data-ng-class="{error: (errors.user_default_ID)}">
       	<label class="control-label" for="user_default_ID">Primary User</label>
       	<div class="controls">
-          	<select class="span" data-ng-model="company.user_default_ID" data-ng-options="value.user_ID as value.user_name_first+' '+value.user_name_last for (key, value) in users" required></select>
+          	<select class="input-block-level" data-ng-model="company.user_default_ID" data-ng-options="value.user_ID as value.user_name_first+' '+value.user_name_last for (key, value) in users" required></select>
             <span class="help-block error" data-ng-show="errors.user_default_ID">{{errors.user_default_ID}}</span>
         </div>
     </div>
@@ -43,7 +53,7 @@
     <div class="control-group" data-ng-class="{error: (errors.location_default_ID)}">
       	<label class="control-label" for="location_default_ID">Primary Location</label>
       	<div class="controls">
-          	<select class="span" data-ng-model="company.location_default_ID" data-ng-options="value.location_ID as value.location_name for (key, value) in locations" required></select>
+          	<select class="input-block-level" data-ng-model="company.location_default_ID" data-ng-options="value.location_ID as value.location_name for (key, value) in locations" required></select>
             <span class="help-block error" data-ng-show="errors.location_default_ID">{{errors.location_default_ID}}</span>
         </div>
     </div>
@@ -53,7 +63,7 @@
     <div class="control-group">
         <label class="control-label" for="company_details">Bio</label>
 	    <div class="controls">
-		    <textarea class="span" rows="4" data-ng-model="company.company_details" placeholder=""></textarea>
+		    <textarea class="input-block-level" rows="4" data-ng-model="company.company_details" placeholder=""></textarea>
 			<span class="pull-right">{{company.company_details.length}}</span>
 			<span class="help-block">About your company.</span>
 	    </div>

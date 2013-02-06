@@ -12,14 +12,14 @@
 	<div class="control-group">
       <label class="control-label">Name</label>
       <div class="controls">
-        <input type="text" name="name" class="span" data-ng-model="contact.name">
+        <input type="text" name="name" class="input-block-level" data-ng-model="contact.name">
       </div>
     </div>
 
     <div class="control-group">
       <label class="control-label">Email</label>
       <div class="controls">
-        <input type="email" name="email" class="span" data-ng-model="contact.email" required>
+        <input type="email" name="email" class="input-block-level" data-ng-model="contact.email" required>
         <span class="help-block error" data-ng-show="contactForm.email.$error.email">Not valid email</span>
       </div>
     </div>
@@ -34,7 +34,7 @@
     <div class="control-group">
       <label class="control-label" for="company_type">Message</label>
       <div class="controls">
-        <textarea name="message" class="span" data-ng-model="contact.message" rows="6" data-ng-minlength="1" required></textarea>
+        <textarea name="message" class="input-block-level" data-ng-model="contact.message" rows="6" data-ng-minlength="1" required></textarea>
       </div>
     </div>
     

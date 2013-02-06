@@ -31,8 +31,11 @@ class User {
 		if (USER_ID) {
 			$this->db->update(
 				'users',
-				array('user_level' => 1),
-				array('user_ID' => USER_ID, 'user_level' => 0)
+				array(
+					'timestamp_create'  => $_SERVER['REQUEST_TIME'],
+					'timestamp_update'  => $_SERVER['REQUEST_TIME'],
+				),
+				array('user_ID' => USER_ID)
 			);
 			$this->session->update(); // update user_level
 		}
@@ -137,7 +140,7 @@ class User {
 			"user_phone",
 			"user_url",
 			//"user_fax",
-			//"user_function",
+			"user_function",
 
 		);
 
@@ -148,7 +151,7 @@ class User {
 		unset($request_data['user_email']);	// incase it was passed - angular passes disabled fields
 		
 		// username unique?
-		if (isset($request_data['user_name'])) {
+		if (isset($request_data['user_name']) && $request_data['user_name']) {
 			$account = new Account;
 			$user_name_errors = $account->get_unique($request_data['user_name']);
 			if (is_array($user_name_errors)) $return = $user_name_errors;
@@ -175,7 +178,7 @@ class User {
 			'user_phone' => $request_data['user_phone'],
 			'user_url' => $request_data['user_url'],
 			//'user_fax' => $request_data['user_fax'],
-			//'user_function' => $request_data['user_function'],
+			'user_function' => $request_data['user_function'],
 			'timestamp_update' => $_SERVER['REQUEST_TIME'],
 		);
 		$this->__log($user);

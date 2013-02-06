@@ -46,7 +46,7 @@
 			        <a href="#" class="dropdown-toggle" data-ng-show="!session.user.user_name && session.user.user_name_first" data-toggle="dropdown">{{session.user.user_name_first}} <b class="caret"></b></a>
 			        <a href="#" class="dropdown-toggle" data-ng-hide="session.user.user_name || session.user.user_name_first" data-toggle="dropdown">{{session.user.user_email}} <b class="caret"></b></a>
 			        <ul class="dropdown-menu" data-ng-click="selectedNav = 'user'">
-			        	<!--<li><a href="#/messages"><i class="icon-envelope"></i>&nbsp;Messages<span class="badge badge-inverse pull-right">10</span></a></li>-->
+			        	<li><a href="#/user/message"><i class="icon-envelope"></i>&nbsp;Messages<!--<span class="badge badge-inverse pull-right">10</span>--></a></li>
 			        	
 			        	<li><a href="#/user/profile"><i class="icon-user"></i>&nbsp;Profile</a></li>
 			        	<!--<li><a href="#/user/follow"><i class="icon-group"></i>&nbsp;Follow</a></li>-->
@@ -58,7 +58,7 @@
 			    <li class="dropdown" data-ng-class="{active: selectedNav=='account'}">
 			        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <b class="caret"></b></a>
 			        <ul class="dropdown-menu" data-ng-click="selectedNav = 'account'">
-			        	<!--<li><a href="#/company/profile"><i class="icon-user"></i>&nbsp;Account Profile</a></li>-->
+			        	<li><a href="#/company/profile"><i class="icon-user"></i>&nbsp;Company Profile</a></li>
 			            <!--<li><a href="#/billing"><i class="icon-credit-card"></i>&nbsp;Billing</a></li>-->
 			            <!--<li><a href="#/api/">API</a></li>-->
 			            <!--<li><a href="#/setings/user">

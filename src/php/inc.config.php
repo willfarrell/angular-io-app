@@ -77,7 +77,7 @@ if ($localhost) {
 if (!defined("MAIL_ADMIN_EMAIL")) define('MAIL_ADMIN_EMAIL','will.farrell@gmail.com');//'will@angular.io');
 if (!defined("MAIL_SIGNATURE")) define('MAIL_SIGNATURE',"\n\nKind Regards,\n\nwill Farrell\nwill@angulario.com\nhttps://angulario.com");
 if (!defined("MAIL_SITE_NAME")) define('MAIL_SITE_NAME',"Angular.io");
-if (!defined("MAIL_SITE_URL")) define('MAIL_SITE_URL',"http://angulario.com/"); // trailing /
+if (!defined("MAIL_SITE_URL")) define('MAIL_SITE_URL',"http://app.angulario.com/"); // trailing /
 
 //-- Img --//
 //if (!defined("IMG_CONVERT_DELETE_FROM")) define('IMG_CONVERT_DELETE_FROM',FALSE);

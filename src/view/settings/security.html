@@ -1,6 +1,6 @@
 
 <form name="securityForm" class="form-horizontal" data-ng-controller="SettingsCtrl">
-	<legend>Secuity</legend>
+	<legend>Security</legend>
 	<hr>
 	
     <!--
@@ -11,8 +11,49 @@
     - One Time Pass Tokens
     -->
     
-    <hr>
+    <div class="control-group">
+    	<b>Email Encryption</b>
+    </div>
     
+    <!--<div class="control-group">
+      	<label class="control-label" for="user_name">Email PGP/GPG Key</label>
+      	<div class="controls">
+      		<label class="checkbox">
+            	<input type="checkbox" checked disabled> Send securely when possible.
+      		</label>
+        </div>
+    </div>-->
+    <div class="control-group">
+      	<label class="control-label" for="user_name">Email PGP/GPG Key</label>
+      	<div class="controls">
+	      	<textarea name="message" class="input-block-level" data-ng-model="security.pgp_key" rows="6" data-ng-minlength="1" required></textarea>
+      	</div>
+	</div>
+    
+    <!--<hr>
+    
+    <div class="control-group">
+    	<b>Multi-Factor Authentication</b>
+    </div>-->
+    
+    <!--<hr>
+    
+    <div class="control-group">
+    	<b>Time-based One-time Password (TOTP)</b>
+    </div>
+    
+    <div class="control-group">
+      	<label class="control-label" for="user_name">Notify me when</label>
+      	<div class="controls">
+      		<label class="checkbox">
+            	<input type="checkbox" disabled> <a href="">Google Authenticator</a>
+      		</label>
+        </div>
+    </div>-->
+    
+    
+    
+    <hr>
     <div class="control-group">
       	<div class="controls">
 	      	<button class="btn" data-ng-click="updateSecurity()" data-ng-disabled="securityForm.$invalid">Save change</button>

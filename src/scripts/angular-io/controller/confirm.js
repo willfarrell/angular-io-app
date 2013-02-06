@@ -1,9 +1,9 @@
 //angular.module('io.controller.confirm', [])
 //.controller('ConfirmCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
-ConfirmCtrl.$inject = ['$scope', '$http'];
+ConfirmCtrl.$inject = ['$scope', '$http', '$routeParams'];
 function ConfirmCtrl($scope, $http, $routeParams) {
 	console.log('ConfirmCtrl ('+$scope.$id+')');
-	
+	console.log($routeParams);
 	$scope.errors = {};
 	$scope.hash = ($routeParams && $routeParams.hash) ? $routeParams.hash : '';
 	$scope.status = false; // used on confirm page

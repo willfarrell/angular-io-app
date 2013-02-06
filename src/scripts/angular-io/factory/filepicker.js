@@ -80,7 +80,7 @@ angular.module('io.factory.filepicker', [])
 		service: 'COMPUTER',
 		multi:false,
 		resizecrop:true,
-		width:200,
+		width:300,
 		height:200
 	};
 

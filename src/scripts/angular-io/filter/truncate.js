@@ -1,4 +1,4 @@
-angular.module('io.filters.truncate', [])
+angular.module('io.filter.truncate', [])
 // http://danielcsgomes.com/tutorials/how-to-create-a-custom-filter-with-angularjs-v1/
 .filter('truncate', function() {
 	return function(text, length, end) {

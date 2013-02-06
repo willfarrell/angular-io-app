@@ -24,11 +24,17 @@ class Password {
 		'min_charset_other'		=> 0,		// OWASP:0
 		'max_charset_identical'	=> 3,		// OWASP:3
 	);
+	
+	private $user_ID = 0;
+	private $user_email = '';
 
-	function __construct() {
+	function __construct($user_ID = 0, $user_email = '') {
 		global $database, $filter;
 		$this->db = $database;
 		$this->filter = $filter;
+		
+		$this->user_ID = $user_ID;
+		$this->user_email = $user_email;
 		
 		// Dev
 		$this->log = FirePHP::getInstance(true);
@@ -41,6 +47,14 @@ class Password {
 	
 	private function __log($var_dump) {
 		$this->log->fb($var_dump, FirePHP::INFO);
+	}
+	
+	private function getId() {
+		return (USER_ID) ? USER_ID : $this->user_ID;
+	}
+	
+	private function getEmail() {
+		return (USER_EMAIL) ? USER_EMAIL : $this->user_email;
 	}
 	
 	function get_errors($class = 'error') {
@@ -61,7 +75,7 @@ class Password {
 				'password' => $password_hash,
 				'password_timestamp' => $_SERVER['REQUEST_TIME'],
 				'timestamp_update' => $_SERVER['REQUEST_TIME'],
-				'user_ID' => USER_ID
+				'user_ID' => $this->getId()
 			)
 		);
 	}
@@ -71,12 +85,13 @@ class Password {
 	 */
 	function validate($password) {
 		$return = true;
+		
 		$this->timer->start('validate');
 		if ($this->length($password) && $this->charset($password)) {
 			$this->dictionary($password);
 			//$this->black_list($password); // passwords on the black list don't meet the OWASP requ, thus not needed to be run
 			
-			if (USER_ID) {
+			if ($this->getId()) {
 				$this->user_past_password($password);
 				$this->user_input_data($password);
 			}
@@ -209,16 +224,16 @@ class Password {
 	 *	Checks if a password has been used in the past for a user
 	 */
 	function user_past_password($password) {
-		if (!USER_ID || !USER_EMAIL) return false;
+		if (!$this->getId() || !$this->getEmail()) return false;
 		
-		$r = $this->db->select("users", array("user_ID" => USER_ID), array("password_history"));
+		$r = $this->db->select("users", array("user_ID" => $this->getId()), array("password_history"));
 		if (!$r) return false;
 		
 		$user = $this->db->fetch_assoc($r);
 		$history = explode(",", $user['password_history']);
 		
 		foreach ($history as $hash) {
-			if ($this->check($password, $hash, USER_EMAIL)) {
+			if ($this->check($password, $hash, $this->getEmail())) {
 				$this->errors['user_past_password'] = "You have already used this password.  Please choose a new unique password.";
 				return false;
 			}
@@ -231,13 +246,13 @@ class Password {
 	 *	Checks if a password overlaps with a user inputed data
 	 */
 	function user_input_data($password) {
-		if (!USER_ID) return false;
+		if (!$this->getId()) return false;
 		$return = true;
 		$data = array("user_email", "user_name", "user_name_first", "user_name_last", "user_phone");
 		
 		
 		
-		$r = $this->db->select("users", array("user_ID" => USER_ID), $data);
+		$r = $this->db->select("users", array("user_ID" => $this->getId()), $data);
 		if (!$r) return false;
 		
 		$user = $this->db->fetch_assoc($r);

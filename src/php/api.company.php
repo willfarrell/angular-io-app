@@ -42,12 +42,12 @@ class Company {
 
 		$results = $this->db->select('users',
 			$db_where,
-			array("user_ID", "user_name", "user_name_first", "user_name_last", "user_email", "user_phone", "user_details")
+			array("user_ID", "user_level", "user_name", "user_name_first", "user_name_last", "user_email", "user_phone", "user_details", "timestamp_create")
 		);
 		if ($results) {
 			while($user = $this->db->fetch_assoc($results, array("user_phone"))) {
 				$user['user_ID'] = $user['user_ID'];
-				$return[] = $user;
+				$return[$user['user_ID']] = $user;
 			}
 			if (!is_null($user_ID)) {
 				$return = $return[0];
@@ -64,9 +64,10 @@ class Company {
 			"user_ID",
 			"user_name",
 			"user_email",
-			"user_cell",
+			"user_level",
+			//"user_cell",
 			"user_phone",
-			"user_fax",
+			//"user_fax",
 			"user_function",
 		);
 
@@ -77,33 +78,87 @@ class Company {
 		$this->filter->set_request_data($request_data);
 		$this->filter->set_group_rules('users');
 		if(!$this->filter->run()) {
-			$return["alerts"] = $this->filter->get_errors();
+			$return["errors"] = $this->filter->get_errors();
 			return $return;
 		}
 		$request_data = $this->filter->get_request_data();
-
+		
+		// confirm same company
+		
 		$user = array(
 			'company_ID' => COMPANY_ID,
-			'user_name' => $request_data['user_name'],
+			//'user_name' => $request_data['user_name'],
+			'user_name_first' => $request_data['user_name_first'],
+			'user_name_last' => $request_data['user_name_last'],
 			'user_email' => $request_data['user_email'],
+			'user_level' => $request_data['user_level'],
 			'user_phone' => $request_data['user_phone'],
-			'timestamp_create' => $_SERVER['REQUEST_TIME'],
-			'timestamp_update' => $_SERVER['REQUEST_TIME'],
+			//'timestamp_create' => $_SERVER['REQUEST_TIME'],
+			//'timestamp_update' => $_SERVER['REQUEST_TIME'],
 		);
 
 		//print_r($user);
 		$user_ID = $this->db->insert('users', $user);
-
-		// SEND MESSAGE TO create password.
-		/*if ($user_ID != $request_data['user_ID']) {
-			mail($request_data['user_email'], "Account Created",
-				"An RFQs.ca account was created for you.\n\n"
-				." To set your password visit https://rfqs.ca/app and click reset.\n\n"
-				."Kind Regards,\n\n"
-				."RFQs.ca Customer Support.");
-		}*/
+		
+		// add user reset
+		$expire_timestamp = $_SERVER['REQUEST_TIME']+360*24*60; // 60 day life
+		$hash = substr(hash("sha512", $request_data['user_email']+$_SERVER['REQUEST_TIME']), 0, 16);
+		
+		$mail = new Mail;
+		$mail->send($request_data['user_email'], 'password_reset_request_new', array("hash" => $hash));
+		
+		$insert = array('user_ID' => $user_ID, 'hash' => $hash, 'expire_timestamp' => $expire_timestamp);
+		$this->db->insert_update('user_reset', $insert, $insert);
 		
 		return $user_ID;
+	}
+	
+	function put_user($request_data=NULL) {
+		$return = array();
+		$params = array(
+			"user_ID",
+			"user_name_first",
+			"user_name_last",
+			//"user_email",
+			"user_level",
+			//"user_cell",
+			"user_phone",
+			//"user_fax",
+			"user_function",
+		);
+
+		foreach ($params as $key) {
+			$request_data[$key] = isset($request_data[$key]) ? $request_data[$key] : NULL;
+		}
+
+		$this->filter->set_request_data($request_data);
+		$this->filter->set_group_rules('users');
+		if(!$this->filter->run()) {
+			$return["errors"] = $this->filter->get_errors();
+			return $return;
+		}
+		$request_data = $this->filter->get_request_data();
+		
+		// confirm same company
+		// ****
+		
+		// update
+		$user = array(
+			'user_ID' => $request_data['user_ID'],
+			'company_ID' => COMPANY_ID,
+			//'user_name' => $request_data['user_name'],
+			'user_name_first' => $request_data['user_name_first'],
+			'user_name_last' => $request_data['user_name_last'],
+			//'user_email' => $request_data['user_email'],
+			'user_level' => $request_data['user_level'],
+			'user_phone' => $request_data['user_phone'],
+			//'timestamp_create' => $_SERVER['REQUEST_TIME'],
+			'timestamp_update' => $_SERVER['REQUEST_TIME'],
+		);
+
+		
+		$this->db->insert_update('users', $user);
+		
 	}
 
 	/*

@@ -1,0 +1,108 @@
+
+<form name="userForm" class="form-horizontal" data-ng-controller="CompanyCtrl">
+	
+	<div data-ng-hide="toggle.user">
+		<legend>Users</legend>
+		<hr>
+		<div class="control-group">
+	      	<div class="controls">
+		      	<button class="btn" data-ng-click="editUser(); toggle.user = true">New User</button>
+	      	</div>
+		</div>
+		
+		<table class="table table-striped">
+			<!--<thead><tr><th colspan="2"></th></tr></thead>-->
+			<tbody>
+			<tr class="ng-click" data-ng-repeat="u in users | orderBy:'-user_level'" data-ng-click="editUser(u); toggle.user = true">
+				<td>
+					<img data-ng-src="img/user/{{u.user_ID}}.png?{{filepicker.timestamp}}" class="img-rounded" width="100" height="100">
+				</td>
+				<td>
+					<b><i class="icon-edit pull-right"></i>{{u.user_name_first}} {{u.user_name_last}}</b><br>
+					<p>{{u.user_function}}</p>
+		            <i class="icon-envelope"></i>&nbsp;{{u.user_email}}<br>
+		            <i class="icon-phone"></i>&nbsp;+{{json.calling_codes[company.location.country_code]}} {{u.user_phone | phone}}<br>
+		            <i>{{json.user_levels[u.user_level]}}</i>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<div data-ng-show="toggle.user">
+		<legend data-ng-show="!user.user_ID">New User</legend>
+		<legend data-ng-show="user.user_ID">Edit User</legend>
+		<hr>
+		
+		<div class="control-group" data-ng-class="{error: (errors.user_email)}">
+	      	<label class="control-label" for="user_function">Email</label>
+	      	<div class="controls">
+	      		<input type="email" class="input-block-level" name="user_email" placeholder="required" data-ng-model="user.user_email" data-ng-disabled="user.user_ID" required/>
+	      		<!--<div class="input-append">
+	      			<input type="email" class="input-block-level" name="user_email" placeholder="required" data-ng-model="user.user_email" data-ng-disabled="user.user_ID" required/>
+	      			<span class="add-on">{{session.user.user_email.substr(session.user.user_email.lastIndexOf('@'))}}</span>
+	      		</div>-->
+	        	<!--<span class="help-block error" data-ng-show="userEmailForm.user_email.$error.required">Required</span>-->
+	        	<span class="help-block error" data-ng-show="userForm.user_email.$error.email">Not valid email.</span>
+	        	<span class="help-block error" data-ng-show="errors.user_email">{{errors.email.user_email}}</span>
+	        </div>
+	    </div>
+	    
+	    <div class="control-group" data-ng-class="{error: (errors.user_name_first)}">
+          	<label class="control-label" for="user_name_first">First Name</label>
+          	<div class="controls">
+	            <input type="text" class="input-block-level" name="user_name_first" placeholder="required" data-ng-model="user.user_name_first" data-ng-disabled="user.timestamp_create" required>
+	            <span class="help-block error" data-ng-show="errors.user_name_first">{{errors.user_name_first}}</span>
+	            <!--<span class="help-block error" data-ng-show="userForm.user_name_first.$error.required">Required</span>-->
+            </div>
+        </div>
+
+        <div class="control-group" data-ng-class="{error: (errors.user.user_name_last)}">
+          	<label class="control-label" for="user_name_last">Last Name</label>
+          	<div class="controls">
+	            <input type="text" class="input-block-level" name="user_name_last" placeholder="optional" data-ng-model="user.user_name_last" data-ng-disabled="user.timestamp_create">
+	            <span class="help-block error" data-ng-show="errors.user.user_name_last">{{errors.user.user_name_last}}</span>
+	            <span class="help-block error" data-ng-show="userForm.user_name_last.$error.required">Required</span>
+            </div>
+        </div>
+	    
+	    <div class="control-group" data-ng-class="{error: (errors.user_function)}">
+	      	<label class="control-label" for="user_function">Title</label>
+	      	<div class="controls">
+	            <input type="text" class="input-block-level" name="user_function" data-ng-model="user.user_function" placeholder="ie Engineer">
+	            <span class="help-block error" data-ng-show="errors.user_function">{{errors.user_function}}</span>
+	        </div>
+	    </div>
+	    
+	    <div class="control-group" data-ng-class="{error: (errors.user_phone)}">
+	      	<label class="control-label" for="user_phone">Phone</label>
+	      	<div class="controls">
+	          	<div class="input-prepend">
+	                <span class="add-on">+{{json.calling_codes[country_code]}}</span><input type="text" class="" name="user_phone" placeholder="(000) 000-0000" data-ng-model="user.user_phone" data-input-mask="(999) 999-9999 x999999" data-ng-disabled="user.timestamp_create">
+	            </div>
+	            <span class="help-block error" data-ng-show="errors.user_phone">{{errors.user_phone}}</span>
+	        </div>
+	    </div>
+	    
+	    <div class="control-group" data-ng-class="{error: (errors.user_level)}">
+	      	<label class="control-label" for="user_level">Permissions</label>
+	      	<div class="controls">
+	            <select class="input-block-level" data-ng-model="user.user_level" data-ng-options="key as value for (key, value) in json.user_levels" data-ng-disabled="user.user_ID == session.user_ID" required></select>
+	        </div>
+	    </div>
+	    
+	    <hr>
+	    <div class="control-group">
+	      	<div class="controls">
+		      	<button class="btn" data-ng-click="updateUser()" data-ng-disabled="userForm.$invalid">Save changes</button>
+		      	<div class="btn-group">
+					<button class="btn" data-ng-click="toggle.user = false">Back</button>
+				</div>
+	      	</div>
+		</div>
+		<!--<button class="btn btn-danger" data-ng-click="deleteuser(user.user_ID); toggle.user = false" data-ng-show="user.user_ID && company.user_default_ID != user.user_ID">Delete user</button>-->
+    
+	</div>
+	
+	
+ </form>

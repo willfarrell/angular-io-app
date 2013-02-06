@@ -6,7 +6,7 @@
     <div class="control-group" data-ng-class="{error: (errors.email.user_email)}">
       	<label class="control-label" for="user_function">New Email</label>
       	<div class="controls">
-      		<input type="email" class="span" name="user_email" placeholder="" data-ng-model="email.user_email" required/>
+      		<input type="email" class="input-block-level" name="user_email" placeholder="" data-ng-model="email.user_email" required/>
         	<!--<span class="help-block error" data-ng-show="userEmailForm.user_email.$error.required">Required</span>-->
         	<span class="help-block error" data-ng-show="userEmailForm.user_email.$error.email">Not valid email.</span>
         	<span class="help-block error" data-ng-show="errors.email.user_email">{{errors.email.user_email}}</span>
@@ -16,7 +16,7 @@
 	<div class="control-group" data-ng-class="{error: (errors.email.password)}">
       	<label class="control-label" for="password.password">Password</label>
       	<div class="controls">
-      		<input type="password" name="password" class="span" placeholder="" data-ng-model="email.password" required/>
+      		<input type="password" name="password" class="input-block-level" placeholder="" data-ng-model="email.password" required/>
       		<!--<span class="help-block error" data-ng-show="userEmailForm.password.$error.required">Password is required</span>-->
       		<span class="help-block error" data-ng-show="errors.email.password">{{errors.email.password}}</span>
       	</div>

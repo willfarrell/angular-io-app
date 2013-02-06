@@ -1,117 +1,118 @@
 
 <form name="locationForm" class="form-horizontal" data-ng-controller="CompanyCtrl">
-	<legend>
-		<span data-ng-show="toggle.location && !location.location_ID">New Location</span>
-		<span data-ng-show="toggle.location && location.location_ID">Edit Location</span>
-		<span data-ng-hide="toggle.location">Locations</span>
-		<div class="pull-right">
-    		<div class="btn-group" data-ng-show="toggle.location">
-				<button class="btn btn-primary" data-ng-click="toggle.location = false"><i class="icon-list"></i></button>
-			</div>
-			
-			<div class="btn-group" data-ng-show="toggle.location">
-				<button class="btn btn-primary" data-ng-click="updateLocation()" data-ng-disabled="locationForm.$invalid"><i class="icon-ok"></i>&nbsp;Save</button>
-			</div>
-			
-			<div class="btn-group" data-ng-hide="toggle.location">
-				<button class="btn btn-primary" data-ng-click="editLocation(); toggle.location = true"><i class="icon-plus"></i>&nbsp;New</button>
-			</div>
-		</div>
-	</legend>
-	<hr>
 	
 	<div data-ng-hide="toggle.location">
-		<div class="well ng-click" data-ng-repeat="l in locations" data-ng-click="editLocation(l); toggle.location = true">
-	        <div class="row">
-				<div class="span1"></div>
-				<div class="span5">
-		            <!--<img src="http://placehold.it/100x100" width="100" height="100" />-->
-		            <!--<img data-ng-src="https://maps.google.com/maps/api/staticmap?center={{l.latitude}},{{l.longitude}}&zoom=14&size=100x100&maptype=terain&markers=color:red%7Clabel:{{company.company_name}}&sensor=false" class="img-polaroid">-->
-		            <img data-ng-src="https://maps.google.com/maps/api/staticmap?zoom=14&size=100x100&maptype=terain&markers=color:red|{{l.address_1}},{{l.city}},{{l.region_code}},{{l.country_code}},{{l.mail_code}}&sensor=false" class="img-polaroid">
-		        </div>
-		        <div class="span6">
-		            <b><i class="icon-edit pull-right"></i>{{l.location_name}}</b><br>
+		<legend>Locations</legend>
+		<hr>
+		<div class="control-group">
+	      	<div class="controls">
+		      	<button class="btn" data-ng-click="editLocation(); toggle.location = true">New Location</button>
+	      	</div>
+		</div>
+		
+		<table class="table table-striped">
+			<!--<thead><tr><th colspan="2"></th></tr></thead>-->
+			<tbody>
+			<tr class="ng-click" data-ng-repeat="l in locations" data-ng-click="editLocation(l); toggle.location = true">
+				<td>
+					<img data-ng-src="https://maps.google.com/maps/api/staticmap?zoom=14&size=100x100&maptype=terain&markers=color:red|{{l.address_1}},{{l.city}},{{l.region_code}},{{l.country_code}},{{l.mail_code}}&sensor=false" class="img-polaroid" width="100" height="100">
+				</td>
+				<td>
+					<b><i class="icon-edit pull-right"></i>{{l.location_name}}</b><br>
 		            <span>{{l.address_1}}</span><br>
 		            <span data-ng-show="l.address_2">{{l.address_2}}<br></span>
 		            <span>{{l.city}}, {{l.region_code}}, {{l.country_code}}</span><br>
 		            <span>{{l.mail_code}}</span><br>
 		            <span data-ng-show="l.location_phone"><i class="icon-phone"></i>&nbsp;+{{json.calling_codes[l.country_code]}} {{l.location_phone | phone}}<br></span>
 		            <!--<p>{{l.latitude}},{{l.longitude}}</p>-->
-		        </div>
-	        </div>
-        </div>
+				</td>
+			</tr>
+			</tbody>
+		</table>
 	</div>
 	
 	<div data-ng-show="toggle.location">
-
-    <div class="control-group" data-ng-class="{error: (errors.address_1)}">
-      	<label class="control-label" for="address_1">Location Name</label>
-      	<div class="controls">
-            <input type="text" class="span" data-ng-model="location.location_name" placeholder="Head Office" required>
-            <span class="help-block error" data-ng-show="errors.address_1">{{errors.address_1}}</span>
-        </div>
-    </div>
-
-    <div class="control-group" data-ng-class="{error: (errors.address_1)}">
-      	<label class="control-label" for="address_1">Address</label>
-      	<div class="controls">
-            <input type="text" class="span" data-ng-model="location.address_1" placeholder="street address, P.O. box, c/o" required>
-            <span class="help-block error" data-ng-show="errors.address_1">{{errors.address_1}}</span>
-        </div>
-    </div>
-
-    <div class="control-group" data-ng-class="{error: (errors.address_2)}">
-      	<label class="control-label" for="address_2"></label>
-      	<div class="controls">
-            <input type="text" class="span" data-ng-model="location.address_2" placeholder="apartment, suite, unit, building, floor, etc.">
-            <span class="help-block error" data-ng-show="errors.address_2">{{errors.address_2}}</span>
-        </div>
-    </div>
-
-    <div class="control-group" data-ng-class="{error: (errors.city)}">
-      	<label class="control-label" for="city">City</label>
-      	<div class="controls">
-            <input type="text" class="span" data-ng-model="location.city" required>
-            <span class="help-block error" data-ng-show="errors.city">{{errors.city}}</span>
-            <p class="help-block error"></p>
-        </div>
-    </div>
-
-    <div class="control-group" data-ng-class="{error: (errors.region_code)}">
-      	<label class="control-label" for="region_code">Province/Region/State</label>
-      	<div class="controls">
-            <select class="span" data-ng-model="location.region_code" data-ng-options="key as value for (key, value) in json.regions[location.country_code]" required></select>
-            <span class="help-block error" data-ng-show="errors.region_code">{{errors.region_code}}</span>
-        </div>
-    </div>
-
-    <div class="control-group" data-ng-class="{error: (errors.country_code)}">
-      	<label class="control-label" for="country_code">Country</label>
-      	<div class="controls">
-            <select class="span" data-ng-model="location.country_code" data-ng-options="key as value for (key, value) in json.countries" data-ng-change="loadRegions(location.country_code)" required></select>
-            <span class="help-block error" data-ng-show="errors.country_code">{{errors.country_code}}</span>
-        </div>
-    </div>
-    
-    <div class="control-group" data-ng-class="{error: (errors.mail_code)}">
-      	<label class="control-label" for="mail_code">Postal/Zip Code</label>
-      	<div class="controls">
-            <input type="text" class="span" data-ng-model="location.mail_code" required>
-            <span class="help-block error" data-ng-show="errors.mail_code">{{errors.mail_code}}</span>
-        </div>
-    </div>
-    
-    <div class="control-group" data-ng-class="{error: (errors.location_phone)}">
-      	<label class="control-label" for="location_phone">Phone</label>
-      	<div class="controls">
-          	<div class="input-prepend">
-                <span class="add-on">+{{json.calling_codes[location.country_code]}}</span><input type="text" class="" name="location_phone" placeholder="(000) 000-0000" data-ng-model="location.location_phone" data-input-mask="(999) 999-9999 x999999">
-            </div>
-            <span class="help-block error" data-ng-show="errors.location_phone">{{errors.location_phone}}</span>
-        </div>
-    </div>
-    
-    <button class="btn btn-danger" data-ng-click="deleteLocation(location.location_ID); toggle.location = false" data-ng-show="location.location_ID && company.location_default_ID != location.location_ID">Delete Location</button>
+		<legend data-ng-show="!location.location_ID">New Location</legend>
+		<legend data-ng-show="location.location_ID">Edit Location</legend>
+		<hr>
+		
+	    <div class="control-group" data-ng-class="{error: (errors.address_1)}">
+	      	<label class="control-label" for="address_1">Location Name</label>
+	      	<div class="controls">
+	            <input type="text" class="input-block-level" data-ng-model="location.location_name" placeholder="Head Office" required>
+	            <span class="help-block error" data-ng-show="errors.address_1">{{errors.address_1}}</span>
+	        </div>
+	    </div>
+	
+	    <div class="control-group" data-ng-class="{error: (errors.address_1)}">
+	      	<label class="control-label" for="address_1">Address</label>
+	      	<div class="controls">
+	            <input type="text" class="input-block-level" data-ng-model="location.address_1" placeholder="street address, P.O. box, c/o" required>
+	            <span class="help-block error" data-ng-show="errors.address_1">{{errors.address_1}}</span>
+	        </div>
+	    </div>
+	
+	    <div class="control-group" data-ng-class="{error: (errors.address_2)}">
+	      	<label class="control-label" for="address_2"></label>
+	      	<div class="controls">
+	            <input type="text" class="input-block-level" data-ng-model="location.address_2" placeholder="apartment, suite, unit, building, floor, etc.">
+	            <span class="help-block error" data-ng-show="errors.address_2">{{errors.address_2}}</span>
+	        </div>
+	    </div>
+	
+	    <div class="control-group" data-ng-class="{error: (errors.city)}">
+	      	<label class="control-label" for="city">City</label>
+	      	<div class="controls">
+	            <input type="text" class="input-block-level" data-ng-model="location.city" required>
+	            <span class="help-block error" data-ng-show="errors.city">{{errors.city}}</span>
+	            <p class="help-block error"></p>
+	        </div>
+	    </div>
+	
+	    <div class="control-group" data-ng-class="{error: (errors.region_code)}">
+	      	<label class="control-label" for="region_code">Province/Region/State</label>
+	      	<div class="controls">
+	            <select class="input-block-level" data-ng-model="location.region_code" data-ng-options="key as value for (key, value) in json.regions[location.country_code]" required></select>
+	            <span class="help-block error" data-ng-show="errors.region_code">{{errors.region_code}}</span>
+	        </div>
+	    </div>
+	
+	    <div class="control-group" data-ng-class="{error: (errors.country_code)}">
+	      	<label class="control-label" for="country_code">Country</label>
+	      	<div class="controls">
+	            <select class="input-block-level" data-ng-model="location.country_code" data-ng-options="key as value for (key, value) in json.countries" data-ng-change="loadRegions(location.country_code)" required></select>
+	            <span class="help-block error" data-ng-show="errors.country_code">{{errors.country_code}}</span>
+	        </div>
+	    </div>
+	    
+	    <div class="control-group" data-ng-class="{error: (errors.mail_code)}">
+	      	<label class="control-label" for="mail_code">Postal/Zip Code</label>
+	      	<div class="controls">
+	            <input type="text" class="input-block-level" data-ng-model="location.mail_code" required>
+	            <span class="help-block error" data-ng-show="errors.mail_code">{{errors.mail_code}}</span>
+	        </div>
+	    </div>
+	    
+	    <div class="control-group" data-ng-class="{error: (errors.location_phone)}">
+	      	<label class="control-label" for="location_phone">Phone</label>
+	      	<div class="controls">
+	          	<div class="input-prepend">
+	                <span class="add-on">+{{json.calling_codes[location.country_code]}}</span><input type="text" class="" name="location_phone" placeholder="(000) 000-0000" data-ng-model="location.location_phone" data-input-mask="(999) 999-9999 x999999">
+	            </div>
+	            <span class="help-block error" data-ng-show="errors.location_phone">{{errors.location_phone}}</span>
+	        </div>
+	    </div>
+	    
+	    <hr>
+	    <div class="control-group">
+	      	<div class="controls">
+		      	<button class="btn" data-ng-click="updateLocation()" data-ng-disabled="locationForm.$invalid">Save changes</button>
+		      	<div class="btn-group">
+					<button class="btn" data-ng-click="toggle.location = false">Back</button>
+				</div>
+	      	</div>
+		</div>
+		<!--<button class="btn btn-danger" data-ng-click="deleteLocation(location.location_ID); toggle.location = false" data-ng-show="location.location_ID && company.location_default_ID != location.location_ID">Delete Location</button>-->
     
 	</div>
 	

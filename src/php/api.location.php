@@ -99,7 +99,7 @@ class Location {
 			"mail_code"		=> $request_data["mail_code"],
 			"latitude"		=> $request_data["latitude"],
 			"longitude"		=> $request_data["longitude"],
-			//"location_phone"	=> $request_data["location_phone"],
+			"location_phone"	=> $request_data["location_phone"],
 			//"location_fax"		=> $request_data["location_fax"],
 			"timestamp_create" => $_SERVER['REQUEST_TIME'],
 			"timestamp_update" => $_SERVER['REQUEST_TIME'],

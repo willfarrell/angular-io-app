@@ -15,10 +15,10 @@
 	    <!--<div class="control-group center"><img data-ng-src="img/user/{{session.user_ID}}.png" class="img-polaroid pull-center" width="100" height="100" /></div>-->
 	    
 	    <div class="control-group" data-ng-class="{error: (errors.signin)}">
-	        <input type="text" name="email" class="span" placeholder="{{i18n.sign_in_placeholder}}" data-ng-model="signin.email" required>
+	        <input type="text" name="email" class="input-block-level" placeholder="{{i18n.sign_in_placeholder}}" data-ng-model="signin.email" required>
 	    </div>
 	    <div class="control-group" data-ng-class="{error: (errors.signin)}">
-	        <input type="password" name="password" class="span" placeholder="{{i18n.sign_placeholder_password}}" data-ng-model="signin.password" required>
+	        <input type="password" name="password" class="input-block-level" placeholder="{{i18n.sign_placeholder_password}}" data-ng-model="signin.password" required>
 	    	<span class="help-block error" data-ng-show="errors.signin">{{errors.signin}}</span>
 	    </div>
 	    <div class="control-group">
@@ -30,8 +30,8 @@
 	
 	</form>
 	
-	<a href="" data-ng-click="action = 'up'">{{i18n.sign_up_nav_button}}</a>
-	<a href="" class="pull-right" data-ng-click="action = 'reset'">{{i18n.sign_reset_nav_button}}</a>
+	<a href="#/sign/up">{{i18n.sign_up_nav_button}}</a>
+	<a href="#/sign/reset" class="pull-right">{{i18n.sign_reset_nav_button}}</a>
 
 </div>
 
@@ -39,28 +39,28 @@
 	<form class="well" name="resetForm">
 	    <legend>{{i18n.sign_reset_legend}}</legend>
 	    <div class="control-group" data-ng-class="{error: (errors.email)}">
-		    <input type="text" name="email" class="span" placeholder="{{i18n.sign_placeholder_email}}" data-ng-model="signin.email" required>
+		    <input type="text" name="email" class="input-block-level" placeholder="{{i18n.sign_placeholder_email}}" data-ng-model="signin.email" required>
 		    <span class="error" data-ng-show="resetForm.email.$error.email">Not valid email</span>
 	    </div>
 	    <!-- CAPTCHA HERE? -->
 	    <button class="btn btn-primary" data-ng-click="resetPassword(signin.email)" data-ng-disabled="resetForm.$invalid">{{i18n.sign_reset_button}}</button>
 	    
 	</form>
-	<a href="" data-ng-click="action = 'in'">{{i18n.sign_in_nav_button}}</a>
+	<a href="#/sign/in">{{i18n.sign_in_nav_button}}</a>
 </div>
 
 <div class="pull-center" data-ng-show="action == 'up'">
 	<form class="well" name="signupForm">
 	    <legend>{{i18n.sign_up_legend}}</legend>
 	    <div class="control-group" data-ng-class="{error: (errors.email)}">
-	    	<input type="email" name="email" class="span" placeholder="{{i18n.sign_placeholder_email}}" data-ng-model="signup.email" required>
+	    	<input type="email" name="email" class="input-block-level" placeholder="{{i18n.sign_placeholder_email}}" data-ng-model="signup.email" required>
 	    	<!--<span class="error" data-ng-show="signinForm.email.$error.required">Email is required</span>-->
 	    	<span class="help-block error" data-ng-show="signupForm.email.$error.email">Not valid email</span>
 	    	<span class="help-block error" data-ng-show="errors.email">{{errors.email}}</span>
 	    </div>
 	    
 	    <div class="control-group" data-ng-class="{error: (errors.password)}">
-	        <input type="text" name="password" class="span" placeholder="{{i18n.sign_placeholder_password}}" data-ng-model="signup.password" data-ng-change="validate.password(signupForm.password, signup.password, '', settings.password)"
+	        <input type="text" name="password" class="input-block-level" placeholder="{{i18n.sign_placeholder_password}}" data-ng-model="signup.password" data-ng-change="validate.password(signupForm.password, signup.password, '', settings.password)"
 	        onfocus="this.type = 'text'" onblur="this.type = 'password'" required>
 	        <!--<span class="help-block error" data-ng-show="signinForm.password.$error.required">Password is required</span>-->
 	        <span class="help-block">Password will be visible while entering</span>
@@ -76,9 +76,32 @@
 	    
 	    <button class="btn btn-primary" data-ng-click="account_signup()" data-ng-disabled="signupForm.$invalid || signupForm.password.$invalid">{{i18n.sign_up_button}}</button>
 	</form>
-	<a href="" data-ng-click="action = 'in'">{{i18n.sign_in_nav_button}}</a>
+	<a href="#/sign/in">{{i18n.sign_in_nav_button}}</a>
 </div>
 
+<div class="pull-center" data-ng-show="action == 'totp'">
+	<form class="well" name="totpForm">
+	    <legend>{{i18n.sign_totp_legend}}</legend>
+	
+	    <!--<div class="control-group center"><img data-ng-src="img/user/{{session.user_ID}}.png" class="img-polaroid pull-center" width="100" height="100" /></div>-->
+	    <div class="control-group center"><img data-ng-src="img/user/{{session.user_ID}}.png" class="img-rounded" width="100" height="100" /></div>
+	    
+	    <div class="control-group" data-ng-class="{error: (errors.signin)}">
+	        <input type="text" name="email" class="input-block-level" placeholder="{{i18n.sign_totp_placeholder}}" data-ng-model="totp.value" required>
+	    	<span class="help-block error" data-ng-show="errors.totp">{{errors.totp}}</span>
+	    </div>
+	    
+	    <div class="btn-group">
+	    	<button class="btn">{{totp.timer}}s</button>
+	    	<button class="btn"><i class="icon-refresh"></i></button>
+	    </div>
+	    <button class="btn btn-success pull-right" data-ng-click="account_totp()" data-ng-disabled="totpForm.$invalid">{{i18n.sign_totp_button}}</button>
+	
+	</form>
+	
+	<a href="#/sign/out">{{i18n.sign_out_nav_button}}</a>
+
+</div>
 
 <!-- Security Check --
 <div class="alert alert-warning" data-ng-hide="settings.browser.latest">

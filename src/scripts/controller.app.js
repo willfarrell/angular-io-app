@@ -2,8 +2,8 @@
 //.controller('AppCtrl',
 //['$rootScope', '$scope', '$http', '$follow', '$filepicker',
 //function(rootScope, $scope, $http, follow, filepicker) {
-AppCtrl.$inject = ['$rootScope', '$scope', '$http', '$follow'];
-function AppCtrl(rootScope, $scope, $http, follow) {
+AppCtrl.$inject = ['$rootScope', '$scope', '$http', '$message', '$follow'];
+function AppCtrl(rootScope, $scope, $http, message, follow) {
 	console.log('AppCtrl ('+$scope.$id+')');
 	
 	$rootScope = rootScope; // important
@@ -12,6 +12,7 @@ function AppCtrl(rootScope, $scope, $http, follow) {
 	//$scope.$http = $http;
 	
 	// Factory init - $scope.factory = factory;
+	$rootScope.message = message;
 	$rootScope.follow = follow;
 	
 	// Events

@@ -3,10 +3,10 @@
     
     <legend>Account</legend>
     <hr>
-    <div class="control-group" data-ng-class="{error: (errors.user.user_name)}">
+    <div class="control-group" data-ng-class="{error: (errors.user.user_name)}" data-ui-if="settings.accout.user_name">
       	<label class="control-label" for="user_name">Username</label>
       	<div class="controls">
-            <input type="text" class="span" name="user_name" placeholder="" data-ng-model="user.user_name" data-ng-minlength="3" data-ng-maxlength="14" data-ng-pattern="/^[\w]*$/" data-ng-change="check.user_name(user.user_name)">
+            <input type="text" class="input-block-level" name="user_name" placeholder="" data-ng-model="user.user_name" data-ng-minlength="3" data-ng-maxlength="14" data-ng-pattern="/^[\w]*$/" data-ng-change="check.user_name(user.user_name)">
           	<span class="help-block"><a href="/#/profile/{{user.user_name}}">{{i18n.domain}}/#/profile/{{user.user_name}}</a></span>
             <span class="help-block error" data-ng-show="userForm.user_name.$error.pattern">only alphanumeric characters and underscores allowed</span>
             <span class="help-block error" data-ng-show="userForm.user_name.$error.minlength">too short</span>
@@ -20,11 +20,25 @@
     <div class="control-group">
       	<label class="control-label" for="user_email">Email</label>
       	<div class="controls">
-          	<input type="email" class="span" name="user_email" data-ng-model="user.user_email" disabled>
+          	<input type="email" class="input-block-level" name="user_email" data-ng-model="user.user_email" disabled>
           	<span class="help-block">Email will not be publicly displayed.  <a href="#/settings/email">Change</a></span>
 
         </div>
     </div>
+    
+    <!--<div class="control-group" data-ng-class="{error: (errors.user_cell)}">
+      	<label class="control-label" for="user_phone">Phone</label>
+      	<div class="controls">
+          	<div class="input-prepend">
+                <span class="add-on">+{{json.calling_codes[country_code]}}</span><input type="text" class="" name="user_cell" placeholder="(000) 000-0000" data-ng-model="user.user_cell" data-input-mask="(999) 999-9999 x999999">
+            </div>
+            <span class="help-block error" data-ng-show="errors.user_cell">{{errors.user_cell}}</span>
+        </div>
+    </div>-->
+    
+    <!--
+    devices
+    -->
     
 	<script>/*
     <hr>
@@ -32,7 +46,7 @@
     <div class="control-group" data-ng-class="{error: (errors.email.password)}">
       	<label class="control-label" for="password.password">Language</label>
       	<div class="controls">
-      		<select class="span" data-ng-model="country_code" data-ng-options="key as value for (key, value) in json.countries"></select>
+      		<select class="input-block-level" data-ng-model="country_code" data-ng-options="key as value for (key, value) in json.countries"></select>
       		<div class="btn-group">
 				<button class="btn dropdown-toggle" data-toggle="dropdown"><!--<i class="flag-{{country_code}}"></i>&nbsp;-->{{json.languages[locale]}}</button>
 			    <ul class="dropdown-menu">
@@ -47,7 +61,7 @@
     <div class="control-group" data-ng-class="{error: (errors.country_code)}">
       	<label class="control-label" for="country_code">Country</label>
       	<div class="controls">
-            <select class="span" data-ng-model="country_code" data-ng-options="key as value for (key, value) in json.countries"></select>
+            <select class="input-block-level" data-ng-model="country_code" data-ng-options="key as value for (key, value) in json.countries"></select>
             <span class="help-block">Select your country. This setting is saved to this browser.</span>
         </div>
     </div>
@@ -72,6 +86,14 @@
     */
     </script>
     
+    <!--<div class="control-group">
+      	<label class="control-label" for="user_level">Permissions</label>
+      	<div class="controls">
+          	<input type="email" class="input-block-level" name="user_level" data-ng-model="user.user_level" disabled>
+          	<span class="help-block">Email will not be publicly displayed.  <a href="#/settings/email">Change</a></span>
+
+        </div>
+    </div>-->
     
     <hr>
     

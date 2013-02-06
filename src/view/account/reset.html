@@ -17,7 +17,7 @@
 	<legend>Change Password<button class="btn btn-primary pull-right" data-ng-click="reset()" data-ng-disabled="changePasswordForm.$invalid">Save</button></legend>
 
     <div class="control-group" data-ng-class="{error: (errors.password)}">
-        <input type="password" name="password" class="input-large" placeholder="New Password" data-ng-model="password.new_password" data-ng-change="validate.password(changePasswordForm.password, password.new_password, '', settings.password)"
+        <input type="password" name="password" class="input-block-level" placeholder="New Password" data-ng-model="password.new_password" data-ng-change="validate.password(changePasswordForm.password, password.new_password, '', settings.password)"
         onfocus="this.type = 'text'" onblur="this.type = 'password'"
         	required>
         <!--<span class="help-block error" data-ng-show="signinForm.password.$error.required">Password is required</span>-->
@@ -28,11 +28,10 @@
         <span class="help-block error" data-ng-show="changePasswordForm.password.$error.number">Password needs at least one number</span>
         <span class="help-block error" data-ng-show="changePasswordForm.password.$error.special">Password needs an special character (!"£$%&...)</span>
         <span class="help-block error" data-ng-show="changePasswordForm.password.$error.identical">Password cannot have more than two identical characters</span>
-        <span class="help-block error" data-ng-show="errors.password">{{errors.password}}</span>
+        <span class="help-block error" data-ng-show="errors.new_password">{{errors.new_password}}</span>
     </div>
 </form>
 
 <a class="btn btn-primary" href="#/app" data-ng-show="state.signin">Sign In &raquo;</a>
 </div>
 </div>
-<script src="js/angular-io/controller/reset.js"></script>

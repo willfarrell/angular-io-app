@@ -48,9 +48,13 @@ require_once 'php/api.user.php';
 require_once 'php/api.company.php';
 require_once 'php/api.location.php';
 
+require_once 'php/api.filepicker.php';
+
+require_once 'php/api.search.php';
+require_once 'php/api.message.php';
 require_once 'php/api.follow.php';
 
-require_once 'php/api.filepicker.php';
+
 //require_once 'php/api.img.php';
 
 //-- Add-ons --//
@@ -65,7 +69,7 @@ $r->setSupportedFormats('JsonpFormat');
 
 // services
 $r->addAPIClass('Account');
-$r->addAPIClass('Contact');
+$r->addAPIClass('Contact'); // replace with message???
 //$r->addAPIClass('Img');
 
 //if ($session->cookie['user_ID']) {	// Users Only
@@ -73,12 +77,15 @@ $r->addAPIClass('Contact');
 	$r->addAPIClass('Company');
 	$r->addAPIClass('Location');
 
-	$r->addAPIClass('Follow');
 	$r->addAPIClass('Filepicker');
+	
+	$r->addAPIClass('Follow');
+	$r->addAPIClass('Message');
 
 //}
 
 $r->addAPIClass('Site');
+$r->addAPIClass('Search');
 //$r->addAPIClass('Password');
 
 $r->handle();

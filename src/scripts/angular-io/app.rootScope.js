@@ -138,7 +138,7 @@ angular.module('io.init.rootScope', [])
 			$rootScope.href('#/onboard/email');
 		
 		// haven't completed manditory onboard steps -> onboard
-		} else if($rootScope.settings.onboard.required && !$rootScope.session.user_level && $rootScope.uri().match(/#\/onboard/) === null) {
+		} else if($rootScope.settings.onboard.required && !$rootScope.session.timestamp_create && $rootScope.uri().match(/#\/onboard/) === null) {
 			$rootScope.href('#/onboard/'+$rootScope.settings.onboard.start);
 		
 		// has an old password -> change pass
@@ -293,7 +293,7 @@ angular.module('io.init.rootScope', [])
 	$rootScope.loadRegions = function(country_code) {
 		$rootScope.json.regions || ($rootScope.json.regions = {});
 		console.log('loadRegions('+country_code+')');
-		$http.get($rootScope.settings.client+'i18n/'+$scope.language+'/geo/'+country_code+'.json')
+		$http.get($rootScope.settings.client+'i18n/'+$rootScope.language+'/geo/'+country_code+'.json')
 			.success(function(data){
 				console.log('loadRegions.get.success');
 				$rootScope.json.regions[country_code] = data;
@@ -303,7 +303,7 @@ angular.module('io.init.rootScope', [])
 			});
 	}
 	
-	
+	$rootScope.json.month = $locale.DATETIME_FORMATS.SHORTMONTH;
 	// days in a month
 	$rootScope.json.day = function(year, month) {
 		var day = {};

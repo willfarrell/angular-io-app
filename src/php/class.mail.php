@@ -29,12 +29,22 @@ class Mail {
 		// include messages
 		$messages = file_get_contents('json/messages.json');
 		$this->messages = json_decode($messages, true);
+		
+		// Dev
+		$this->log = FirePHP::getInstance(true);
+		$this->timer = new Timers;
+		
+		$this->__log($this->messages);
     }
 
 	function __destruct() {
 
   	}
-
+  	
+  	private function __log($var_dump) {
+		$this->log->fb($var_dump, FirePHP::INFO);
+	}
+	
 	public function send($to, $message_ID, $args = array()) {
 
 		$subject = $this->messages[$message_ID]['subject'];

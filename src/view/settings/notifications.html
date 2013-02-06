@@ -3,18 +3,75 @@
     <legend>Notifications</legend>
     <hr>
     
+    <ul class="inline center">
+    	<li><i class="icon-envelope"></i> Email</li>
+    	<li><i class="icon-mobile-phone"></i> SMS</li>
+    	<li><i class="icon-tablet"></i> Push Notification</li>
+    </ul>
+    
+    <!--<hr>
     <div class="control-group">
-      	<label class="control-label" for="user_name">Account Changes</label>
+    	<b>Activity from your network</b>
+    </div>
+    <div class="control-group">
+      	<label class="control-label" for="user_name">Messages</label>
       	<div class="controls">
       		<label class="checkbox">
-            	<input type="checkbox" checked disabled>Password change notification.
+            	<input type="checkbox" disabled> New message.
+      		</label>
+        </div>
+    </div>-->
+    
+    <hr>
+    <div class="control-group">
+    	<b>Activity from your network</b>
+    </div>
+    <div class="control-group">
+      	<label class="control-label" for="user_name">Notify me when</label>
+      	<div class="controls">
+      		<label class="checkbox">
+            	<input type="checkbox" disabled> I'm sent a direct message.  ( <i class="icon-envelope"></i> )
       		</label>
       		<label class="checkbox">
-            	<input type="checkbox" checked disabled>Email change notification.
+            	<input type="checkbox" disabled> I'm followed by someone new.  ( <i class="icon-envelope"></i> )
+      		</label>
+        </div>
+    </div>
+    
+    
+    <hr>
+    <div class="control-group">
+    	<b>Activity from your account</b>
+    </div>
+    
+    <div class="control-group">
+      	<label class="control-label" for="user_name">Notify me when</label>
+      	<div class="controls">
+      		<label class="checkbox">
+            	<input type="checkbox" checked disabled> My password is changed.  ( <i class="icon-envelope"></i> )
+      		</label>
+      		<label class="checkbox">
+            	<input type="checkbox" checked disabled> My email is changed.  ( <i class="icon-envelope"></i> )
             </label>
         </div>
     </div>
     
+    <hr>
+    <div class="control-group">
+    	<b>Activity from {{i18n.title}}</b>
+    </div>
+    
+    <div class="control-group">
+      	<label class="control-label" for="user_name">Notify me when there is</label>
+      	<div class="controls">
+      		<label class="checkbox">
+            	<input type="checkbox" disabled> News about {{i18n.title}} product and feature updates.  ( <i class="icon-envelope"></i> )
+      		</label>
+      		<label class="checkbox">
+            	<input type="checkbox" disabled> News about {{i18n.title}} on partner products and other third party services. ( <i class="icon-envelope"></i> )
+      		</label>
+        </div>
+    </div>
     
     
     <hr>

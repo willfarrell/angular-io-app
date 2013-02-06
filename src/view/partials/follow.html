@@ -6,12 +6,10 @@
 
 <script type="text/ng-template" id="follow-global-button-user">
 	<div class="btn-group" data-ng-hide="follow.f.following">
-	  	<button class="btn btn-primary" data-ng-click="follow.addFollow('user', follow.f.ID, 0)">
-	    	<i class="icon-pushpin"></i>&nbsp;Follow
-	    </button>
+	  	<button class="btn btn-primary" data-ng-click="follow.addFollow('user', follow.f.ID, 0)">Follow</button>
 	</div>
 	<div class="btn-group" data-ng-show="follow.f.following">
-	  	<button class="btn" data-toggle="dropdown"><i class="icon-pushpin"></i>&nbsp;Following</button>
+	  	<button class="btn" data-toggle="dropdown">Following</button>
 	  	<button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 	    <ul class="dropdown-menu">
 		    <li data-ng-repeat="group in follow.db.groups" data-ng-show="group.group_ID">
@@ -35,12 +33,10 @@
 
 <script type="text/ng-template" id="follow-button-user">
 	<div class="btn-group" data-ng-hide="f.following">
-	  	<button class="btn btn-primary" data-ng-click="addFollow(f.ID, 0)">
-	    	<i class="icon-pushpin"></i>&nbsp;Follow
-	    </button>
+	  	<button class="btn btn-primary" data-ng-click="addFollow(f.ID, 0)">Follow</button>
 	</div>
 	<div class="btn-group" data-ng-show="f.following">
-	  	<button class="btn" data-toggle="dropdown"><i class="icon-pushpin"></i>&nbsp;Following</button>
+	  	<button class="btn" data-toggle="dropdown">Following</button>
 	  	<button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 	    <ul class="dropdown-menu">
 		    <li data-ng-repeat="group in follow.db.groups" data-ng-show="group.group_ID">
@@ -81,11 +77,11 @@
 <script type="text/ng-template" id="follow-button-company">
 	<div class="btn-group" data-ng-hide="f.following">
 	  	<button class="btn btn-primary" data-ng-click="addFollow(f.ID, 'company', 0); f.following = !f.following">
-	    	<i class="icon-pushpin"></i>&nbsp;Follow
+	    	Follow
 	    </button>
 	</div>
 	<div class="btn-group" data-ng-show="f.following">
-	  	<button class="btn" data-toggle="dropdown"><i class="icon-pushpin"></i>&nbsp;Following</button>
+	  	<button class="btn" data-toggle="dropdown">Following</button>
 	  	<button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 	    <ul class="dropdown-menu">
 		    <li data-ng-repeat="group in follow.groups" data-ng-show="group.group_ID">
