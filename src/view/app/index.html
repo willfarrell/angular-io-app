@@ -1,24 +1,11 @@
 <div data-ng-controller="DashboardCtrl">
 	
-	<!--
-	<div class="hero-unit">
-	    <h1>Dashboard</h1>
-		<p>Your App Home Page / Panel Goes Here</p>
-	</div>
-	-->
 	<div class="row">
 		<div class="span6">
-		<form name="siteForm" class="form">
-			<div class="input-append">
-				<input type="url" name="site" class="input-xlarge" placeholder="Enter URL to license. Include http://" data-ng-model="site" required>
-				<button class="btn" data-ng-click="addSite(site)" data-ng-disabled="siteForm.$invalid">Add</button>
+			<div class="hero-unit">
+			    <h1>Dashboard</h1>
+				<p>Your App Home Page / Panel Goes Here</p>
 			</div>
-			<span class="help-block error" data-ng-show="siteForm.site.$error.url">Not valid URL.</span>
-		</form>
-
-		<ul class="unstyled">
-			<li data-ng-repeat="(key, s) in sites"><i class="icon-trash" data-ng-click="confirmSiteDelete(key, s)"></i>&nbsp;{{s}}</li>
-		</ul>
 		</div>
 		<div class="span6">
 			<form class="form-search">
