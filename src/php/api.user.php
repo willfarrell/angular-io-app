@@ -24,6 +24,7 @@ class User extends Core {
 		$query = "SELECT user_ID, user_name, user_name_first, user_name_last, user_phone, user_function" //
 				." FROM users U"
 				." WHERE"
+				." U.timestamp_confirm != 0 AND"
 				." (user_name LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%@' OR user_details LIKE '%{{keyword}}%' OR user_url LIKE '%{{keyword}}%')"
 				." LIMIT 0,{{limit}}";
 		$users = $this->db->query($query, array('keyword' => $keyword, 'limit' => $limit));

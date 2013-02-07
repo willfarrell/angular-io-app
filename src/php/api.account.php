@@ -311,9 +311,9 @@ class Account extends Core {
 		// update user password
 		$this->password->update($request_data['new_password'], $user_email);
 		
-		// remove reset request
-		$this->db->delete('user_reset', array('hash' => $request_data['hash']));
-
+		// remove reset request AND any expired reset requests
+		$this->db->query("DELETE FROM user_reset WHERE hash = '{{hash}}' OR expire_timestamp < "+$_SERVER['REQUEST_TIME'], array('hash' => $request_data['hash']));
+		
 		// mail user
 		$mail = new Mail;
 		$mail->send($user_email, 'password_changed_notification');

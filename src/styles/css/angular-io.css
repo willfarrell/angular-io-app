@@ -1,12 +1,3 @@
-/*************** Bootstrap Fix ***************/
-/* Allows for fixed nav header */
-@media(min-width:980px) {
-.wrapper {
-	padding-top:60px;
-}
-}
-
-
 /*************** Bootstrap-Responsive Fix ***************/
 /* mobile modal patch */
 @media(max-width:480px) {
@@ -300,17 +291,24 @@ body {
 
 /* Footer - Sticky
 -------------------------------------------------- */
+/* Allows for fixed nav header */
+@media(min-width:980px) {
+.wrapper > .container {
+	padding-top:60px;
+}
+}
 
 html, body { height: 100%; }
 .wrapper {
 	min-height: 100%;
 	height: auto !important;
 	height: 100%;
-	margin: 0 auto -217px;
+	margin: 0 auto -66px;
 }
 
+
 .footer-push {
-	height:217px;
+	height:66px;
 }
 .footer {
   padding: 10px 0 10px;

@@ -38,7 +38,7 @@ class Follow extends Core {
 			$query = "SELECT U.user_ID AS ID, U.user_name AS name" // , GROUP_CONCAT(UF.group_ID) AS groups
 				." FROM users U"
 				." LEFT JOIN ".$this->table." UF ON UF.follow_ID = U.user_ID AND UF.user_ID = '{{user_ID}}'"
-				." WHERE U.user_ID != '{{user_ID}}' AND UF.follow_ID IS NULL"
+				." WHERE U.user_ID != '{{user_ID}}' AND U.timestamp_confirm != 0 AND UF.follow_ID IS NULL"
 				." ORDER BY RAND()"
 				." LIMIT 0,$limit";
 
@@ -82,7 +82,7 @@ class Follow extends Core {
 		$query = "SELECT U.user_ID AS ID, U.user_name AS name" // , GROUP_CONCAT(UF.group_ID) AS groups
 			." FROM users U"
 			." LEFT JOIN ".$this->table." UF ON UF.follow_ID = U.user_ID AND UF.user_ID = '{{user_ID}}'"
-			." WHERE U.user_ID != '{{user_ID}}' AND  UF.follow_ID IS NULL"
+			." WHERE U.user_ID != '{{user_ID}}' AND U.timestamp_confirm != 0 AND  UF.follow_ID IS NULL"
 			." AND U.referral_user_ID = '{{user_ID}}'"
 			." ORDER BY RAND()"
 			." LIMIT 0,10";
