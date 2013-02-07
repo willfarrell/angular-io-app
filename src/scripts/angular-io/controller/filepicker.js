@@ -312,9 +312,14 @@ function FilepickerCtrl($scope, $http, filepicker) {
 			}
 			
 			// pan
-            function move(e){
+			// x,y vector from image center to pointer grab location
+			var	grab_x = 0, grab_y = 0;
+		 	
+            function move(e) {
             	// get offsets
-            	var pageX,pageY, totalOffsetX = 0, totalOffsetY = 0,currentElement = this;
+            	var pageX,pageY, totalOffsetX = 0, totalOffsetY = 0, currentElement = this;
+		    	
+		    	// global position of mouse pointer
 		    	if (e.pageX || e.pageY) { 
 				  pageX = e.pageX;
 				  pageY = e.pageY;
@@ -324,32 +329,38 @@ function FilepickerCtrl($scope, $http, filepicker) {
 				  pageY = e.clientY + document.body.scrollTop + document.documentElement.scrollTop; 
 				}
 				
+				// global position of canvas top-left
 				do{
 			        totalOffsetX += currentElement.offsetLeft - currentElement.scrollLeft;
 			        totalOffsetY += currentElement.offsetTop - currentElement.scrollTop;
 			    }
 			    while(currentElement = currentElement.offsetParent)
 			    
-			 	//if (dragok){
-			 	/*if (x - width + totalOffsetX < pageX && pageX < x + width + totalOffsetX &&
-			 		y - height + totalOffsetY < pageY && pageY < y + height + totalOffsetY
-			 		){*/
+			    // calc grab offset - on mouse down only
+			    if (grab_x === 0 && grab_y === 0) {
+				    grab_x = (pageX - totalOffsetX) - x;
+				    grab_y = (pageY - totalOffsetY) - y;
+			    }
+			 	
 			 	//console.log(totalOffsetX + crop_left+' < '+(pageX - width/2)+' < '+(totalOffsetX + crop_left + dest_width)+' -> x = '+(pageX - totalOffsetX));
 			 	//console.log(totalOffsetY + crop_top+' < '+(pageY - height/2)+' < '+(totalOffsetY + crop_top + dest_height)+' -> y = '+(pageY - totalOffsetY));
 			 	
-			 	var left = (pageX - width/2 < totalOffsetX + crop_left),
-			 		right = (totalOffsetX + crop_left + dest_width  < pageX + width/2),
-			 		top = (pageY - height/2 < totalOffsetY + crop_top),
-			 		bottom = (totalOffsetY + crop_top + dest_height < pageY + height/2);
+			 	// x,y = center of image from canvas origin (top-left)
+			 	
+			 	// check if img is outside limits
+			 	var left = (pageX - width/2 - grab_x < totalOffsetX + crop_left),
+			 		right = (totalOffsetX + crop_left + dest_width  < pageX + width/2 - grab_x),
+			 		top = (pageY - height/2 - grab_y < totalOffsetY + crop_top),
+			 		bottom = (totalOffsetY + crop_top + dest_height < pageY + height/2 - grab_y);
 			 	if (left && right){	// left
-				 	x = pageX - totalOffsetX;
+				 	x = (pageX - totalOffsetX) - grab_x;
 			  	} else if(left) {
 				  	x = crop_left + dest_width - width/2;
 			  	} else if (right) {
 				  	x = crop_left + width/2;
 			  	}
 			  	if (top && bottom){				// top
-			  		y = pageY - totalOffsetY;
+			  		y = (pageY - totalOffsetY) - grab_y;
 			  	} else if (top){
 			  		y = crop_top + dest_height - height/2;
 			  	} else if (bottom) {
@@ -368,6 +379,7 @@ function FilepickerCtrl($scope, $http, filepicker) {
 			 	//canvas.onselectstart = function(){ return true; };
 			};
 		    canvas.onmousedown = function (e){
+		    	grab_x = 0, grab_y = 0;	// reset pan grab offset
 			 	canvas.onmousemove = move;
 			 	/*if (pageX < x + width + totalOffsetX &&
 			 		pageX > x - width + totalOffsetX &&
