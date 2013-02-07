@@ -1,25 +1,15 @@
 <?php
 
 
-class Message {
+class Message extends Core {
 	private $table = "messages";
 
 	function __construct() {
-		global $database, $filter;
-		$this->db = $database;
-		$this->filter = $filter;
-		
-		// Dev
-		$this->log = FirePHP::getInstance(true);
-		$this->timer = new Timers;
+		parent::__construct();
 	}
 
 	function __destruct() {
-		
-	}
-	
-	private function __log($var_dump) {
-		$this->log->fb($var_dump, FirePHP::INFO);
+		parent::__destruct();
 	}
 	
 	private function user_key($user_ID) {

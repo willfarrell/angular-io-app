@@ -34,14 +34,13 @@ require_once 'php/class.password.php';	// password validation, hashing, and chec
 require_once 'php/class.session.php';	// User session
 
 
-
-
-
-// Include API Classes
 // https://github.com/Luracast/Restler
 require_once 'php/Restler/restler.php'; // Change made in Restler.php : generateMap() : } elseif (Defaults::$autoRoutingEnabled) {
 //use Luracast\Restler\Restler;
 //Defaults::$smartAutoRouting = false;
+
+// Include API Classes
+require_once 'php/class.core.php';		// api classes are extended from this
 
 require_once 'php/api.account.php';
 require_once 'php/api.user.php';
@@ -80,9 +79,6 @@ if ($session->cookie['user_ID']) {	// Users Only
 	$r->addAPIClass('Message');
 
 }
-
-
-//$r->addAPIClass('Password');
 
 $r->handle();
 

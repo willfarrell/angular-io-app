@@ -3,26 +3,18 @@
 
 require_once 'class.db.php';
 
-class Company {
+class Company extends Core {
 	private $table = 'companies';
 
 	function __construct() {
-		global $database, $session, $filter;
-		$this->db = $database;
-		$this->filter = $filter;
-		$this->session = $session;
+		global $session;
+		parent::__construct();
 		
-		// Dev
-		$this->log = FirePHP::getInstance(true);
-		$this->timer = new Timers;
+		$this->session = $session;
 	}
 
 	function __destruct() {
-		
-	}
-	
-	private function __log($var_dump) {
-		$this->log->fb($var_dump, FirePHP::INFO);
+		parent::__destruct();
 	}
 	
 	function search($keyword=NULL, $limit=NULL) {

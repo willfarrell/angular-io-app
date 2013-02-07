@@ -4,7 +4,7 @@ require_once 'php/lib.global.php';
 require_once 'php/class.db.php';
 
 
-class Filepicker {
+class Filepicker extends Core {
 	
 	private $action_default = "file";
 	private $actions = array(
@@ -32,17 +32,13 @@ class Filepicker {
 	);
 	
 	function __construct() {
-		global $filter;
-		$this->filter = $filter;
-		
-		// dev
-		$this->timer = new Timers;
+		parent::__construct();
 		
 		ini_set('memory_limit', '-1');
 	}
 
 	function __destruct() {
-
+		parent::__destruct();
 	}
 
 	// aws cors credentials

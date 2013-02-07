@@ -2,27 +2,20 @@
 
 require_once 'class.mail.php';
 
-class Account {
+class Account extends Core {
 	private $table = 'users';
 
 	function __construct() {
-		global $database, $session, $filter;
-		$this->db = $database;
-		$this->filter = $filter;
+		global $session;
+		parent::__construct();
+		
 		$this->session = $session;
 		$this->password = new Password;
-		
-		// Dev
-		$this->log = FirePHP::getInstance(true);
-		$this->timer = new Timers;
 	}
 
 	function __destruct() {
 		
-	}
-	
-	private function __log($var_dump) {
-		$this->log->fb($var_dump, FirePHP::INFO);
+		parent::__destruct();
 	}
 	
 	// check if still signned in

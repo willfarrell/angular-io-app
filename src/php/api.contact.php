@@ -3,18 +3,14 @@
 require_once 'class.filter.php';
 require_once 'class.mail.php';
 
-class Contact {
-	private $db;
-	private $filter;
+class Contact extends Core {
 
 	function __construct() {
-		global $filter;
-		$this->filter = $filter;
-		$this->timer = new Timers;
+		parent::__construct();
 	}
 
 	function __destruct() {
-
+		parent::__destruct();
 	}
 
 

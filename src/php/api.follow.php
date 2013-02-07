@@ -1,7 +1,5 @@
 <?php
 
-require_once 'class.db.php';
-
 /*
 
 GET 	/follow/user/1/__groups__ // make post?
@@ -12,17 +10,15 @@ GET 	/follow/ing/user
 
 */
 
-class Follow {
-	private $db;
+class Follow extends Core {
 	private $table = "follow_user";
 
 	function __construct() {
-		global $database;
-        $this->db = $database;
+		parent::__construct();
     }
 
     function __destruct() {
-
+	    parent::__destruct();
     }
 
     // self only

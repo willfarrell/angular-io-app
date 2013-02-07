@@ -18,12 +18,12 @@ class Timers {
 
 	function __destruct() {
 		// print to log files
-		/*$data = json_encode($this->results_all());
+		$data = json_encode($this->results_all());
 		if ($data != "[]") {
 			$file = $_SERVER['DOCUMENT_ROOT'].'/timers.txt';
 			file_put_contents($file, "\n".$_SERVER['REQUEST_TIME']." (".date('r', $_SERVER['REQUEST_TIME']).")\n", FILE_APPEND);
 			file_put_contents($file, $data, FILE_APPEND);
-		}*/
+		}
 	}
 
 	/*  start the timer  */

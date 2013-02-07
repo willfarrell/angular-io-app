@@ -2,29 +2,18 @@
 
 require_once 'class.filter.php';
 
-class User {
-	private $db;
-	private $session;
-	private $filter;
+class User extends Core {
 	private $table = 'users';
 
 	function __construct() {
-		global $database, $session, $filter;
-		$this->db = $database;
-		$this->session = $session;
-		$this->filter = $filter;
+		global $session;
+		parent::__construct();
 		
-		// dev
-		$this->timer = new Timers;
-		$this->log = FirePHP::getInstance(true);
+		$this->session = $session;
 	}
 
 	function __destruct() {
-
-	}
-	
-	private function __log($var_dump) {
-		$this->log->fb($var_dump, FirePHP::INFO);
+		parent::__destruct();
 	}
 	
 	function search($keyword=NULL, $limit=NULL) {

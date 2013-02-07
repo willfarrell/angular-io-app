@@ -1,17 +1,13 @@
 <?php
 
-class Location {
-	private $db;
-	private $filter;
+class Location extends Core {
 
 	function __construct(){
-		global $database, $filter;
-        $this->db = $database;
-		$this->filter = $filter;
+		parent::__construct();
     }
 
 	function __destruct() {
-
+		parent::__destruct();
   	}
 
   	/*

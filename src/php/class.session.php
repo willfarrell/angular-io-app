@@ -12,6 +12,7 @@ $_SERVER['REMOTE_ADDR'] = getenv("HTTP_CF_CONNECTING_IP")
 
 require_once "inc.config.php";
 require_once "class.db.php";
+require_once 'php/class.password.php';	// password validation, hashing, and checking
 //require_once "class.redis.php";
 
 class Session {
