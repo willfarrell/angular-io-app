@@ -1,7 +1,7 @@
-//angular.module('io.controller.filepicker', [])
-//.controller('FilepickerCtrl', ['$scope', '$http', function($scope, $http) {
-FilepickerCtrl.$inject = ['$scope', '$http', '$filepicker'];
-function FilepickerCtrl($scope, $http, filepicker) {
+angular.module('io.controller.filepicker', [])
+.controller('FilepickerCtrl', ['$scope', '$http', '$filepicker', function($scope, $http, filepicker) {
+//FilepickerCtrl.$inject = ['$scope', '$http', '$filepicker'];
+//function FilepickerCtrl($scope, $http, filepicker) {
 	console.log('FilepickerCtrl ('+$scope.$id+')');
 	//$scope.errors = {};
 	
@@ -541,6 +541,5 @@ function FilepickerCtrl($scope, $http, filepicker) {
 	    return new Blob([new Uint8Array(array)], {type: 'image/png'});
 	}
 	
-}
-
-//}]);
+//}
+}]);

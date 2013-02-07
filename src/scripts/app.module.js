@@ -3,7 +3,6 @@
 angular.module('io.config', []).value('io.config', {});
 
 angular.module('io.controllers', [
-
 	'io.controller.company',
 	'io.controller.confirm',
 	'io.controller.onboard',
@@ -13,30 +12,38 @@ angular.module('io.controllers', [
 	'io.controller.user',
 	'io.controller.password'
 ]);
-angular.module('io.directives', ['io.config', 'io.directive.htmlExtend', 'io.directive.inputMask', 'io.directive.markdown']);
-angular.module('io.filters', ['io.config', 'io.filter.format', 'io.filter.range', 'io.filter.truncate']);
-angular.module('io.factories', ['io.config', 'io.factory.accessibility']);
+angular.module('io.directives', ['io.config', 'io.directive.htmlExtend', 'io.directive.inputMask']);
+angular.module('io.filters', ['io.config', 'io.filter.format', 'io.filter.range']);
+angular.module('io.factories', ['io.config']);
 angular.module('io.init', ['io.config', 'io.init.settings', 'io.init.rootScope']);
-angular.module('io', ['io.directives', 'io.filters', 'io.factories', 'io.init', 'io.config']);
+
+
+// io plugings
+angular.module('io.markdown', 		['io.config', 'io.directive.markdown']);
+angular.module('io.follow', 		['io.config', 'io.factory.follow', 'io.controller.follow']);
+angular.module('io.message', 		['io.config', 'io.filter.truncate', 'io.factory.message']);
+angular.module('io.filepicker', 	['io.config', 'io.factory.filepicker', 'io.controller.filepicker']);
+angular.module('io.accessibility', 	['io.config', 'io.factory.accessibility']);
+
+angular.module('io.plugins', 		['io.follow', 'io.message', 'io.filepicker', 'io.accessibility', 'io.markdown']);
+
+angular.module('io', ['io.directives', 'io.filters', 'io.factories', 'io.plugins', 'io.init', 'io.config']);
+
 
 // app settings
 angular.module('app.config', []).value('app.config', {});
 
 angular.module('app.controllers', [
-	
-	// io plugins
 	'io.controller.contact',
-	'io.controller.filepicker',
-	'io.controller.follow',
 	
 	// app
-	'io.controller.root',
+	'app.controller.root',
 	'app.controller.dashboard'
 ]);
 
 angular.module('app.directives', ['app.config', 'ui.directives.if']);
 angular.module('app.filters', ['app.config']);
-angular.module('app.factories', ['app.config', 'io.factory.filepicker', 'io.factory.message', 'io.factory.follow']);
+angular.module('app.factories', ['app.config']);
 
 angular.module('app.init', ['app.config', 'app.route']);
 

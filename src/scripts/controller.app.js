@@ -1,4 +1,4 @@
-//angular.module('io.controller.root', [])
+//angular.module('app.controller.root', [])
 //.controller('AppCtrl',
 //['$rootScope', '$scope', '$http', '$follow', '$filepicker',
 //function(rootScope, $scope, $http, follow, filepicker) {
