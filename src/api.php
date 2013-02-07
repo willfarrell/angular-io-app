@@ -51,7 +51,6 @@ require_once 'php/api.company.php';
 	require_once 'php/api.location.php';
 
 require_once 'php/api.filepicker.php';
-require_once 'php/api.search.php';
 
 //require_once 'php/api.img.php';
 
@@ -77,7 +76,6 @@ if ($session->cookie['user_ID']) {	// Users Only
 
 	$r->addAPIClass('Filepicker');
 	
-	$r->addAPIClass('Search');
 	$r->addAPIClass('Follow');
 	$r->addAPIClass('Message');
 

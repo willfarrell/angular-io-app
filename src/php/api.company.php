@@ -24,7 +24,25 @@ class Company {
 	private function __log($var_dump) {
 		$this->log->fb($var_dump, FirePHP::INFO);
 	}
+	
+	function search($keyword=NULL, $limit=NULL) {
+		if ($limit && !is_int($limit)) return;
+		if (!$limit) $limit = 10;
+		$return = array();
+		
+		$query = "SELECT company_ID, company_name, company_url, company_phone" //
+				." FROM companies C"
+				." WHERE"
+				." (company_name LIKE '%{{keyword}}%' OR company_details LIKE '%{{keyword}}%' OR company_url LIKE '%{{keyword}}%')"
+				." LIMIT 0,{{limit}}";
+		$companies = $this->db->query($query, array('keyword' => $keyword, 'limit' => $limit));
+		while ($companies && $company = $this->db->fetch_assoc($companies)) {
+			$return[] = $company;
+		}
 
+		return $return;
+	}
+	
 	/**
 	 *	get a list of users for a company
 	 *	session company only (privacy)

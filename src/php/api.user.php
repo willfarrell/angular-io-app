@@ -26,7 +26,25 @@ class User {
 	private function __log($var_dump) {
 		$this->log->fb($var_dump, FirePHP::INFO);
 	}
+	
+	function search($keyword=NULL, $limit=NULL) {
+		if ($limit && !is_int($limit)) return;
+		if (!$limit) $limit = 10;
+		$return = array();
+		
+		$query = "SELECT user_ID, user_name, user_name_first, user_name_last, user_phone, user_function" //
+				." FROM users U"
+				." WHERE"
+				." (user_name LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%@' OR user_details LIKE '%{{keyword}}%' OR user_url LIKE '%{{keyword}}%')"
+				." LIMIT 0,{{limit}}";
+		$users = $this->db->query($query, array('keyword' => $keyword, 'limit' => $limit));
+		while ($users && $user = $this->db->fetch_assoc($users)) {
+			$return[] = $user;
+		}
 
+		return $return;
+	}
+	
 	function get_onboard_done() {
 		if (USER_ID) {
 			$this->db->update(
@@ -131,24 +149,23 @@ class User {
 	function put($request_data=NULL) {
 		$return = array();
 		$params = array(
-			"user_ID",
+			//"user_ID",
 			//"company_ID",
 			"user_name",
+			"user_name_first",
+			"user_name_last",
 			//"user_email",
-			"user_details",
-			//"user_cell",
+			"user_function",
 			"user_phone",
 			"user_url",
-			//"user_fax",
-			"user_function",
-
+			"user_details",
 		);
 
 		foreach ($params as $key) {
 			$request_data[$key] = isset($request_data[$key]) ? $request_data[$key] : NULL;
 		}
 		
-		unset($request_data['user_email']);	// incase it was passed - angular passes disabled fields
+		//unset($request_data['user_email']);	// incase it was passed - angular passes disabled fields
 		
 		// username unique?
 		if (isset($request_data['user_name']) && $request_data['user_name']) {
@@ -169,16 +186,14 @@ class User {
 
 		$user = array(
 			'user_ID' => USER_ID,
+			//'user_email' => $request_data['user_email'],
 			'user_name' => $request_data['user_name'],
 			'user_name_first' => $request_data['user_name_first'],
 			'user_name_last' => $request_data['user_name_last'],
-			//'user_email' => $request_data['user_email'],
-			'user_details' => $request_data['user_details'],
-			//'user_cell' => $request_data['user_cell'],
 			'user_phone' => $request_data['user_phone'],
 			'user_url' => $request_data['user_url'],
-			//'user_fax' => $request_data['user_fax'],
 			'user_function' => $request_data['user_function'],
+			'user_details' => $request_data['user_details'],
 			'timestamp_update' => $_SERVER['REQUEST_TIME'],
 		);
 		$this->__log($user);
