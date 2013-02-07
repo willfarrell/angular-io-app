@@ -1,12 +1,9 @@
 angular.module('io.init.rootScope', [])
 .run(
-	['$rootScope', '$locale', '$http', '$window', '$location', '$accessibility', '$filepicker',
-	function($rootScope, $locale, $http, $window, $location, accessibility, filepicker) {
+	['$rootScope', '$locale', '$http', '$window', '$location',
+	function($rootScope, $locale, $http, $window, $location) {
 	console.log('io.init.rootScope ('+$rootScope.$id+')');
  	
- 	// factories
- 	$rootScope.accessibility = accessibility;
- 	$rootScope.filepicker = filepicker;
  	
 	$rootScope.default_settings = {
 		'client'			:'',	// https://static.domain.com/
@@ -206,7 +203,8 @@ angular.module('io.init.rootScope', [])
 	$rootScope.sliderNav 	= -1;		// slider nav state (-1,+1)
 	$rootScope.alerts 	= [];	// for alert-fixed-top
 	$rootScope.modal 	= {};	// for alertModal
-	$rootScope.timezone = new Date().getTimezoneOffset();
+	$rootScope.datetime = new Date();
+	//$rootScope.timezone_min = new Date().getTimezoneOffset();
  	
  	$rootScope.i18n = {};
 	$rootScope.json = {};
@@ -241,13 +239,20 @@ angular.module('io.init.rootScope', [])
 		db.set('language', $rootScope.language);
 	 	if ($rootScope.locale.length > 2) {
 			$rootScope.country_code = $rootScope.locale.substr(3,2).toUpperCase();
+			db.set('country_code', $rootScope.country_code);
 		} else {
-			$rootScope.country_code = db.get('country_code', $rootScope.i18n.default.substr(3,2).toUpperCase());
+			$rootScope.country_code = db.get('country_code', $locale.id.substr(3,2).toUpperCase());
 		}
-		db.get('country_code', $rootScope.country_code);
+		
 	};
 	$rootScope.changeLocale = function(locale) {
 		db.set('locale', locale);
+		db.set('language', locale.substr(0,2));
+		
+		if (locale.length > 2) {
+			db.set('country_code', locale.substr(3,2).toUpperCase());
+		}
+		
 		window.location.reload();
 	};
 	$rootScope.loadLocaleFile = function(locale, file) {

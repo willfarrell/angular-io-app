@@ -2,16 +2,11 @@
     <div class="row">
       	<div class="span4">
       		<input data-ng-model="query" type="text" placeholder="Search" class="input-block-level">
-      		<style >
-      		.active {
-	      		background-color: #333;
-      		}
-      		</style>
 	        <ul class="nav nav-tabs nav-stacked">
 	        	<li data-ng-repeat="m in message.list | filter:query | orderBy:'-timestamp'">
 	        		<a href="" data-ng-click="message.loadThread(m.user.user_ID, m.user.user_name_first+' '+m.user.user_name_last)"><!-- #/user/message/{{m.user.user_ID}} -->
 		        		<p class="pull-right">
-		        			<i data-ng-class="{true:'icon-envelope', false:'icon-blank'}[(m.read == 0 && session.user_ID == m.user.user_ID)]"></i>
+		        			<i data-ng-class="{true:'icon-envelope', false:'icon-blank'}[(!m.read && session.user_ID == m.user_to_ID)]"></i>
 		        			&nbsp;{{m.timestamp*1000 | date:'shortDate'}}</p>
 		        		<img data-ng-src="img/user/{{m.user.user_ID}}.png?{{filepicker.timestamp}}" class="img-rounded" style="width:50px; height:50px; margin-right:10px" align="left"/>
 		        		<b class="">{{m.user.user_name_first}} {{m.user.user_name_last}}&nbsp;</b>

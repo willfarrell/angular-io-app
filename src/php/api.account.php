@@ -51,7 +51,7 @@ class Account {
 		$return["password_age"] = floor(($_SERVER["REQUEST_TIME"] - $r['password_timestamp'])/86400);
 		$return["timestamp_create"]  = $r['timestamp_create']; // for onboard trigger
 		
-		$return["ref"]   = base_convert($r['user_ID'],10,32);
+		$return["referral"]   = base_convert($r['user_ID'],10,32);
 		$return["email_confirm"] = ($r['timestamp_confirm']) ? true : false;
 
 		$return["user"] = array(
@@ -116,7 +116,7 @@ class Account {
 		$email = $request_data["email"];
 
 		// referral
-		$referral_user_ID = (isset($request_data['referral'])) ? base_convert($request_data['ref'],32,10) : 0;
+		$referral_user_ID = (isset($request_data['referral'])) ? base_convert($request_data['referral'],32,10) : 0;
 
 		// user //
 		$password_hash = $this->password->hash($request_data["password"], $email);

@@ -12,10 +12,8 @@
     			</div>
     		</legend>
 
-    		 <div class="control-group">
-	    		<label class="control-label" for="user_img">
-	    			
-	    		</label>
+    		 <div class="control-group" data-ui-if="filepicker">
+	    		<!--<label class="control-label" for="user_img">Photo</label>-->
 
 				<div class="controls center">
 		    		<img data-ng-src="img/user/{{session.user_ID}}.png?{{filepicker.timestamp}}" class="img-polaroid" style="width:100px; height:100px;"/>

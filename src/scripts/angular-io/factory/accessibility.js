@@ -14,10 +14,10 @@ angular.module('io.factory.accessibility', [])
 	});
 	
 	$scope.init = function() {
+		console.log('$accessibility.init()');
 		// accessibility
 		if ($scope.settings.accessibility) {
-			$scope.settings.accessibility = true;
-			$rootScope.loadStyle($scope.css_file);
+			$scope.load();
 		}
 		
 		// zoom
@@ -30,12 +30,21 @@ angular.module('io.factory.accessibility', [])
 	};
 	
 	$scope.toggle = function() {
+		console.log('$accessibility.toggle()');
 		if ($scope.settings.accessibility) {
 			$scope.settings.accessibility = false;
-			$rootScope.unloadStyle($scope.css_file);
 		} else {
 			$scope.settings.accessibility = true;
+		}
+		$scope.load();
+	};
+	
+	$scope.load = function() {
+		console.log('$accessibility.load()');
+		if ($scope.settings.accessibility) {
 			$rootScope.loadStyle($scope.css_file);
+		} else {
+			$rootScope.unloadStyle($scope.css_file);
 		}
 		$scope.save();
 	};
@@ -52,7 +61,9 @@ angular.module('io.factory.accessibility', [])
 		$scope.save();
 	};
 	
-	$scope.init();
+	$rootScope.$watch($rootScope, function() {
+		$scope.init();
+	});
 	
 	return $scope; // important
 }]);

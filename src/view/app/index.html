@@ -22,6 +22,20 @@
 		</div>
 		<div class="span6">
 			<form class="form-search">
+				<input data-ng-model="search.query" type="text" class="input-medium" placeholder="Search directory" data-ng-change="loadSearch()">
+				<div class="btn-group">
+				  <button class="btn">{{search.type}}</button>
+				  <button class="btn dropdown-toggle" data-toggle="dropdown">
+				    <span class="caret"></span>
+				  </button>
+				  <ul class="dropdown-menu">
+				    <li><a href="" data-ng-click="search.type = 'company'; loadSearch()">Company</a></li>
+				    <li><a href="" data-ng-click="search.type = 'user'; loadSearch()">User</a></li>
+				  </ul>
+				</div>
+			</form>
+			
+			<!--<form class="form-search">
 				<input data-ng-model="search.query" type="text" class="input-medium search-query inline" placeholder="Search directory" data-ng-change="loadSearch()">
 				
 				<label class="radio inline">
@@ -30,13 +44,13 @@
 				<label class="radio inline">
 					<input type="radio" ng-model="search.type" value="user" data-ng-change="loadSearch()">User
 				</label>
-			</form>
-			
+			</form>-->
+			 
 			<table class="table table-striped">
 				<thead><tr><th>&nbsp;</th></tr></thead>
 				<tbody>
-				<tr class="ng-click" data-ng-repeat="r in results">
-					<td data-ng-show="search.type == 'user' && r.user_name_first">
+				<tr class="ng-click" data-ng-repeat="r in results" data-ng-show="search.type == 'user'">
+					<td>
 						<img data-ng-src="img/user/{{r.ID}}.png" class="img-polaroid" width="50" height="50" align="left" style="margin-right:10px">
 						<p><b>{{r.user_name_first}} {{r.user_name_last}}</b></p>
 			            <p data-ng-show="r.user_function">{{r.user_function}}</p>
@@ -45,7 +59,9 @@
 			            	<!--<a class="btn" rel="tooltip" title="+{{json.calling_codes[company.location.country_code]}} {{r.user_phone | phone}}" href="tel:+{{json.calling_codes[company.location.country_code]}} {{r.user_phone}}" data-ng-disabled="r.user_phone == ''"><i class="icon-phone"></i></a>-->
 			            </div>
 					</td>
-					<td data-ng-show="search.type == 'company' && r.company_name">
+				</tr>
+				<tr class="ng-click" data-ng-repeat="r in results" data-ng-show="search.type == 'company'">
+					<td>
 						<img data-ng-src="img/company/{{r.company_ID}}.png" class="img-polaroid" width="75" height="50" align="left" style="margin-right:10px">
 						<p><b>{{r.company_name}}</b></p>
 						<p data-ng-show="r.company_url"><i class="icon-link"></i>&nbsp;<a href="" data-ng-click="href(r.company_url, true)">{{r.company_url}}</a></p>

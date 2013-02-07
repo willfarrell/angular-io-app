@@ -5,6 +5,7 @@ angular.module('io.factory.message', [])
 	
 	var $scope = {};
 	$scope.version = '0.1.0';
+	$scope.unread = 0;
 	
 	$scope.init = function() {
 		$scope.alerts = [];
@@ -31,6 +32,22 @@ angular.module('io.factory.message', [])
 	
 	$scope.close = function() {
 		$('#messageModal').modal('hide');
+	};
+	
+	$scope.updateUnreadCount = function() {
+		console.log('updateUnreadCount()');
+		$http.get($rootScope.settings.server+'message/unread')
+			.success(function(data) {
+				console.log('updateUnreadCount.get.success');
+				console.log(data);
+				//$scope.dbing[id].name = data.name;
+				
+				$scope.unread = data;
+			})
+			.error(function() {
+				console.log('updateUnreadCount.get.error');
+				//$rootScope.http_error();
+			});
 	};
 	
 	// inbox
@@ -77,6 +94,9 @@ angular.module('io.factory.message', [])
 				setTimeout(function() {
 					$scope.scrollBottom();
 				}, 100);
+				
+				// update unread count
+				$scope.updateUnreadCount();
 			})
 			.error(function() {
 				console.log('loadThread.get.error');
@@ -110,7 +130,12 @@ angular.module('io.factory.message', [])
 	$scope.scrollBottom = function(){
 		var t = document.getElementById('thread');
     	t.scrollTop = t.scrollHeight;
-	}
+	};
+	
+	
+	$rootScope.$watch('session.user_ID', function(value) {
+      	if (value) $scope.updateUnreadCount();
+    });
 	
 	return $scope;
 }]);

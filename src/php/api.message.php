@@ -26,6 +26,30 @@ class Message {
 		return implode('-', $this->db->sort(USER_ID, $user_ID));
 	}
 	
+	function unread() {
+		$count = 0;
+		
+		$query = "SELECT COUNT(*) AS count"
+				." FROM ".$this->table." M"
+				." WHERE "
+				." `user_to_ID` = '{{user_ID}}'"
+				." AND `timestamp` = (SELECT MAX(timestamp) FROM messages WHERE user_key = M.user_key LIMIT 0,1)"
+				." AND `read` = 0"
+				." GROUP BY user_key ORDER BY timestamp DESC";
+		
+		
+		$where = array(
+			'user_ID' => USER_ID
+		);
+		
+		$results = $this->db->query($query, $where);
+		if ($results) {
+			$result = $this->db->fetch_assoc($results);
+			$count = $result['count'];
+		}
+		return $count;
+	}
+	
     function get_list() {
 		$return = array();
 		

@@ -46,8 +46,7 @@
 			        <a href="#" class="dropdown-toggle" data-ng-show="!session.user.user_name && session.user.user_name_first" data-toggle="dropdown">{{session.user.user_name_first}} <b class="caret"></b></a>
 			        <a href="#" class="dropdown-toggle" data-ng-hide="session.user.user_name || session.user.user_name_first" data-toggle="dropdown">{{session.user.user_email}} <b class="caret"></b></a>
 			        <ul class="dropdown-menu" data-ng-click="selectedNav = 'user'">
-			        	<li><a href="#/user/message"><i class="icon-envelope"></i>&nbsp;Messages<!--<span class="badge badge-inverse pull-right">10</span>--></a></li>
-			        	
+			        	<li><a href="#/user/message"><i class="icon-envelope"></i>&nbsp;Messages<span class="badge badge-important pull-right" data-ng-show="message.unread">{{message.unread}}</span></a></li>
 			        	<li><a href="#/user/profile"><i class="icon-user"></i>&nbsp;Profile</a></li>
 			        	<!--<li><a href="#/user/follow"><i class="icon-group"></i>&nbsp;Follow</a></li>-->
 			        	<li><a href="#/user/invite"><i class="icon-share"></i>&nbsp;Invite</a></li>

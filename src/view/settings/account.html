@@ -39,7 +39,37 @@
     <!--
     devices
     -->
+    <hr>
+    <div class="control-group">
+    	<b>Browser saved settings</b>
+    </div>
     
+    <div class="control-group" data-ng-class="{error: (errors.accessibility)}" data-ui-if="accessibility">
+      	<label class="control-label" for="accessibility">Accessibility</label>
+      	<div class="controls">
+            <div class="checkbox">
+            	<input type="checkbox" data-ng-model="accessibility.settings.accessibility" data-ng-change="accessibility.load()"> Enable <a href="http://dyslexicfonts.com/">OpenDyslexic</a> Font-type.
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="control-group" data-ng-class="{error: (errors.locale)}">
+      	<label class="control-label" for="locale">Locale</label>
+      	<div class="controls">
+      		<select class="input-block-level" data-ng-model="locale" data-ng-options="key as value for (key,value) in json.languages" data-ng-selected="locale" data-ng-change="changeLocale(locale)"></select>
+      		<span class="help-block">Date and number formatting.</span>
+      	</div>
+    </div>
+    
+    <div class="control-group" data-ng-class="{error: (errors.timezone)}">
+      	<label class="control-label" for="timezone">Timezone</label>
+      	<div class="controls">
+      		<select class="input-block-level" disabled>
+	      		<option value="">UTC {{datetime | date:'Z'}}</option>
+      		</select>
+      	</div>
+    </div>
 	<script>/*
     <hr>
     

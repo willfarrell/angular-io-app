@@ -45,15 +45,13 @@ require_once 'php/Restler/restler.php'; // Change made in Restler.php : generate
 
 require_once 'php/api.account.php';
 require_once 'php/api.user.php';
+	require_once 'php/api.message.php';
+	require_once 'php/api.follow.php';
 require_once 'php/api.company.php';
-require_once 'php/api.location.php';
+	require_once 'php/api.location.php';
 
 require_once 'php/api.filepicker.php';
-
 require_once 'php/api.search.php';
-require_once 'php/api.message.php';
-require_once 'php/api.follow.php';
-
 
 //require_once 'php/api.img.php';
 
@@ -61,7 +59,7 @@ require_once 'php/api.follow.php';
 require_once 'php/api.contact.php';
 
 // App
-require_once 'php/api.site.php';
+//require_once 'php/api.__class__.php';
 
 $r = new Restler();
 $r->setSupportedFormats('JsonpFormat');
@@ -72,20 +70,20 @@ $r->addAPIClass('Account');
 $r->addAPIClass('Contact'); // replace with message???
 //$r->addAPIClass('Img');
 
-//if ($session->cookie['user_ID']) {	// Users Only
+if ($session->cookie['user_ID']) {	// Users Only
 	$r->addAPIClass('User');
 	$r->addAPIClass('Company');
 	$r->addAPIClass('Location');
 
 	$r->addAPIClass('Filepicker');
 	
+	$r->addAPIClass('Search');
 	$r->addAPIClass('Follow');
 	$r->addAPIClass('Message');
 
-//}
+}
 
-$r->addAPIClass('Site');
-$r->addAPIClass('Search');
+
 //$r->addAPIClass('Password');
 
 $r->handle();
