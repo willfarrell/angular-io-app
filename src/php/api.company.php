@@ -209,7 +209,7 @@ class Company extends Core {
 			// primary location
 			$results = $this->db->select('locations',
 				array('company_ID' => COMPANY_ID, 'location_ID' => $company['location_default_ID']),
-				array('location_ID', 'company_ID', 'location_name', 'address_1', 'address_2', 'city', 'region_code', 'country_code', 'mail_code', 'latitude', 'longitude', 'location_phone', 'location_fax')
+				array('location_ID', 'company_ID', 'location_name', 'address_1', 'address_2', 'city', 'region_code', 'country_code', 'mail_code', 'latitude', 'longitude', 'location_phone')
 			);
 			while ($results && $location = $this->db->fetch_assoc($results)) {
 				$location['company_ID'] =  $location['company_ID'];

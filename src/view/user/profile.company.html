@@ -35,8 +35,8 @@
         <br>
         
         <!-- location -->
-        <legend><i class="icon-map-marker"></i>&nbsp;Primary Location</legend>
-        <div class="row-fluid">
+        <legend data-ng-show="company.location"><i class="icon-map-marker"></i>&nbsp;Primary Location</legend>
+        <div class="row-fluid" data-ng-show="company.location">
 	        <div class="span5">
 	            <!--<img src="http://placehold.it/100x100" width="100" height="100" />-->
 	            <!--<img data-ng-src="https://maps.google.com/maps/api/staticmap?center={{company.location.latitude}},{{company.location.longitude}}&zoom=14&size=100x100&maptype=terain&markers=color:red%7Clabel:{{company.company_name}}&sensor=false" class="img-polaroid">-->

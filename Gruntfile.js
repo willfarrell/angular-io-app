@@ -106,7 +106,7 @@ module.exports = function(grunt) {
 		// usemin handler should point to the file containing
 		// the usemin blocks to be parsed
 		'usemin-handler': {
-			html: ['index.web.html']//, 'index.device.html']
+			html: ['index.html', 'index.web.html']//, 'index.device.html']
 		},
 		// renames scripts/CSS to prepend a hash of their contents for easier
 		// versioning

@@ -42,6 +42,15 @@
     <!-- endbuild -->
     <!--<link rel="stylesheet" href="styles/css/famfamfam-flags.css"><!-- if using i18n.options -->
     
+    <!-- http://errorception.com/ -->
+	<script>
+	    var _errs=["5113b3e6bedd207c2b000400"];(function(a,b){a.onerror=function(){_errs.push(arguments)};
+	    var d=function(){var a=b.createElement("script"),c=b.getElementsByTagName("script")[0];
+	    a.src="//d15qhc0lu1ghnk.cloudfront.net/beacon.js";a.async=!0;
+	    c.parentNode.insertBefore(a,c)};a.addEventListener?a.addEventListener("load",d,!1):
+	    a.attachEvent("onload",d)})(window,document);
+	</script>
+
     <!--
     Only use ng-bind in this file only
     -->
@@ -84,7 +93,7 @@
 	<!-- !End Top Nav -->
 	
 	<!-- !View -->
-	<div class="wrapper" id="top"><!-- wrapper used for sticky footer -->
+	<div class="wrapper"><!-- wrapper used for sticky footer -->
 		<div class="container" data-ng-view></div>
 		<div class="footer-push"></div><!-- footer-push used for sticky footer -->
 	</div>
@@ -212,6 +221,7 @@ data-image="/128x128.png">
 
 <!-- *************************************************** -->
 <!-- !End App Controllers -->
+
 
 
 <!-- endbuild -->

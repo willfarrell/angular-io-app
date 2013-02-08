@@ -134,7 +134,9 @@ class Account extends Core {
 
 		$mail = new Mail;
 		$mail->send($email, 'signup_confirm_email', array("hash" => $hash));
-
+		
+		$this->__log($email);
+		
 		return $return;
 	}
 	

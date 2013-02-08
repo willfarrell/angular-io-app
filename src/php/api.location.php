@@ -23,7 +23,7 @@ class Location extends Core {
 		}
 
 		$results = $this->db->select('locations', $db_where,
-			array('location_ID', 'company_ID', 'location_name', 'address_1', 'address_2', 'city', 'region_code', 'country_code', 'mail_code', 'latitude', 'longitude', 'location_phone', 'location_fax')
+			array('location_ID', 'company_ID', 'location_name', 'address_1', 'address_2', 'city', 'region_code', 'country_code', 'mail_code', 'latitude', 'longitude', 'location_phone')
 		);
 		if ($results) {
 			while($location = $this->db->fetch_assoc($results)) {

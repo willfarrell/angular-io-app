@@ -3,7 +3,7 @@
     
     <legend>Account</legend>
     <hr>
-    <div class="control-group" data-ng-class="{error: (errors.user.user_name)}" data-ui-if="settings.accout.user_name">
+    <div class="control-group" data-ng-class="{error: (errors.user.user_name)}" data-ui-if="settings.account.user_name">
       	<label class="control-label" for="user_name">Username</label>
       	<div class="controls">
             <input type="text" class="input-block-level" name="user_name" placeholder="" data-ng-model="user.user_name" data-ng-minlength="3" data-ng-maxlength="14" data-ng-pattern="/^[\w]*$/" data-ng-change="check.user_name(user.user_name)">

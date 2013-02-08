@@ -3,21 +3,16 @@
 	
 	<legend>Contact</legend>
 	<hr>
-	
-	<div class="alert alert-{{alert.class}}" data-ng-repeat="alert in alerts">
-	  	<button class="close" data-dismiss="alert">&times;</button>
-	  	<strong>{{alert.label}}</strong> {{alert.message}}
-	</div>
 
 	<div class="control-group">
-      <label class="control-label">Name</label>
+      <label class="control-label" for="name">Name</label>
       <div class="controls">
         <input type="text" name="name" class="input-block-level" data-ng-model="contact.name">
       </div>
     </div>
 
     <div class="control-group">
-      <label class="control-label">Email</label>
+      <label class="control-label" for="email">Email</label>
       <div class="controls">
         <input type="email" name="email" class="input-block-level" data-ng-model="contact.email" required>
         <span class="help-block error" data-ng-show="contactForm.email.$error.email">Not valid email</span>
@@ -32,7 +27,7 @@
     </div>-->
 
     <div class="control-group">
-      <label class="control-label" for="company_type">Message</label>
+      <label class="control-label" for="message">Message</label>
       <div class="controls">
         <textarea name="message" class="input-block-level" data-ng-model="contact.message" rows="6" data-ng-minlength="1" required></textarea>
       </div>

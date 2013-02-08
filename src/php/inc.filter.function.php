@@ -403,5 +403,26 @@ $filter_function = array (
   'test_get' => 
   array (
   ),
+  'contact_post' => 
+  array (
+    'name' => 
+    array (
+      'field' => 'name',
+      'label' => 'Name',
+      'rules' => '',
+    ),
+    'email' => 
+    array (
+      'field' => 'email',
+      'label' => 'Email',
+      'rules' => '',
+    ),
+    'message' => 
+    array (
+      'field' => 'message',
+      'label' => 'Message',
+      'rules' => '',
+    ),
+  ),
 );
 ?>

@@ -5,7 +5,7 @@ function ResetCtrl($scope, $http, $routeParams) {
 	console.log('ResetCtrl ('+$scope.$id+')');
 	
 	$scope.errors = {};
-	$scope.hash = $routeParams.hash;
+	$scope.hash = $routeParams.reset_hash;
 	$scope.state = {
 		verify:true,
 		reset:true,
