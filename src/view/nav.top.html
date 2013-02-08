@@ -30,9 +30,9 @@
 	        		<button class="btn"><i class="icon-list-ul"></i></button>
 	        	</div>
 	        	<!-- page controllers -->
-        		<div class="btn-group hidden-phone" data-ng-show="device">
-					<button class="btn" data-ng-click="history.back()" data-ng-disabled="history.length <= 2"><i class="icon-arrow-left"></i></button>
-					<button class="btn" data-ng-click="refresh()"><i class="icon-refresh"></i></button>
+        		<div class="btn-group hidden-phone">
+					<button class="btn" data-ng-click="history.back()" data-ng-disabled="history.length <= 2" data-ui-if="device"><i class="icon-arrow-left"></i></button>
+					<button class="btn" data-ng-click="refresh()" data-ui-if="device"><i class="icon-refresh"></i></button>
 					<a class="btn" href="#/{{settings.dashboard}}" data-ng-class="{active: selectedNav=='app'}" data-ng-click="selectedNav = 'app'"><i class="icon-dashboard"></i></a>
 				</div>
         	</div>

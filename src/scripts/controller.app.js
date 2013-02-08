@@ -29,9 +29,5 @@ function AppCtrl(rootScope, $scope, $http, filepicker, accessibility, message, f
 	
 	//!-- App Root Scoope Functions --//
 	
-	$scope.backToTop = function() {
-		console.log($('.page')[0].scrollTop);
-		$('.page')[0].scrollTop = 0;
-	}
 }
 //}]);

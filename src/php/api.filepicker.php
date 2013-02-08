@@ -47,7 +47,7 @@ class Filepicker extends Core {
 	}
 
 	// upload from computer
-	function post_computer($action = '', $request_data=NULL) {
+	function post_computer($action = '', $ID=NULL) {
 		if (!$action) $action = $this->action_default;
 		
 		$uploader = new FileUploader($this->actions[$action]);

@@ -28,7 +28,7 @@ function DashboardCtrl($scope, $http, $routeParams) {
 	
 	//-- End App Functions Here --//
 	$scope.require_signin(function() {
-		$scope.loadSearch();
+		//$scope.loadSearch();
 	});
 }
 //}]);

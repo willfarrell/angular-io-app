@@ -45,7 +45,8 @@ angular.module('io.factory.filepicker', [])
 		extensions: [],	// ['.png','.jpg']
 		services: ['COMPUTER'],
 		service: 'COMPUTER',
-		multi:true
+		multi:true,
+		ID:''		// params passed to backend, ie object_ID
 	};
 
 	$scope.img_default = {
@@ -89,11 +90,14 @@ angular.module('io.factory.filepicker', [])
 	$scope.timestamp = +new Date();
 	$scope.dropzone_name = 'files';
 
-	$scope.open = function(args) {
+	$scope.open = function(args, ID) {
+		ID || (ID = '');
 		console.log(args);
+		console.log(ID);
 		$scope.alerts = [];
 		
 		$scope.args = syncVar(args, $scope.args);
+		$scope.args.ID = ID;
 
 		// input accept tag
 		$scope.accept = $scope.args.extensions.length ? $scope.args.extensions.join(',') : $scope.args.types.join(',');

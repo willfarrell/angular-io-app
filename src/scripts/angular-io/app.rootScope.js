@@ -204,7 +204,7 @@ angular.module('io.init.rootScope', [])
 	$rootScope.alerts 	= [];	// for alert-fixed-top
 	$rootScope.modal 	= {};	// for alertModal
 	$rootScope.datetime = new Date();
-	//$rootScope.timezone_min = new Date().getTimezoneOffset();
+	$rootScope.timezone_min = new Date().getTimezoneOffset();
  	
  	$rootScope.i18n = {};
 	$rootScope.json = {
