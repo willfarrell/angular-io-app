@@ -47,8 +47,8 @@ class Location extends Core {
 			"region_code",
 			"country_code",
 			"mail_code",
-			"latitude",
-			"longitude",
+			//"latitude",
+			//"longitude",
 			"location_phone",
 		);
 
@@ -93,8 +93,8 @@ class Location extends Core {
 			"region_code"	=> $request_data["region_code"],
 			"country_code"	=> $request_data["country_code"],
 			"mail_code"		=> $request_data["mail_code"],
-			"latitude"		=> $request_data["latitude"],
-			"longitude"		=> $request_data["longitude"],
+			//"latitude"		=> $request_data["latitude"],
+			//"longitude"		=> $request_data["longitude"],
 			"location_phone"	=> $request_data["location_phone"],
 			//"location_fax"		=> $request_data["location_fax"],
 			"timestamp_create" => $_SERVER['REQUEST_TIME'],
@@ -125,8 +125,8 @@ class Location extends Core {
 			"region_code",
 			"country_code",
 			"mail_code",
-			"latitude",
-			"longitude",
+			//"latitude",
+			//"longitude",
 			"location_phone",
 		);
 
@@ -171,8 +171,8 @@ class Location extends Core {
 			"region_code"	=> $request_data["region_code"],
 			"country_code"	=> $request_data["country_code"],
 			"mail_code"		=> $request_data["mail_code"],
-			"latitude"		=> $request_data["latitude"],
-			"longitude"		=> $request_data["longitude"],
+			//"latitude"		=> $request_data["latitude"],
+			//"longitude"		=> $request_data["longitude"],
 			//"location_phone"	=> $request_data["location_phone"],
 			//"location_fax"		=> $request_data["location_fax"],
 			"timestamp_update" => $_SERVER['REQUEST_TIME'],

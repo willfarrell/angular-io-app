@@ -207,7 +207,9 @@ angular.module('io.init.rootScope', [])
 	//$rootScope.timezone_min = new Date().getTimezoneOffset();
  	
  	$rootScope.i18n = {};
-	$rootScope.json = {};
+	$rootScope.json = {
+		"regions":{}
+	};
 	
 	//!-- JSON -- //
 	$rootScope.loadJSON = function(key, file, folder) {
@@ -243,7 +245,6 @@ angular.module('io.init.rootScope', [])
 		} else {
 			$rootScope.country_code = db.get('country_code', $locale.id.substr(3,2).toUpperCase());
 		}
-		
 	};
 	$rootScope.changeLocale = function(locale) {
 		db.set('locale', locale);
@@ -287,16 +288,15 @@ angular.module('io.init.rootScope', [])
 			console.log($rootScope.language+'/'+$rootScope.settings.i18n['json'][i]);
 			$rootScope.loadJSON($rootScope.settings.i18n['json'][i], $rootScope.language+'/'+$rootScope.settings.i18n['json'][i], 'i18n');
 		}
-		$rootScope.loadJSON 
 	};
-	$rootScope.init();
-	$rootScope.loadLocale($rootScope.locale); // $locale.id == 'en-us'
 	//!-- End Lang --//
 
 	
 	//!-- JSON Special Cases --//
 	$rootScope.loadRegions = function(country_code) {
 		$rootScope.json.regions || ($rootScope.json.regions = {});
+		if ($rootScope.json.regions[country_code]) { return; }
+		
 		console.log('loadRegions('+country_code+')');
 		$http.get($rootScope.settings.client+'i18n/'+$rootScope.language+'/geo/'+country_code+'.json')
 			.success(function(data){
@@ -306,7 +306,10 @@ angular.module('io.init.rootScope', [])
 			.error(function(){
 				console.log('loadRegions.get.error');
 			});
-	}
+	};
+	
+	$rootScope.init();
+	$rootScope.loadLocale($rootScope.locale); // $locale.id == 'en-us'
 	
 	$rootScope.json.month = $locale.DATETIME_FORMATS.SHORTMONTH;
 	// days in a month

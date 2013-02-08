@@ -191,7 +191,7 @@ class Company extends Core {
 			// primary user
 			$results = $this->db->select('users',
 				array('company_ID' => COMPANY_ID, 'user_ID' => $company['user_default_ID']),
-				array("user_ID", "user_name", "user_name_first", "user_name_last", "user_email", "user_phone", "user_details")
+				array("user_ID", "user_name", "user_name_first", "user_name_last", "user_phone", "user_details")
 			);
 			while ($results && $user = $this->db->fetch_assoc($results, array("user_phone"))) {
 				$user['user_ID'] = $user['user_ID'];
@@ -212,10 +212,11 @@ class Company extends Core {
 				array('location_ID', 'company_ID', 'location_name', 'address_1', 'address_2', 'city', 'region_code', 'country_code', 'mail_code', 'latitude', 'longitude', 'location_phone')
 			);
 			while ($results && $location = $this->db->fetch_assoc($results)) {
-				$location['company_ID'] =  $location['company_ID'];
-				$location['location_ID'] =  $location['location_ID'];
-				$location['latitude'] = (double) $location['latitude'];
-				$location['longitude'] = (double) $location['longitude'];
+				//$location['primary'] = true;
+				//$location['company_ID'] =  $location['company_ID'];
+				//$location['location_ID'] =  $location['location_ID'];
+				//$location['latitude'] = (double) $location['latitude'];
+				//$location['longitude'] = (double) $location['longitude'];
 				$return['location'] = $location;
 			}
 			// get locations

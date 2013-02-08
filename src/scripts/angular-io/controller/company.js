@@ -10,7 +10,9 @@ function CompanyCtrl($scope, $http) {
 	
 	$scope.user = {};
 	$scope.users = {};
-	$scope.location = {};
+	$scope.location = {
+		"country_code":$rootScope.country_code,
+	};
 	$scope.locations = {};
 	
 	//-- Company --//
@@ -23,7 +25,9 @@ function CompanyCtrl($scope, $http) {
 				$rootScope.alerts 	= (data.alerts) ? data.alerts : [];
 				if (!data.alerts && !data.errors) {
 					$scope.company = data;
-					$scope.loadLocations();
+					$scope.location = data.location_default_ID ? data.location : $scope.location;
+					$scope.location.primary = true;
+					//$scope.loadLocations();
 				}
 			})
 			.error(function() {
@@ -82,6 +86,19 @@ function CompanyCtrl($scope, $http) {
 				$rootScope.alerts 	= (data.alerts) ? data.alerts : [];
 				if (!data.alerts && !data.errors) {
 					$scope.locations = data;
+					
+					// load region data
+					var regions = [];
+					for (var i in data) {
+						regions.push(data[i].country_code);
+					}
+					regions = arrayUnique(regions);
+					
+					for (var i in regions) {
+						$rootScope.loadRegions(regions[i]);
+					}
+					
+					
 				}
 			})
 			.error(function() {
