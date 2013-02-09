@@ -53,30 +53,31 @@ class Notify {
 	public function send($user_ID, $message_ID, $args = array(), $types = "email") {
 		$types = explode(",", $types);
 		
-		// from details
-		$from = $this->db->select("users", array("user_ID" => USER_ID), array("user_name", "user_name_first", "user_name_last","user_email", "user_phone"));
+		// from user details
+		$select = array("user_ID", "user_name", "user_name_first", "user_name_last","user_email", "user_phone");
+		$from = $this->db->select("users", array("user_ID" => USER_ID), $select);
 		if (!$from) return;
 		$from = $this->db->fetch_assoc($from);
+		$this->vars['from'] = $from;
 		
-		// get user email and mobile number
-		$to = $this->db->select("users", array("user_ID" => $user_ID), array("user_name", "user_name_first", "user_name_last","user_email", "user_phone", "notify_json"));
+		// get user details
+		$select[] = "notify_json";
+		$to = $this->db->select("users", array("user_ID" => $user_ID), $select);
 		if (!$to) return;
 		$to = $this->db->fetch_assoc($to);
-		
-		// setup var
-		$this->var['from'] = $from;
-		$this->var['to'] = $to;
-		
-		// get user privacy settings
-		// {message_ID:{"email":true,"sms":false}
-		$notify_all = json_decode($to['notify_json']);
-		if (!is_array($notify_all)) $notify_all = array();
+		$this->vars['to'] = $to;
 		
 		// privacy defaults
 		$notify = array(
 			"email" => true,
 			"sms" => false
 		);
+		
+		// get user privacy settings
+		// {message_ID:{"email":true,"sms":false}
+		$notify_all = json_decode($to['notify_json']);
+		if (!is_array($notify_all)) $notify_all = array();
+		
 		if (in_array($message_ID, $notify_all)) {
 			foreach ($notify_all[$message_ID] as $key => $value) {
 				$notify[$key] = $value;
@@ -88,9 +89,10 @@ class Notify {
 		// send via types
 		if (in_array("email", $types) && isset($notify['email']) && $notify['email'])
 			$this->email->send($to['user_email'], $subject, $message);
-		if (in_array("sms", $types) && isset($notify['sms']) && $notify['sms'])
-			$this->sms->send($to['user_phone'], $message);
-		//if (in_array("push", $types)) $this->mobilepush->send($user_phone, $message);
+		//if (in_array("sms", $types) && isset($notify['sms']) && $notify['sms'])
+		//	$this->sms->send($to['user_phone'], $message);
+		//if (in_array("push", $types) && isset($notify['push']) && $notify['push'])
+		//	$this->mobilepush->send($user_phone, $message);
 	}
 	
 	// for non-regestered users
@@ -105,9 +107,10 @@ class Notify {
 		
 		$subject = $this->templates[$message_ID]['subject'];
 		$message = $this->templates[$message_ID]['message'];
-
-		$message = $this->replace_tags($message, 'global', 	$this->vars['global']);
-		$message = $this->replace_tags($message, '_SERVER', $this->vars['_SERVER']);
+		
+		foreach ($this->vars as $key => $value) {
+			$message = $this->replace_tags($message, $key, 	$value);
+		}
 		$message = $this->replace_tags($message, 'args', 	$args);
 
 		$message .= $this->signature;
@@ -141,7 +144,20 @@ class Email {
   	}
   	
   	function send($to, $subject, $message) {
-	  	mail($to, $subject, $message);
+  		
+  		if (MAILGUN_APIKEY) {
+	  		exec("curl -s --user api:".MAILGUN_APIKEY." \
+				    https://api.mailgun.net/v2/".MAILGUN_DOMAIN."/messages \
+				    -F from='".MAIL_SITE_NAME." <".MAIL_SITE_EMAIL.">' \
+				    -F to=$to\
+				    -F subject='$subject' \
+				    -F text='$message'",
+				    $output, $return
+			);
+  		} else {
+	  		mail($to, $subject, $message);
+  		}
+	  	
   	}
   	
   	// PGP encrypt message

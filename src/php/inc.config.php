@@ -73,16 +73,20 @@ if ($localhost) {
 	if (!defined("DB_PASS")) define('DB_PASS','angular1234');
 }
 
-//-- Mail --//
+//-- Notify --//
+
+//-- Email --//
 if (!defined("MAIL_ADMIN_EMAIL")) define('MAIL_ADMIN_EMAIL','will.farrell@gmail.com');//'will@angular.io');
 if (!defined("MAIL_SIGNATURE")) define('MAIL_SIGNATURE',"\n\nKind Regards,\n\nwill Farrell\nwill@angulario.com\nhttps://angulario.com");
 if (!defined("MAIL_SITE_NAME")) define('MAIL_SITE_NAME',"Angular.io");
+if (!defined("MAIL_SITE_EMAIL")) define('MAIL_SITE_EMAIL',"will.farrell@gmail.com");
 if (!defined("MAIL_SITE_URL")) define('MAIL_SITE_URL',"http://app.angulario.com/"); // trailing /
 
-//-- Img --//
-//if (!defined("IMG_CONVERT_DELETE_FROM")) define('IMG_CONVERT_DELETE_FROM',FALSE);
-//if (!defined("IMG_CONVERT_REPLACE_TO")) define('IMG_CONVERT_REPLACE_TO',FALSE);
-//if (!defined("IMG_QUALITY")) define('IMG_QUALITY',10);
+// mailgun
+define('MAILGUN_APIKEY', "key-1d6to8lo6755xglfknbkhs4nzai4xo-4");
+define('MAILGUN_DOMAIN', "angulario.mailgun.org");
+
+//-- SMS --//
 
 //-- Filepicker --//
 

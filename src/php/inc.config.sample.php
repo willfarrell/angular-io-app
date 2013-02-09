@@ -33,7 +33,7 @@ if (!defined("COOKIE_SECURE")) 			define("COOKIE_SECURE", 	(getenv("HTTPS") == "
 if (!defined("COOKIE_HTTPONLY")) 		define("COOKIE_HTTPONLY", 	true);
 
 //-- Password --//
-if (!defined("PASSWORD_HASH")) 		define("PASSWORD_HASH", 	"bcrypt");	// PBKDF2, bcrypt, scrypt
+if (!defined("PASSWORD_HASH")) 		define("PASSWORD_HASH", 	"scrypt");	// PBKDF2, bcrypt, scrypt
 if (!defined("PASSWORD_SALT")) 		define("PASSWORD_SALT", 	'');		// Added to password (Stored in Code - same for all)
 //if (!defined("PASSWORD_PEPPER")) 	define("PASSWORD_PEPPER", 	FALSE);		// Added to password (Stored in DB)
 //if (!defined("PASSWORD_CAYENNE")) define("PASSWORD_CAYENNE", 	FALSE);		// Added to password (Stored in File)
@@ -75,9 +75,12 @@ if ($localhost) {
 if (!defined("MAIL_ADMIN_EMAIL")) define('MAIL_ADMIN_EMAIL','email@domain.com');
 if (!defined("MAIL_SIGNATURE")) define('MAIL_SIGNATURE',"\n\nKind Regards,\n\nYOUR NAME\nemail@domain.com\nhttps://domain.com");
 if (!defined("MAIL_SITE_NAME")) define('MAIL_SITE_NAME',"My Site");
+if (!defined("MAIL_SITE_EMAIL")) define('MAIL_SITE_EMAIL',"support@domain.com");
 if (!defined("MAIL_SITE_URL")) define('MAIL_SITE_URL',"http://domain.com/"); // trailing /
 
-
+// mailgun
+define('MAILGUN_APIKEY', "");
+define('MAILGUN_DOMAIN', "sample.mailgun.org");
 
 
 
