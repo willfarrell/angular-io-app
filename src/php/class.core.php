@@ -15,6 +15,7 @@ class Core {
 		$this->db = $database;
 		$this->filter = $filter;
 		
+		$this->notify = new Notify;
 		
 		//-- Development classes --//
 		

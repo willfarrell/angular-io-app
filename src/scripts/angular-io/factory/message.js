@@ -116,7 +116,8 @@ angular.module('io.factory.message', [])
 				
 				$scope.thread.push({
 					user_from_ID:$rootScope.session.user_ID,
-					message:$scope.compose.message
+					message:$scope.compose.message,
+					timestamp:(+new Date)
 				});
 				$scope.compose.message = '';
 				$scope.alerts = [{'class':'success', 'label':'Message sent:', 'message':'Click to go to conversation.'}];

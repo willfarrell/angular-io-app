@@ -116,6 +116,8 @@ class Message extends Core {
 			'timestamp' => $_SERVER['REQUEST_TIME'],
 		);
     	$this->db->insert($this->table, $insert);
+    	
+    	$this->notify->send($request_data['user_ID'], 'new_message', array(), "email,sms,push");
     }
 
     function delete($user_ID=NULL, $timestamp=NULL) {

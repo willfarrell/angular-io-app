@@ -76,43 +76,39 @@ href="https://twitter.com/share" class="twitter-share-button" data-url="http://r
     </div>
 
     <div class="span8">
-    	<div class="tabbable"> <!-- Only required for left/right tabs -->
-		  	<ul class="nav nav-tabs">
-			    <li class="active"><a href="#tab1" data-toggle="tab">About</a></li>
-			    <!--<li><a href="#tab2" data-toggle="tab">Team</a></li>-->
-			    <!--<li><a href="#tab3" data-toggle="tab">Locations</a></li>-->
-			</ul>
-			
-		    <div class="tab-content">
-			    <div class="tab-pane active" id="tab1">
-			      	<div ng-bind-html-unsafe="compileMarkdown(company.company_details)"></div>
-			    </div>
-			    <div class="tab-pane" id="tab2">
-			      	<div data-ng-repeat="u in users">
-			      		<div class="span3">
-			      			<img data-ng-src="img/user/{{u.user_ID}}.png" class="img-polaroid" style="width:100px; height:100px;"/>
-			      		</div>
-			      		<div class="span9">
-			      			<h4>{{u.user_name_first}} {{u.user_name_last}}</h4>
-			      			<i>{{u.user_function}}</i>
-			      			<div ng-bind-html-unsafe="compileMarkdown(u.user_details)"></div>
-			      		</div>
-			      	</div>
-			    </div>
-			    <div class="tab-pane" id="tab3">
-			      	<p>Interactive map - Future</p>
-			      	<img data-ng-src="https://maps.google.com/maps/api/staticmap?center={{company.location.latitude}},{{company.location.longitude}}&zoom=14&size=360x360&maptype=terain&markers=color:red%7C{{company.company_name}}&sensor=false" class="img-polaroid pull-center"/>
-			    </div>
-		    </div>
-		    
-		    <!--<div data-ng-controller="FollowCtrl">
-			    <ul class="thumbnails well" data-ng-init="loadFollowing(company.company_ID)">
-			    	<li class="img-polaroid ng-click" data-ng-repeat="f in following" data-ng-click="href('#/user/profile/'+f.ID)">
-			    		<img data-ng-src="/img/user/{{f.ID}}.png" style="width:50px;height:50px" /><br>
-			    	</li>
-			    </ul>
-		    </div>-->
-		</div>
+    	<tabs>
+    		<pane title="About">
+    			<div ng-bind-html-unsafe="compileMarkdown(company.company_details)"></div>
+    		</pane>
+    		
+    		<pane title="Team">
+    			<table class="table table-striped">
+					<!--<thead><tr><th colspan="2"></th></tr></thead>-->
+					<tbody>
+					<tr class="ng-click" data-ng-repeat="u in users | orderBy:'-user_level'">
+						<td>
+							<img data-ng-src="img/user/{{u.user_ID}}.png?{{filepicker.timestamp}}" class="img-rounded" width="100" height="100">
+						</td>
+						<td>
+							<div class="btn-group pull-right">
+				            	<button class="btn" data-ng-click="message.open(u.user_ID, u.user_name_first+' '+u.user_name_last)"><i class="icon-envelope"></i></button>
+				            	<a class="btn" rel="tooltip" title="+{{json.calling_codes[company.location.country_code]}} {{u.user_phone | phone}}" href="tel:+{{json.calling_codes[company.location.country_code]}} {{u.user_phone}}" data-ng-disabled="u.user_phone == ''"><i class="icon-phone"></i></a>
+				            </div>
+							<b>{{u.user_name_first}} {{u.user_name_last}}</b><br>
+							<p>{{u.user_function}}</p>
+				            <div ng-bind-html-unsafe="compileMarkdown(u.user_details)"></div>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+    			
+    		</pane>
+    		
+    		<!--<pane title="Locations">
+		      	<p>Interactive map - Future</p>
+		      	<img data-ng-src="https://maps.google.com/maps/api/staticmap?center={{company.location.latitude}},{{company.location.longitude}}&zoom=14&size=360x360&maptype=terain&markers=color:red%7C{{company.company_name}}&sensor=false" class="img-polaroid pull-center"/>
+		    </pane>-->
+    	</tabs>
 	</div>
 </div>
 

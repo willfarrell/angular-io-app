@@ -6,6 +6,35 @@ function SettingsCtrl($scope, $http, $routeParams) {
  	$scope.page_url = 'view/settings/'+encodeURIComponent($routeParams.page)+'.html';
  	//$scope.nav_select($scope.nav_parent_id, $scope.nav_ids, 'legal');
  	
+ 	// notifications
+ 	// defaults as per class.notify.php
+ 	// email:true
+ 	// sms:false
+ 	$scope.notify = {
+	 	"new_message":{"email":true},
+	 	"new_follow":{"email":true}
+ 	};
+ 	
+ 	$scope.loadNotifications = function() {
+ 		$http.get($scope.settings.server+'user/notify')
+ 			.success(function(data) {
+	 			$scope.notify = data;
+ 			})
+ 			.error(function(){
+	 			
+ 			});
+ 	};
+ 	
+ 	$scope.updateNotifications = function() {
+ 		$http.put($scope.settings.server+'user/notify', $scope.notify)
+ 			.success(function(data) {
+	 			$rootScope.alerts = [{"class":"success", "label":"Notifications:", "message":"Saved"}]
+ 			})
+ 			.error(function(){
+	 			
+ 			});
+ 	};
+ 	
  	$scope.require_signin();
 }
 //}]);

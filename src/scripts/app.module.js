@@ -41,7 +41,7 @@ angular.module('app.controllers', [
 	'app.controller.dashboard'
 ]);
 
-angular.module('app.directives', ['app.config', 'ui.directives.if']);
+angular.module('app.directives', ['app.config', 'ui.directives.if', 'ng.components']);
 angular.module('app.filters', ['app.config']);
 angular.module('app.factories', ['app.config']);
 

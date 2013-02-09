@@ -1,7 +1,6 @@
 <?php
 
 require_once 'class.filter.php';
-require_once 'class.mail.php';
 
 class Contact extends Core {
 
@@ -29,8 +28,7 @@ class Contact extends Core {
 
 		$request_data['name'] = isset($request_data['name']) ? $request_data['name'] : '';
 
-		$mail = new Mail;
-		mail($mail->admin_email, 'Contact', 'Name:'.$request_data['name'].'\n'.'From:'.$request_data['email'].'\n'.$request_data['message']);
+		mail(MAIL_ADMIN_EMAIL, 'Contact', 'Name:'.$request_data['name'].'\n'.'From:'.$request_data['email'].'\n'.$request_data['message']);
 
 		return $return;
 	}

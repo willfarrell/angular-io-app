@@ -114,11 +114,10 @@ class Company extends Core {
 		$expire_timestamp = $_SERVER['REQUEST_TIME']+360*24*60; // 60 day life
 		$hash = substr(hash("sha512", $request_data['user_email']+$_SERVER['REQUEST_TIME']), 0, 16);
 		
-		$mail = new Mail;
-		$mail->send($request_data['user_email'], 'password_reset_request_new', array("hash" => $hash));
-		
 		$insert = array('user_ID' => $user_ID, 'hash' => $hash, 'expire_timestamp' => $expire_timestamp);
 		$this->db->insert_update('user_reset', $insert, $insert);
+		
+		$this->notify->send($user_ID, 'password_reset_request_new', array("hash" => $hash), "email");
 		
 		return $user_ID;
 	}

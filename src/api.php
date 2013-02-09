@@ -32,6 +32,7 @@ require_once 'php/class.db.php';		// MySQL class
 require_once 'php/class.filter.php';	// input validation and sanitation
 require_once 'php/class.password.php';	// password validation, hashing, and checking
 require_once 'php/class.session.php';	// User session
+require_once 'php/class.notify.php';	// notification hooks
 
 
 // https://github.com/Luracast/Restler
@@ -68,7 +69,7 @@ $r->addAPIClass('Account');
 $r->addAPIClass('Contact'); // replace with message???
 //$r->addAPIClass('Img');
 
-if ($session->cookie['user_ID']) {	// Users Only
+//if ($session->cookie['user_ID']) {	// Users Only
 	$r->addAPIClass('User');
 	$r->addAPIClass('Company');
 	$r->addAPIClass('Location');
@@ -78,7 +79,7 @@ if ($session->cookie['user_ID']) {	// Users Only
 	$r->addAPIClass('Follow');
 	$r->addAPIClass('Message');
 
-}
+//}
 
 $r->handle();
 

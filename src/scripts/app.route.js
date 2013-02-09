@@ -23,6 +23,7 @@ function($routeProvider) {
 		.when('/user/profile', 		{templateUrl:_view_+'user/profile.user.html'})
 		.when('/user/profile/:profile_ID', {templateUrl:_view_+'user/profile.user.html'})
 		.when('/company/profile', 	{templateUrl:_view_+'user/profile.company.html'})
+		.when('/company/profile/:profile_ID', {templateUrl:_view_+'user/profile.company.html'})
 
 		// onboard
 		.when('/onboard/password', 		{templateUrl:_view_+'onboard/password.html'})	// special case - force password change
@@ -33,9 +34,6 @@ function($routeProvider) {
 		.when('/settings/:page', 		{templateUrl:_view_+'settings.html'})
 		.when('/support/:page', 		{templateUrl:_view_+'support.html'})
 		
-		// extra pages
-		//when('/bootstrap/:section', {templateUrl:_view_+'page/bootstrap.html'	}).
-
 		// fallback
 		.when('/', 						{templateUrl:_view_+_app_+'index.html'})
 		.when('/:page', 				{templateUrl:_view_+'page.html'})

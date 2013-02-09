@@ -1,7 +1,5 @@
 <?php
 
-require_once 'class.mail.php';
-
 class Account extends Core {
 	private $table = 'users';
 
@@ -33,7 +31,7 @@ class Account extends Core {
 		$return = array();
 		// same as in session - refactor
 		$query = "SELECT * FROM users WHERE user_ID = '{{user_ID}}' LIMIT 0,1";
-		$result = $this->db->query($query, array('user_ID' => $this->session->cookie['user_ID']));
+		$result = $this->db->query($query, array('user_ID' => USER_ID));
 		if (!$result) return $return; // user / pass combo not found
 		$r = $this->db->fetch_assoc($result);
 
@@ -132,8 +130,7 @@ class Account extends Core {
 		$insert = array('user_ID' => $user_ID, 'hash' => $hash);
 		$this->db->insert_update('user_confirm', $insert, $insert);
 
-		$mail = new Mail;
-		$mail->send($email, 'signup_confirm_email', array("hash" => $hash));
+		$this->notify->send($user_ID, 'signup_confirm_email', array("hash" => $hash), "email");
 		
 		$this->__log($email);
 		
@@ -146,8 +143,7 @@ class Account extends Core {
 		$insert = array('user_ID' => USER_ID, 'hash' => $hash);
 		$this->db->insert_update('user_confirm', $insert, $insert);
 
-		$mail = new Mail;
-		$mail->send(USER_EMAIL, 'signup_confirm_email', array("hash" => $hash));
+		$this->notify->send(USER_ID, 'signup_confirm_email', array("hash" => $hash), "email");
 	}
 
 	//
@@ -220,8 +216,6 @@ class Account extends Core {
 		}
 		$email = $this->filter->get_request_data('email');
 
-		$mail = new Mail;
-
 		$result = $this->db->select('users', array('user_email' => $email));
 		if ($result) { // user exists
 			$user = $this->db->fetch_assoc($result);
@@ -229,13 +223,13 @@ class Account extends Core {
 			
 			$hash = substr(hash("sha512", $email+$_SERVER['REQUEST_TIME']), 0, 16);
 			
-			$mail->send($email, 'password_reset_request', array("hash" => $hash));
+			$this->notify->send($user['user_ID'], 'password_reset_request', array("hash" => $hash), "email");
 			
 			$insert = array('user_ID' => $user['user_ID'], 'hash' => $hash, 'expire_timestamp' => $expire_timestamp);
 			//$this->redis->hmset($hash, array('hash' => $hash, 'user_ID' => $user['user_ID'], 'expire_timestamp' => $expire_timestamp));
 			$this->db->insert_update('user_reset', $insert, $insert);
 		} else {  // not a user
-			$mail->send($email, 'password_reset_request_fail');
+			$this->notify->sendEmail($email, 'password_reset_request_fail', array());
 		}
 
 		//$return["alerts"][] = array("class" => "info", "message"=>"We have sent an email to $email with further instructions.");
@@ -317,8 +311,7 @@ class Account extends Core {
 		$this->db->query("DELETE FROM user_reset WHERE hash = '{{hash}}' OR expire_timestamp < "+$_SERVER['REQUEST_TIME'], array('hash' => $request_data['hash']));
 		
 		// mail user
-		$mail = new Mail;
-		$mail->send($user_email, 'password_changed_notification');
+		$this->notify->send($user_ID, 'password_changed_notification', array(), "email");
 		
 		// update email confirm timestamp if not already don so - happens when extra users are added to a company
 		if (!$timestamp_confirm) {
@@ -353,7 +346,7 @@ class Account extends Core {
 
 		$r = $this->db->fetch_assoc($result);
 
-		if (!$this->password->check($request_data['old_password'], $r['password'], $this->session->cookie['user_email'])) {
+		if (!$this->password->check($request_data['old_password'], $r['password'], USER_EMAIL)) {
 			$return["errors"]["old_password"] = "Your current password does not match.";
 		}
 		
@@ -365,8 +358,7 @@ class Account extends Core {
 			$this->password->update($request_data['new_password'], USER_EMAIL);
 
 			// mail user confirming a password change
-			$mail = new Mail;
-			$mail->send($this->session->cookie['user_email'], 'password_changed_notification');
+			$this->notify->send($user_ID, 'password_changed_notification', array(), "email");
 
 		}
 
@@ -383,7 +375,7 @@ class Account extends Core {
 			$return["errors"]["user_email"] = "Not unique";
 		}
 
-		$check = $this->session->login($this->session->cookie['user_email'], $request_data['password'], $this->session->cookie['remember']);
+		$check = $this->session->login(USER_EMAIL, $request_data['password'], $this->session->cookie['remember']);
 		if (!$check) {	// valid password
 			$return["errors"]["password"] = "Password Invalid";
 		}
@@ -407,8 +399,7 @@ class Account extends Core {
 		$insert = array('user_ID' => USER_ID, 'hash' => $hash);
 		$this->db->insert_update('user_confirm', $insert, $insert);
 
-		$mail = new Mail;
-		$mail->send($email, 'email_changed_notification', array("hash" => $hash));
+		$this->notify->send(USER_ID, 'email_changed_notification', array("hash" => $hash), "email");
 
 		return $return;
 	}

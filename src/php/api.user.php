@@ -100,6 +100,16 @@ class User extends Core {
 		return $return;
 	}
 	
+	// notification privacy
+	function get_notify() {
+		$r = $this->db->select("user", array("user_ID"=>USER_ID), array("notify_json"));
+		if ($r) return $this->db->fetch_assoc($r);
+	}
+	
+	function put_notify($request_data=array()) {
+		$this->db->update("users", array("notify_json" => json_encode($request_data)), array("user_ID"=>USER_ID));
+	}
+	
 	/*
 	get a list of users for a company
 	session company only (privacy)

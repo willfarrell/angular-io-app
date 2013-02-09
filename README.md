@@ -33,7 +33,9 @@ API ready dist.
 
 ### Massaging
 #### To Do
-- all
+- message compose
+- restyle css
+- scroll to load more
 #### Wishlist
 - encrypt client side, unreadable by web app
 
@@ -49,9 +51,9 @@ API ready dist.
 - refactor code - seperate pages into services, remove controller.
 - Connect into camerea to take photo
 #### Bugs
-- When panning an image it snaps to the center (low priority)
+- 
 #### Wishlist
-- User side encryption
+- User side encryption (for file upload).  Mega?
 
 ## Core To Do
 - PGP emailing
