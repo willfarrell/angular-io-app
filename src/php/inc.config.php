@@ -11,9 +11,6 @@ error_reporting(E_ALL|E_STRICT);
 ignore_user_abort(true); // Sets whether a client disconnect should cause a script to be aborted.
 set_time_limit(30); // number of seconds a script is allowed to run - If set to zero, no time limit is imposed.
 
-// ini set
-	// prevent Img API memory issue
-
 // Set server default time to UTC, it's a life saver. seriously
 date_default_timezone_set('UTC');
 
@@ -73,20 +70,33 @@ if ($localhost) {
 	if (!defined("DB_PASS")) define('DB_PASS','angular1234');
 }
 
+
+
 //-- Notify --//
+define('NOTIFY_FROM_NAME', "Angular.io");
+define('NOTIFY_FROM_EMAIL', "will.farrell@gmail.com");
+define('NOTIFY_FROM_NUMBER', "");	// assigned by SMS service
+define('NOTIFY_FROM_URL', "http://app.angulario.com/");
 
 //-- Email --//
-if (!defined("MAIL_ADMIN_EMAIL")) define('MAIL_ADMIN_EMAIL','will.farrell@gmail.com');//'will@angular.io');
-if (!defined("MAIL_SIGNATURE")) define('MAIL_SIGNATURE',"\n\nKind Regards,\n\nwill Farrell\nwill@angulario.com\nhttps://angulario.com");
-if (!defined("MAIL_SITE_NAME")) define('MAIL_SITE_NAME',"Angular.io");
-if (!defined("MAIL_SITE_EMAIL")) define('MAIL_SITE_EMAIL',"will.farrell@gmail.com");
-if (!defined("MAIL_SITE_URL")) define('MAIL_SITE_URL',"http://app.angulario.com/"); // trailing /
-
+define('EMAIL_ADMIN_EMAIL','will.farrell@gmail.com');//'will@angular.io');
+define('EMAIL_SIGNATURE',"\n\nKind Regards,\n\nwill Farrell\nwill@angulario.com\nhttps://angulario.com");
+// AWS SES
+define('EMAIL_AWS_APIKEY', "");
 // mailgun
-define('MAILGUN_APIKEY', "key-1d6to8lo6755xglfknbkhs4nzai4xo-4");
-define('MAILGUN_DOMAIN', "angulario.mailgun.org");
+define('EMAIL_MAILGUN_APIKEY', "key-1d6to8lo6755xglfknbkhs4nzai4xo-4");
+define('EMAIL_MAILGUN_DOMAIN', "angulario.mailgun.org");
+
 
 //-- SMS --//
+// AWS SNS
+define('SMS_AWS_APIKEY', "");
+// nexmo
+define('SMS_NEXMO_APIKEY', "");
+define('SMS_NEXMO_APISECRET', "");
+// twilio
+define('SMS_TWILIO_APIKEY', "");
+
 
 //-- Filepicker --//
 

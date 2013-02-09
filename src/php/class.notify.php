@@ -3,15 +3,15 @@
 
 class Notify {
 	
-	// factor into json settings
-	public $admin_email = MAIL_ADMIN_EMAIL;
-	private $signature = MAIL_SIGNATURE;
+	// refactor into json settings
+	public $admin_email = EMAIL_ADMIN_EMAIL;
+	private $signature = EMAIL_SIGNATURE;
 	
 	
 	private $vars = array(
 		"global" => array(
-			"site_name" => MAIL_SITE_NAME,
-			"site_url"	=> MAIL_SITE_URL
+			"site_name" => NOTIFY_FROM_NAME,
+			"site_url"	=> NOTIFY_FROM_URL
 		),
 		"_SERVER" => array(
 			"REMOTE_ADDR" => ""
@@ -39,10 +39,10 @@ class Notify {
 		/*
 		$this->mobilepush = new PushNotification;
 		$this->social = new SocialPush; // send to twitter, fb, etc
-		//$this->fax = new Fax;
+		$this->fax = new Fax;
 		
-		//$this->snail = new SnailMail; // print and mail
-		//$this->phonecall = new PhoneCall; // recorded message
+		$this->snail = new SnailMail; // print and mail
+		$this->phonecall = new PhoneCall; // recorded message
 		*/
     }
 
@@ -70,7 +70,8 @@ class Notify {
 		// privacy defaults
 		$notify = array(
 			"email" => true,
-			"sms" => false
+			"sms" => false,
+			//"mobilepush" => false
 		);
 		
 		// get user privacy settings
@@ -89,10 +90,12 @@ class Notify {
 		// send via types
 		if (in_array("email", $types) && isset($notify['email']) && $notify['email'])
 			$this->email->send($to['user_email'], $subject, $message);
-		//if (in_array("sms", $types) && isset($notify['sms']) && $notify['sms'])
-		//	$this->sms->send($to['user_phone'], $message);
-		//if (in_array("push", $types) && isset($notify['push']) && $notify['push'])
-		//	$this->mobilepush->send($user_phone, $message);
+		if (in_array("sms", $types) && isset($notify['sms']) && $notify['sms'])
+			$this->sms->send($to['user_phone'], $message);
+		/*
+		if (in_array("mobilepush", $types) && isset($notify['mobilepush']) && $notify['mobilepush'])
+			$this->mobilepush->send($user_phone, $message);
+		*/
 	}
 	
 	// for non-regestered users
@@ -145,17 +148,21 @@ class Email {
   	
   	function send($to, $subject, $message) {
   		
-  		if (MAILGUN_APIKEY) {
-	  		exec("curl -s --user api:".MAILGUN_APIKEY." \
-				    https://api.mailgun.net/v2/".MAILGUN_DOMAIN."/messages \
-				    -F from='".MAIL_SITE_NAME." <".MAIL_SITE_EMAIL.">' \
+  		if (EMAIL_MAILGUN_APIKEY) {
+	  		exec("curl -s --user api:".EMAIL_MAILGUN_APIKEY." \
+				    https://api.mailgun.net/v2/".EMAIL_MAILGUN_DOMAIN."/messages \
+				    -F from='".NOTIFY_FROM_NAME." <".NOTIFY_FROM_EMAIL.">' \
 				    -F to=$to\
 				    -F subject='$subject' \
 				    -F text='$message'",
 				    $output, $return
 			);
-  		} else {
-	  		mail($to, $subject, $message);
+  		} else if (EMAIL_AWS_APIKEY) {
+	  		
+	  	} else {
+	  		$headers = 	"From: ".NOTIFY_FROM_NAME." <".NOTIFY_FROM_EMAIL.">\r\n" .
+					    "Reply-To: ".NOTIFY_FROM_EMAIL."\r\n";
+	  		mail($to, $subject, $message, $headers);
   		}
 	  	
   	}
@@ -181,7 +188,31 @@ class SMS {
   	}
   	
   	function send($to, $message) {
-	  	//mail($to, $subject, $message);
+	  	if (SMS_NEXMO_APIKEY) {
+	  		// https://www.nexmo.com/documentation/index.html#txt
+		  	exec("curl -s  \
+				    http://rest.nexmo.com/sms/json \
+				    -F api_key=".SMS_NEXMO_APIKEY." \
+				    -F api_secret=".SMS_NEXMO_APISECRET." \
+				    -F from=".NOTIFY_FROM_NAME." \
+				    -F to=$to\
+				    -F text=$message",
+				    $output, $return
+			);
+		} else if (SMS_TWILIO_APIKEY) {
+			// http://www.twilio.com/docs/api/rest/sending-sms
+			exec("curl -s  \
+				    https://api.twilio.com/2010-04-01/Accounts/".SMS_TWILIO_APIKEY."/SMS/Messages \
+				    -F from=".NOTIFY_FROM_NUMBER." \
+				    -F to=$to\
+				    -F text=$message",
+				    $output, $return
+			);
+		} else if (SMS_AWS_APIKEY) {
+			// http://aws.amazon.com/sns/
+	  	} else {
+		  	
+	  	}
   	}
 }
 
@@ -198,9 +229,25 @@ class PushNotification {
   	}
   	
   	function send($to, $message) {
-	  	//mail($to, $subject, $message);
+	  	// https://docs.urbanairship.com/display/DOCS/Getting+Started
   	}
 }
 
+/*
+- http://www.efaxdeveloper.com/developer/faq
+*/
+class Fax {
+	function __construct() {
+		//parent::__construct();
+    }
+
+	function __destruct() {
+		//parent::__destruct();
+  	}
+  	
+  	function send($to, $message) {
+	  	// http://www.efaxdeveloper.com/developer/faq
+  	}
+}
 
 ?>

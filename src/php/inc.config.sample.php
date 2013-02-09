@@ -2,11 +2,9 @@
 
 // RENAME this file. php/inc.config.sample.php -> php/inc.config.php
 
-// Headers
-header('Server: ');
-header('X-Powered-By: ');
-header('X-Content-Type-Options: nosniff');
-header('X-XSS-Protection: 1; mode=block');
+// CORS
+//header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, X-Requested-With, X-Access-Token, X-PINGOTHER");
 
 error_reporting(E_ALL|E_STRICT);
 
@@ -71,16 +69,32 @@ if ($localhost) {
 	define('DB_PASS','');
 }
 
-//-- Mail --//
-if (!defined("MAIL_ADMIN_EMAIL")) define('MAIL_ADMIN_EMAIL','email@domain.com');
-if (!defined("MAIL_SIGNATURE")) define('MAIL_SIGNATURE',"\n\nKind Regards,\n\nYOUR NAME\nemail@domain.com\nhttps://domain.com");
-if (!defined("MAIL_SITE_NAME")) define('MAIL_SITE_NAME',"My Site");
-if (!defined("MAIL_SITE_EMAIL")) define('MAIL_SITE_EMAIL',"support@domain.com");
-if (!defined("MAIL_SITE_URL")) define('MAIL_SITE_URL',"http://domain.com/"); // trailing /
 
+//-- Notify --//
+define('NOTIFY_FROM_NAME', "");
+define('NOTIFY_FROM_EMAIL', "");
+define('NOTIFY_FROM_NUMBER', "");	// assigned by SMS service
+define('NOTIFY_FROM_URL', "http://app.angulario.com/");	// end with '/'
+
+//-- Email --//
+define('EMAIL_ADMIN_EMAIL',"");
+define('EMAIL_SIGNATURE',"");
+// AWS SES
+define('EMAIL_AWS_APIKEY', "");
 // mailgun
-define('MAILGUN_APIKEY', "");
-define('MAILGUN_DOMAIN', "sample.mailgun.org");
+define('EMAIL_MAILGUN_APIKEY', "");
+define('EMAIL_MAILGUN_DOMAIN', "");
+
+
+//-- SMS --//
+// AWS SNS
+define('SMS_AWS_APIKEY', "");
+// nexmo
+define('SMS_NEXMO_APIKEY', "");
+define('SMS_NEXMO_APISECRET', "");
+// twilio
+define('SMS_TWILIO_APIKEY', "");
+
 
 
 

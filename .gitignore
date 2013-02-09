@@ -5,7 +5,7 @@ src/components/*
 src/img/icons/*
 src/img/user/*
 src/img/company/*
-src/php/inc.config.php/*
+src/php/inc.config.php
 components/*
 temp/*
 dist/*
