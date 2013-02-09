@@ -2,7 +2,7 @@
 	<form class="form-search">
 		<input data-ng-model="search.query" type="text" class="input-medium" placeholder="Search directory" data-ng-change="loadSearch()">
 		<div class="btn-group">
-		  <button class="btn">{{search.type}}</button>
+		  <button class="btn">{{search.type[0].toUpperCase() + search.type.slice(1)}}</button>
 		  <button class="btn dropdown-toggle" data-toggle="dropdown">
 		    <span class="caret"></span>
 		  </button>
@@ -32,7 +32,7 @@
 				<img data-ng-src="img/user/{{r.ID}}.png" class="img-polaroid" width="50" height="50" align="left" style="margin-right:10px">
 				<p><b>{{r.user_name_first}} {{r.user_name_last}}</b></p>
 	            <p data-ng-show="r.user_function">{{r.user_function}}</p>
-	            <div class="btn-group">
+	            <div class="btn-group" data-ng-show="session.user_ID == r.user_ID">
 	            	<button class="btn" data-ng-click="message.open(r.user_ID, r.user_name_first+' '+r.user_name_last)"><i class="icon-envelope"></i></button>
 	            	<!--<a class="btn" rel="tooltip" title="+{{json.calling_codes[company.location.country_code]}} {{r.user_phone | phone}}" href="tel:+{{json.calling_codes[company.location.country_code]}} {{r.user_phone}}" data-ng-disabled="r.user_phone == ''"><i class="icon-phone"></i></a>-->
 	            </div>

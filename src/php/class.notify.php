@@ -16,6 +16,8 @@ class Notify {
 		"_SERVER" => array(
 			"REMOTE_ADDR" => ""
 		),
+		"from" => array(),
+		"to" => array()
 	);
 
 	private $templates = array();
@@ -23,6 +25,8 @@ class Notify {
 	function __construct() {
 		global $database;
 		$this->db = $database;
+		
+		
 		
 		$this->vars["_SERVER"]["REMOTE_ADDR"] = $_SERVER['REMOTE_ADDR'];
 		
@@ -49,15 +53,23 @@ class Notify {
 	public function send($user_ID, $message_ID, $args = array(), $types = "email") {
 		$types = explode(",", $types);
 		
+		// from details
+		$from = $this->db->select("users", array("user_ID" => USER_ID), array("user_name", "user_name_first", "user_name_last","user_email", "user_phone"));
+		if (!$from) return;
+		$from = $this->db->fetch_assoc($from);
+		
 		// get user email and mobile number
-		// USER_ID, USER_EMAIL, USER_MOBILE?
-		$user = $this->db->select("users", array("user_ID" => $user_ID), array("user_name", "user_name_first", "user_name_last","user_email", "user_phone", "notify_json"));
-		if (!$user) return;
-		$user = $this->db->fetch_assoc($user);
+		$to = $this->db->select("users", array("user_ID" => $user_ID), array("user_name", "user_name_first", "user_name_last","user_email", "user_phone", "notify_json"));
+		if (!$to) return;
+		$to = $this->db->fetch_assoc($to);
+		
+		// setup var
+		$this->var['from'] = $from;
+		$this->var['to'] = $to;
 		
 		// get user privacy settings
 		// {message_ID:{"email":true,"sms":false}
-		$notify_all = json_decode($user['notify_json']);
+		$notify_all = json_decode($to['notify_json']);
 		if (!is_array($notify_all)) $notify_all = array();
 		
 		// privacy defaults
@@ -75,9 +87,9 @@ class Notify {
 		
 		// send via types
 		if (in_array("email", $types) && isset($notify['email']) && $notify['email'])
-			$this->email->send($user['user_email'], $subject, $notify);
-		if (in_array("sms", $types) && isset($notify['sms']) && $privacy['sms'])
-			$this->sms->send($user['user_phone'], $message);
+			$this->email->send($to['user_email'], $subject, $message);
+		if (in_array("sms", $types) && isset($notify['sms']) && $notify['sms'])
+			$this->sms->send($to['user_phone'], $message);
 		//if (in_array("push", $types)) $this->mobilepush->send($user_phone, $message);
 	}
 	
@@ -88,7 +100,9 @@ class Notify {
 	}
 	
 	private function compile($message_ID, $args = array()) {
-
+		if (!isset($this->templates[$message_ID])) return array("", "");
+		
+		
 		$subject = $this->templates[$message_ID]['subject'];
 		$message = $this->templates[$message_ID]['message'];
 

@@ -73,6 +73,7 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 					
 					$rootScope.session = syncVar(data, $rootScope.session);
 					$rootScope.session.save = $scope.signin.remember;
+					console.log($rootScope.session);
 					$rootScope.saveSession();
 					$scope.signin = {};	// clear form
 

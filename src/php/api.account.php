@@ -31,7 +31,7 @@ class Account extends Core {
 		$return = array();
 		// same as in session - refactor
 		$query = "SELECT * FROM users WHERE user_ID = '{{user_ID}}' LIMIT 0,1";
-		$result = $this->db->query($query, array('user_ID' => USER_ID));
+		$result = $this->db->query($query, array('user_ID' => $this->session->cookie['user_ID']));
 		if (!$result) return $return; // user / pass combo not found
 		$r = $this->db->fetch_assoc($result);
 
