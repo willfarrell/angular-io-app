@@ -1,4 +1,7 @@
 <div data-ng-controller="CompanyCtrl">
+<div class="btn-group pull-right" data-ng-show="session.company_ID != company.company_ID" data-ng-init="follow.loadFollow(company.company_ID)">
+	<div data-ng-include="'follow-global-button'"></div>
+</div>
 <h2>{{company.company_name}}</h2>
 
 <div class="row-fluid">
@@ -81,9 +84,8 @@ href="https://twitter.com/share" class="twitter-share-button" data-url="http://r
     			<div ng-bind-html-unsafe="compileMarkdown(company.company_details)"></div>
     		</pane>
     		
-    		<pane title="Team">
+    		<!--<pane title="Team">
     			<table class="table table-striped">
-					<!--<thead><tr><th colspan="2"></th></tr></thead>-->
 					<tbody>
 					<tr class="ng-click" data-ng-repeat="u in users | orderBy:'-user_level'">
 						<td>
@@ -102,7 +104,7 @@ href="https://twitter.com/share" class="twitter-share-button" data-url="http://r
 					</tbody>
 				</table>
     			
-    		</pane>
+    		</pane>-->
     		
     		<!--<pane title="Locations">
 		      	<p>Interactive map - Future</p>

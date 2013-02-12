@@ -30,6 +30,10 @@ function CompanyCtrl($scope, $http, $routeParams) {
 					$scope.location = data.location_default_ID ? data.location : $scope.location;
 					$scope.location.primary = true;
 					//$scope.loadLocations();
+					/*if ($scope.session.company_ID == data.company_ID) {
+						$scope.loadUsers();
+						$scope.loadLocations();
+					}*/
 				}
 			})
 			.error(function() {
@@ -51,6 +55,11 @@ function CompanyCtrl($scope, $http, $routeParams) {
 					$scope.company = data;
 					$scope.location = data.location_default_ID ? data.location : $scope.location;
 					$scope.location.primary = true;
+					
+					/*if ($scope.session.company_ID == data.company_ID) {
+						$scope.loadUsers();
+						$scope.loadLocations();
+					}*/
 				}
 			})
 			.error(function() {
@@ -270,12 +279,12 @@ function CompanyCtrl($scope, $http, $routeParams) {
 	};
 	
 	//-- About Details --//
-	$scope.compileMarkdown = function(text) {
+	/*$scope.compileMarkdown = function(text) {
 		if (!text) return text;
 		//var converter = new Markdown.Converter();
 		var converter = new Markdown.getSanitizingConverter();
 		return converter.makeHtml(text);
-	};
+	};*/
 
 	$scope.require_signin(function(){
 		console.log('CompanyCtrl require_signin');
@@ -293,8 +302,12 @@ function CompanyCtrl($scope, $http, $routeParams) {
 				country_code:$rootScope.country_code.toUpperCase()
 			};
 		}
-		$scope.loadUsers();
-		$scope.loadLocations();
+		
+		// load on settings page
+		if ($routeParams.page) {
+			$scope.loadUsers();
+			$scope.loadLocations();
+		}
 	});
 }
 //}]);

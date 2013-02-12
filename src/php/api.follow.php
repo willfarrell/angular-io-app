@@ -11,7 +11,7 @@ GET 	/follow/ing/user
 */
 
 class Follow extends Core {
-	private $table = "follow_user";
+	private $table = "follows";
 
 	function __construct() {
 		parent::__construct();
@@ -22,32 +22,30 @@ class Follow extends Core {
     }
 
     // self only
-    function get_suggestions($type='user', $ref = NULL) {
+    function get_suggestions($ref_bool = NULL) {
 		$return = array();
 		
 		$limit = 10;
 		
-		if ($ref) {
-			$referral = $this->get_referral($type);
-			$referrals = $this->get_referrals($type);
+		if ($ref_bool) {
+			$referral = $this->get_referral();
+			$referrals = $this->get_referrals();
 			$return = $referral + $referrals;
 			$limit -= count($return);
 		}
 		
 		if ($limit > 0) {
-			$query = "SELECT U.user_ID AS ID, U.user_name AS name" // , GROUP_CONCAT(UF.group_ID) AS groups
+			$query = "SELECT U.user_ID, U.company_ID, CONCAT(U.user_name_first, ' ', U.user_name_last) AS name" // , GROUP_CONCAT(UF.group_ID) AS groups
 				." FROM users U"
-				." LEFT JOIN ".$this->table." UF ON UF.follow_ID = U.user_ID AND UF.user_ID = '{{user_ID}}'"
-				." WHERE U.user_ID != '{{user_ID}}' AND U.timestamp_confirm != 0 AND UF.follow_ID IS NULL"
+				." LEFT JOIN ".$this->table." UF ON UF.follow_user_ID = U.user_ID AND UF.user_ID = '{{user_ID}}'"
+				." WHERE U.user_ID != '{{user_ID}}' AND U.timestamp_confirm != 0 AND UF.follow_user_ID IS NULL"
 				." ORDER BY RAND()"
 				." LIMIT 0,$limit";
 
 			$suggestions = $this->db->query($query, array('user_ID' => USER_ID));
-			if ($suggestions) {
-				while ($suggestion = $this->db->fetch_assoc($suggestions)) {
-					//$suggestion['groups'] = explode(',', $suggestion['groups']);
-					$return[$suggestion['ID']] = $suggestion;
-				}
+			while ($suggestions && $suggestion = $this->db->fetch_assoc($suggestions)) {
+				//$suggestion['groups'] = explode(',', $suggestion['groups']);
+				$return[] = $suggestion;
 			}
 		}
 		
@@ -55,67 +53,68 @@ class Follow extends Core {
 		return $return;
 	}
 	
-	function get_referral($type='user') {
+	function get_referral() {
 		$return = array();
 		
-		$query = "SELECT RU.user_ID AS ID, RU.user_name AS name" // , GROUP_CONCAT(UF.group_ID) AS groups
+		$query = "SELECT RU.company_ID, RU.user_ID, RU.user_name AS name" // , GROUP_CONCAT(UF.group_ID) AS groups
 			." FROM users U"
 			." LEFT JOIN users RU ON U.referral_user_ID = RU.user_ID"
-			." LEFT JOIN ".$this->table." UF ON UF.follow_ID = U.user_ID AND UF.user_ID = '{{user_ID}}'"
-			." WHERE U.user_ID = '{{user_ID}}' AND UF.follow_ID IS NULL"
+			." LEFT JOIN ".$this->table." UF ON UF.follow_user_ID = U.user_ID AND UF.user_ID = '{{user_ID}}'"
+			." WHERE U.user_ID = '{{user_ID}}' AND U.referral_user_ID != 0 AND UF.follow_user_ID IS NULL"
 			." LIMIT 0,1";
 
 		$suggestions = $this->db->query($query, array('user_ID' => USER_ID));
 		if ($suggestions) {
 			while ($suggestion = $this->db->fetch_assoc($suggestions)) {
 				//$suggestion['groups'] = explode(',', $suggestion['groups']);
-				$return[$suggestion['ID']] = $suggestion;
+				$return[] = $suggestion;
 			}
 		}
 		
 		return $return;
 	}
 	
-	function get_referrals($type='user') {
+	function get_referrals() {
 		$return = array();
 		
-		$query = "SELECT U.user_ID AS ID, U.user_name AS name" // , GROUP_CONCAT(UF.group_ID) AS groups
+		$query = "SELECT U.company_ID, U.user_ID, U.user_name AS name" // , GROUP_CONCAT(UF.group_ID) AS groups
 			." FROM users U"
-			." LEFT JOIN ".$this->table." UF ON UF.follow_ID = U.user_ID AND UF.user_ID = '{{user_ID}}'"
-			." WHERE U.user_ID != '{{user_ID}}' AND U.timestamp_confirm != 0 AND  UF.follow_ID IS NULL"
+			." LEFT JOIN ".$this->table." UF ON UF.follow_user_ID = U.user_ID AND UF.user_ID = '{{user_ID}}'"
+			." WHERE U.user_ID != '{{user_ID}}' AND U.timestamp_confirm != 0 AND  UF.follow_user_ID IS NULL"
 			." AND U.referral_user_ID = '{{user_ID}}'"
 			." ORDER BY RAND()"
 			." LIMIT 0,10";
 
 		$suggestions = $this->db->query($query, array('user_ID' => USER_ID));
-		if ($suggestions) {
-			while ($suggestion = $this->db->fetch_assoc($suggestions)) {
-				//$suggestion['groups'] = explode(',', $suggestion['groups']);
-				$return[$suggestion['ID']] = $suggestion;
-			}
+		while ($suggestions && $suggestion = $this->db->fetch_assoc($suggestions)) {
+			//$suggestion['groups'] = explode(',', $suggestion['groups']);
+			$return[] = $suggestion;
 		}
 		
 		return $return;
 	}
 
 	//Followers lists (who is following you)
-	function get_ers($id = 0, $keyword = '') { // $type='user'
-		$id = preg_replace( '/[^0-9]+/', '', $id);
-		if (!$id || $id < 0) $id = USER_ID;
+	function get_ers($company_ID = 0, $user_ID = 0, $keyword = '') { // $type='user'
+		$company_ID = preg_replace( '/[^0-9]+/', '', $company_ID);
+		$user_ID = preg_replace( '/[^0-9]+/', '', $user_ID);
+		if (!$company_ID) $company_ID = COMPANY_ID;
+		if (!$user_ID) $user_ID = USER_ID;
 		$return = array();
 
-		$query = "SELECT U.user_ID AS ID, user_name AS name, UF.timestamp as following, GROUP_CONCAT(UF.group_ID) AS groups" // , UF.group_ID
+		$query = "SELECT U.user_ID, U.company_ID, user_name AS name, UF.timestamp as following, GROUP_CONCAT(UF.group_ID) AS groups" // , UF.group_ID
 				." FROM ".$this->table." FU"
-				." LEFT JOIN ".$this->table." UF ON UF.user_ID = FU.follow_ID AND UF.follow_ID = FU.user_ID"
+				." LEFT JOIN ".$this->table." UF ON UF.user_ID = FU.follow_user_ID AND UF.follow_user_ID = FU.user_ID"
 				." LEFT JOIN users U ON U.user_ID = FU.user_ID"
-				." WHERE FU.follow_ID = '{{follow_ID}}'"
+				." WHERE FU.follow_user_ID = '{{follow_user_ID}}'"
 				." AND (user_name LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%')"
-				." GROUP BY FU.user_ID, FU.follow_ID";
-		$followers = $this->db->query($query, array('follow_ID' => $id, 'keyword' => $keyword));
+				." GROUP BY FU.user_ID, FU.follow_user_ID";
+		$followers = $this->db->query($query, array('follow_user_ID' => $user_ID, 'keyword' => $keyword));
 		if ($followers) {
 			while ($follower = $this->db->fetch_assoc($followers)) {
 				if ($id == USER_ID) $follower['groups'] = explode(',', $follower['groups']);
 				else unset ($follower['groups']);
+				$follower['follower'] = true;
 				$return[$follower['ID']] = $follower;
 			}
 		}
@@ -124,30 +123,33 @@ class Follow extends Core {
 	}
 
 	// Following list (who you're following)
-	function get_ing($id = 0, $keyword = '') { // $type='user'
-		$id = preg_replace( '/[^0-9]+/', '', $id);
-		if (!$id || $id < 0) $id = USER_ID;
+	function get_ing($company_ID = 0, $user_ID = 0, $keyword = '') { // $type='user'
+		$company_ID = preg_replace( '/[^0-9]+/', '', $company_ID);
+		$user_ID = preg_replace( '/[^0-9]+/', '', $user_ID);
+		if (!$company_ID) $company_ID = COMPANY_ID;
+		if (!$user_ID) $user_ID = USER_ID;
 		$return = array();
 		
-		$query = "SELECT U.user_ID AS ID, user_name AS name, GROUP_CONCAT(group_ID) AS groups" //
+		$query = "SELECT U.user_ID, U.company_ID, user_name AS name, GROUP_CONCAT(group_ID) AS groups" //
 				." FROM ".$this->table." FU"
-				." LEFT JOIN users U ON U.user_ID = FU.follow_ID"
+				." LEFT JOIN users U ON U.user_ID = FU.follow_user_ID"
 				." WHERE FU.user_ID = '{{user_ID}}'"
 				." AND (user_name LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%@')"
-				." GROUP BY FU.user_ID, FU.follow_ID";
-		$followings = $this->db->query($query, array('user_ID' => $id, 'keyword' => $keyword));
+				." GROUP BY FU.user_ID, FU.follow_user_ID";
+		$followings = $this->db->query($query, array('user_ID' => $user_ID, 'keyword' => $keyword));
 		if ($followings) {
 			while ($following = $this->db->fetch_assoc($followings)) {
-				if ($id == USER_ID) $following['groups'] = explode(',', $following['groups']);
+				if ($user_ID == USER_ID) $following['groups'] = explode(',', $following['groups']);
 				else unset ($following['groups']);
-				$return[$following['ID']] = $following;
+				$following['following'] = true;
+				$return[] = $following;
 			}
 		}
 
 		return $return;
 	}
 
-	// get groups
+	//-- Group Management --//
 	function get_group($group_ID=NULL) { // $type='user'
 		$group_ID = preg_replace( '/[^0-9]+/', '', $group_ID);
 		$return = array();
@@ -157,7 +159,7 @@ class Follow extends Core {
 			$db_where['group_ID'] = $group_ID;
 		}
 
-		$results = $this->db->select($this->table.'_groups', $db_where);
+		$results = $this->db->select('follow_groups', $db_where);
 		if ($results) {
 			while($group = $this->db->fetch_assoc($results)) {
 				$return[$group['group_ID']] = $group;
@@ -177,7 +179,7 @@ class Follow extends Core {
 			'group_name' => $request_data['group_name'],
 			'group_color' => $request_data['color'],
 		);
-		$group_ID = $this->db->insert($this->table.'_groups', $insert, $insert);
+		$group_ID = $this->db->insert('follow_groups', $insert, $insert);
 
 		return $group_ID;
 	}
@@ -187,53 +189,73 @@ class Follow extends Core {
 		$group_ID = preg_replace( '/[^0-9]+/', '', $group_ID);
 		if (!$group_ID || $group_ID < 0) return;
 
-		$this->db->delete($this->table.'_groups', array('group_ID' => $group_ID));
+		$this->db->delete('follow_groups', array('group_ID' => $group_ID));
 		$this->db->delete($this->table, array('group_ID' => $group_ID));
 
 		return;
 	}
-
-	//-- User follow User --//
-
-	// get follow relation to user
-	function get_user($id = 0) {
-		$id = preg_replace( '/[^0-9]+/', '', $id);
-		if (!$id || $id < 0) return;
+	
+	//-- Follow Functions --//
+	function get($company_ID = 0, $user_ID = 0) {
+		$company_ID = preg_replace( '/[^0-9]+/', '', $company_ID);
+		$user_ID = preg_replace( '/[^0-9]+/', '', $user_ID);
+		if (!$company_ID && !$user_ID) return;
+		
 
 		$return = array(
-			"ID" => $id,
+			'user_ID' => (int) $user_ID,
+			'company_ID' => (int) $company_ID,
 			"following" => false,
 		);
-
-		$query = "SELECT follow_ID AS ID, timestamp as following, GROUP_CONCAT(group_ID) AS groups" //
-				." FROM ".$this->table.""
-				." WHERE user_ID = '{{user_ID}}' && follow_ID = '{{follow_ID}}'"
-				." GROUP BY user_ID, follow_ID";
 		
-		$follows = $this->db->query($query, array('user_ID' => USER_ID, 'follow_ID' => $id));
+		$select = array(
+			'user_ID' => USER_ID,
+			'company_ID' => COMPANY_ID,
+		);
+		if ($user_ID) $select['follow_user_ID'] = $user_ID;
+		if ($company_ID) $select['follow_company_ID'] = $company_ID;
+		
+		$where = array("user_ID = '{{user_ID}}'");
+		if ($user_ID) $where[] = "follow_user_ID = '{{follow_user_ID}}'";
+		if ($company_ID) $where[] = "follow_company_ID = '{{follow_company_ID}}'";
+		
+		$group_by = array("user_ID");
+		if ($user_ID) $group_by[] = 'follow_user_ID';
+		if ($company_ID) $group_by[] = 'follow_company_ID';
+		
+		$query = "SELECT follow_user_ID AS user_ID, follow_company_ID AS company_ID, timestamp as following, GROUP_CONCAT(group_ID) AS groups" //
+				." FROM ".$this->table.""
+				." WHERE ".implode(" && ", $where).""
+				." GROUP BY ".implode(",", $group_by).""
+				." LIMIT 0,1";
+		
+		$follows = $this->db->query($query, $select);
 		if ($follows) {
 			$follow = $this->db->fetch_assoc($follows);
-			if ($id != USER_ID) $follow['groups'] = explode(',', $follow['groups']);
+			if ($user_ID != USER_ID) $follow['groups'] = explode(',', $follow['groups']);
 			else unset ($follow['groups']);
+			
 			$return = array(
-				"ID" => $follow['ID'],
+				'user_ID' => $follow['user_ID'],
+				'company_ID' => $follow['company_ID'],
 				"following" => ($follow['following']),
 			);
-
 		}
 
 		return $return;
 	}
-
-	// follow user
-	function put_user($request_data=NULL) {
-		$follow_ID = preg_replace( '/[^0-9]+/', '', $request_data['follow_ID']);
-		$group_ID = preg_replace( '/[^0-9]+/', '', $request_data['group_ID']);
-		if (!$follow_ID || $follow_ID < 0) return;
+	
+	function put($company_ID = 0, $user_ID = 0, $group_ID=0) {
+		$company_ID = preg_replace( '/[^0-9]+/', '', $company_ID);
+		$user_ID = preg_replace( '/[^0-9]+/', '', $user_ID);
+		$group_ID = preg_replace( '/[^0-9]+/', '', $group_ID);
+		if (!$company_ID && !$user_ID) return;
 
 		$insert = array(
 			'user_ID' => USER_ID,
-			'follow_ID' => $follow_ID,
+			'company_ID' => COMPANY_ID,
+			'follow_user_ID' => $user_ID,
+			'follow_company_ID' => $company_ID,
 			'group_ID' => $group_ID,
 			'timestamp' => $_SERVER['REQUEST_TIME']
 		);
@@ -245,95 +267,27 @@ class Follow extends Core {
 		
 		return;
 	}
-
-	// unfollow user
-	function delete_user($id=0, $group_ID=0) {
-		$id = preg_replace( '/[^0-9]+/', '', $id);
+	
+	function delete($company_ID = 0, $user_ID = 0, $group_ID=0) {
+		$company_ID = preg_replace( '/[^0-9]+/', '', $company_ID);
+		$user_ID = preg_replace( '/[^0-9]+/', '', $user_ID);
 		$group_ID = preg_replace( '/[^0-9]+/', '', $group_ID);
-		if (!$id || $id < 0) return;
+		if (!$company_ID && !$user_ID) return;
 
 		if ($group_ID) {
 			$this->db->delete($this->table, array(
 				'user_ID' => USER_ID,
-				'follow_ID' => $id,
+				'company_ID' => COMPANY_ID,
+				'follow_user_ID' => $user_ID,
+				'follow_company_ID' => $company_ID,
 				'group_ID' => $group_ID,
 			));
 		} else {
 			$this->db->delete($this->table, array(
 				'user_ID' => USER_ID,
-				'follow_ID' => $id
-			));
-		}
-
-		return;
-	}
-
-
-	//-- User follow Company --//
-
-	// get follow relation to user
-	function get_company($id = 0) {
-		$id = preg_replace( '/[^0-9]+/', '', $id);
-		if (!$id || $id < 0) return;
-
-		$return = array(
-			"ID" => 0,
-			"following" => false,
-		);
-
-		$query = "SELECT follow_ID AS ID, timestamp as following, GROUP_CONCAT(group_ID) AS groups" //
-				." FROM ".$this->table.""
-				." WHERE user_ID = '{{user_ID}}' && follow_ID = '{{follow_ID}}'"
-				." GROUP BY user_ID, follow_ID";
-		$follows = $this->db->query($query, array('user_ID' => USER_ID, 'follow_ID' => $id));
-		if ($follows) {
-			$follow = $this->db->fetch_assoc($follows);
-			if ($id != USER_ID) $follow['groups'] = explode(',', $follow['groups']);
-			else unset ($follow['groups']);
-			$return = array(
-				"ID" => $follow['ID'],
-				"following" => ($follow['following']),
-			);
-
-		}
-
-		return $return;
-	}
-
-	// follow user
-	function post_company($request_data=NULL) {
-		$follow_ID = preg_replace( '/[^0-9]+/', '', $request_data['follow_ID']);
-		$group_ID = preg_replace( '/[^0-9]+/', '', $request_data['group_ID']);
-		if (!$follow_ID || $follow_ID < 0) return;
-
-		$insert = array(
-			'user_ID' => USER_ID,
-			'follow_ID' => $follow_ID,
-			'group_ID' => $group_ID,
-			'timestamp' => $_SERVER['REQUEST_TIME']
-		);
-
-		$this->db->insert_update($this->table, $insert, $insert);
-
-		return;
-	}
-
-	// unfollow user
-	function delete_company($id=0, $group_ID=0) {
-		$id = preg_replace( '/[^0-9]+/', '', $id);
-		$group_ID = preg_replace( '/[^0-9]+/', '', $group_ID);
-		if (!$id || $id < 0) return;
-
-		if ($group_ID) {
-			$this->db->delete($this->table, array(
-				'user_ID' => USER_ID,
-				'follow_ID' => $id,
-				'group_ID' => $group_ID,
-			));
-		} else {
-			$this->db->delete($this->table, array(
-				'user_ID' => USER_ID,
-				'follow_ID' => $id
+				'company_ID' => COMPANY_ID,
+				'follow_user_ID' => $user_ID,
+				'follow_company_ID' => $company_ID,
 			));
 		}
 

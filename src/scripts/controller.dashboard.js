@@ -10,7 +10,7 @@ function DashboardCtrl($scope, $http, $routeParams) {
 	
 	
 	//-- Directory Search --//
-	$scope.search = {query:'',type:'user'};
+	$scope.search = {query:'',type:($rootScope.settings.account.company) ? 'company' : 'user'};
 	
 	$scope.loadSearch = function() {
 		

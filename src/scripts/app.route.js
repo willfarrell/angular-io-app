@@ -14,7 +14,7 @@ function($routeProvider) {
 		
 		
 		// user
-		//when('/user/follow', 		{templateUrl:_view_+'user/follow.html'})
+		.when('/user/follow', 		{templateUrl:_view_+'user/follow.html'})
 		.when('/user/message', 		{templateUrl:_view_+'user/message.html'})
 		.when('/user/message/:user_ID', {templateUrl:_view_+'user/message.html'})
 		.when('/user/invite', 		{templateUrl:_view_+'user/invite.html'})

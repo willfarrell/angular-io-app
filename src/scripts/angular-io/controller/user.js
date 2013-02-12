@@ -136,12 +136,12 @@ function UserCtrl($scope, $http, $routeParams) {
 			});
 	};
 
-	$scope.compileMarkdown = function(text) {
+	/*$scope.compileMarkdown = function(text) {
 		if (!text) return text;
 		//var converter = new Markdown.Converter();
 		var converter = new Markdown.getSanitizingConverter();
 		return converter.makeHtml(text);
-	};
+	};*/
 
 
 	$scope.require_signin(function(){

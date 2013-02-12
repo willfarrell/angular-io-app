@@ -5,12 +5,12 @@
     </div>
     <div class="span10">
     	<!-- Follow Button -->
-    	<div class="pull-right" data-ng-show="session.user_ID != user.user_ID" data-ng-init="follow.loadFollow('user', user.user_ID)">
+    	<div class="pull-right" data-ng-show="session.user_ID != user.user_ID">
     		<div class="btn-group" data-ng-show="session.user_ID == user.user_ID">
     			<div class="btn" data-ng-click="message.open(user.user_ID, user.user_name_first+' '+user.user_name_last)"><i class="icon-envelope"></i></div>
     		</div>
-    		<div class="btn-group">
-				<div data-ng-include="'follow-global-button-user'"></div>
+    		<div class="btn-group" data-ng-init="follow.loadFollow('user', user.user_ID)">
+				<div data-ng-include="'follow-global-button'"></div>
     		</div>
 		</div>
 		
@@ -19,10 +19,10 @@
     	<div data-ng-bind-html-unsafe="compileMarkdown(user.user_details)"></div>
     	
     	<div data-ng-controller="FollowCtrl">
-		    <ul class="thumbnails well" data-ng-init="loadFollowing(user.user_ID)">
-		    	<li class="img-polaroid" data-ng-repeat="f in following">
-		    		<a href="#/user/profile/{{f.ID}}" rel="tooltip" title="{{f.name}}">
-		    			<img data-ng-src="/img/user/{{f.ID}}.png?{{filepicker.timestamp}}" style="width:50px;height:50px" />
+		    <ul class="thumbnails well" data-ng-init="follow.loadFollowing(user.company_ID, user.user_ID)">
+		    	<li class="img-polaroid" data-ng-repeat="f in objectArray(follow.db.user) | filter:{following:true}">
+		    		<a href="#/user/profile/{{f.user_ID}}" rel="tooltip" title="{{f.name}}">
+		    			<img data-ng-src="/img/user/{{f.user_ID}}.png?{{filepicker.timestamp}}" style="width:50px;height:50px" />
 		    		</a>
 		    	</li>
 		    </ul>
