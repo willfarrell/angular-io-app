@@ -1,7 +1,7 @@
 //angular.module('io.controller.company', [])
 //.controller('CompanyCtrl', ['$scope', '$http', function($scope, $http) {
-CompanyCtrl.$inject = ['$scope', '$http'];
-function CompanyCtrl($scope, $http) {
+CompanyCtrl.$inject = ['$scope', '$http', '$routeParams'];
+function CompanyCtrl($scope, $http, $routeParams) {
 	console.log('CompanyCtrl ('+$scope.$id+')');
 
 	$scope.errors = {};
@@ -16,9 +16,11 @@ function CompanyCtrl($scope, $http) {
 	$scope.locations = {};
 	
 	//-- Company --//
-	$scope.loadCompany = function() {
-		console.log('loadCompany');
-		$http.get($scope.settings.server+'company/')
+	$scope.loadCompany = function(profile_ID) {
+		console.log('loadCompany('+profile_ID+')');
+		profile_ID || (profile_ID = 0);
+		
+		$http.get($scope.settings.server+'company/'+profile_ID)
 			.success(function(data) {
 				console.log(data);
 				$scope.errors.user	= (data.errors) ? data.errors : {};
@@ -34,6 +36,27 @@ function CompanyCtrl($scope, $http) {
 				$rootScope.http_error();
 			});
 
+	};
+	$scope.loadCompanyName = function(profile_name) {
+		console.log('loadCompanyName('+profile_name+')');
+		profile_name || (profile_name = '');
+		
+		$http.get($scope.settings.server+'company/name/'+profile_name)
+			.success(function(data) {
+				console.log('loadCompanyName.get.success');
+				console.log(data);
+				$scope.errors.user	= (data.errors) ? data.errors : {};
+				$rootScope.alerts 	= (data.alerts) ? data.alerts : [];
+				if (!data.alerts && !data.errors) {
+					$scope.company = data;
+					$scope.location = data.location_default_ID ? data.location : $scope.location;
+					$scope.location.primary = true;
+				}
+			})
+			.error(function() {
+				console.log('loadCompanyName.get.error');
+				$rootScope.http_error();
+			});
 	};
 
 	$scope.updateCompany = function() {
@@ -257,11 +280,19 @@ function CompanyCtrl($scope, $http) {
 	$scope.require_signin(function(){
 		console.log('CompanyCtrl require_signin');
 		console.log($rootScope.session.company);
-		$scope.company = $rootScope.session.company ? $rootScope.session.company : {
-			company_ID:$rootScope.session.company_ID,
-			country_code:$rootScope.country_code.toUpperCase()
-		};
-		$scope.loadCompany();
+		
+		if ($routeParams.profile_name) {
+			$scope.loadCompanyName($routeParams.profile_name);
+		} else if ($routeParams.profile_ID) {
+			$routeParams.profile_ID || ($routeParams.profile_ID = 0);
+			$scope.company.company_ID = $routeParams.profile_ID;
+			$scope.loadCompany($routeParams.profile_ID);
+		} else {
+			$scope.company = $rootScope.session.company ? $rootScope.session.company : {
+				company_ID:$rootScope.session.company_ID,
+				country_code:$rootScope.country_code.toUpperCase()
+			};
+		}
 		$scope.loadUsers();
 		$scope.loadLocations();
 	});

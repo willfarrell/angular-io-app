@@ -1,5 +1,7 @@
 #!/bin/sh
 
+sh run -c
+
 ## Build based on Gruntfile.js ##
 
 yeoman build --force
@@ -8,6 +10,9 @@ yeoman build --force
 echo "Clean dist"
 cd dist
 cp index.web.html index.html
+
+rm -rf img/user img/company
+mkdir img/user img/company
 
 ## remove dev file types ##
 rm -rf scripts styles components
@@ -20,7 +25,7 @@ cd ../
 
 # clean web
 echo "Make & Clean dist-web"
-rm -rf dist-web && mkdir dist-web && cp -R dist/ dist-web/
+mkdir dist-web && cp -R dist/ dist-web/
 cd dist-web/
 
 rm -rf index.php php/ index.device.html config.xml js/cordova.js
@@ -30,7 +35,7 @@ cd ../
 
 # clean device - not built yet
 echo "Make & Clean dist-device"
-rm -rf dist-device && mkdir dist-device && cp -R dist/ dist-device/
+mkdir dist-device && cp -R dist/ dist-device/
 cd dist-device/
 
 rm -rf index.php php/ index.web.html crossdomain.xml
@@ -40,7 +45,7 @@ cd ../
 
 # clean api
 echo "Make & Clean dist-api"
-rm -rf dist-api && mkdir dist-api && cp -R dist/ dist-api/
+mkdir dist-api && cp -R dist/ dist-api/
 cd dist-api/
 
 rm -rf config.xml css font img index.html index.web.html index.device.html js lang manifest.appcache view

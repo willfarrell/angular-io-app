@@ -4,13 +4,17 @@ angular.module('io.factory.filepicker', [])
 	console.log('FilepickerFactory ('+$rootScope.$id+')');
 	
 	var $scope = {};
-	$scope.version = '0.1.0';
+	$scope.version = '0.2.0';
 	$scope.alerts = [];
 	
 	$scope.services = {
 		'':{
 			'name':'Filepicker',
 			'icon':'upload-alt'
+		},
+		'DOWNLOAD':{
+			'name':'Download',
+			'icon':'cloud-download'
 		},
 		'RESIZECROP':{
 			'name':'Resize & Crop Image',
@@ -39,7 +43,9 @@ angular.module('io.factory.filepicker', [])
 		}
 	};
 	
-	$scope.args_default = {
+	// defaults
+	$scope.args_upload = {
+		type:'UPLOAD',
 		action:'',
 		types: ['*/*'],	// image/*
 		extensions: [],	// ['.png','.jpg']
@@ -48,41 +54,14 @@ angular.module('io.factory.filepicker', [])
 		multi:true,
 		ID:''		// params passed to backend, ie object_ID
 	};
-
-	$scope.img_default = {
+	
+	$scope.args_download = {
+		type:'DOWNLOAD',
 		action:'',
-		types: ['image/*'],
-		extensions: ['.jpg', '.jpeg', '.gif', '.bmp', '.png'],
+		files:{},
 		services: ['COMPUTER'],
 		service: 'COMPUTER',
-		multi:false,
-		resizecrop:true,
-		width:200,
-		height:200
-	};
-
-	$scope.profile_user = {
-		action:'profile_user',
-		types: ['image/*'],
-		extensions: ['.jpg', '.jpeg', '.gif', '.bmp', '.png'],
-		services: ['COMPUTER'],
-		service: 'COMPUTER',
-		multi:false,
-		resizecrop:true,
-		width:200,
-		height:200
-	};
-
-	$scope.profile_company = {
-		action:'profile_company',
-		types: ['image/*'],
-		extensions: ['.jpg', '.jpeg', '.gif', '.bmp', '.png'],
-		services: ['COMPUTER'],
-		service: 'COMPUTER',
-		multi:false,
-		resizecrop:true,
-		width:300,
-		height:200
+		ID:''		// params passed to backend, ie object_ID
 	};
 
 	$scope.args = {};
@@ -90,13 +69,13 @@ angular.module('io.factory.filepicker', [])
 	$scope.timestamp = +new Date();
 	$scope.dropzone_name = 'files';
 
-	$scope.open = function(args, ID) {
+	$scope.upload = function(args, ID) {
 		ID || (ID = '');
 		console.log(args);
 		console.log(ID);
 		$scope.alerts = [];
 		
-		$scope.args = syncVar(args, $scope.args);
+		$scope.args = syncVar(args, $scope.args_upload);
 		$scope.args.ID = ID;
 
 		// input accept tag
@@ -105,6 +84,92 @@ angular.module('io.factory.filepicker', [])
 		$scope.setDropzoneName(true);
 		$('#filepickerModal').modal('show');
 	};
+	
+	$scope.view = function(args, ID) {
+		ID || (ID = '');
+		console.log(ID);
+		$scope.alerts = [];
+		
+		$scope.args = syncVar(args, $scope.args_download);
+		$scope.args.ID = ID;
+		
+		// get files json
+		$http.get($rootScope.settings.server+'filepicker/list/'+$scope.args.action+'/'+$scope.args.ID)
+			.success(function(data) {
+				$scope.args.files = data;
+			})
+			.error(function() {
+				
+			});
+		
+	};
+	
+	$scope.download = function(args, ID) {
+		$scope.view(args, ID);
+		
+		$('#filepickerModal').modal('show');
+	};
+	
+	$scope.downloadFile = function(file) {
+		$http.post($rootScope.settings.server+'filepicker/download/'+$scope.args.action+'/'+$scope.args.ID, {"file":file})
+			.success(function(data) {
+				console.log(data);
+				if (data.errors) $scope.errors = data.errors;
+				if (data.alerts) $scope.alerts = data.alerts;
+				
+				if (!data.errors && !data.alerts) {
+					$rootScope.alerts = [{"class":"success", "label":"File deleted"}];
+				}
+			})
+			.error(function() {
+				
+			});
+	}
+	
+	
+	$scope.confirmDelete = function(file, callback) {
+		console.log('filepicker.confirmDelete()');
+		$rootScope.modal = {
+			hide:{
+				header:false,
+				close:false,
+				footer:false
+			},
+			header:"Confirm File Delete",
+			content:"Are you sure you want to delete '"+file+"'?",
+			buttons:[
+				{
+					"class":"btn-primary",
+					value:"Delete",
+					callback:function(){
+						callback(file);
+					}
+				},
+				{
+					"class":"",
+					value:"Cancel",
+					callback:function(){}
+				}
+			]
+		};
+		$('#alertModal').modal('show');
+	};
+	
+	$scope.delete = function(file) {
+		$http.delete($rootScope.settings.server+'filepicker/'+$scope.args.action+'/'+$scope.args.ID+'/'+encodeURIComponent(file))
+			.success(function(data) {
+				if (data.errors) $scope.errors = data.errors;
+				if (data.alerts) $scope.alerts = data.alerts;
+				
+				if (!data.errors && !data.alerts) {
+					$rootScope.alerts = [{"class":"success", "label":"File deleted"}];
+					$scope.view($scope.args, $scope.args.ID); // reload list
+				}
+			})
+			.error(function() {
+				
+			});
+	}
 
 	$scope.close = function() {
 		this.timestamp = +new Date(); // used to force image to be reloaded

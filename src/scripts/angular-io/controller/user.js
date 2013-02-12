@@ -37,7 +37,7 @@ function UserCtrl($scope, $http, $routeParams) {
 			});
 	};
 	$scope.loadUserName = function(profile_name) {
-		console.log('loadUser('+profile_name+')');
+		console.log('loadUserName('+profile_name+')');
 		profile_name || (profile_name = '');
 		
 		$http.get($scope.settings.server+'user/name/'+profile_name)
@@ -148,13 +148,15 @@ function UserCtrl($scope, $http, $routeParams) {
 		console.log('UserCtrl require_signin');
 		//$scope.user = $rootScope.session.user ? $rootScope.session.user : {};
 		if ($routeParams.profile_name) {
-			$scope.loadUser($routeParams.profile_name);
-		} else {
+			$scope.loadUserName($routeParams.profile_name);
+		} else if ($routeParams.profile_ID) {
 			$routeParams.profile_ID || ($routeParams.profile_ID = 0);
 			$scope.user = {
 				'user_ID':$routeParams.profile_ID
 			};
 			$scope.loadUser($routeParams.profile_ID);
+		} else {
+			
 		}
 		console.log($scope.user);
 	});

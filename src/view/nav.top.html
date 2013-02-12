@@ -33,7 +33,7 @@
         		<div class="btn-group hidden-phone">
 					<button class="btn" data-ng-click="history.back()" data-ng-disabled="history.length <= 2" data-ui-if="device"><i class="icon-arrow-left"></i></button>
 					<button class="btn" data-ng-click="refresh()" data-ui-if="device"><i class="icon-refresh"></i></button>
-					<a class="btn" href="#/{{settings.dashboard}}" data-ng-class="{active: selectedNav=='app'}" data-ng-click="selectedNav = 'app'"><i class="icon-dashboard"></i></a>
+					<a class="btn" href="#/{{settings.dashboard}}"><i class="icon-dashboard"></i></a>
 				</div>
         	</div>
 			<a class="brand" href="#">&nbsp;&nbsp;{{i18n.title}} <i class="icon-spinner icon-spin" data-ng-show="loading"></i></a>
@@ -41,24 +41,24 @@
 				<!--<li class="" id="loading" ><a href="#" rel="tooltip" title="first tooltip">( Loading... )</a></li>-->
 			    <!--<li><a href="#/app"><i class="icon-home"></i></a></li>-->
 			    
-			    <li class="dropdown" data-ng-class="{active: selectedNav=='user'}">
+			    <li class="dropdown">
 			        <a href="#" class="dropdown-toggle" data-ng-show="session.user.user_name" data-toggle="dropdown">{{session.user.user_name}} <b class="caret"></b></a>
 			        <a href="#" class="dropdown-toggle" data-ng-show="!session.user.user_name && session.user.user_name_first" data-toggle="dropdown">{{session.user.user_name_first}} <b class="caret"></b></a>
 			        <a href="#" class="dropdown-toggle" data-ng-hide="session.user.user_name || session.user.user_name_first" data-toggle="dropdown">{{session.user.user_email}} <b class="caret"></b></a>
-			        <ul class="dropdown-menu" data-ng-click="selectedNav = 'user'">
+			        <ul class="dropdown-menu">
 			        	<li><a href="#/user/message"><i class="icon-envelope"></i>&nbsp;Messages<span class="badge badge-important pull-right" data-ng-show="message.unread">{{message.unread}}</span></a></li>
-			        	<li><a href="#/user/profile"><i class="icon-user"></i>&nbsp;Profile</a></li>
+			        	<li data-ng-show="settings.account.user_name"><a href="#/user/profile"><i class="icon-user"></i>&nbsp;Profile</a></li>
 			        	<!--<li><a href="#/user/follow"><i class="icon-group"></i>&nbsp;Follow</a></li>-->
 			        	<li><a href="#/user/invite"><i class="icon-share"></i>&nbsp;Invite</a></li>
 			        	<li><a href="#/settings/profile"><i class="icon-cogs"></i>&nbsp;Edit Profile</a></li>
 			        </ul>
 			    </li>
 			    <li class="divider-vertical"></li>
-			    <li class="dropdown" data-ng-class="{active: selectedNav=='account'}">
+			    <li class="dropdown">
 			        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <b class="caret"></b></a>
-			        <ul class="dropdown-menu" data-ng-click="selectedNav = 'account'">
-			        	<li><a href="#/company/profile"><i class="icon-user"></i>&nbsp;Company Profile</a></li>
-			            <!--<li><a href="#/billing"><i class="icon-credit-card"></i>&nbsp;Billing</a></li>-->
+			        <ul class="dropdown-menu">
+			        	<li data-ng-show="settings.account.company_username"><a href="#/company/profile"><i class="icon-user"></i>&nbsp;Company Profile</a></li>
+			            <li><a href="#/settings/billing"><i class="icon-credit-card"></i>&nbsp;Billing</a></li>
 			            <!--<li><a href="#/api/">API</a></li>-->
 			            <!--<li><a href="#/setings/user">
 			            	<img data-ng-src="img/user/{{session.user_ID}}.png?{{filepicker.timestamp}}" class="img-rounded" style="width:40px; height:40px;"/><span>&nbsp;{{session.user.user_name_first}} {{session.user.user_name_last}}<br>Edit Profile</span>

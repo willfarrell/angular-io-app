@@ -67,7 +67,7 @@ class User extends Core {
 	
 	/*
 	*/
-	function get_name($user_name=NULL) {
+	function get_name($username=NULL) {
 		$return = array();
 		
 		// add in user_name check
@@ -76,8 +76,8 @@ class User extends Core {
 		
 		// check user_ID
 		$db_where = array();
-		if ($user_name) {
-			$db_where['user_name'] = $user_name;
+		if ($username) {
+			$db_where['user_name'] = $username;
 		} else {
 			return $return;
 		}

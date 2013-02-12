@@ -137,23 +137,6 @@ function url_exists($url)
     return $connectable;
 }
 
-function echoFile($folder, $file)
-{
-    //header("Content-Type: " . mime_content_type($FileName));
-    // if you are not allowed to use mime_content_type, then hardcode MIME type
-    // use application/octet-stream for any binary file
-    // use application/x-executable-file for executables
-    // use application/x-zip-compressed for zip files
-    header("Content-Type: application/octet-stream");
-    header("Content-Length: " . filesize($folder.$file));
-    header("Content-Disposition: attachment; filename=\"$file\"");
-    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-    $fp = fopen($folder.$file,"rb");
-    fpassthru($fp);
-    fclose($fp);
-}
-
-
 /********************************
  * Retro-support of get_called_class()
  * Tested and works in PHP 5.2.4

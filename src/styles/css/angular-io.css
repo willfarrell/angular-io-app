@@ -1,3 +1,10 @@
+/* fontawesome */
+/* place icon inside input field */
+.icon-input {
+	position: relative;
+	margin: 2.5px 0 0 -24px;
+}
+
 /*************** Bootstrap-Responsive Fix ***************/
 /* mobile modal patch */
 @media(max-width:480px) {

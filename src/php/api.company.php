@@ -169,7 +169,78 @@ class Company extends Core {
 		$this->db->insert_update('users', $user);
 		
 	}
+	
+	function get_name($username=NULL) {
+		$return = array();
+		
+		// add in user_name check
+		
+		
+		
+		// check user_ID
+		$db_where = array();
+		if ($username) {
+			$db_where['company_username'] = $username;
+		} else {
+			return $return;
+		}
+		$db_select = array('company_ID','company_username', 'company_name','company_url','company_phone','company_details','user_default_ID','location_default_ID');
 
+		$results = $this->db->select('companies', $db_where, $db_select);
+		if ($results) {
+			while($company = $this->db->fetch_assoc($results, array("company_phone"))) {
+				/*if (!is_null($user_ID) && $user['user_name'] == '') {
+					$user['user_name'] = $user["user_name_first"]." ".$user["user_name_last"];
+				}*/
+				$return = $company;
+				
+				// primary user
+				$results = $this->db->select('users',
+					array('company_ID' => COMPANY_ID, 'user_ID' => $company['user_default_ID']),
+					array("user_ID", "user_name", "user_name_first", "user_name_last", "user_phone", "user_details")
+				);
+				while ($results && $user = $this->db->fetch_assoc($results, array("user_phone"))) {
+					$user['user_ID'] = $user['user_ID'];
+					$return['user'] = $user;
+				}
+				// get users
+				/*$results = $this->db->select('users',
+					array('company_ID' => COMPANY_ID),
+					array("user_ID", "user_name", "user_name_first", "user_name_last", "user_email", "user_details")
+				);
+				while ($results && $user = $this->db->fetch_assoc($results)) {
+					$return['users'][$user['user_ID']] = $user;
+				}*/
+				
+				// primary location
+				$results = $this->db->select('locations',
+					array('company_ID' => COMPANY_ID, 'location_ID' => $company['location_default_ID']),
+					array('location_ID', 'company_ID', 'location_name', 'address_1', 'address_2', 'city', 'region_code', 'country_code', 'mail_code', 'latitude', 'longitude', 'location_phone')
+				);
+				while ($results && $location = $this->db->fetch_assoc($results)) {
+					//$location['primary'] = true;
+					//$location['company_ID'] =  $location['company_ID'];
+					//$location['location_ID'] =  $location['location_ID'];
+					//$location['latitude'] = (double) $location['latitude'];
+					//$location['longitude'] = (double) $location['longitude'];
+					$return['location'] = $location;
+				}
+				// get locations
+				/*$results = $this->db->select('locations', array('company_ID' => COMPANY_ID));
+				while ($results && $location = $this->db->fetch_assoc($results)) {
+					$return['locations'][$location['location_ID']] = $location;
+				}*/
+	
+			}
+				/*if (!is_null($user_ID)) {
+					$return = $return[0];
+				}*/
+		}
+		
+		
+		return $return;
+	}
+	
 	/*
 	 *	get a company details
 	 *
@@ -180,7 +251,7 @@ class Company extends Core {
 
 		$results = $this->db->select('companies',
 			array('company_ID' => $company_ID),
-			array('company_ID','company_name','company_url','company_phone','company_details','user_default_ID','location_default_ID')
+			array('company_ID','company_username', 'company_name','company_url','company_phone','company_details','user_default_ID','location_default_ID')
 		);
 		if ($results) {
 			$company = $this->db->fetch_assoc($results, array("company_phone"));
@@ -237,6 +308,7 @@ class Company extends Core {
 		$alerts = array();
 		$params = array(
 			// company
+			"company_username",
 			"company_name",
 			"company_url",
 			"company_phone",
@@ -260,6 +332,7 @@ class Company extends Core {
 
 		// company //
 		$company = array(
+			"company_username"		=> $request_data["company_username"],
 			"company_name"			=> $request_data["company_name"],
 			"company_url"			=> $request_data["company_url"],
 			"company_phone"			=> $request_data["company_phone"],
@@ -281,6 +354,7 @@ class Company extends Core {
 		$alerts = array();
 		$params = array(
 			// company
+			"company_username",
 			"company_name",
 			"company_url",
 			"company_details",
@@ -294,6 +368,7 @@ class Company extends Core {
 		// company //
 		$company = array(
 			"company_ID"			=> COMPANY_ID,
+			"company_username"		=> $request_data["company_username"],
 			"company_name"			=> $request_data["company_name"],
 			"company_url"			=> $request_data["company_url"],
 			"company_phone"			=> $request_data["company_phone"],

@@ -26,7 +26,7 @@
 	            <p data-ng-show="company.user.user_function">{{company.user.user_function}}</p>
 	            <div class="btn-group" data-ng-show="session.user_ID == company.user.user_ID">
 	            	<button class="btn" data-ng-click="message.open(company.user.user_ID, company.user.user_name_first+' '+company.user.user_name_last)"><i class="icon-envelope"></i></button>
-	            	<a class="btn" rel="tooltip" title="+{{json.calling_codes[company.location.country_code]}} {{company.user.user_phone | phone}}" href="tel:+{{json.calling_codes[company.location.country_code]}} {{company.user.user_phone}}" data-ng-disabled="company.user.user_phone == ''"><i class="icon-phone"></i></a>
+	            	<a class="btn" rel="tooltip" title="+{{json.calling_codes[company.location.country_code]}} {{company.user.user_phone | phone}}" href="tel:+{{json.calling_codes[company.location.country_code]}} {{company.user.user_phone}}" data-ng-disabled="!(company.user.user_phone)"><i class="icon-phone"></i></a>
 	            </div>
 	            
 	        </div>
@@ -92,7 +92,7 @@ href="https://twitter.com/share" class="twitter-share-button" data-url="http://r
 						<td>
 							<div class="btn-group pull-right" data-ng-show="session.user_ID == u.user_ID">
 				            	<button class="btn" data-ng-click="message.open(u.user_ID, u.user_name_first+' '+u.user_name_last)"><i class="icon-envelope"></i></button>
-				            	<a class="btn" rel="tooltip" title="+{{json.calling_codes[company.location.country_code]}} {{u.user_phone | phone}}" href="tel:+{{json.calling_codes[company.location.country_code]}} {{u.user_phone}}" data-ng-disabled="u.user_phone == ''"><i class="icon-phone"></i></a>
+				            	<a class="btn" rel="tooltip" title="+{{json.calling_codes[company.location.country_code]}} {{u.user_phone | phone}}" href="tel:+{{json.calling_codes[company.location.country_code]}} {{u.user_phone}}" data-ng-disabled="!(u.user_phone)"><i class="icon-phone"></i></a>
 				            </div>
 							<b>{{u.user_name_first}} {{u.user_name_last}}</b><br>
 							<p>{{u.user_function}}</p>

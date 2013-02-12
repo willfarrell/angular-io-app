@@ -36,13 +36,38 @@ angular.module('io.init.settings', [])
 		},
 		'account': {
 			'user_name'		:false,	// Require username in profile
-			'company'		:true
+			'company'		:true,
+			'company_username':true
 		},
 		// pulgins //
 		// onboard - view/onboard
 		'onboard':{
 			'required'		:true,		// always true
 			'start'			:'user'		// ** make smart so not needed
+		},
+		'filepicker': {
+			'user_single_image': {
+				action:'user_single_image',
+				types: ['image/*'],
+				extensions: ['.jpg', '.jpeg', '.gif', '.bmp', '.png'],
+				services: ['COMPUTER'],
+				service: 'COMPUTER',
+				multi:false,
+				resizecrop:true,
+				width:200,
+				height:200
+			},
+			'company_single_image' : {
+				action:'company_single_image',
+				types: ['image/*'],
+				extensions: ['.jpg', '.jpeg', '.gif', '.bmp', '.png'],
+				services: ['COMPUTER'],
+				service: 'COMPUTER',
+				multi:false,
+				resizecrop:true,
+				width:300,
+				height:200
+			},
 		},
 		'follow':'user'
 		// browser plugin - view/page/sign 

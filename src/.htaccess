@@ -642,6 +642,13 @@ ServerSignature Off
 	RewriteRule . api.php [L]
 </IfModule>
 
+# Force filepicker to api - filenames in urls can cause routing issues
+<IfModule mod_rewrite.c>
+	RewriteRule ^filepicker/ api.php [L]
+</IfModule>
+
+
+
 # ----------------------------------------------------------------------
 # Image redirects
 # ----------------------------------------------------------------------

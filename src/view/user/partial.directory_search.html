@@ -34,7 +34,7 @@
 	            <p data-ng-show="r.user_function">{{r.user_function}}</p>
 	            <div class="btn-group" data-ng-show="session.user_ID == r.user_ID">
 	            	<button class="btn" data-ng-click="message.open(r.user_ID, r.user_name_first+' '+r.user_name_last)"><i class="icon-envelope"></i></button>
-	            	<!--<a class="btn" rel="tooltip" title="+{{json.calling_codes[company.location.country_code]}} {{r.user_phone | phone}}" href="tel:+{{json.calling_codes[company.location.country_code]}} {{r.user_phone}}" data-ng-disabled="r.user_phone == ''"><i class="icon-phone"></i></a>-->
+	            	<!--<a class="btn" rel="tooltip" title="+{{json.calling_codes[company.location.country_code]}} {{r.user_phone | phone}}" href="tel:+{{json.calling_codes[company.location.country_code]}} {{r.user_phone}}" data-ng-disabled="!(r.user_phone)"><i class="icon-phone"></i></a>-->
 	            </div>
 			</td>
 		</tr>

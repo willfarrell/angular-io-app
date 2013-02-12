@@ -1,35 +1,14 @@
 <?php
 
-require_once 'php/lib.global.php';
-require_once 'php/class.db.php';
+/*
+Do not add to this class, try to place all changes in FilepickerConfig class
+*/
 
+require_once 'php/lib.global.php'; // echoFile()
+require_once 'php/class.config.filepicker.php'; // app related routing and permissions
+require_once 'php/class.zip.php'; // zip folder
 
-class Filepicker extends Core {
-	
-	private $action_default = "file";
-	private $actions = array(
-		'file' => array(
-			// list of valid types, ex. array("image/*", "text/*") or array("*/*") for any
-			"types" => '*/*',
-			// list of valid extensions, ex. array("jpeg", "xml", "bmp") or array() for any
-			"extensions" => array(),
-			// max file size in bytes (1024 x 1024 = 1048576 = MB)
-			"size" => 10485760,
-		),
-		'profile_user' => array(
-			"types" => array('image/*'),
-			"extensions" => array("jpg", "jpeg", "gif", "bmp", "png"),
-			"size" => 2097152,	// 2 MB
-			"path" => "img/user",
-		),
-		'profile_company' => array(
-			"types" => array('image/*'),
-			"extensions" => array("jpg", "jpeg", "gif", "bmp", "png"),
-			"size" => 2097152,	// 2 MB
-			"path" => "img/company",
-		),
-		
-	);
+class Filepicker extends FilepickerConfig {
 	
 	function __construct() {
 		parent::__construct();
@@ -40,41 +19,116 @@ class Filepicker extends Core {
 	function __destruct() {
 		parent::__destruct();
 	}
-
-	// aws cors credentials
-	function get_aws_cors() {
-
+	
+	private function filesize_format($bytes, $decimals = 2) {
+	  	$sz = 'BKMGTPEZY';
+	  	$factor = floor((strlen($bytes) - 1) / 3);
+	  	$size = $bytes / pow(1024, $factor);
+		$str = sprintf("%.{$decimals}f", $size) . " " . @$sz[$factor];
+		if ($factor) $str .= "B";
+		return $str;
 	}
-
-	// upload from computer
-	function post_computer($action = '', $ID=NULL) {
+	
+	
+	
+	private function listFiles($path) {
+		$files = array();
+		if (!is_dir($path)) return array();
+		$fp = opendir($path);
+		while($f = readdir($fp)){
+			if( preg_match("#^\.+$#", $f) ) continue; 		// ignore symbolic links
+			
+			$file_full_path = $path.$f;
+			if (is_dir($file_full_path)) {
+				
+			} else {
+				$size = filesize($file_full_path);
+				$files[] = array(
+					"name" => $f,
+					"date" => filemtime($file_full_path),
+					"size" => $size,
+					"size_str" => $this->filesize_format($size),
+					"mime" => mime_content_type($file_full_path)
+				);
+			}
+		}
+		return $files;
+	}
+	
+	// to do
+	// aws cors credentials
+	function get_cors($action = '', $ID=NULL) {
 		if (!$action) $action = $this->action_default;
 		
-		$uploader = new FileUploader($this->actions[$action]);
-		switch ($action) {
-			case 'profile_user':
-				$uploader->setName(USER_ID);
-				break;
-			case 'profile_company':
-				$uploader->setName(COMPANY_ID);
-				break;
-			default:
-				break;
+	}
+	
+	//-- View / Download --//
+	function get_list($action = '', $ID=NULL) {
+		if (!$action) $action = $this->action_default;
+		$path = $this->makePath($action, $ID);
+		
+		if (!$this->permissionAllowed($action, $ID)) {
+			return array("alerts" => array('class' => 'error', 'label' => 'Error', 'message' => 'Permission Denied.'));
 		}
-		$result = $uploader->handleUpload(getcwd().'/'.$this->actions[$action]['path'].'/', TRUE);
+		
+		$result = $this->listFiles($path);
 		return $result;
 	}
 	
+	// do not call from inside angularjs - call as a href
+	function get_download($action = '', $ID = NULL, $file=NULL) {//$request_data=NULL) {
+		if (!$action) $action = $this->action_default;
+		$path = $this->makePath($action, $ID);
+		
+		if (!$this->permissionAllowed($action, $ID)) {
+			return array("alerts" => array('class' => 'error', 'label' => 'Error', 'message' => 'Permission Denied.'));
+		}
+		
+		// if no file specified, zip the folder
+		if ($file == NULL) {
+			$hash = substr(hash("sha512", $path+$_SERVER['REQUEST_TIME']), 0, 16);
+			$tmp = "tmp/";
+			$file = $hash.".zip";
+			
+			$z = new PHPZip();
+			$z -> Zip($path, $tmp.$file);
+			$path = $tmp;
+		}
+		
+		// 
+		echoFile($path, $file);
+	}
+	
+	
+	//-- Upload --//
+	// upload from computer
+	function post_computer($action = '', $ID=NULL) {
+		if (!$action) $action = $this->action_default;
+		$path = $this->makePath($action, $ID);
+		
+		if (!$this->permissionAllowed($action, $ID)) {
+			return array("alerts" => array('class' => 'error', 'label' => 'Error', 'message' => 'Permission Denied.'));
+		}
+		
+		$uploader = new FileUploader($this->actions[$action]);
+		$uploader = $this->uploadModifier($uploader, $action, $ID);
+		
+		$result = $uploader->handleUpload($path, TRUE);
+		return $result;
+	}
+	
+	/*
+	// to do
 	// files paths for type
 	function post_get($type = 'URL', $request_data=NULL) {
 		$return = array();
-		/*
-		$request_data
-		- param - ftp url, webdav url
-		- user
-		- pass
-		- path
-		*/
+		
+		//$request_data
+		//- param - ftp url, webdav url
+		//- user
+		//- pass
+		//- path
+		
 		
 		switch ($type) {
 			case 'profile_user':
@@ -101,25 +155,27 @@ class Filepicker extends Core {
 		return $return;
 	}
 	
+	// to do
 	// upload from URL, FTP, FTP (TLS), SFTP, webDAV
 	function post_server($action = '', $request_data=NULL) {
 		if (!$action) $action = $this->action_default;
 		
-		/*
-		$request_data
-		- user
-		- pass
-		- path
-		*/
+		
+		//$request_data
+		//- user
+		//- pass
+		//- path
+		
 		
 	}
-
+	
+	// to do
 	// upload from Dropbox, Evernote, etc
 	function post_service($action = '', $request_data=NULL) {
 		if (!$action) $action = $this->action_default;
 		
 		// load 3rd pary class, run like _server
-	}
+	}*/
 
 
 	/*private function ftp() {
@@ -138,7 +194,38 @@ class Filepicker extends Core {
 			}
 			ftp_close($conn_id);
 	}*/
+	
+	
+	function delete($action = '', $ID=NULL, $file=NULL) {
+		if (!$action) $action = $this->action_default;
+		$path = $this->makePath($action, $ID);
+		
+		if (!$this->permissionAllowed($action, $ID)) {
+			return array("alerts" => array('class' => 'error', 'label' => 'Error', 'message' => 'Permission Denied.'));
+		}
+		
+		if (!$file) return;
+		unlink($path.$file);
+	}
 }
+
+
+function echoFile($folder, $file)
+{
+    //header("Content-Type: " . mime_content_type($FileName));
+    // if you are not allowed to use mime_content_type, then hardcode MIME type
+    // use application/octet-stream for any binary file
+    // use application/x-executable-file for executables
+    // use application/x-zip-compressed for zip files
+    header("Content-Type: application/octet-stream");
+    header("Content-Length: " . filesize($folder.$file));
+    header("Content-Disposition: attachment; filename=\"$file\"");
+    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    $fp = fopen($folder.$file,"rb");
+    fpassthru($fp);
+    fclose($fp);
+}
+
 //$temp = sys_get_temp_dir();
 //var_dump($temp);
 
