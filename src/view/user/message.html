@@ -21,7 +21,7 @@
 	    		<hr>
 	    		<ul id="thread" class="unstyled control-group" style="height:400px; overflow-y:scroll;">
 	    			<li data-ng-repeat="m in thread | orderBy:'timestamp'" class="well">
-		    			<p class="pull-right">{{m.timestamp*1000 | date:'shortTime'}}</p>
+		    			<p class="pull-right">{{m.timestamp*1000 | date:'MMM d, hh:mm a'}}</p>
 		    			<img data-ng-src="img/user/{{m.user_from_ID}}.png?{{filepicker.timestamp}}" class="img-rounded inline" style="width:25px; height:25px; margin-right:5px" align="left"/>
 		    			<a href="#/user/profile/{{m.user_from_ID}}">
 		    				<b data-ng-hide="m.user_from_ID == session.user_ID">{{message.to_name}}</b>

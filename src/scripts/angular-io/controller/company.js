@@ -279,12 +279,12 @@ function CompanyCtrl($scope, $http, $routeParams) {
 	};
 	
 	//-- About Details --//
-	/*$scope.compileMarkdown = function(text) {
+	$scope.compileMarkdown = function(text) {
 		if (!text) return text;
 		//var converter = new Markdown.Converter();
 		var converter = new Markdown.getSanitizingConverter();
 		return converter.makeHtml(text);
-	};*/
+	};
 
 	$scope.require_signin(function(){
 		console.log('CompanyCtrl require_signin');
