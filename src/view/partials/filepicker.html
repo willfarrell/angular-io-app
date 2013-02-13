@@ -48,7 +48,7 @@
         	&nbsp;
         	<button class="btn btn-success" data-ng-click="computer.buttonClick()"><i class="icon-upload-alt"></i>&nbsp;Upload</button>
         	<input class="hidden" type="file" id="file_upload" accept="{{filepicker.accept}}" onchange="angular.element(this).scope().computer.buttonSelect(this)" ng-model-instant />
-        	<!--<input class="hidden"type="file" id="file_multi_upload" accept="{{filepicker.args.mimetype}}" onchange="angular.element(this).scope().setFiles(this)" ng-model-instant multiple />-->
+        	<input class="hidden" type="file" id="file_multi_upload" accept="{{filepicker.accept}}" onchange="angular.element(this).scope().computer.buttonSelect(this)" ng-model-instant multiple />
             <br>
             
 	    </div>
@@ -87,26 +87,20 @@
             <span>{{file.webkitRelativePath || file.name}}</span>
             (<span data-ng-switch="file.size > 1024*1024">
                 <span data-ng-switch-when="true">{{file.size / 1024 / 1024 | number:2}} MB</span>
-                <span data-ng-switch-default>{{file.size / 1024 | number:2}} kB</span>
+                <span data-ng-switch-default>{{file.size / 1024 | number:2}} KB</span>
             </span>)
         </div>
-        <div ng-show="progressVisible">
+        <div data-ng-show="progressVisible">
 	        <div class="progress progress-striped active">
 	            <div class="bar" data-ng-style="{'width': progress+'%'}">{{progress}}%</div>
 	        </div>
 	    </div>
+	    
+	    <div data-ng-include="'filepicker-edit-list'"></div>
     </div>
     
     <div class="modal-body" data-ng-show="filepicker.args.type == 'DOWNLOAD'">
-        <ul class="unstyled">
-        	<li data-ng-repeat="file in filepicker.args.files" data-ng-click="filepicker.downloadFile(file.name)">
-        		<a href="{{settings.server}}filepicker/download/{{filepicker.args.action}}/{{filepicker.args.ID}}/{{file.name}}">
-	        		<i class="icon-cloud-download"></i>&nbsp;
-	        		<span>{{file.name}} ({{file.size_str}})</span>
-	        		<i class="pull-right">{{file.date*1000 | date}}</i>
-        		</a>
-        	</li>
-        </ul>
+        <div data-ng-include="'filepicker-download-list'"></div>
 	</div>
 	<!-- footer -->
 	<div class="modal-footer" data-ng-show="filepicker.args.type == 'UPLOAD'">
@@ -142,7 +136,6 @@
         
         <div class="pull-right">
 	        <div class="btn-group">
-	        	<a href="">
 	        	<a	class="btn btn-primary" href="{{settings.server}}filepicker/download/{{filepicker.args.action}}/{{filepicker.args.ID}}">Download .zip</a>
 	        </div>
 	        <div class="btn-group">
@@ -165,10 +158,12 @@
 
 <script type="text/ng-template" id="filepicker-download-list">
 	<ul class="unstyled">
-    	<li data-ng-repeat="file in filepicker.args.files" data-ng-click="downloadFile(file.name)">
-    		<i class="icon-cloud-download"></i>&nbsp;
-    		<span>{{file.name}} ({{file.size_str}})</span>
-    		<i class="pull-right">{{file.date*1000 | date}}</i>
+    	<li data-ng-repeat="file in filepicker.args.files" data-ng-click="filepicker.downloadFile(file.name)">
+    		<a href="{{settings.server}}filepicker/download/{{filepicker.args.action}}/{{filepicker.args.ID}}/{{file.name}}">
+        		<i class="icon-cloud-download"></i>&nbsp;
+        		<span>{{file.name}} ({{file.size_str}})</span>
+        		<i class="pull-right">{{file.date*1000 | date}}</i>
+    		</a>
     	</li>
     </ul>
 </script>

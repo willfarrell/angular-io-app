@@ -68,7 +68,19 @@ angular.module('io.factory.filepicker', [])
 	$scope.accept = '';
 	$scope.timestamp = +new Date();
 	$scope.dropzone_name = 'files';
-
+	
+	$scope.loadFiles = function() {
+		if (!$scope.args.multi) return;
+		// get files json
+		$http.get($rootScope.settings.server+'filepicker/list/'+$scope.args.action+'/'+$scope.args.ID)
+			.success(function(data) {
+				$scope.args.files = data;
+			})
+			.error(function() {
+				
+			});
+	};
+	
 	$scope.upload = function(args, ID) {
 		ID || (ID = '');
 		console.log(args);
@@ -77,7 +89,9 @@ angular.module('io.factory.filepicker', [])
 		
 		$scope.args = syncVar(args, $scope.args_upload);
 		$scope.args.ID = ID;
-
+		
+		$scope.loadFiles();
+		
 		// input accept tag
 		$scope.accept = $scope.args.extensions.length ? $scope.args.extensions.join(',') : $scope.args.types.join(',');
 		
@@ -93,19 +107,19 @@ angular.module('io.factory.filepicker', [])
 		$scope.args = syncVar(args, $scope.args_download);
 		$scope.args.ID = ID;
 		
-		// get files json
-		$http.get($rootScope.settings.server+'filepicker/list/'+$scope.args.action+'/'+$scope.args.ID)
-			.success(function(data) {
-				$scope.args.files = data;
-			})
-			.error(function() {
-				
-			});
+		$scope.loadFiles();
 		
 	};
 	
 	$scope.download = function(args, ID) {
-		$scope.view(args, ID);
+		ID || (ID = '');
+		console.log(ID);
+		$scope.alerts = [];
+		
+		$scope.args = syncVar(args, $scope.args_download);
+		$scope.args.ID = ID;
+		
+		$scope.loadFiles();
 		
 		$('#filepickerModal').modal('show');
 	};

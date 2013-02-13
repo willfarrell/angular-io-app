@@ -67,7 +67,7 @@ class Filepicker extends FilepickerConfig {
 		if (!$action) $action = $this->action_default;
 		$path = $this->makePath($action, $ID);
 		
-		if (!$this->permissionAllowed($action, $ID)) {
+		if (!$this->permissionAllowed('get', $action, $ID)) {
 			return array("alerts" => array('class' => 'error', 'label' => 'Error', 'message' => 'Permission Denied.'));
 		}
 		
@@ -80,14 +80,14 @@ class Filepicker extends FilepickerConfig {
 		if (!$action) $action = $this->action_default;
 		$path = $this->makePath($action, $ID);
 		
-		if (!$this->permissionAllowed($action, $ID)) {
+		if (!$this->permissionAllowed('get', $action, $ID)) {
 			return array("alerts" => array('class' => 'error', 'label' => 'Error', 'message' => 'Permission Denied.'));
 		}
 		
 		// if no file specified, zip the folder
 		if ($file == NULL) {
 			$hash = substr(hash("sha512", $path+$_SERVER['REQUEST_TIME']), 0, 16);
-			$tmp = "tmp/";
+			$tmp = "files/cache/";
 			$file = $hash.".zip";
 			
 			$z = new PHPZip();
@@ -106,7 +106,7 @@ class Filepicker extends FilepickerConfig {
 		if (!$action) $action = $this->action_default;
 		$path = $this->makePath($action, $ID);
 		
-		if (!$this->permissionAllowed($action, $ID)) {
+		if (!$this->permissionAllowed('post', $action, $ID)) {
 			return array("alerts" => array('class' => 'error', 'label' => 'Error', 'message' => 'Permission Denied.'));
 		}
 		
@@ -200,7 +200,7 @@ class Filepicker extends FilepickerConfig {
 		if (!$action) $action = $this->action_default;
 		$path = $this->makePath($action, $ID);
 		
-		if (!$this->permissionAllowed($action, $ID)) {
+		if (!$this->permissionAllowed('delete', $action, $ID)) {
 			return array("alerts" => array('class' => 'error', 'label' => 'Error', 'message' => 'Permission Denied.'));
 		}
 		

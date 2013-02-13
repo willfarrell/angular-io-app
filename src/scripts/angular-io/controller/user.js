@@ -156,7 +156,9 @@ function UserCtrl($scope, $http, $routeParams) {
 			};
 			$scope.loadUser($routeParams.profile_ID);
 		} else {
-			
+			$scope.user = $rootScope.session.user ? $rootScope.session.user : {
+				user_ID:$rootScope.session.user_ID
+			};
 		}
 		console.log($scope.user);
 	});

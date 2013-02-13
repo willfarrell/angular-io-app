@@ -56,13 +56,14 @@ angular.module('io.controller.filepicker', [])
 	
 	// click button
 	$scope.computer.buttonClick = function() {
-		if ($scope.filepicker.args.multi) 	$('#file_multi_upload').click();
-		else 								$('#file_upload').click();
+		if ($scope.filepicker.args.multi) 	document.getElementById('file_multi_upload').click();
+		else 								document.getElementById('file_upload').click();
 	};
 	
 	// select file after button click
 	$scope.computer.buttonSelect = function(element) {
-    	console.log('setFilesButton(element)');
+    	console.log('computer.buttonSelect(element)');
+      	console.log(element);
       	
         $scope.setFiles(element.files);
 	        
@@ -119,7 +120,9 @@ angular.module('io.controller.filepicker', [])
 		            $scope.resizecrop.initParams(evt.target.result, file.type)
 		            $scope.$apply(function(){
 		            	$scope.resizecrop.generate();
-		            	$scope.filepicker.args.service = 'RESIZECROP';
+		            	if ($scope.filepicker.args.multi == false) {
+			            	$scope.filepicker.args.service = 'RESIZECROP';
+		            	}
 		            });
 		        };
 		        reader.readAsDataURL(file);
@@ -304,6 +307,10 @@ angular.module('io.controller.filepicker', [])
 			var canvas = document.createElement("canvas");
             draw();
             
+            // if resizing multiple images for say a gallery, auto save
+            if ($scope.filepicker.args.multi == true) {
+            	$scope.resizecrop.save();
+            }
             
 			// zoom
 			document.getElementById("resizecrop-zoom").onchange = function(evt) {
@@ -412,7 +419,7 @@ angular.module('io.controller.filepicker', [])
     	console.log('resizecrop.save');
     	var blob = dataURItoBlob($scope.resizecrop.img.data);
     	$scope.files[0] = blob;
-    	$scope.uploadFile();
+    	$scope.uploadFiles();
     };
     
     
@@ -428,7 +435,7 @@ angular.module('io.controller.filepicker', [])
 	            var error = false;
 	            for (var i = 0; i < files.length; i++) {
                 	var extension = files[i].name.substr(files[i].name.lastIndexOf('.'));
-                	console.log(extension);
+                	//console.log(extension);
                 	var allowedType = (
                 		($scope.filepicker.args.types.indexOf('*/*') !== -1)
                 		|| ($scope.filepicker.args.types.indexOf(files[i].type.substr(0, files[i].type.indexOf('/'))+'/*') !== -1)
@@ -458,29 +465,34 @@ angular.module('io.controller.filepicker', [])
                 }
 	            if ($scope.files.length) {
 	                if ($scope.filepicker.args.resizecrop)	$scope.resizecrop.loadFile();
-	                else									$scope.uploadFile();
+	                else									$scope.uploadFiles();
 	            }
             //});
         }
     }
     
     // move to computer service
-    $scope.uploadFile = function() {
+    $scope.uploadFiles = function() {
+    	for (var i in $scope.files) {
+        	console.log($scope.files[i]);
+        	//if ($scope.files[i].type.match(/image.*/)) {
+	        $scope.uploadFile($scope.files[i]);
+        }
+    };
+    
+    $scope.uploadFile = function(file) {
         console.log('uploadFile()');
+        file || (file = $scope.files[0]);
         $scope.progressVisible = false;
         
         var fd = new FormData();
-        for (var i in $scope.files) {
-        	console.log($scope.files[i]);
-        	//if ($scope.files[i].type.match(/image.*/)) {
-	        fd.append("file", $scope.files[i]);
-        }
+        fd.append("file", file);
         var xhr = new XMLHttpRequest();
         xhr.upload.addEventListener("progress", uploadProgress, false);
         xhr.addEventListener("load", uploadComplete, false);
         xhr.addEventListener("error", uploadFailed, false);
         xhr.addEventListener("abort", uploadCanceled, false);
-        xhr.open("POST", "/filepicker/computer/"+$scope.filepicker.args.action+"/"+$scope.filepicker.args.ID);
+        xhr.open("POST", $rootScope.settings.server+"filepicker/computer/"+$scope.filepicker.args.action+"/"+$scope.filepicker.args.ID);
         $scope.progressVisible = true;
         xhr.send(fd);
         //console.log("POST /filepicker/computer/"+$scope.filepicker.args.action);
@@ -505,7 +517,7 @@ angular.module('io.controller.filepicker', [])
     		console.log(evt.target.responseText);
     		var res = JSON.parse(evt.target.responseText);
 	    	$scope.filepicker.alerts = [res];
-
+	    	$scope.filepicker.loadFiles();
         });
     }
 

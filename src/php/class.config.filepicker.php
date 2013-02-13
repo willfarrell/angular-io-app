@@ -34,6 +34,9 @@ class FilepickerConfig extends Core {
 		),
 		// general files example
 		'user_multi_files' => array(
+			"types" => array('*/*'),
+			"extensions" => array(),
+			"size" => 10485760,	// 2 MB
 			"path" => "files/user",
 		),
 		
@@ -67,21 +70,23 @@ class FilepickerConfig extends Core {
 		return $path;
 	}
 	
-	function permissionAllowed($action, $ID=NULL) {
+	// method = get|post|delete
+	function permissionAllowed($method, $action, $ID=NULL) {
+        $allowed = false;
 		switch ($action) {
 			case 'user_single_image':
-				return ($ID == USER_ID);
+				$allowed = ($allowed || ($ID == USER_ID));
 				break;
 			case 'company_single_image':
-				return ($ID == COMPANY_ID);
+				$allowed = ($allowed || ($ID == COMPANY_ID));
 				break;
 			case 'user_multi_files':
-				return ($ID == USER_ID);
+				$allowed = ($allowed || ($ID == USER_ID));
 				break;
 			default:
 				break;
 		}
-		return true;
+		return $allowed;
 	}
 	
 	function uploadModifier($uploader, $action, $ID) {

@@ -4,14 +4,10 @@ angular.module('app.route', [])
 function($routeProvider) {
 	var _view_ = 'view/', _app_ = 'app/';
 	$routeProvider
-		// application
-		.when('/app', 				{templateUrl:_view_+_app_+'index.html'})
-
 		// sign up/in/reset
 		.when('/sign/:action', 		{templateUrl:_view_+'account/sign.html'})
 		.when('/confirm/:confirm_hash', {templateUrl:_view_+'account/confirm.html'})
 		.when('/reset/:reset_hash', 	{templateUrl:_view_+'account/reset.html'})
-		
 		
 		// user
 		.when('/user/follow', 		{templateUrl:_view_+'user/follow.html'})
@@ -34,6 +30,11 @@ function($routeProvider) {
 		// hub pages
 		.when('/settings/:page', 		{templateUrl:_view_+'settings.html'})
 		.when('/support/:page', 		{templateUrl:_view_+'support.html'})
+		
+		
+		// application
+		.when('/app', 					{templateUrl:_view_+_app_+'index.html'})
+		
 		
 		// fallback
 		.when('/', 						{templateUrl:_view_+_app_+'index.html'})

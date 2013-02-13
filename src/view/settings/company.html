@@ -8,7 +8,7 @@
 
 		<div class="controls">
     		<img data-ng-src="img/company/{{company.company_ID}}.png?{{filepicker.timestamp}}" class="img-polaroid" style="width:75px; height:50px;"/>
-			<button class="btn" data-ng-click="filepicker.upload(settings.filepicker.company_single_image,  company.company_ID);">Change logo</button>
+			<button class="btn" data-ng-click="filepicker.upload(settings.filepicker.company_single_image,  company.company_ID);" data-ng-disabled="!company.company_ID">Change logo</button>
 			<!--<span class="help-block">This photo is your identity and appears with your content.</span>-->
     	</div>
     </div>
