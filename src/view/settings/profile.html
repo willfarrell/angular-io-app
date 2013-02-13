@@ -42,7 +42,7 @@
       	<label class="control-label" for="user_phone">Phone</label>
       	<div class="controls">
           	<div class="input-prepend">
-                <span class="add-on">+{{json.calling_codes[country_code]}}</span><input type="text" class="" name="user_phone" placeholder="(000) 000-0000" data-ng-model="user.user_phone" data-input-mask="(999) 999-9999 x999999">
+                <span class="add-on">+{{json.calling_codes[country_code]}}</span><input type="text" class="input-medium" name="user_phone" placeholder="(000) 000-0000" data-ng-model="user.user_phone" data-input-mask="(999) 999-9999 x999999">
             </div>
             <span class="help-block error" data-ng-show="errors.user_phone">{{errors.user_phone}}</span>
         </div>

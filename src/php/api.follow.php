@@ -290,7 +290,7 @@ class Follow extends Core {
 				'follow_company_ID' => $company_ID,
 			));
 		}
-
+		//echo $this->db->last_query;
 		return;
 	}
 }

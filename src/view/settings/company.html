@@ -17,7 +17,7 @@
       	<label class="control-label" for="user_name">Username</label>
       	<div class="controls">
             <input type="text" class="input-block-level" name="user_name" placeholder="" data-ng-model="company.company_username" data-ng-minlength="3" data-ng-maxlength="32" data-ng-pattern="/^[\w]*$/" data-ng-change="check.user_name(user.user_name)">
-          	<span class="help-block"><a href="/#/profile/{{company.company_username}}">{{i18n.domain}}/#/profile/{{company.company_username}}</a></span>
+          	<span class="help-block"><a href="/#/profile/{{company.company_username}}">/#/profile/{{company.company_username}}</a></span>
             <span class="help-block error" data-ng-show="companyForm.company_username.$error.pattern">only alphanumeric characters and underscores allowed</span>
             <span class="help-block error" data-ng-show="companyForm.company_username.$error.minlength">too short</span>
             <span class="help-block error" data-ng-show="companyForm.company_username.$error.maxlength">too long</span>
@@ -49,7 +49,7 @@
       	<label class="control-label" for="company_phone">Phone</label>
       	<div class="controls">
           	<div class="input-prepend">
-                <span class="add-on">+{{json.calling_codes[country_code]}}</span><input type="text" class="" name="company_phone" placeholder="(000) 000-0000" data-ng-model="company.company_phone" data-input-mask="(999) 999-9999 x999999">
+                <span class="add-on">+{{json.calling_codes[country_code]}}</span><input type="text" class="input-medium" name="company_phone" placeholder="(000) 000-0000" data-ng-model="company.company_phone" data-input-mask="(999) 999-9999 x999999">
             </div>
             <span class="help-block error" data-ng-show="errors.company_phone">{{errors.company_phone}}</span>
         </div>

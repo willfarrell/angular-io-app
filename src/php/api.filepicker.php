@@ -93,6 +93,7 @@ class Filepicker extends FilepickerConfig {
 			$z = new PHPZip();
 			$z -> Zip($path, $tmp.$file);
 			$path = $tmp;
+			//$checksum = shell_exec('md5sum -b ' . escapeshellarg($tmp.$file));
 		}
 		
 		// 
