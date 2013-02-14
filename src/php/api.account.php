@@ -103,7 +103,9 @@ class Account extends Core {
 			return $return;
 		}
 		$request_data = $this->filter->get_request_data();
-
+		
+		$this->permission->check($request_data);
+		
 		$email = $request_data["email"];
 
 		// referral
@@ -157,7 +159,9 @@ class Account extends Core {
 			return $return;
 		}
 		$request_data = $this->filter->get_request_data();
-
+		
+		$this->permission->check($request_data);
+		
 		//if ($request_data['remember'] == 'true') $remember = true;
 		//else  $remember = false;
 		//$this->redis->hset()

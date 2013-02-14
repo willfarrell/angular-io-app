@@ -93,8 +93,6 @@ class Company extends Core {
 		}
 		$request_data = $this->filter->get_request_data();
 		
-		// confirm same company
-		
 		$user = array(
 			'company_ID' => COMPANY_ID,
 			//'user_name' => $request_data['user_name'],
@@ -148,8 +146,7 @@ class Company extends Core {
 		}
 		$request_data = $this->filter->get_request_data();
 		
-		// confirm same company
-		// ****
+		$this->permission->check($request_data);
 		
 		// update
 		$user = array(
@@ -319,7 +316,9 @@ class Company extends Core {
 		foreach ($params as $key) {
 			$request_data[$key] = isset($request_data[$key]) ? $request_data[$key] : NULL;
 		}
-
+		
+		$this->permission->check($request_data);
+		
 		// validate and sanitize
 		/*$this->filter->set_request_data($request_data);
 		$this->filter->set_group_rules('companies,locations,users');
@@ -365,7 +364,9 @@ class Company extends Core {
 		foreach ($params as $key) {
 			$request_data[$key] = isset($request_data[$key]) ? $request_data[$key] : NULL;
 		}
-
+		
+		$this->permission->check($request_data);
+		
 		// company //
 		$company = array(
 			"company_ID"			=> COMPANY_ID,

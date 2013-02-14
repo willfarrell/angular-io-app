@@ -2,51 +2,29 @@
 
 // Class Password
 
+require_once "inc.config.php";
 require_once 'class.db.php';
-require_once 'class.session.php';
-require_once 'class.filter.php';
 
 class Password {
 	private $db;
-	private $filter;
 	private $errors = array();
-	
-	private $settings = array(
-		//'min_timestamp'	:0,		// all password must be new then this unix_timestamp (sec)
-		//'max_age'		:0,		// max number of days a password is allowed to be used (days)
-		
-		'min_length'			=> 10,		// OWASP:10
-		'min_charset_subsets'	=> 3,		// OWASP:3
-		'min_charset_upper'		=> 1,		// OWASP:1
-		'min_charset_lower'		=> 1,		// OWASP:1
-		'min_charset_number'	=> 1,		// OWASP:1
-		'min_charset_special'	=> 1,		// OWASP:1 // common keybaord special chars
-		'min_charset_other'		=> 0,		// OWASP:0
-		'max_charset_identical'	=> 3,		// OWASP:3
-	);
 	
 	private $user_ID = 0;
 	private $user_email = '';
 
 	function __construct($user_ID = 0, $user_email = '') {
-		global $database, $filter;
+		global $database;
 		$this->db = $database;
-		$this->filter = $filter;
 		
 		$this->user_ID = $user_ID;
 		$this->user_email = $user_email;
 		
 		// Dev
-		$this->log = FirePHP::getInstance(true);
 		$this->timer = new Timers;
 	}
 
 	function __destruct() {
 		
-	}
-	
-	private function __log($var_dump) {
-		$this->log->fb($var_dump, FirePHP::INFO);
 	}
 	
 	private function getId() {
@@ -115,8 +93,8 @@ class Password {
 		$error = array();
 		$length = strlen($password);
 		
-		if ($length < $this->settings['min_length']) {
-			$this->errors["min_length"] = "Password too short, must be {$this->settings['min_length']} or more";
+		if ($length < PASSWORD_MIN_LENGTH) {
+			$this->errors["min_length"] = "Password too short, must be {PASSWORD_MIN_LENGTH} or more";
 			return false;
 		}
 		return true;
@@ -149,15 +127,15 @@ class Password {
 			else 																		{ ++$subsets['other'];	}
 			
 			// max_charset_identical check
-			if ($i >= $this->settings['max_charset_identical']-1) {
+			if ($i >= PASSWORD_MAX_CHARSET_IDENTICAL-1) {
 				$charset_identical = true;
-				for ($j = $i-1, $k = $i - $this->settings['max_charset_identical']; $j > $k; $j--) {
+				for ($j = $i-1, $k = $i - PASSWORD_MAX_CHARSET_IDENTICAL; $j > $k; $j--) {
 					if ($password_chars[$j] != $char) {
 						$charset_identical = false;
 					}
 				}
 				if ($charset_identical) {
-					$this->errors["max_charset_identical"] = "Password cannot have {$this->settings['max_charset_identical']} or more identical characters";
+					$this->errors["max_charset_identical"] = "Password cannot have {PASSWORD_MAX_CHARSET_IDENTICAL} or more identical characters";
 					$return = false;
 				}
 			}
@@ -169,25 +147,25 @@ class Password {
 			if ($subset) $subset_count++;
 		}
 		
-		if ($subset_count < $this->settings['min_charset_subsets']) {
+		if ($subset_count < PASSWORD_MIN_CHARSET_SUBSET) {
 			$this->errors["min_charset_subset"] = "Password needs different types of characters";
-			if ($subsets['lower'] < $this->settings['min_charset_lower']) {
+			if ($subsets['lower'] < PASSWORD_MIN_CHARSET_LOWER) {
 				$this->errors["min_charset_lower"] = "Password needs at least one lower case letter";
 				$return = false;
 			}
-			if ($subsets['upper'] < $this->settings['min_charset_upper']) {
+			if ($subsets['upper'] < PASSWORD_MIN_CHARSET_UPPER) {
 				$this->errors["min_charset_upper"] = "Password needs at least one upper case letter";
 				$return = false;
 			}
-			if ($subsets['number'] < $this->settings['min_charset_number']) {
+			if ($subsets['number'] < PASSWORD_MIN_CHARSET_NUMBER) {
 				$this->errors["min_charset_number"] = "Password needs at least one number";
 				$return = false;
 			}
-			if ($subsets['special'] < $this->settings['min_charset_special']) {
+			if ($subsets['special'] < PASSWORD_MIN_CHARSET_SPECIAL) {
 				$this->errors["min_charset_special"] = "Password needs an special character (!\"£$%&...)";
 				$return = false;
 			}
-			if ($subsets['other'] < $this->settings['min_charset_other']) {
+			if ($subsets['other'] < PASSWORD_MIN_CHARSET_OTHER) {
 				$this->errors["min_charset_other"] = true;
 				$return = false;
 			}

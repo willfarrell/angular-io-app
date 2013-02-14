@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  *	Session
  */
@@ -12,23 +12,19 @@ $_SERVER['REMOTE_ADDR'] = getenv("HTTP_CF_CONNECTING_IP")
 
 require_once "inc.config.php";
 require_once "class.db.php";
-require_once 'php/class.password.php';	// password validation, hashing, and checking
+require_once 'class.password.php';	// password validation, hashing, and checking
 //require_once "class.redis.php";
 
 class Session {
 	//private session_timeout = 900;	// 15min
 	private $db;
-
 	public $cookie = array();
-
-	public $log = array();	// backend debugging
 
   	// Class constructor
 	function __construct(){
 		global $database;  //The database connection
 		$this->db = $database;
 		//$this->redis = new Redis('session:');
-		$this->timer = new Timers;
 		$this->password = new Password;
 
 		//$this->domain = ($_SERVER['HTTP_HOST'] != 'localhost') ? $_SERVER['HTTP_HOST'] : false;
@@ -37,14 +33,12 @@ class Session {
 
 		// PHPSESSION
 		if (isset($_COOKIE[session_name()])) session_id($_COOKIE[session_name()]);
-		$this->log['start session id'] = session_id();
 		// session_regenerate_id()
 
 		session_start();
 
 		$this->create();
 		$data = $this->get();
-		$this->log['start data'] = $data;
 		// check to see if ips match and if session still active
 		if ($data && $_SERVER['REMOTE_ADDR'] == $data['ip']) {
 			// place data in session cookie
@@ -126,8 +120,6 @@ class Session {
 		$this->cookie["PHPSESSID"] = session_id();
 		$cookie = $this->cookie;
 		if ($timestamp) $cookie['timestamp'] = $timestamp;
-		$this->log['save'] = session_id();
-		$this->log['cookie'] = $this->cookie;
 		//$this->redis->hmset(session_id(), $cookie);
 		$this->db->insert_update('sessions', $cookie, $cookie);
 	}

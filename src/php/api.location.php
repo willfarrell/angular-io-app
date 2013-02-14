@@ -133,7 +133,7 @@ class Location extends Core {
 		foreach ($params as $key) {
 			$request_data[$key] = isset($request_data[$key]) ? $request_data[$key] : NULL;
 		}
-
+		
 		$request_data['company_ID'] = COMPANY_ID;
 
 		$this->filter->set_request_data($request_data);
@@ -143,7 +143,9 @@ class Location extends Core {
 			return $return;
 		}
 		$request_data = $this->filter->get_request_data();
-
+		
+		$this->permission->check($request_data);
+		
 		// location //
 		$request_data["latitude"] 	= 0;
 		$request_data["longitude"] 	= 0;

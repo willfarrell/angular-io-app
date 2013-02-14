@@ -1,36 +1,39 @@
 <?php
 
 require_once 'class.db.php';
-require_once 'class.session.php';
 require_once 'class.filter.php';
+require_once 'class.permission.php';
+require_once 'class.notify.php';
+
 require_once 'class.timer.php';
+require_once 'php/FirePHPCore/FirePHP.class.php';	// FirePHP debugging tool
 
 class Core {
-	var $db;
-	var $filter;
-	var $timer;
 
-	function __construct() {
+	function __construct()
+	{
 		global $database, $filter;
-		$this->db = $database;
-		$this->filter = $filter;
-		
-		$this->notify = new Notify;
+		$this->db 			= $database;
+		$this->filter 		= $filter;
+		$this->permission 	= new Permission;
+		$this->notify 		= new Notify;
 		
 		//-- Development classes --//
 		
 		// FirePHP - chrome plugin
-		$this->log = FirePHP::getInstance(true);
+		$this->log 			= FirePHP::getInstance(true);
 		
 		// Time sections of code and save to log
-		$this->timer = new Timers;
+		$this->timer 		= new Timers;
 	}
 
-	function __destruct() {
+	function __destruct()
+	{
 		
 	}
 	
-	function __log($var_dump) {
+	function __log($var_dump)
+	{
 		$this->log->fb($var_dump, FirePHP::INFO);
 	}
 }
