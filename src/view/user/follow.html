@@ -19,7 +19,7 @@
     <table class="table table-striped table-bordered" data-ng-init="follow.loadFollowing()">
 	  	<tbody>
 	      	<tr data-ng-repeat="f in objectArray(follow.db.user) | filter:{following:true}"><!--  | filter:{following:true} -->
-		        <td><img data-ng-src="/img/user/{{f.ID}}.png" width="50" height="50" /></td>
+		        <td><img data-ng-src="/img/user/{{f.user_ID}}.png" width="50" height="50" /></td>
 		        <td>
 		        	<a>{{f.name}}</a><br>
 		        	<div data-ng-include="'follow-groups'"></div>
@@ -29,7 +29,7 @@
 		        </td>
 	        </tr>
 	        <tr data-ng-repeat="f in objectArray(follow.db.company) | filter:{following:true}"><!--  | filter:{following:true} -->
-		        <td><img data-ng-src="/img/user/{{f.ID}}.png" width="50" height="50" /></td>
+		        <td><img data-ng-src="/img/user/{{f.user_ID}}.png" width="50" height="50" /></td>
 		        <td>
 		        	<a>{{f.name}}</a><br>
 		        	<div data-ng-include="'follow-groups'"></div>
@@ -57,7 +57,7 @@
     <table class="table table-striped table-bordered" data-ng-init="loadSuggestions()">
       	<tbody>
 	      	<tr data-ng-repeat="f in follow_suggest"><!--  data-ng-click="href('#/company/view/'+company.company_ID)" -->
-		        <td><img data-ng-src="/img/user/{{f.ID}}.png" width="50" height="50" /></td>
+		        <td><img data-ng-src="/img/user/{{f.user_ID}}.png" width="50" height="50" /></td>
 		        <td>
 		        	<a>{{f.name}}</a><br>
 		        	<div data-ng-include="'follow-groups'"></div>
@@ -95,7 +95,7 @@
 	    <table class="table table-striped table-bordered" data-ng-init="follow.loadFollowers()">
 	      	<tbody>
 		      	<tr data-ng-repeat="f in objectArray(follow.db.user) | filter:{follower:true}"><!--  data-ng-click="href('#/company/view/'+company.company_ID)" -->
-			        <td><img data-ng-src="/img/user/{{f.ID}}.png" width="50" height="50" /></td>
+			        <td><img data-ng-src="/img/user/{{f.user_ID}}.png" width="50" height="50" /></td>
 			        <td>
 			        	<a>{{f.name}}</a><br>
 			        	<div data-ng-include="'follow-groups'"></div>

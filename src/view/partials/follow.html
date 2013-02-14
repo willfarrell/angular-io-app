@@ -62,8 +62,8 @@
 	    	<input type="text" class="input-medium search-query" data-ng-model="search_keyword" data-ng-change="loadFollowing(0,search_keyword)" data-ng-init="loadFollowing(0,search_keyword)" placeholder="Search" />
     	</form><br>
 	    <ul class="thumbnails">
-	    	<li data-ng-repeat="f in following" class="img-polaroid" data-ng-click="inviteQue(EVENT_ID, f.ID)">
-	    		<img data-ng-src="/img/user/{{f.ID}}.png" style="width:50px;height:50px" /><br>
+	    	<li data-ng-repeat="f in following" class="img-polaroid" data-ng-click="inviteQue(EVENT_ID, f.user_ID)">
+	    		<img data-ng-src="/img/user/{{f.user_ID}}.png" style="width:50px;height:50px" /><br>
 	    		<p>{{f.name}}</p>
 	    		<!--<div data-ng-include="'follow-button-user'"></div>--
 	    		<button class="btn btn-primary">Invite</button>
@@ -76,7 +76,7 @@
 <!-- Requires parent FollowCtrl --
 <script type="text/ng-template" id="follow-button-company">
 	<div class="btn-group" data-ng-hide="f.following">
-	  	<button class="btn btn-primary" data-ng-click="addFollow(f.ID, 'company', 0); f.following = !f.following">
+	  	<button class="btn btn-primary" data-ng-click="addFollow(f.user_ID, 'company', 0); f.following = !f.following">
 	    	Follow
 	    </button>
 	</div>
@@ -85,15 +85,15 @@
 	  	<button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 	    <ul class="dropdown-menu">
 		    <li data-ng-repeat="group in follow.groups" data-ng-show="group.group_ID">
-		    	<a data-ng-click="addFollow(f.ID, 'company', group.group_ID);" data-ng-hide="inArray(group.group_ID, f.groups)">
+		    	<a data-ng-click="addFollow(f.user_ID, 'company', group.group_ID);" data-ng-hide="inArray(group.group_ID, f.groups)">
 		    		<i class="icon-blank"></i>&nbsp;{{group.group_name}}
 		    	</a>
-		    	<a data-ng-click="deleteFollow(f.ID, 'company', group.group_ID);" data-ng-show="inArray(group.group_ID, f.groups)">
+		    	<a data-ng-click="deleteFollow(f.user_ID, 'company', group.group_ID);" data-ng-show="inArray(group.group_ID, f.groups)">
 		    		<i class="icon-ok"></i>&nbsp;{{group.group_name}}
 		    	</a>
 		    </li>
 		    <li class="divider" data-ng-show="objectLength(follow.groups)"></li>
-		    <li><a data-ng-click="deleteFollow(f.ID, 'company'); f.following = !f.following"><i class="icon-blank"></i>&nbsp;Unfollow</a></li>
+		    <li><a data-ng-click="deleteFollow(f.user_ID, 'company'); f.following = !f.following"><i class="icon-blank"></i>&nbsp;Unfollow</a></li>
 	    </ul>
 	</div>
 </script>

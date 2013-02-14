@@ -29,7 +29,7 @@
 		<tbody>
 		<tr class="ng-click" data-ng-repeat="r in results" data-ng-show="search.type == 'user'">
 			<td>
-				<img data-ng-src="img/user/{{r.ID}}.png" class="img-polaroid" width="50" height="50" align="left" style="margin-right:10px">
+				<img data-ng-src="img/user/{{r.user_ID}}.png" class="img-polaroid" width="50" height="50" align="left" style="margin-right:10px">
 				<p><a href="#/user/profile/{{r.user_ID}}"><b>{{r.user_name_first}} {{r.user_name_last}}</b></a></p>
 	            <p data-ng-show="r.user_function">{{r.user_function}}</p>
 	            <div class="btn-group" data-ng-hide="session.user_ID == r.user_ID">

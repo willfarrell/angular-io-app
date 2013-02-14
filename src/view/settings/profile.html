@@ -6,7 +6,7 @@
 		<label class="control-label" for="user_img">Photo</label>
 
 		<div class="controls">
-    		<img data-ng-src="img/user/{{user.user_ID}}.png?{{filepicker.timestamp}}" class="img-rounded" style="width:50px; height:50px;"/>
+    		<img data-ng-src="img/user/{{user.user_ID}}.png?{{filepicker.timestamp}}" class="img-rounded" width="50" height="50"/>
 			<button class="btn" data-ng-click="filepicker.upload(settings.filepicker.user_single_image, user.user_ID);" data-ng-disabled="!user.user_ID">Change photo</button>
 			<!--<span class="help-block">This photo is your identity and appears with your content.</span>-->
     	</div>
