@@ -84,14 +84,12 @@
 	<header class="header" data-ng-include="'view/nav.top.html'"></header>
 	<div class="alert-fixed-top">
 		<div class="alert alert-{{alert.class}}" data-ng-repeat="alert in alerts">
-			<div class="container">
-			  	<button class="close" data-dismiss="alert">&times;</button>
-			  	<strong>{{alert.label}}</strong> {{alert.message}}
-			</div>
+		  	<button class="close" data-dismiss="alert">&times;</button>
+		  	<strong>{{alert.label}}</strong> {{alert.message}}
 		</div>
 	</div>
 	<!-- !End Top Nav -->
-	
+		
 	<!-- !View -->
 	<div class="wrapper"><!-- wrapper used for sticky footer -->
 		<div class="container" data-ng-view></div>

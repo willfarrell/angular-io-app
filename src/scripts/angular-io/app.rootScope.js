@@ -4,7 +4,6 @@ angular.module('io.init.rootScope', [])
 	function($rootScope, $locale, $http, $window, $location) {
 	console.log('io.init.rootScope ('+$rootScope.$id+')');
  	
- 	
 	$rootScope.default_settings = {
 		'client'			:'',	// https://static.domain.com/
 		'server'			:'',	// https://api.domain.com/
@@ -190,11 +189,6 @@ angular.module('io.init.rootScope', [])
 	});
 	
 
-
-
-
-
-
 	//!-- Global Vars --//
 	$rootScope.set = function(key, value) { $rootScope[key] = value; };
 	
@@ -210,6 +204,13 @@ angular.module('io.init.rootScope', [])
 	$rootScope.json = {
 		"regions":{}
 	};
+	
+	// clear alerts on page change
+	$rootScope.$watch(function () {
+	  	return $location.path();
+	  }, function(value) {
+      	$rootScope.alerts = [];
+    });
 	
 	//!-- JSON -- //
 	$rootScope.loadJSON = function(key, file, folder) {

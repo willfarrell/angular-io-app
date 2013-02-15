@@ -1,7 +1,7 @@
 angular.module('io.init.settings', [])
 .run(['$rootScope', function($rootScope) {
 	console.log('io.init.settings ('+$rootScope.$id+')');
-	$rootScope.version = "β.5.2";
+	$rootScope.version = "β.5.4";
 	$rootScope.settings = {
 		'client'		:'',				// https://static.domain.com/
 		'server'		:'',				// https://api.domain.com/
@@ -39,7 +39,7 @@ angular.module('io.init.settings', [])
 			'company'		:true,
 			'company_username':true
 		},
-		'notify': {		// notify setting defaults
+		'notify': {		// notify setting defaults - all email is defaulted on
 		 	"new_message":{"email":true},
 		 	"new_follow":{"email":true}
 		},
