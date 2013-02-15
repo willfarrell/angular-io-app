@@ -1,15 +1,15 @@
 # Angular.io - AngularJS + Bootstrap
 
-## build
+## Terminal
 Requires: Yeoman
 
-$ sh **build:** runs yeoman and creates dist folders
+$ sh **run -b:** runs yeoman and creates dist folders
 
-$ sh **build test:** runs build, followed by yeoman test
+$ sh **run -t:** runs build, followed by yeoman test
 
-$ sh **build update:** updates bower packages, then runs build
+$ sh **run -u:** updates bower packages, then runs build
 
-$ sh **build clean:** removes all folders created by build
+$ sh **run -c:** removes all folders created by build
 
 ## build folders
 ### dist-web
@@ -37,7 +37,7 @@ API ready dist.
 - restyle css
 - scroll to load more
 #### Wishlist
-- encrypt client side, unreadable by web app
+- encrypt client side, unreadable by web app. PGP?
 
 ### Filepicker
 #### Supports
@@ -47,7 +47,6 @@ API ready dist.
 - AWS CORS support
 - upload file from URL (requires proxy server due to browser security)
 - support upload from third party services
-- file download
 - refactor code - seperate pages into services, remove controller.
 - Connect into camerea to take photo
 #### Bugs
@@ -55,6 +54,5 @@ API ready dist.
 #### Wishlist
 - User side encryption (for file upload).  Mega?
 
-## Core To Do
-- PGP emailing
+
 

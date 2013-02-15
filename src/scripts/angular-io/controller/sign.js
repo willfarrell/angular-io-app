@@ -3,10 +3,11 @@
 SignCtrl.$inject = ['$scope', '$http', '$cookies', '$routeParams'];
 function SignCtrl($scope, $http, $cookies, $routeParams) {
 	console.log('SignCtrl ('+$scope.$id+') '+$routeParams.action+' '+$routeParams.redirect);
+	
 	$scope.errors = {};		// form errors
-
 	$scope.action = $routeParams.action ? $routeParams.action : 'in';
-
+	$cookies.redirect = $routeParams.redirect;
+	
 	//-- Sign Up --//
 	$scope.signup = {
 		//email:'',
@@ -80,12 +81,8 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 					//$scope.signin_callbacks(); // runs all callbacks that were set by siblings
 					// refresh page
 					//$scope.refresh();
-					console.log($routeParams.redirect);
-					if ($routeParams.redirect) {
-						$scope.href('#/'+$routeParams.redirect);
-					} else {
-						$scope.href('#/'+$rootScope.settings.dashboard);
-					}
+					console.log($cookies.redirect);
+					$scope.href('#/'+($cookies.redirect ? $cookies.redirect : $rootScope.settings.dashboard));
 				}
 			})
 			.error(function() {

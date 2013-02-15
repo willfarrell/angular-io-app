@@ -39,6 +39,10 @@ angular.module('io.init.settings', [])
 			'company'		:true,
 			'company_username':true
 		},
+		'notify': {		// notify setting defaults
+		 	"new_message":{"email":true},
+		 	"new_follow":{"email":true}
+		},
 		// pulgins //
 		// onboard - view/onboard
 		'onboard':{

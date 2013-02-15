@@ -10,10 +10,7 @@ function SettingsCtrl($scope, $http, $routeParams) {
  	// defaults as per class.notify.php
  	// email:true
  	// sms:false
- 	$scope.notify = {
-	 	"new_message":{"email":true},
-	 	"new_follow":{"email":true}
- 	};
+ 	$scope.notify = $rootScope.settings.notify;
  	
  	$scope.loadNotifications = function() {
  		$http.get($scope.settings.server+'user/notify')

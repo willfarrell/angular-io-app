@@ -96,10 +96,19 @@ class Filepicker extends FilepickerConfig {
 			//$checksum = shell_exec('md5sum -b ' . escapeshellarg($tmp.$file));
 		}
 		
-		// 
-		echoFile($path, $file);
+		//header("Content-Type: " . mime_content_type($FileName));
+	    // if you are not allowed to use mime_content_type, then hardcode MIME type
+	    // use application/octet-stream for any binary file
+	    // use application/x-executable-file for executables
+	    // use application/x-zip-compressed for zip files
+	    header("Content-Type: application/octet-stream");
+	    header("Content-Length: " . filesize($path.$file));
+	    header("Content-Disposition: attachment; filename=\"$file\"");
+	    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+	    $fp = fopen($path.$file,"rb");
+	    fpassthru($fp);
+	    fclose($fp);
 	}
-	
 	
 	//-- Upload --//
 	// upload from computer
@@ -211,21 +220,7 @@ class Filepicker extends FilepickerConfig {
 }
 
 
-function echoFile($folder, $file)
-{
-    //header("Content-Type: " . mime_content_type($FileName));
-    // if you are not allowed to use mime_content_type, then hardcode MIME type
-    // use application/octet-stream for any binary file
-    // use application/x-executable-file for executables
-    // use application/x-zip-compressed for zip files
-    header("Content-Type: application/octet-stream");
-    header("Content-Length: " . filesize($folder.$file));
-    header("Content-Disposition: attachment; filename=\"$file\"");
-    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-    $fp = fopen($folder.$file,"rb");
-    fpassthru($fp);
-    fclose($fp);
-}
+
 
 //$temp = sys_get_temp_dir();
 //var_dump($temp);

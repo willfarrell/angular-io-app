@@ -1,7 +1,7 @@
 //angular.module('io.controller.onboard', [])
 //.controller('OnboardCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
-OnboardCtrl.$inject = ['$scope', '$http', '$routeParams'];
-function OnboardCtrl($scope, $http, $routeParams) {
+OnboardCtrl.$inject = ['$scope', '$cookies', '$http', '$routeParams'];
+function OnboardCtrl($scope, $cookies, $http, $routeParams) {
 	console.log('OnboardCtrl ('+$scope.$id+') page:'+$routeParams.page);
 	$scope.errors = {};
 
@@ -25,7 +25,9 @@ function OnboardCtrl($scope, $http, $routeParams) {
 			    		$http.get('user/onboard_done')
 			    			.success(function(data) {
 			    				console.log('BuildProgressTracker.get.success');
-			    				$rootScope.updateSession(function(){$scope.href('#/'+$rootScope.settings.dashboard)});
+			    				$rootScope.updateSession(function(){
+			    					$scope.href('#/'+($cookies.redirect ? $cookies.redirect : $rootScope.settings.dashboard));
+			    				});
 			    			})
 							.error(function() {
 								console.log('BuildProgressTracker.get.error');
