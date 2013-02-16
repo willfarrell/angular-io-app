@@ -1,11 +1,6 @@
 <div class="span4"></div>
 <div data-ng-controller="ResetCtrl" class="span4">
 
-<div class="alert alert-{{alert.class}}" data-ng-repeat="alert in alerts">
-  <button class="close" data-dismiss="alert">&times;</button>
-  <strong>{{alert.label}}</strong> {{alert.message}}
-</div>
-
 <div class="well">
 <form name="verifyUserForm" class="form-vertical well" data-ng-show="state.verify && 0">
 	<legend>Verify Identity<button class="btn btn-primary pull-right" data-ng-click="verify()" data-ng-disabled="verifyUserForm.$invalid">Save</button></legend>

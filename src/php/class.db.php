@@ -44,7 +44,7 @@ class MySQL
     /**
      * Constructor
      */
-    function __construct($schema = DB_NAME)
+    function __construct()
     {
         $this->_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
     }
@@ -61,9 +61,9 @@ class MySQL
      * create db connection
      *
      * @return null
-     * @access private
+     * @access public
      */
-    private function _connect($server = DB_SERVER, $user = DB_USER, $password = DB_PASS, $schema = DB_NAME)
+    public function _connect($server = DB_SERVER, $user = DB_USER, $password = DB_PASS, $schema = DB_NAME)
     {
         $this->connection_mysql = mysql_connect($server, $user, $password) or die(mysql_error());
         mysql_select_db($schema, $this->connection_mysql) or die(mysql_error());
@@ -73,9 +73,9 @@ class MySQL
      * close db connection
      *
      * @return null
-     * @access private
+     * @access public
      */
-    private function _close()
+    public function _close()
     {
          mysql_close($this->connection_mysql);
     }
@@ -86,7 +86,7 @@ class MySQL
      * if not, connects again
      *
      * @return true
-     * @aceess puiblic
+     * @aceess public
      */
     function ping()
     {
@@ -127,7 +127,7 @@ class MySQL
      * @param object $result MySQL Object
      *
      * @return MySQL Object
-     *    @aceess    puiblic
+     *    @aceess    public
      */
     private function resultCheck($result)
     {
@@ -144,7 +144,7 @@ class MySQL
      * @param array $array array of values to interact with the DB
      *
      * @return array of cleaned values
-     * @aceess puiblic
+     * @aceess public
      */
     private function cleanArray($array)
     {
@@ -164,7 +164,7 @@ class MySQL
      * @param integer $
      *
      * @return Array of Ints
-     * @aceess    puiblic
+     * @aceess    public
      */
     public function sort() {
 	
@@ -183,7 +183,7 @@ class MySQL
      * @param array  $value_array replace {{$key}} with $value in custom query
      *
      * @return object $object MySQL Object
-     * @aceess    puiblic
+     * @aceess    public
      */
     function query($query, $value_array = NULL)
     {
@@ -208,7 +208,7 @@ class MySQL
      * @param object $results       MySQL Results Object
      *
      * @return object $result Array
-     * @aceess    puiblic
+     * @aceess    public
      */
     function fetch_array($results, $ignore = array())
     {
@@ -232,7 +232,7 @@ class MySQL
      * @param array $ignore       Array of fields to ignore, or false to not cast
      *
      * @return object $result Array
-     * @aceess    puiblic
+     * @aceess    public
      */
     function fetch_assoc($results, $ignore = array())
     {
@@ -254,7 +254,7 @@ class MySQL
      * @param object $results       MySQL Results Object
      *
      * @return number of rows
-     * @aceess    puiblic
+     * @aceess    public
      */
     function num_rows($results)
     {

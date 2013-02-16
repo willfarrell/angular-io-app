@@ -17,7 +17,7 @@
 	},
 	"password_changed_notification": {
 		"subject": "Account Password Changed",
-		"message": "Your {{global:site_name}} account password was just changed.\n\nIf you didn't make this change, request a password reset immediately by visiting {{global:site_url}}#/sign/reset."
+		"message": "Your {{global:site_name}} account password was just changed.\n\nIf you did not make this change, request a password reset immediately by visiting {{global:site_url}}#/sign/reset."
 	},
 	"email_changed_notification": {
 		"subject": "Account Email Changed",

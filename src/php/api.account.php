@@ -127,7 +127,7 @@ class Account extends Core {
 		$user_ID = $this->db->insert('users', $user);
 
 
-		$hash = substr(hash("sha512", $email+$_SERVER['REQUEST_TIME']), 0, 16);
+		$hash = substr(hash("sha512", $email.$_SERVER['REQUEST_TIME']), 0, 16);
 		
 		$insert = array('user_ID' => $user_ID, 'hash' => $hash);
 		$this->db->insert_update('user_confirm', $insert, $insert);
@@ -140,7 +140,7 @@ class Account extends Core {
 	}
 	
 	function resend_confirm_email() {
-		$hash = substr(hash("sha512", USER_EMAIL+$_SERVER['REQUEST_TIME']), 0, 16);
+		$hash = substr(hash("sha512", USER_EMAIL.$_SERVER['REQUEST_TIME']), 0, 16);
 		
 		$insert = array('user_ID' => USER_ID, 'hash' => $hash);
 		$this->db->insert_update('user_confirm', $insert, $insert);
@@ -225,10 +225,10 @@ class Account extends Core {
 			$user = $this->db->fetch_assoc($result);
 			$expire_timestamp = $_SERVER['REQUEST_TIME']+360;
 			
-			$hash = substr(hash("sha512", $email+$_SERVER['REQUEST_TIME']), 0, 16);
-			
+			$hash = substr(hash("sha512", $email.$_SERVER['REQUEST_TIME']), 0, 16);
+echo "here";			
 			$this->notify->send($user['user_ID'], 'password_reset_request', array("hash" => $hash), "email");
-			
+			echo "here";
 			$insert = array('user_ID' => $user['user_ID'], 'hash' => $hash, 'expire_timestamp' => $expire_timestamp);
 			//$this->redis->hmset($hash, array('hash' => $hash, 'user_ID' => $user['user_ID'], 'expire_timestamp' => $expire_timestamp));
 			$this->db->insert_update('user_reset', $insert, $insert);
@@ -285,12 +285,12 @@ class Account extends Core {
 		$request_data = $this->filter->get_request_data();
 
 		// check hash
-		$query = "SELECT user_ID, timestamp_confirm FROM user_reset WHERE hash = '{{hash}}' LIMIT 0,1";
+		$query = "SELECT * FROM user_reset WHERE hash = '{{hash}}' LIMIT 0,1";
 		$result = $this->db->query($query, array('hash' => $request_data['hash']));
 		if (!$result) return false; // user / pass combo not found
 		$result = $this->db->fetch_assoc($result);
 		$user_ID = $result['user_ID'];
-		$timestamp_confirm = $result['timestamp_confirm'];
+		$expire_timestamp = $result['expire_timestamp'];
 		
 		// validate password
 		$this->__log($request_data['new_password']);
@@ -312,13 +312,13 @@ class Account extends Core {
 		$this->password->update($request_data['new_password'], $user_email);
 		
 		// remove reset request AND any expired reset requests
-		$this->db->query("DELETE FROM user_reset WHERE hash = '{{hash}}' OR expire_timestamp < "+$_SERVER['REQUEST_TIME'], array('hash' => $request_data['hash']));
+		$this->db->query("DELETE FROM user_reset WHERE hash = '{{hash}}' OR expire_timestamp < ".$_SERVER['REQUEST_TIME'], array('hash' => $request_data['hash']));
 		
 		// mail user
 		$this->notify->send($user_ID, 'password_changed_notification', array(), "email");
 		
-		// update email confirm timestamp if not already don so - happens when extra users are added to a company
-		if (!$timestamp_confirm) {
+		// update email confirm timestamp if not already done so - happens when extra users are added to a company
+		if (!$expire_timestamp) {
 			$this->db->update('users', array('timestamp_confirm' => $_SERVER['REQUEST_TIME']), array('user_ID' => USER_ID));
 		}
 		
@@ -398,7 +398,7 @@ class Account extends Core {
 		$this->session->update();	// update user_email into session
 		
 		// confirm email
-		$hash = substr(hash("sha512", $email+$_SERVER['REQUEST_TIME']), 0, 16);
+		$hash = substr(hash("sha512", $email.$_SERVER['REQUEST_TIME']), 0, 16);
 		
 		$insert = array('user_ID' => USER_ID, 'hash' => $hash);
 		$this->db->insert_update('user_confirm', $insert, $insert);

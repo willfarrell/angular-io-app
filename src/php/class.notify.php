@@ -56,9 +56,10 @@ class Notify {
 		// from user details
 		$select = array("user_ID", "user_name", "user_name_first", "user_name_last","user_email", "user_phone");
 		$from = $this->db->select("users", array("user_ID" => USER_ID), $select);
-		if (!$from) return;
-		$from = $this->db->fetch_assoc($from);
-		$this->vars['from'] = $from;
+		if ($from) {
+			$from = $this->db->fetch_assoc($from);
+			$this->vars['from'] = $from;
+		}
 		
 		// get user details
 		$select[] = "notify_json";
@@ -147,6 +148,7 @@ class Email {
   	}
   	
   	function send($to, $subject, $message) {
+  		//echo "$to, $subject, $message";
   		
   		if (EMAIL_MAILGUN_APIKEY) {
 	  		exec("curl -s --user api:".EMAIL_MAILGUN_APIKEY." \

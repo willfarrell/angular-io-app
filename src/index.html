@@ -83,9 +83,11 @@
 	<!-- !Top Nav -->
 	<header class="header" data-ng-include="'view/nav.top.html'"></header>
 	<div class="alert-fixed-top">
-		<div class="alert alert-{{alert.class}}" data-ng-repeat="alert in alerts">
-		  	<button class="close" data-dismiss="alert">&times;</button>
-		  	<strong>{{alert.label}}</strong> {{alert.message}}
+		<div class="alert alert-{{alert.class}}" data-ng-repeat="alert in alerts" data-dismiss="alert">
+		  	<div class="container">
+			  	<button class="close">&times;</button>
+			  	<strong>{{alert.label}}</strong> {{alert.message}}
+		  	</div>
 		</div>
 	</div>
 	<!-- !End Top Nav -->
