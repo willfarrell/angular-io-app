@@ -11,6 +11,7 @@ angular.module('io.controller.follow', [])
 	
 	$scope.follow_suggest = {};
 	$scope.following = {};
+	$scope.followers = {};
 	
 	//$scope.group_name = '';	// form
 	//$scope.setFollowType = function(type) { $scope.type = type; };
@@ -23,28 +24,50 @@ angular.module('io.controller.follow', [])
 		$scope.follow.deleteFollow($scope.type, id, group_ID);
 	};*/
 
-	$scope.loadFollow = function(id) {
+	/*$scope.loadFollow = function(id) {
 		$scope.follow.loadFollow($scope.type, id);
 	};
 	
 	$scope.loadFollowers = function(id, query) {
 		$scope.follow.loadFollow($scope.type, id, query);
-	};
-
-	$scope.loadFollowing = function(id, query) {
+	};*/
+	
+	$scope.loadFollowers = function(company_ID, user_ID, query) {
 		//$scope.follow.loadFollowing($scope.type, id, query); // session user
 		
-		id || (id = 0);
+		company_ID || (company_ID = 0);
+		user_ID || (user_ID = 0);
 		query || (query = '');
-		$http.get($rootScope.settings.server+'follow/ing/'+id+'/'+query)
+		$http.get($rootScope.settings.server+'follow/ers/'+company_ID+'/'+user_ID+'/'+query)
+			.success(function(data) {
+				console.log('loadFollowing.get.success');
+				console.log(data);
+				console.log(typeof data);
+				for (var i = 0, l = data.length; i < l; i++) {
+					data[i].follower = (data[i].follower) ? true : false;
+				}
+				
+				$scope.followers = data; // for profile page
+			})
+			.error(function() {
+				console.log('loadFollowing.get.error');
+				$rootScope.http_error();
+			});
+	};
+	
+	$scope.loadFollowing = function(company_ID, user_ID, query) {
+		//$scope.follow.loadFollowing($scope.type, id, query); // session user
+		
+		company_ID || (company_ID = 0);
+		user_ID || (user_ID = 0);
+		query || (query = '');
+		$http.get($rootScope.settings.server+'follow/ing/'+company_ID+'/'+user_ID+'/'+query)
 			.success(function(data) {
 				console.log('loadFollowing.get.success');
 				console.log(data);
 				console.log(typeof data);
 				for (var i = 0, l = data.length; i < l; i++) {
 					data[i].following = (data[i].following) ? true : false;
-					$scope.follow.db.company[data[i]['company_ID']] = data[i];
-					$scope.follow.db.user[data[i]['user_ID']] = data[i];
 				}
 				
 				$scope.following = data; // for profile page
@@ -80,7 +103,7 @@ angular.module('io.controller.follow', [])
 	
 	
 	// search following and followers
-	$scope.search = function(query) {
+	/*$scope.search = function(query) {
 		$scope.search_results = [];
 		// follow = 'ing' or 'ers'
 		
@@ -103,7 +126,7 @@ angular.module('io.controller.follow', [])
 		} else if (follow == 'ers') {
 			
 		}
-	};
+	};*/
 	
 	$scope.loadGroups = function() {
 		$scope.follow.loadGroups();

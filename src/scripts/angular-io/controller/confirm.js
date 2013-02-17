@@ -18,7 +18,8 @@ function ConfirmCtrl($scope, $http, $routeParams) {
 				if (data.alerts) $rootScope.alerts = data.alerts;
 				if (data.errors) $scope.errors = data.errors;
 				if (!data.alerts && !data.errors) {
-					$scope.session.email_confirm = true;
+					$rootScope.session.email_confirm = true;
+					$rootScope.saveSession();
 					$rootScope.alerts = [{'class':'success', 'label':'Email Confirmation:', 'message':'Confirmed'}];
 				}
 			});
@@ -35,6 +36,8 @@ function ConfirmCtrl($scope, $http, $routeParams) {
 					$rootScope.alerts = [{'class':'info', 'label':'Email Confirmation:', 'message':'Sent'}];
 				}
 			});
-	}
+	};
+	
+	if ($scope.hash) $scope.check();
 }
 //}]);

@@ -8,6 +8,8 @@
 </div>
 <!-- End Feature Check -->
 
+<div data-ng-controller="ConfirmCtrl"></div>
+
 <div class="pull-center" data-ng-show="action == 'in'">
 	<form class="well" name="signinForm">
 	    <legend>{{i18n.sign_in_legend}}</legend>
@@ -39,7 +41,7 @@
 	<form class="well" name="resetForm">
 	    <legend>{{i18n.sign_reset_legend}}</legend>
 	    <div class="control-group" data-ng-class="{error: (errors.email)}">
-		    <input type="text" name="email" class="input-block-level" placeholder="{{i18n.sign_placeholder_email}}" data-ng-model="signin.email" required>
+		    <input type="email" name="email" class="input-block-level" placeholder="{{i18n.sign_placeholder_email}}" data-ng-model="signin.email" required>
 		    <span class="error" data-ng-show="resetForm.email.$error.email">Not valid email</span>
 	    </div>
 	    <!-- CAPTCHA HERE? -->

@@ -27,6 +27,10 @@ function AppCtrl(rootScope, $scope, $http, filepicker, accessibility, message, f
 		
 	});
 	
+	// referral param
+	// requires $routeParams & $cookies
+	//if ($routeParams.ref) $cookies.referral = $routeParams.ref;
+	
 	//!-- App Root Scoope Functions --//
 	
 }

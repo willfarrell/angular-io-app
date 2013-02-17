@@ -35,14 +35,26 @@ class Follow extends Core {
 		}
 		
 		if ($limit > 0) {
-			$query = "SELECT U.user_ID, U.company_ID, CONCAT(U.user_name_first, ' ', U.user_name_last) AS name" // , GROUP_CONCAT(UF.group_ID) AS groups
-				." FROM users U"
-				." LEFT JOIN ".$this->table." UF ON UF.follow_user_ID = U.user_ID AND UF.user_ID = '{{user_ID}}'"
-				." WHERE U.user_ID != '{{user_ID}}' AND U.timestamp_create != 0 AND UF.follow_user_ID IS NULL"
-				." ORDER BY RAND()"
-				." LIMIT 0,$limit";
+			if (COMPANY_ID) {
+				$query = "SELECT C.company_ID, C.company_name" // , GROUP_CONCAT(UF.group_ID) AS groups
+					." FROM companies C"
+					." LEFT JOIN ".$this->table." CF ON CF.follow_company_ID = C.company_ID AND CF.company_ID = '{{company_ID}}'"
+					." WHERE C.company_ID != '{{company_ID}}' AND CF.follow_company_ID IS NULL"
+					." ORDER BY RAND()"
+					." LIMIT 0,$limit";
 
-			$suggestions = $this->db->query($query, array('user_ID' => USER_ID));
+				$suggestions = $this->db->query($query, array('company_ID' => COMPANY_ID));
+			} else {
+				$query = "SELECT U.user_ID, U.company_ID, U.user_name, CONCAT(U.user_name_first, ' ', U.user_name_last) AS name" // , GROUP_CONCAT(UF.group_ID) AS groups
+					." FROM users U"
+					." LEFT JOIN ".$this->table." UF ON UF.follow_user_ID = U.user_ID AND UF.user_ID = '{{user_ID}}'"
+					." WHERE U.user_ID != '{{user_ID}}' AND U.timestamp_create != 0 AND UF.follow_user_ID IS NULL"
+					." ORDER BY RAND()"
+					." LIMIT 0,$limit";
+
+					$suggestions = $this->db->query($query, array('user_ID' => USER_ID));
+			}
+			
 			while ($suggestions && $suggestion = $this->db->fetch_assoc($suggestions)) {
 				//$suggestion['groups'] = explode(',', $suggestion['groups']);
 				$return[] = $suggestion;
@@ -56,7 +68,7 @@ class Follow extends Core {
 	function get_referral() {
 		$return = array();
 		
-		$query = "SELECT RU.company_ID, RU.user_ID, RU.user_name AS name" // , GROUP_CONCAT(UF.group_ID) AS groups
+		$query = "SELECT RU.company_ID, RU.user_ID, RU.user_name, CONCAT(RU.user_name_first, ' ', RU.user_name_last) AS name" // , GROUP_CONCAT(UF.group_ID) AS groups
 			." FROM users U"
 			." LEFT JOIN users RU ON U.referral_user_ID = RU.user_ID"
 			." LEFT JOIN ".$this->table." UF ON UF.follow_user_ID = U.user_ID AND UF.user_ID = '{{user_ID}}'"
@@ -77,7 +89,7 @@ class Follow extends Core {
 	function get_referrals() {
 		$return = array();
 		
-		$query = "SELECT U.company_ID, U.user_ID, U.user_name AS name" // , GROUP_CONCAT(UF.group_ID) AS groups
+		$query = "SELECT U.company_ID, U.user_ID, U.user_name, CONCAT(U.user_name_first, ' ', U.user_name_last) AS name" // , GROUP_CONCAT(UF.group_ID) AS groups
 			." FROM users U"
 			." LEFT JOIN ".$this->table." UF ON UF.follow_user_ID = U.user_ID AND UF.user_ID = '{{user_ID}}'"
 			." WHERE U.user_ID != '{{user_ID}}' AND U.timestamp_create != 0 AND  UF.follow_user_ID IS NULL"
@@ -102,7 +114,7 @@ class Follow extends Core {
 		if (!$user_ID) $user_ID = USER_ID;
 		$return = array();
 
-		$query = "SELECT U.user_ID, U.company_ID, user_name AS name, UF.timestamp as following, GROUP_CONCAT(UF.group_ID) AS groups" // , UF.group_ID
+		$query = "SELECT U.user_ID, U.company_ID, user_name, CONCAT(user_name_first, ' ', user_name_last) AS name, UF.timestamp as following, GROUP_CONCAT(UF.group_ID) AS groups" // , UF.group_ID
 				." FROM ".$this->table." FU"
 				." LEFT JOIN ".$this->table." UF ON UF.user_ID = FU.follow_user_ID AND UF.follow_user_ID = FU.user_ID"
 				." LEFT JOIN users U ON U.user_ID = FU.user_ID"
@@ -130,7 +142,7 @@ class Follow extends Core {
 		if (!$user_ID) $user_ID = USER_ID;
 		$return = array();
 		
-		$query = "SELECT U.user_ID, U.company_ID, user_name AS name, GROUP_CONCAT(group_ID) AS groups" //
+		$query = "SELECT U.user_ID, U.company_ID, user_name, CONCAT(user_name_first, ' ', user_name_last) AS name, GROUP_CONCAT(group_ID) AS groups" //
 				." FROM ".$this->table." FU"
 				." LEFT JOIN users U ON U.user_ID = FU.follow_user_ID"
 				." WHERE FU.user_ID = '{{user_ID}}'"

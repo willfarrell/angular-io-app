@@ -1,7 +1,7 @@
 angular.module('io.init.settings', [])
 .run(['$rootScope', function($rootScope) {
 	console.log('io.init.settings ('+$rootScope.$id+')');
-	$rootScope.version = "β.5.4";
+	$rootScope.version = "β.5.5";
 	$rootScope.settings = {
 		'client'		:'',				// https://static.domain.com/
 		'server'		:'',				// https://api.domain.com/
@@ -35,7 +35,7 @@ angular.module('io.init.settings', [])
 			'calling_codes'	:'calling_codes',	// {'country_code':'calling_code'}
 		},
 		'account': {
-			'user_name'		:false,	// Require username in profile
+			'user_name'		:true,	// Require username in profile
 			'company'		:true,
 			'company_username':true
 		},
@@ -71,7 +71,7 @@ angular.module('io.init.settings', [])
 				resizecrop:true,
 				width:300,
 				height:200
-			},
+			}
 		},
 		'follow':'user'
 		// browser plugin - view/page/sign 

@@ -1,7 +1,7 @@
 angular.module('io.init.rootScope', [])
 .run(
-	['$rootScope', '$locale', '$http', '$window', '$location',
-	function($rootScope, $locale, $http, $window, $location) {
+	['$rootScope', '$locale', '$cookies', '$http', '$window', '$location',
+	function($rootScope, $locale, $cookies, $http, $window, $location) {
 	console.log('io.init.rootScope ('+$rootScope.$id+')');
  	
 	$rootScope.default_settings = {
@@ -127,18 +127,24 @@ angular.module('io.init.rootScope', [])
 		
 		// not signed in -> sign/in
 		if (objectIsEmpty($rootScope.session)) {
-			$rootScope.href('#/sign/in?redirect='+$rootScope.uri().substr(2));
+			if ($rootScope.uri() != '#/sign/in') { // prevent redirect loop
+				$cookies.redirect = $rootScope.uri().substr(2);
+				$rootScope.href('#/sign/in');
+			}
 		
 		// email not confirmed -> onboard
-		} else if($rootScope.settings.onboard.required && !$rootScope.session.email_confirm && $rootScope.uri().match(/#\/onboard/) === null) {
+		} else if ($rootScope.settings.onboard.required && !$rootScope.session.email_confirm && $rootScope.uri().match(/#\/onboard\/email/) === null) {
+			console.log(($rootScope.settings.onboard.required)+" && "+!$rootScope.session.email_confirm+" && "+($rootScope.uri().match(/#\/onboard/) === null));
 			$rootScope.href('#/onboard/email');
 		
 		// haven't completed manditory onboard steps -> onboard
-		} else if($rootScope.settings.onboard.required && !$rootScope.session.timestamp_create && $rootScope.uri().match(/#\/onboard/) === null) {
+		} else if ($rootScope.settings.onboard.required && !$rootScope.session.timestamp_create && $rootScope.uri().match(/#\/onboard/) === null) {
+			console.log(($rootScope.settings.onboard.required)+" && "+!$rootScope.session.timestamp_create+" && "+($rootScope.uri().match(/#\/onboard/) === null));
 			$rootScope.href('#/onboard/'+$rootScope.settings.onboard.start);
 		
 		// has an old password -> change pass
 		} else if ($rootScope.settings.password.max_age && $rootScope.session.password_age > $rootScope.settings.password.max_age) {
+			console.log(($rootScope.settings.password.max_age)+" && "+($rootScope.session.password_age > $rootScope.settings.password.max_age));
 			$rootScope.href('#/onboard/password');
 		
 		// force password change set -> change password

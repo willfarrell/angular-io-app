@@ -26,7 +26,7 @@ class Location extends Core {
 			array('location_ID', 'company_ID', 'location_name', 'address_1', 'address_2', 'city', 'region_code', 'country_code', 'mail_code', 'latitude', 'longitude', 'location_phone')
 		);
 		if ($results) {
-			while($location = $this->db->fetch_assoc($results)) {
+			while($location = $this->db->fetch_assoc($results, array("location_phone"))) {
 				$return[$location['location_ID']] = $location;
 			}
 			if (!is_null($location_ID)) {

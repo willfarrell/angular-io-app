@@ -128,6 +128,7 @@ function UserCtrl($scope, $http, $routeParams) {
 				$rootScope.alerts 		= (data.alerts) ? data.alerts : [];
 				if (!data.alerts && !data.errors) {
 					$scope.email = {};
+					$rootScope.updateSession();
 					$rootScope.alerts = [{'class':'success', 'label':'Change Email:', 'message':'Saved'}];
 				}
 			})

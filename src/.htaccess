@@ -39,7 +39,7 @@
 # code.google.com/p/html5security/wiki/CrossOriginRequestSecurity
 
 <IfModule mod_headers.c>
-  Header set Access-Control-Allow-Origin "http://app.angular:8888,http://app.angulario.com/"
+  Header set Access-Control-Allow-Origin "*"
 </IfModule>
 
 

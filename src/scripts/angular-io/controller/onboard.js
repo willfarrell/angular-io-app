@@ -27,6 +27,7 @@ function OnboardCtrl($scope, $cookies, $http, $routeParams) {
 			    				console.log('BuildProgressTracker.get.success');
 			    				$rootScope.updateSession(function(){
 			    					$scope.href('#/'+($cookies.redirect ? $cookies.redirect : $rootScope.settings.dashboard));
+			    					$cookies.redirect = null;
 			    				});
 			    			})
 							.error(function() {

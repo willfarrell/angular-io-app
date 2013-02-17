@@ -214,7 +214,7 @@ class Company extends Core {
 					array('company_ID' => $company['company_ID'], 'location_ID' => $company['location_default_ID']),
 					array('location_ID', 'company_ID', 'location_name', 'address_1', 'address_2', 'city', 'region_code', 'country_code', 'mail_code', 'latitude', 'longitude', 'location_phone')
 				);
-				while ($results && $location = $this->db->fetch_assoc($results)) {
+				while ($results && $location = $this->db->fetch_assoc($results, array("location_phone"))) {
 					//$location['primary'] = true;
 					//$location['company_ID'] =  $location['company_ID'];
 					//$location['location_ID'] =  $location['location_ID'];
@@ -279,7 +279,7 @@ class Company extends Core {
 				array('company_ID' => $company['company_ID'], 'location_ID' => $company['location_default_ID']),
 				array('location_ID', 'company_ID', 'location_name', 'address_1', 'address_2', 'city', 'region_code', 'country_code', 'mail_code', 'latitude', 'longitude', 'location_phone')
 			);
-			while ($results && $location = $this->db->fetch_assoc($results)) {
+			while ($results && $location = $this->db->fetch_assoc($results, array("location_phone"))) {
 				//$location['primary'] = true;
 				//$location['company_ID'] =  $location['company_ID'];
 				//$location['location_ID'] =  $location['location_ID'];

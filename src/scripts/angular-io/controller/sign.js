@@ -2,12 +2,11 @@
 //.controller('SignCtrl', ['$scope', '$http', '$cookies', '$routeParams', function($scope, $http, $cookies, $routeParams) {
 SignCtrl.$inject = ['$scope', '$http', '$cookies', '$routeParams'];
 function SignCtrl($scope, $http, $cookies, $routeParams) {
-	console.log('SignCtrl ('+$scope.$id+') '+$routeParams.action+' '+$routeParams.redirect);
+	console.log('SignCtrl ('+$scope.$id+') '+$routeParams.action);
 	
 	$scope.errors = {};		// form errors
 	$scope.action = $routeParams.action ? $routeParams.action : 'in';
-	$cookies.redirect = $routeParams.redirect;
-	
+
 	//-- Sign Up --//
 	$scope.signup = {
 		//email:'',
@@ -32,9 +31,10 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 				$rootScope.alerts = (data.alerts) ? data.alerts : [];
 				if (!data.alerts && !data.errors) {
 					//$scope.signup = {};
-
+					$scope.signin.email = $scope.signup.email;
+					
 					$scope.action = 'in';
-					$rootScope.alerts = [{'class':'success', 'label':'Account created!', 'message':'Check your email for a activation link.'}];
+					$rootScope.alerts = [{'class':'success', 'label':'Account created!', 'message':'Check your email for an activation link.'}];
 				}
 			})
 			.error(function() {
@@ -83,6 +83,7 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 					//$scope.refresh();
 					console.log($cookies.redirect);
 					$scope.href('#/'+($cookies.redirect ? $cookies.redirect : $rootScope.settings.dashboard));
+					$cookies.redirect = null;
 				}
 			})
 			.error(function() {
@@ -114,12 +115,15 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 	};
 	//-- End Sign Out --//
 	
+	if ($routeParams.confirm_hash) {
+		$scope.action = 'in';
+	}
 	if ($scope.action == 'out') {
 		$scope.account_signout();
 		$scope.action = 'in';
-	} else {
+	} else if ($rootScope.session.user_ID) {
 		// redirect if already signed in
-		if ($rootScope.session.user_ID) $scope.href('#/'+$rootScope.settings.dashboard);
+		 //$scope.href('#/'+$rootScope.settings.dashboard);
 	}
 	
 

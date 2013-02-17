@@ -226,9 +226,9 @@ class Account extends Core {
 			$expire_timestamp = $_SERVER['REQUEST_TIME']+360;
 			
 			$hash = substr(hash("sha512", $email.$_SERVER['REQUEST_TIME']), 0, 16);
-echo "here";			
+			
 			$this->notify->send($user['user_ID'], 'password_reset_request', array("hash" => $hash), "email");
-			echo "here";
+			
 			$insert = array('user_ID' => $user['user_ID'], 'hash' => $hash, 'expire_timestamp' => $expire_timestamp);
 			//$this->redis->hmset($hash, array('hash' => $hash, 'user_ID' => $user['user_ID'], 'expire_timestamp' => $expire_timestamp));
 			$this->db->insert_update('user_reset', $insert, $insert);

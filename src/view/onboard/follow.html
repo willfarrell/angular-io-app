@@ -10,14 +10,24 @@
 		
 		<table class="table table-striped table-bordered">
 	      	<tbody>
-		      	<tr ng-repeat="f in follow_suggest"><!--  ng-click="href('#/company/view/'+company.company_ID)" -->
+		      	<tr ng-repeat="f in follow_suggest" data-ng-show="f.user_ID"><!--  ng-click="href('#/company/view/'+company.company_ID)" -->
 			        <td><img data-ng-src="/img/user/{{f.user_ID}}.png" width="50" height="50" /></td>
 			        <td>
 			        	{{f.name}}<br>
 			        	<div data-ng-include="'follow-groups'"></div>
 			        </td>
 			        <td>
-						<div data-ng-include="'follow-button-user'"></div>
+						<div data-ng-include="'follow-button'"></div>
+			        </td>
+		        </tr>
+		        <tr ng-repeat="f in follow_suggest" data-ng-hide="f.user_ID"><!--  ng-click="href('#/company/view/'+company.company_ID)" -->
+			        <td><img data-ng-src="/img/company/{{f.company_ID}}.png" width="50" height="50" /></td>
+			        <td>
+			        	{{f.company_name}}<br>
+			        	<div data-ng-include="'follow-groups'"></div>
+			        </td>
+			        <td>
+						<div data-ng-include="'follow-button'"></div>
 			        </td>
 		        </tr>
 		        <tr data-ng-hide="objectLength(follow_suggest)">
