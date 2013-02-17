@@ -39,11 +39,36 @@ angular.module('io.init.rootScope', [])
 		'account': {
 			'user_name'		:false,	// Require username in profile
 			'company'		:false,
-			'follow'		:false
+			'company_user'	:false
 		},
+		'notify': {},		// notify setting defaults - must sync with message.json
 		'onboard':{
 			'required'		:false,	// always true
 			'start'			:''		// url of dashboard ie #/app
+		},
+		'filepicker': {
+			'user_single_image': {
+				action:'user_single_image',
+				types: ['image/*'],
+				extensions: ['.jpg', '.jpeg', '.gif', '.bmp', '.png'],
+				services: ['COMPUTER'],
+				service: 'COMPUTER',
+				multi:false,
+				resizecrop:true,
+				width:200,
+				height:200
+			},
+			'company_single_image' : {
+				action:'company_single_image',
+				types: ['image/*'],
+				extensions: ['.jpg', '.jpeg', '.gif', '.bmp', '.png'],
+				services: ['COMPUTER'],
+				service: 'COMPUTER',
+				multi:false,
+				resizecrop:true,
+				width:300,
+				height:200
+			}
 		}
 		
 	};
@@ -76,11 +101,15 @@ angular.module('io.init.rootScope', [])
 			.success(function(data) {
 				console.log('updateSession.get.success');
 				console.log(data);
-				$rootScope.session = syncVar(data, $rootScope.session);
-				//$rootScope.session.timestamp = +new Date();
-				
-				$rootScope.saveSession();
-				if (callback) $rootScope.$eval(callback());
+				if (data == []) {
+					$rootScope.href('#/sign/out');
+				} else {
+					$rootScope.session = syncVar(data, $rootScope.session);
+					//$rootScope.session.timestamp = +new Date();
+					
+					$rootScope.saveSession();
+					if (callback) $rootScope.$eval(callback());
+				}
 			})
 			.error(function() {
 				console.log('updateSession.get.error');
@@ -124,6 +153,8 @@ angular.module('io.init.rootScope', [])
 	$rootScope.require_signin = function(callback) {
 		console.log('require_signin(callback)');
 		console.log(callback);
+		//console.log($rootScope.settings);
+		//console.log($rootScope.session);
 		
 		// not signed in -> sign/in
 		if (objectIsEmpty($rootScope.session)) {
@@ -139,7 +170,7 @@ angular.module('io.init.rootScope', [])
 		
 		// haven't completed manditory onboard steps -> onboard
 		} else if ($rootScope.settings.onboard.required && !$rootScope.session.timestamp_create && $rootScope.uri().match(/#\/onboard/) === null) {
-			console.log("onboard not copleted = "+($rootScope.settings.onboard.required)+" && "+!$rootScope.session.timestamp_create+" && "+($rootScope.uri().match(/#\/onboard/) === null));
+			console.log("onboard not completed = "+($rootScope.settings.onboard.required)+" && "+!$rootScope.session.timestamp_create+" && "+($rootScope.uri().match(/#\/onboard/) === null));
 			$rootScope.href('#/onboard/'+$rootScope.settings.onboard.start);
 		
 		// has an old password -> change pass
