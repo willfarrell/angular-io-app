@@ -1,25 +1,43 @@
 {
 	"signup_confirm_email": {
+		"default": {
+			"email":true
+		},
 		"subject": "Action - Confirm Your Email",
 		"message": "You (or someone else) entered this email address when creating an account at {{global:site_name}}.\n\nIf you did not create an account, you can ignore this message.\n\nTo confirm your email, please proceed to\n {{global:site_url}}#/confirm/{{args:hash}}\n\nor enter {{args:hash}} when requested after login.\n\nThis action was requested from the IP address {{_SERVER:REMOTE_ADDR}}."
 	},
 	"password_reset_request": {
+		"default": {
+			"email":true
+		},
 		"subject": "Account Access Attempted",
 		"message": "You (or someone else) entered this email address when trying to change the password of your {{global:site_name}} account.\n\nIf you did not request this, someone else may have access to your email account. We recommend you change your email account password and your {{global:site_name}} account password to be safe.\n\nTo continue the password reset process, please proceed to\n {{global:site_url}}#/reset/{{args:hash}}\n within 60 minutes of receiving this email.\n\nThis action was requested from the IP address {{_SERVER:REMOTE_ADDR}}."
 	},
 	"password_reset_request_fail": {
+		"default": {
+			"email":true
+		},
 		"subject": "",
 		"message": "You (or someone else) entered this email address when trying to change the password of an account at {{global:site_name}}.\n\nHowever, this email address is not in our database of registered users and therefore the attempted password change has failed.\n\nIf you are a customer of {{global:site_name}} and were expecting this email, please try again using the email address you gave when you opening your account.\n\nIf you are not a customer of {{global:site_name}}, please ignore this email.\n\nFor information about {{global:site_name}}, please visit {{global:site_url}}.\n\nThis action was requested from the IP address {{_SERVER:REMOTE_ADDR}}."
 	},
 	"password_reset_request_new": {
+		"default": {
+			"email":true
+		},
 		"subject": "Account Created",
 		"message": "Hopefully this email doesn't come as a surprise.  An account has just been created for you by {{from:user_name_first}} at {{global:site_name}}.\n\nTo complete your account, proceed to\n {{global:site_url}}#/reset/{{args:hash}}\n\n\nThis action was requested from the IP address {{_SERVER:REMOTE_ADDR}}."
 	},
 	"password_changed_notification": {
+		"default": {
+			"email":true
+		},
 		"subject": "Account Password Changed",
 		"message": "Your {{global:site_name}} account password was just changed.\n\nIf you did not make this change, request a password reset immediately by visiting {{global:site_url}}#/sign/reset."
 	},
 	"email_changed_notification": {
+		"default": {
+			"email":true
+		},
 		"subject": "Account Email Changed",
 		"message": "Your {{global:site_name}} account email was just changed.\n\nTo confirm your email, please proceed to\n {{global:site_url}}#/confirm/{{args:hash}}\n\nThis action was requested from the IP address {{_SERVER:REMOTE_ADDR}}."
 	},

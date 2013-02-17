@@ -69,12 +69,11 @@ class Notify {
 		$this->vars['to'] = $to;
 		
 		// privacy defaults
-		$notify = array(
-			"email" => true,
-			"sms" => false,
-			//"mobilepush" => false
-		);
-		
+		$notify = (isset($this->templates[$message_ID]['default'])) ? $this->templates[$message_ID]['default'] : array();
+		foreach ($types as $type) {
+			if (!isset($notify[$type])) $notify[$type] = false;
+		}
+			
 		// get user privacy settings
 		// {message_ID:{"email":true,"sms":false}
 		$notify_all = json_decode($to['notify_json']);
@@ -89,9 +88,9 @@ class Notify {
 		list($message, $subject) = $this->compile($message_ID, $args); // support legacy
 		
 		// send via types
-		if (in_array("email", $types) && isset($notify['email']) && $notify['email'])
+		if (in_array("email", $types) && $notify['email'])
 			$this->email->send($to['user_email'], $subject, $message);
-		if (in_array("sms", $types) && isset($notify['sms']) && $notify['sms'])
+		if (in_array("sms", $types) && $notify['sms'])
 			$this->sms->send($to['user_phone'], $message);
 		/*
 		if (in_array("mobilepush", $types) && isset($notify['mobilepush']) && $notify['mobilepush'])

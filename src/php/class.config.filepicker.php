@@ -73,6 +73,7 @@ class FilepickerConfig extends Core {
 	// method = get|post|delete
 	function permissionAllowed($method, $action, $ID=NULL) {
         $allowed = false;
+        
 		switch ($action) {
 			case 'user_single_image':
 				$allowed = ($allowed || ($ID == USER_ID));
