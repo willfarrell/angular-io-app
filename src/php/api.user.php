@@ -35,36 +35,6 @@ class User extends Core {
 		return $return;
 	}
 	
-	function get_onboard_done() {
-		if (USER_ID) {
-			$this->db->update(
-				'users',
-				array(
-					'timestamp_create'  => $_SERVER['REQUEST_TIME'],
-					'timestamp_update'  => $_SERVER['REQUEST_TIME'],
-				),
-				array('user_ID' => USER_ID)
-			);
-			$this->session->update(); // update user_level
-		}
-	}
-
-	function post_onboard($request_data=NULL) {
-		$return = array();
-
-		// validate and sanitize
-		$this->filter->set_request_data($request_data);
-		$this->filter->set_group_rules('contact');
-		$this->filter->set_key_rules(array('email', 'message'), 'required');
-		if(!$this->filter->run()) {
-			$return["errors"] = $this->filter->get_errors('error');
-			return $return;
-		}
-		$request_data = $this->filter->get_request_data();
-
-		return $return;
-	}
-	
 	/*
 	*/
 	function get_name($username=NULL) {

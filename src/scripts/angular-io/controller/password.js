@@ -7,7 +7,7 @@ function PasswordCtrl($scope, $http) {
 	$scope.errors = {};
 	
 	$scope.updatePassword = function() {
-		$http.put($scope.settings.server+'account/password_change/', $scope.password)
+		$http.put($scope.settings.server+'/account/password_change/', $scope.password)
 			.success(function(data) {
 				console.log('updatePassword.put.success');
 				console.log(data);
@@ -26,7 +26,7 @@ function PasswordCtrl($scope, $http) {
 	
 	$scope.resetPassword = function(email) {
 		console.log('reset_password()');
-		$http.get($scope.settings.server+'account/reset_send/'+encodeURIComponent(email))
+		$http.get($scope.settings.server+'/account/reset_send/'+encodeURIComponent(email))
 			.success(function(data) {
 				console.log('resetPassword.get.success');
 				console.log(data);

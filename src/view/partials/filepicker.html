@@ -136,7 +136,7 @@
         
         <div class="pull-right">
 	        <div class="btn-group">
-	        	<a	class="btn btn-primary" href="{{settings.server}}filepicker/download/{{filepicker.args.action}}/{{filepicker.args.ID}}">Download .zip</a>
+	        	<a	class="btn btn-primary" data-ng-href="{{settings.server}}/filepicker/download/{{filepicker.args.action}}/{{filepicker.args.ID}}">Download .zip</a>
 	        </div>
 	        <div class="btn-group">
 	        	<button class="btn" data-dismiss="modal" data-ng-click="filepicker.close()">Close</button>
@@ -159,7 +159,7 @@
 <script type="text/ng-template" id="filepicker-download-list">
 	<ul class="unstyled">
     	<li data-ng-repeat="file in filepicker.args.files" data-ng-click="filepicker.downloadFile(file.name)">
-    		<a href="{{settings.server}}filepicker/download/{{filepicker.args.action}}/{{filepicker.args.ID}}/{{file.name}}">
+    		<a data-ng-href="{{settings.server}}/filepicker/download/{{filepicker.args.action}}/{{filepicker.args.ID}}/{{file.name}}">
         		<i class="icon-cloud-download"></i>&nbsp;
         		<span>{{file.name}} ({{file.size_str}})</span>
         		<i class="pull-right">{{file.date*1000 | date}}</i>

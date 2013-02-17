@@ -12,13 +12,14 @@ function ConfirmCtrl($scope, $http, $routeParams) {
 		$scope.errors = {};
 		
 		hash || (hash = $scope.hash);
-		$http.get($scope.settings.server+'account/confirm_email/'+encodeURIComponent(hash))
+		$http.get($scope.settings.server+'/account/confirm_email/'+encodeURIComponent(hash))
 			.success(function(data) {
 				console.log(data);
 				if (data.alerts) $rootScope.alerts = data.alerts;
 				if (data.errors) $scope.errors = data.errors;
 				if (!data.alerts && !data.errors) {
 					$rootScope.session.email_confirm = true;
+					console.log($rootScope.session);
 					$rootScope.saveSession();
 					$rootScope.alerts = [{'class':'success', 'label':'Email Confirmation:', 'message':'Confirmed'}];
 				}
@@ -27,7 +28,7 @@ function ConfirmCtrl($scope, $http, $routeParams) {
 	
 	$scope.resend = function() {
 		$scope.errors = {};
-		$http.get($scope.settings.server+'account/resend_confirm_email/')
+		$http.get($scope.settings.server+'/account/resend_confirm_email/')
 			.success(function(data) {
 				console.log(data);
 				if (data.alerts) $rootScope.alerts = data.alerts;

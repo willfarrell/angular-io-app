@@ -20,7 +20,7 @@ function CompanyCtrl($scope, $http, $routeParams) {
 		console.log('loadCompany('+profile_ID+')');
 		profile_ID || (profile_ID = 0);
 		
-		$http.get($scope.settings.server+'company/'+profile_ID)
+		$http.get($scope.settings.server+'/company/'+profile_ID)
 			.success(function(data) {
 				console.log(data);
 				$scope.errors.user	= (data.errors) ? data.errors : {};
@@ -45,7 +45,7 @@ function CompanyCtrl($scope, $http, $routeParams) {
 		console.log('loadCompanyName('+profile_name+')');
 		profile_name || (profile_name = '');
 		
-		$http.get($scope.settings.server+'company/name/'+profile_name)
+		$http.get($scope.settings.server+'/company/name/'+profile_name)
 			.success(function(data) {
 				console.log('loadCompanyName.get.success');
 				console.log(data);
@@ -72,7 +72,7 @@ function CompanyCtrl($scope, $http, $routeParams) {
 		$rootScope.alerts = [];
 		
 		if ($scope.company.company_ID) {	// update
-			$http.put($scope.settings.server+'company/', $scope.company)
+			$http.put($scope.settings.server+'/company/', $scope.company)
 				.success(function(data) {
 					console.log(data);
 					$scope.errors 		= (data.errors) ? data.errors : {};
@@ -88,7 +88,7 @@ function CompanyCtrl($scope, $http, $routeParams) {
 					$rootScope.http_error();
 				});
 		} else {	// create
-			$http.post($scope.settings.server+'company/', $scope.company)
+			$http.post($scope.settings.server+'/company/', $scope.company)
 				.success(function(data) {
 					console.log(data);
 					$scope.errors 		= (data.errors) ? data.errors : {};
@@ -111,7 +111,7 @@ function CompanyCtrl($scope, $http, $routeParams) {
 	//-- Locations --//
 	$scope.loadLocations = function() {
 		console.log('loadLocations');
-		$http.get($scope.settings.server+'location/')
+		$http.get($scope.settings.server+'/location/')
 			.success(function(data) {
 				console.log(data);
 				$scope.errors.user	= (data.errors) ? data.errors : {};
@@ -156,7 +156,7 @@ function CompanyCtrl($scope, $http, $routeParams) {
 		$rootScope.alerts = [];
 		
 		if ($scope.location.location_ID) {	// update
-			$http.put($scope.settings.server+'location/', $scope.location)
+			$http.put($scope.settings.server+'/location/', $scope.location)
 				.success(function(data) {
 					console.log('updateLocation.put.success');
 					console.log(data);
@@ -172,7 +172,7 @@ function CompanyCtrl($scope, $http, $routeParams) {
 					$rootScope.http_error();
 				});
 		} else {	// create
-			$http.post($scope.settings.server+'location/', $scope.location)
+			$http.post($scope.settings.server+'/location/', $scope.location)
 				.success(function(data) {
 					console.log('updateLocation.post.success');
 					console.log(data);
@@ -193,7 +193,7 @@ function CompanyCtrl($scope, $http, $routeParams) {
 	
 	$scope.deleteLocation = function(id) {
 		console.log('deleteLocation('+id+')');
-		$http.delete($scope.settings.server+'location/'+id)
+		$http.delete($scope.settings.server+'/location/'+id)
 			.success(function(data) {
 				console.log('deleteLocation.delete.success');
 				console.log(data);
@@ -212,7 +212,7 @@ function CompanyCtrl($scope, $http, $routeParams) {
 	//-- Users --//
 	$scope.loadUsers = function() {
 
-		$http.get($scope.settings.server+'company/user/').success(function(data) {
+		$http.get($scope.settings.server+'/company/user/').success(function(data) {
 			console.log(data);
 			$scope.errors.user	= (data.errors) ? data.errors : {};
 			$rootScope.alerts 	= (data.alerts) ? data.alerts : [];
@@ -243,7 +243,7 @@ function CompanyCtrl($scope, $http, $routeParams) {
 		$rootScope.alerts = [];
 		
 		if ($scope.user.user_ID) {	// update
-			$http.put($scope.settings.server+'company/user/', $scope.user)
+			$http.put($scope.settings.server+'/company/user/', $scope.user)
 				.success(function(data) {
 					console.log('updateUser.put.success');
 					console.log(data);
@@ -259,7 +259,7 @@ function CompanyCtrl($scope, $http, $routeParams) {
 					$rootScope.http_error();
 				});
 		} else {	// create
-			$http.post($scope.settings.server+'company/user/', $scope.user)
+			$http.post($scope.settings.server+'/company/user/', $scope.user)
 				.success(function(data) {
 					console.log('updateUser.post.success');
 					console.log(data);

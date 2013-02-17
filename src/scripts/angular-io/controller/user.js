@@ -21,7 +21,7 @@ function UserCtrl($scope, $http, $routeParams) {
 		console.log('loadUser('+profile_ID+')');
 		profile_ID || (profile_ID = 0);
 		
-		$http.get($scope.settings.server+'user/'+profile_ID)
+		$http.get($scope.settings.server+'/user/'+profile_ID)
 			.success(function(data) {
 				console.log('loadUser.get.success');
 				console.log(data);
@@ -40,7 +40,7 @@ function UserCtrl($scope, $http, $routeParams) {
 		console.log('loadUserName('+profile_name+')');
 		profile_name || (profile_name = '');
 		
-		$http.get($scope.settings.server+'user/name/'+profile_name)
+		$http.get($scope.settings.server+'/user/name/'+profile_name)
 			.success(function(data) {
 				console.log('loadUser.get.success');
 				console.log(data);
@@ -59,7 +59,7 @@ function UserCtrl($scope, $http, $routeParams) {
 	$scope.updateUser = function() {
 		console.log('updateUser()');
 		if ($scope.user.user_ID) {	// update
-			$http.put($scope.settings.server+'user/', $scope.user)
+			$http.put($scope.settings.server+'/user/', $scope.user)
 				.success(function(data) {
 					console.log('updateUser.put.success');
 					console.log(data);
@@ -84,7 +84,7 @@ function UserCtrl($scope, $http, $routeParams) {
 	};
 	$scope.deleteUser = function() {
 		if (confirm('Are you sure you want to delete your account?')) {
-			$http.get($scope.settings.server+'user/delete')
+			$http.get($scope.settings.server+'/user/delete')
 				.success(function(){
 					$scope.href('#/sign/out');
 				})
@@ -100,7 +100,7 @@ function UserCtrl($scope, $http, $routeParams) {
 		
 		if (user_name) {	// update
 			//$scope.user.user_name = user_name.replace(/[^a-z0-9_]/, "");
-			$http.get($scope.settings.server+'account/unique/'+encodeURIComponent(user_name))
+			$http.get($scope.settings.server+'/account/unique/'+encodeURIComponent(user_name))
 				.success(function(data) {
 					console.log(data);
 					$scope.errors.user 	= (data.errors) ? data.errors : {};
@@ -121,7 +121,7 @@ function UserCtrl($scope, $http, $routeParams) {
 	};
 
 	$scope.updateEmail = function() {
-		$http.put($scope.settings.server+'account/email_change/', $scope.email)
+		$http.put($scope.settings.server+'/account/email_change/', $scope.email)
 			.success(function(data) {
 				console.log(data);
 				$scope.errors.email		= (data.errors) ? data.errors : {};

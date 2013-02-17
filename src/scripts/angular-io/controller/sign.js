@@ -23,7 +23,7 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 		console.log('account_signup()');
 		$scope.signup.referral = $cookies.referral;
 
-		$http.post($scope.settings.server+'account/signup', $scope.signup)
+		$http.post($scope.settings.server+'/account/signup', $scope.signup)
 			.success(function(data) {
 				console.log('account_signup.post.success');
 				console.log(data);
@@ -55,7 +55,7 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 		console.log('account_signin()');
 		//redirect || (redirect = '#/');
 
-		$http.post($scope.settings.server+'account/signin',
+		$http.post($scope.settings.server+'/account/signin',
 			{
 				email:		$scope.signin.email,
 				password:	$scope.signin.password,
@@ -81,9 +81,9 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 					//$scope.signin_callbacks(); // runs all callbacks that were set by siblings
 					// refresh page
 					//$scope.refresh();
-					console.log($cookies.redirect);
-					$scope.href('#/'+($cookies.redirect ? $cookies.redirect : $rootScope.settings.dashboard));
+					var redirect = ($cookies.redirect ? $cookies.redirect : $rootScope.settings.dashboard);
 					$cookies.redirect = null;
+					$scope.href('#/'+redirect);
 				}
 			})
 			.error(function() {
@@ -99,7 +99,7 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 		db.clear(); // clear localstorage
 		if (objectLength($rootScope.session)) {	// prevent multiple calls
 			$rootScope.resetSession();
-			$http.get($scope.settings.server+'account/signout')
+			$http.get($scope.settings.server+'/account/signout')
 				.success(function(data) {
 					console.log('account_signout.get.success');
 					console.log(data);

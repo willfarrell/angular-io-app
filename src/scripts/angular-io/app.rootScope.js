@@ -72,7 +72,7 @@ angular.module('io.init.rootScope', [])
 		console.log('updateSession(callback)');
 		console.log(callback);
 		
-		$http.get($rootScope.settings.server+'account/session')	// re-get session data if currently no storing any
+		$http.get($rootScope.settings.server+'/account/session')	// re-get session data if currently no storing any
 			.success(function(data) {
 				console.log('updateSession.get.success');
 				console.log(data);
@@ -89,7 +89,7 @@ angular.module('io.init.rootScope', [])
 	};
 	$rootScope.regenSession = function() {
 		console.log('regenSession()');
-		$http.get($rootScope.settings.server+'account/regen')
+		$http.get($rootScope.settings.server+'/account/regen')
 			.success(function(data) {
 				console.log('regenSession.get.success');
 			})
@@ -102,7 +102,7 @@ angular.module('io.init.rootScope', [])
 		console.log('checkSession(callback)');
 		console.log(callback);
 		
-		$http.get($rootScope.settings.server+'account/signcheck')
+		$http.get($rootScope.settings.server+'/account/signcheck')
 			.success(function(data) {
 				console.log('checkSession.get.success');
 				console.log(data);
@@ -134,12 +134,12 @@ angular.module('io.init.rootScope', [])
 		
 		// email not confirmed -> onboard
 		} else if ($rootScope.settings.onboard.required && !$rootScope.session.email_confirm && $rootScope.uri().match(/#\/onboard\/email/) === null) {
-			console.log(($rootScope.settings.onboard.required)+" && "+!$rootScope.session.email_confirm+" && "+($rootScope.uri().match(/#\/onboard/) === null));
+			console.log("email not confirmed = "+($rootScope.settings.onboard.required)+" && "+!$rootScope.session.email_confirm+" && "+($rootScope.uri().match(/#\/onboard/) === null));
 			$rootScope.href('#/onboard/email');
 		
 		// haven't completed manditory onboard steps -> onboard
 		} else if ($rootScope.settings.onboard.required && !$rootScope.session.timestamp_create && $rootScope.uri().match(/#\/onboard/) === null) {
-			console.log(($rootScope.settings.onboard.required)+" && "+!$rootScope.session.timestamp_create+" && "+($rootScope.uri().match(/#\/onboard/) === null));
+			console.log("onboard not copleted = "+($rootScope.settings.onboard.required)+" && "+!$rootScope.session.timestamp_create+" && "+($rootScope.uri().match(/#\/onboard/) === null));
 			$rootScope.href('#/onboard/'+$rootScope.settings.onboard.start);
 		
 		// has an old password -> change pass
@@ -222,7 +222,7 @@ angular.module('io.init.rootScope', [])
 	$rootScope.loadJSON = function(key, file, folder) {
 		folder || (folder = 'json');
 		console.log('loadJSON('+key+', '+file+')');
-		$http.get($rootScope.settings.client+folder+'/'+file+'.json')
+		$http.get($rootScope.settings.client+'/'+folder+'/'+file+'.json')
 			.success(function(data){
 				console.log('loadJSON.get.success');
 				//console.log(data);
@@ -266,7 +266,7 @@ angular.module('io.init.rootScope', [])
 	$rootScope.loadLocaleFile = function(locale, file) {
 		console.log('loadLocaleFile('+locale+', '+file+')');
 		
-		$http.get($rootScope.settings.client+'i18n/'+locale+'/'+file+'.json')
+		$http.get($rootScope.settings.client+'/i18n/'+locale+'/'+file+'.json')
 			.success(function(data) {
 				console.log('loadLocaleFile.get('+locale+'/'+file+').success');
 				//console.log(data);
@@ -305,7 +305,7 @@ angular.module('io.init.rootScope', [])
 		if ($rootScope.json.regions[country_code]) { return; }
 		
 		console.log('loadRegions('+country_code+')');
-		$http.get($rootScope.settings.client+'i18n/'+$rootScope.language+'/geo/'+country_code+'.json')
+		$http.get($rootScope.settings.client+'/i18n/'+$rootScope.language+'/geo/'+country_code+'.json')
 			.success(function(data){
 				console.log('loadRegions.get.success');
 				$rootScope.json.regions[country_code] = data;

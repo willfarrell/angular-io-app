@@ -72,7 +72,7 @@ angular.module('io.factory.filepicker', [])
 	$scope.loadFiles = function() {
 		if (!$scope.args.multi) return;
 		// get files json
-		$http.get($rootScope.settings.server+'filepicker/list/'+$scope.args.action+'/'+$scope.args.ID)
+		$http.get($rootScope.settings.server+'/filepicker/list/'+$scope.args.action+'/'+$scope.args.ID)
 			.success(function(data) {
 				$scope.args.files = data;
 			})
@@ -125,7 +125,7 @@ angular.module('io.factory.filepicker', [])
 	};
 	
 	$scope.downloadFile = function(file) {
-		$http.post($rootScope.settings.server+'filepicker/download/'+$scope.args.action+'/'+$scope.args.ID, {"file":file})
+		$http.post($rootScope.settings.server+'/filepicker/download/'+$scope.args.action+'/'+$scope.args.ID, {"file":file})
 			.success(function(data) {
 				console.log(data);
 				if (data.errors) $scope.errors = data.errors;
@@ -170,7 +170,7 @@ angular.module('io.factory.filepicker', [])
 	};
 	
 	$scope.delete = function(file) {
-		$http.delete($rootScope.settings.server+'filepicker/'+$scope.args.action+'/'+$scope.args.ID+'/'+encodeURIComponent(file))
+		$http.delete($rootScope.settings.server+'/filepicker/'+$scope.args.action+'/'+$scope.args.ID+'/'+encodeURIComponent(file))
 			.success(function(data) {
 				if (data.errors) $scope.errors = data.errors;
 				if (data.alerts) $scope.alerts = data.alerts;

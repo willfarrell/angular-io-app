@@ -14,7 +14,7 @@ function DashboardCtrl($scope, $http, $routeParams) {
 	
 	$scope.loadSearch = function() {
 		
-		$http.get($scope.settings.server+$scope.search.type+'/search/'+$scope.search.query)
+		$http.get($scope.settings.server+'/'+$scope.search.type+'/search/'+$scope.search.query)
 			.success(function(data){
 				console.log(data);
 				$scope.results = data;

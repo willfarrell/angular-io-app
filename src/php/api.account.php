@@ -201,7 +201,21 @@ class Account extends Core {
 		}
 		return $return;
 	}
-
+	
+	function get_onboard_done() {
+		if (USER_ID) {
+			$this->db->update(
+				'users',
+				array(
+					'timestamp_create'  => $_SERVER['REQUEST_TIME'],
+					'timestamp_update'  => $_SERVER['REQUEST_TIME'],
+				),
+				array('user_ID' => USER_ID)
+			);
+			$this->session->update();
+		}
+	}
+	
 	//!-- Two Factor Authentication --//
 	// to build
 

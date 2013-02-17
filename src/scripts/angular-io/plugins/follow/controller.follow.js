@@ -38,7 +38,7 @@ angular.module('io.controller.follow', [])
 		company_ID || (company_ID = 0);
 		user_ID || (user_ID = 0);
 		query || (query = '');
-		$http.get($rootScope.settings.server+'follow/ers/'+company_ID+'/'+user_ID+'/'+query)
+		$http.get($rootScope.settings.server+'/follow/ers/'+company_ID+'/'+user_ID+'/'+query)
 			.success(function(data) {
 				console.log('loadFollowing.get.success');
 				console.log(data);
@@ -61,7 +61,7 @@ angular.module('io.controller.follow', [])
 		company_ID || (company_ID = 0);
 		user_ID || (user_ID = 0);
 		query || (query = '');
-		$http.get($rootScope.settings.server+'follow/ing/'+company_ID+'/'+user_ID+'/'+query)
+		$http.get($rootScope.settings.server+'/follow/ing/'+company_ID+'/'+user_ID+'/'+query)
 			.success(function(data) {
 				console.log('loadFollowing.get.success');
 				console.log(data);
@@ -81,7 +81,7 @@ angular.module('io.controller.follow', [])
 	$scope.loadSuggestions = function() {
 		console.log('loadSuggestions()');
 		
-		$http.get($rootScope.settings.server+'follow/suggestions/'+true)
+		$http.get($rootScope.settings.server+'/follow/suggestions/'+true)
 			.success(function(data) {
 				console.log('loadSuggestions.get.success');
 				console.log(data);

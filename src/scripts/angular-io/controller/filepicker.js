@@ -492,7 +492,7 @@ angular.module('io.controller.filepicker', [])
         xhr.addEventListener("load", uploadComplete, false);
         xhr.addEventListener("error", uploadFailed, false);
         xhr.addEventListener("abort", uploadCanceled, false);
-        xhr.open("POST", $rootScope.settings.server+"filepicker/computer/"+$scope.filepicker.args.action+"/"+$scope.filepicker.args.ID);
+        xhr.open("POST", $rootScope.settings.server+'/filepicker/computer/'+$scope.filepicker.args.action+'/'+$scope.filepicker.args.ID);
         $scope.progressVisible = true;
         xhr.send(fd);
         //console.log("POST /filepicker/computer/"+$scope.filepicker.args.action);

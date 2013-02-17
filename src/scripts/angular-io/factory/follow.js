@@ -49,7 +49,7 @@ angular.module('io.factory.follow', [])
 		}
 		
 		//console.log($scope.db[type][id]);
-		$http.put($rootScope.settings.server+'follow/'+company_ID+'/'+user_ID+'/'+group_ID)
+		$http.put($rootScope.settings.server+'/follow/'+company_ID+'/'+user_ID+'/'+group_ID)
 			.success(function(data) {
 				console.log('addFollow.put.success');
 				console.log(data);
@@ -93,7 +93,7 @@ angular.module('io.factory.follow', [])
 			
 		}
 		
-		$http({'method':'DELETE', 'url':$rootScope.settings.server+'follow/'+company_ID+'/'+user_ID+'/'+group_ID})
+		$http({'method':'DELETE', 'url':$rootScope.settings.server+'/follow/'+company_ID+'/'+user_ID+'/'+group_ID})
 			.success(function() {
 				console.log('deleteFollow.put.success');
 			})
@@ -110,7 +110,7 @@ angular.module('io.factory.follow', [])
 		company_ID || (company_ID = 0);
 		user_ID || (user_ID = 0);
 		
-		$http.get($rootScope.settings.server+'follow/'+company_ID+'/'+user_ID)
+		$http.get($rootScope.settings.server+'/follow/'+company_ID+'/'+user_ID)
 			.success(function(data) {
 				console.log('loadFollow.get.success');
 				console.log(data);
@@ -130,7 +130,7 @@ angular.module('io.factory.follow', [])
 		user_ID || (user_ID = 0);
 		query || (query = '');
 		
-		$http.get($rootScope.settings.server+'follow/ers/'+company_ID+'/'+user_ID+'/'+query)
+		$http.get($rootScope.settings.server+'/follow/ers/'+company_ID+'/'+user_ID+'/'+query)
 			.success(function(data) {
 				console.log('loadFollowers.get.success');
 				console.log(data);
@@ -155,7 +155,7 @@ angular.module('io.factory.follow', [])
 		user_ID || (user_ID = 0);
 		query || (query = '');
 		
-		$http.get($rootScope.settings.server+'follow/ing/'+company_ID+'/'+user_ID+'/'+query)
+		$http.get($rootScope.settings.server+'/follow/ing/'+company_ID+'/'+user_ID+'/'+query)
 			.success(function(data) {
 				console.log('loadFollowing.get.success');
 				console.log(data);
@@ -175,7 +175,7 @@ angular.module('io.factory.follow', [])
 	
 	$scope.loadGroups = function() {
 		console.log('loadGroups()');
-		$http.get($rootScope.settings.server+'follow/group/')
+		$http.get($rootScope.settings.server+'/follow/group/')
 			.success(function(data) {
 				console.log('loadGroups.get.success');
 				console.log(data);
@@ -192,7 +192,7 @@ angular.module('io.factory.follow', [])
 	$scope.addGroup = function(group_name) {
 		console.log('addGroup('+group_name+')');
 		var color = strToARGB(group_name).substr(0,6);
-		$http.post($rootScope.settings.server+'follow/group/', {'group_name':group_name, 'color':color})
+		$http.post($rootScope.settings.server+'/follow/group/', {'group_name':group_name, 'color':color})
 			.success(function(data) {
 				console.log('addGroup.post.success');
 				console.log(data);
@@ -213,7 +213,7 @@ angular.module('io.factory.follow', [])
 
 	$scope.removeGroup = function(group_ID) {
 		console.log('removeGroup('+group_ID+')');
-		$http({'method':'DELETE', 'url':$rootScope.settings.server+'follow/group/'+group_ID})
+		$http({'method':'DELETE', 'url':$rootScope.settings.server+'/follow/group/'+group_ID})
 			.success(function(data) {
 				console.log('removeGroup.delete.success');
 				console.log(data);

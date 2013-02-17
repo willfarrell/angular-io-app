@@ -3,8 +3,8 @@ angular.module('io.init.settings', [])
 	console.log('io.init.settings ('+$rootScope.$id+')');
 	$rootScope.version = "β.5.5";
 	$rootScope.settings = {
-		'client'		:'',				// https://static.domain.com/
-		'server'		:'',				// https://api.domain.com/
+		'client'		:'',				// https://static.domain.com
+		'server'		:'',				// https://api.domain.com
 		
 		'dashboard'		:'app',				// app dashboard ie #/app - special button
 		//'offline'		:[],
@@ -35,7 +35,7 @@ angular.module('io.init.settings', [])
 			'calling_codes'	:'calling_codes',	// {'country_code':'calling_code'}
 		},
 		'account': {
-			'user_name'		:true,	// Require username in profile
+			'user_name'		:false,	// Require username in profile
 			'company'		:true,
 			'company_username':true
 		},

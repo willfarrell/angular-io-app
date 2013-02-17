@@ -9,7 +9,7 @@ function ContactCtrl($scope, $http) {
 	$scope.sendMessage = function() {
 		$scope.errors = {};
 
-		$http.post($scope.settings.server+'contact/', $scope.contact)
+		$http.post($scope.settings.server+'/contact/', $scope.contact)
 			.success(function(data) {
 				console.log(data);
 				if (data.alerts) $rootScope.alerts = data.alerts;
@@ -25,7 +25,7 @@ function ContactCtrl($scope, $http) {
 		$scope.errors = {};
 		$scope.contact.message = 'Please add me to your mailing list';
 
-		$http.post($scope.settings.server+'contact/', $scope.contact)
+		$http.post($scope.settings.server+'/contact/', $scope.contact)
 			.success(function(data) {
 				console.log(data);
 				if (data.alerts) $rootScope.alerts = data.alerts;

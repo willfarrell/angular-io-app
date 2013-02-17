@@ -19,7 +19,7 @@ function ResetCtrl($scope, $http, $routeParams) {
 	}; // reset form
 
 	$scope.check = function() {
-		$http.get($scope.settings.server+'account/reset_check/'+encodeURIComponent($scope.hash))
+		$http.get($scope.settings.server+'/account/reset_check/'+encodeURIComponent($scope.hash))
 			.success(function(data) {
 				console.log(data);
 				$scope.errors = (data.errors) ? data.errors : {};
@@ -42,7 +42,7 @@ function ResetCtrl($scope, $http, $routeParams) {
 
 
 	$scope.verify = function() {
-		$http.put($scope.settings.server+'account/reset_verify/', {hash:$scope.hash, id:$scope.ID})
+		$http.put($scope.settings.server+'/account/reset_verify/', {hash:$scope.hash, id:$scope.ID})
 			.success(function(data) {
 				console.log(data);
 				$scope.errors = (data.errors) ? data.errors : {};
@@ -60,7 +60,7 @@ function ResetCtrl($scope, $http, $routeParams) {
 	};
 
 	$scope.reset = function() {
-		$http.put($scope.settings.server+'account/reset_password/', $scope.password)
+		$http.put($scope.settings.server+'/account/reset_password/', $scope.password)
 			.success(function(data) {
 				console.log(data);
 				$scope.errors = (data.errors) ? data.errors : {};

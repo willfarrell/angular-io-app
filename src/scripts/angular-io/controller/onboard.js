@@ -22,12 +22,14 @@ function OnboardCtrl($scope, $cookies, $http, $routeParams) {
 		    	if (action === 'skip') {	// go to next page
 			    	if (i+1 < l) $scope.href(elements[ i+1 ].href);
 			    	else {	// onboard complete - update user_level if not done after subscribe
-			    		$http.get('user/onboard_done')
+			    		$http.get($rootScope.settings.server+'/account/onboard_done')
 			    			.success(function(data) {
 			    				console.log('BuildProgressTracker.get.success');
+			    				console.log(data);
 			    				$rootScope.updateSession(function(){
-			    					$scope.href('#/'+($cookies.redirect ? $cookies.redirect : $rootScope.settings.dashboard));
+			    					var redirect = ($cookies.redirect ? $cookies.redirect : $rootScope.settings.dashboard);
 			    					$cookies.redirect = null;
+			    					$scope.href('#/'+redirect);
 			    				});
 			    			})
 							.error(function() {

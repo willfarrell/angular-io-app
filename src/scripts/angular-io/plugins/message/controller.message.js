@@ -16,7 +16,7 @@ function MessageCtrl($scope, $http, $routeParams) {
 	$scope.loadMessages = function() {
 		$scope.init();
 		console.log('loadMessages()');
-		$http.get($rootScope.settings.server+'message/list')
+		$http.get($rootScope.settings.server+'/message/list')
 			.success(function(data) {
 				console.log('loadMessages.get.success');
 				console.log(data);
@@ -40,7 +40,7 @@ function MessageCtrl($scope, $http, $routeParams) {
 		};
 		$rootScope.message.to_name = to_name;
 		
-		$http.get($rootScope.settings.server+'message/'+user_ID)
+		$http.get($rootScope.settings.server+'/message/'+user_ID)
 			.success(function(data) {
 				console.log('loadThread.get.success');
 				console.log(data);

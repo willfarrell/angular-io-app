@@ -34,7 +34,7 @@ angular.module('io.factory.message', [])
 	
 	$scope.updateUnreadCount = function() {
 		console.log('updateUnreadCount()');
-		$http.get($rootScope.settings.server+'message/unread')
+		$http.get($rootScope.settings.server+'/message/unread')
 			.success(function(data) {
 				console.log('updateUnreadCount.get.success');
 				console.log(data);
@@ -51,7 +51,7 @@ angular.module('io.factory.message', [])
 	$scope.send = function() {
 		console.log('send()');
 		
-		$http.post($rootScope.settings.server+'message', $scope.compose)
+		$http.post($rootScope.settings.server+'/message', $scope.compose)
 			.success(function(data) {
 				console.log('send.get.success');
 				console.log(data);
