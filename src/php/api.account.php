@@ -207,9 +207,20 @@ class Account extends Core {
 	
 	// check token based on service
 	function put_totp($code='') {
-		$ga = new TOTP;
+		$checkResult = false;
+		$totp = new TOTP;
 		
-		$checkResult = $ga->verifyCode(TOTP_SECRET, $code, 2);
+		$service = 'google';
+		switch ($service) {
+			case 'google':
+				$checkResult = $totp->verifyCode(TOTP_SECRET, $code, 2);
+				break;
+			case 'authy':
+				
+				break;
+		}
+		
+		
 		if ($checkResult) {
 			return $this->get_session();
 		}
