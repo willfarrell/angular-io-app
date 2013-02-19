@@ -168,8 +168,11 @@ class Account extends Core {
 
 		$login = $this->session->login($request_data['email'], $request_data['password'], isset($request_data['remember'])); // , $request_data['ua']
 		if ($login) {
-			//-- add app related session params here --//
-			return $this->get_session();
+			if ($this->session->cookie['totp_secret']) {
+				return array("totp" => true, "user_ID" => $this->session->cookie['user_ID']);
+			} else {
+				return $this->get_session();
+			}
 		}
 
 		$return["errors"]['signin'] = "Sign in information invalid.";
@@ -200,6 +203,16 @@ class Account extends Core {
 			$return["errors"]["confirm_code"] = "Confirmation code invalid.";
 		}
 		return $return;
+	}
+	
+	// check token based on service
+	function put_totp($code='') {
+		$ga = new TOTP;
+		
+		$checkResult = $ga->verifyCode(TOTP_SECRET, $code, 2);
+		if ($checkResult) {
+			return $this->get_session();
+		}
 	}
 	
 	function get_onboard_done() {

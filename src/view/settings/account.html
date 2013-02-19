@@ -6,8 +6,8 @@
     <div class="control-group" data-ng-class="{error: (errors.user.user_name)}" data-ui-if="settings.account.user_name">
       	<label class="control-label" for="user_name">Username</label>
       	<div class="controls">
-            <input type="text" class="input-block-level" name="user_name" placeholder="" data-ng-model="user.user_name" data-ng-minlength="3" data-ng-maxlength="14" data-ng-pattern="/^[\w]*$/" data-ng-change="check.user_name(user.user_name)">
-          	<span class="help-block"><a href="/#/profile/{{user.user_name}}">/#/profile/{{user.user_name}}</a></span>
+            <input type="text" class="input-block-level" name="user_name" placeholder="" data-ng-model="user.user_name" data-ng-minlength="3" data-ng-maxlength="14" data-ng-pattern="/^[\w]*$/" data-ng-change="check.user_name(user.user_name)" required>
+          	<span class="help-block"><a data-ng-href="/#/profile/{{user.user_name}}">/#/profile/{{user.user_name}}</a></span>
             <span class="help-block error" data-ng-show="userForm.user_name.$error.pattern">only alphanumeric characters and underscores allowed</span>
             <span class="help-block error" data-ng-show="userForm.user_name.$error.minlength">too short</span>
             <span class="help-block error" data-ng-show="userForm.user_name.$error.maxlength">too long</span>

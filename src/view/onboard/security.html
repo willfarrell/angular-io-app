@@ -1,0 +1,16 @@
+
+<div class="row-fluid" data-ng-controller="SecurityCtrl">
+	<div class="span6 offset3 well">
+		<legend>
+			Security
+			<div class="btn-group pull-right">
+				<button class="btn" data-ng-click="button.skip()">Skip &raquo;</button>
+			</div>
+		</legend>
+		
+		Google Authenticator
+		<img data-ng-src="{{totp.qrcode}}" width="200" height="200" />
+		{{totp}}
+	</div>
+	</div>
+</div>

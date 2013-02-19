@@ -87,15 +87,24 @@ class Session {
 		$result = $this->db->query($query, array('user_ID' => $this->cookie["user_ID"]));
 		if (!$result) return false;
 		$r = $this->db->fetch_assoc($result);
-
+		
+		// totp
+		if ($r['security_json']) {
+			$secret_json = json_decode($r['security_json']);
+			$totp_secret = (!is_array($secret_json)) ? $secret_json->totp->secret : null;
+		} else {
+			$totp_secret = null;
+		}
+		
 		// cookie vars different then default
 		$this->cookie["user_ID"] 	= $r['user_ID'];
 		$this->cookie["user_email"] = $r['user_email'];
 		$this->cookie["user_level"] = $r['user_level'];
 		//$this->cookie["remember"] 	= $remember;
 		$this->cookie["company_ID"] = $r['company_ID'];
+		$this->cookie["totp_secret"] = $totp_secret;
 		$this->cookie["timestamp"] 	= $_SERVER['REQUEST_TIME']+($this->cookie["remember"] ? COOKIE_EXPIRE_REMEMBER : COOKIE_EXPIRE);
-
+		
 		$this->update_id(true);	// change ID
 		$this->make_defined();
 		return true;
@@ -112,6 +121,7 @@ class Session {
 		$this->cookie["user_level"] 	= 0;
 		$this->cookie["remember"] 		= 0;
 		$this->cookie["company_ID"] 	= 0;
+		$this->cookie["totp_secret"] 	= null;
 		$this->cookie["timestamp"] 		= $_SERVER['REQUEST_TIME'] + COOKIE_EXPIRE;
 		return $this->cookie;
 	}
@@ -153,17 +163,15 @@ class Session {
 		if (!$this->password->check($password, $r['password'], $r['user_email'])) {
 			return false;	// password doesn't match
 		}
-
+		
 		// cookie vars different then default
 		$this->cookie["user_ID"] 	= $r['user_ID'];
-		$this->cookie["user_email"] = $r['user_email'];
-		$this->cookie["user_level"] = $r['user_level'];
 		$this->cookie["remember"] 	= $remember;
-		$this->cookie["company_ID"] = $r['company_ID'];
-		$this->cookie["timestamp"] 	= $_SERVER['REQUEST_TIME']+($this->cookie["remember"] ? COOKIE_EXPIRE_REMEMBER : COOKIE_EXPIRE);
+		$this->update();
+		
 
-		$this->update_id(true);	// change ID
-		$this->make_defined();
+		//$this->update_id(true);	// change ID
+		//$this->make_defined();
 		return $r['user_ID'];
 	}
 

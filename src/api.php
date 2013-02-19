@@ -32,6 +32,7 @@ require_once 'php/Restler/restler.php'; // Change made in Restler.php : generate
 
 // Include API Classes
 require_once 'php/api.account.php';
+	require_once 'php/api.totp.php';
 require_once 'php/api.user.php';
 	require_once 'php/api.message.php';	// plugin
 	require_once 'php/api.follow.php';	// plugin
@@ -53,6 +54,7 @@ $r->setSupportedFormats('JsonpFormat');
 
 // services
 $r->addAPIClass('Account');
+$r->addAPIClass('TOTP');
 $r->addAPIClass('Contact'); // replace with message???
 //$r->addAPIClass('Img');
 

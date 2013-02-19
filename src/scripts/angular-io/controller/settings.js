@@ -15,7 +15,10 @@ function SettingsCtrl($scope, $http, $routeParams) {
  	$scope.loadNotifications = function() {
  		$http.get($scope.settings.server+'/user/notify')
  			.success(function(data) {
-	 			$scope.notify = data;
+	 			console.log(data);
+	 			if (data != "") {
+	 				$scope.notify = data;
+	 			}
  			})
  			.error(function(){
 	 			
@@ -23,6 +26,7 @@ function SettingsCtrl($scope, $http, $routeParams) {
  	};
  	
  	$scope.updateNotifications = function() {
+ 		console.log($scope.notify);
  		$http.put($scope.settings.server+'/user/notify', $scope.notify)
  			.success(function(data) {
 	 			$rootScope.alerts = [{"class":"success", "label":"Notifications:", "message":"Saved"}]
@@ -32,6 +36,7 @@ function SettingsCtrl($scope, $http, $routeParams) {
  			});
  	};
  	
+ 	$scope.loadNotifications();
  	$scope.require_signin();
 }
 //}]);

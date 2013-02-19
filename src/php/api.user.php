@@ -70,14 +70,38 @@ class User extends Core {
 		return $return;
 	}
 	
-	// notification privacy
+	// notification privacy settings
 	function get_notify() {
-		$r = $this->db->select("user", array("user_ID"=>USER_ID), array("notify_json"));
-		if ($r) return $this->db->fetch_assoc($r);
+		$r = $this->db->select("users", array("user_ID"=>USER_ID), array("notify_json"));
+		if ($r) {
+			$json = $this->db->fetch_assoc($r);
+			return json_decode($json['notify_json']);
+		}
 	}
 	
 	function put_notify($request_data=array()) {
+		$this->__log($request_data);
 		$this->db->update("users", array("notify_json" => json_encode($request_data)), array("user_ID"=>USER_ID));
+		echo $this->db->last_query;
+	}
+	
+	// security settings
+	function get_security() {
+		$r = $this->db->select("users", array("user_ID"=>USER_ID), array("security_json"));
+		if ($r) {
+			$json = $this->db->fetch_assoc($r);
+			return json_decode($json['security_json']);
+		}
+	}
+	
+	function put_security($request_data=array()) {
+		$this->__log($request_data);
+		
+		if (isset($request_data['totp']) && $request_data['totp']['service'] == "0") {
+			unset($request_data['totp']);
+		}
+		$this->__log($request_data);
+		$this->db->update("users", array("security_json" => json_encode($request_data)), array("user_ID"=>USER_ID));
 	}
 	
 	/*

@@ -6,7 +6,8 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 	
 	$scope.errors = {};		// form errors
 	$scope.action = $routeParams.action ? $routeParams.action : 'in';
-
+	console.log($scope.action);
+	
 	//-- Sign Up --//
 	$scope.signup = {
 		//email:'',
@@ -70,9 +71,49 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 				$rootScope.alerts = (data.alerts) ? data.alerts : [];
 				if (!data.alerts && !data.errors) {
 					
-					//data.email_confirm
+					if (data.totp) {
+						$scope.action = 'totp';
+						$scope.user_ID = data.user_ID;
+					} else {
+						$rootScope.session = syncVar(data, $rootScope.session);
+						//if ($rootScope.session != {})
+						//$rootScope.session.save = $scope.signin.remember;
+						console.log($rootScope.session);
+						$rootScope.saveSession();
+						$scope.signin = {};	// clear form
+	
+						//$scope.signin_callbacks(); // runs all callbacks that were set by siblings
+						// refresh page
+						//$scope.refresh();
+						var redirect = ($cookies.redirect ? $cookies.redirect : $rootScope.settings.dashboard);
+						$cookies.redirect = null;
+						$scope.href('#/'+redirect);
+					}
+					
+				}
+			})
+			.error(function() {
+				console.log('account_signin.post.success');
+				$rootScope.http_error();
+			});
+	};
+	//-- End Sign In --//
+	
+	$scope.account_totp = function(code) {
+		console.log('account_totp('+code+')');
+		//redirect || (redirect = '#/');
+
+		$http.put($scope.settings.server+'/account/totp/'+code)
+			.success(function(data) {
+				console.log('account_totp.put.success');
+				console.log(data);
+
+				$scope.errors = (data.errors) ? data.errors : {};
+				$rootScope.alerts = (data.alerts) ? data.alerts : [];
+				if (data && !data.alerts && !data.errors) {
 					
 					$rootScope.session = syncVar(data, $rootScope.session);
+					//if ($rootScope.session != {})
 					$rootScope.session.save = $scope.signin.remember;
 					console.log($rootScope.session);
 					$rootScope.saveSession();
@@ -84,15 +125,16 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 					var redirect = ($cookies.redirect ? $cookies.redirect : $rootScope.settings.dashboard);
 					$cookies.redirect = null;
 					$scope.href('#/'+redirect);
+				} else {
+					$scope.errors.totp = "Verification Failed";
 				}
 			})
 			.error(function() {
-				console.log('account_signin.post.success');
+				console.log('account_totp.put.success');
 				$rootScope.http_error();
 			});
 	};
-	//-- End Sign In --//
-
+	
 	//-- Sign Out --//
 	$scope.account_signout = function() {
 		console.log('account_signout()');
@@ -104,6 +146,7 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 					console.log('account_signout.get.success');
 					console.log(data);
 					$rootScope.alerts = [{'class':'info', 'label':'Signed Out'}];
+					$scope.action = 'in';
 					//$rootScope.href('#/sign/in');
 					console.log(objectLength($rootScope.session));
 				})
@@ -123,7 +166,7 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 		$scope.action = 'in';
 	} else if ($rootScope.session.user_ID) {
 		// redirect if already signed in
-		 //$scope.href('#/'+$rootScope.settings.dashboard);
+		$scope.href('#/'+$rootScope.settings.dashboard);
 	}
 	
 

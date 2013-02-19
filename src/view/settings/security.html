@@ -1,5 +1,5 @@
 
-<form name="securityForm" class="form-horizontal" data-ng-controller="SettingsCtrl">
+<form name="securityForm" class="form-horizontal" data-ng-controller="SecurityCtrl">
 	<legend>Security</legend>
 	<hr>
 	
@@ -12,44 +12,77 @@
     -->
     
     <div class="control-group">
+    	<b>Timed One-Time Password</b>
+    </div>
+    
+    <div class="control-group">
+      	<label class="control-label" for="">Service Provider</label>
+      	<div class="controls">
+	      	<select class="input-block-level" data-ng-model="security.totp.service" data-ng-change="loadTOTPService()">
+	      		<option value="0">None</option>
+	      		<!--<option value="sms">SMS</option>-->
+	      		<option value="google">Google Authenticator</option>
+	      		<!--<option value="rsa">RSA SecurID</option>-->
+	      		<!--<option value="symantec">Symantec VIP</option>-->
+	      		<!--<option value="authy">Authy.com</option>-->
+	      	</select>
+      	</div>
+	</div>
+	
+	<div class="control-group" data-ng-show="security.totp.service == 'google'">
+      	<label class="control-label" for="">App Download</label>
+      	<div class="controls">
+      		<a href="https://itunes.apple.com/us/app/google-authenticator/id388497605" target="_blank">iOS</a> | 
+      		<a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en" target="_blank">Android</a>
+      	</div>
+	</div>
+	
+	<div class="control-group" data-ng-show="security.totp.service == 'google'">
+      	<label class="control-label" for="">Secret</label>
+      	<div class="controls">
+      		<input type="text" class="input-block-level" name="secret" placeholder="" data-ng-model="security.totp.secret" required/>
+      		<img class="help-block" data-ng-src="https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=otpauth%3A%2F%2Ftotp%2F{{i18n.title}}%3Fsecret%3D{{security.totp.secret}}" width="200" height="200" />
+      	</div>
+	</div>
+	
+	<div class="control-group" data-ng-show="security.totp.service">
+      	<label class="control-label" for="">Test</label>
+      	<div class="controls">
+      		<div class="input-append">
+	      		<input type="text" class="input-block-level" name="secret" placeholder="" data-ng-model="test_code" />
+	      		<button class="btn" data-ng-click="checkTOTP(test_code)">check</button>
+      		</div>
+      		<span class="help-block success" data-ng-show="test_code_check && test_code_return">Check Passed</span>
+      		<span class="help-block error" data-ng-show="test_code_check && !test_code_return">Check Failed</span>
+      	</div>
+	</div>
+	
+	<!--<hr>
+    <div class="control-group">
     	<b>Email Encryption</b>
     </div>
     
-    <!--<div class="control-group">
+    <div class="control-group">
       	<label class="control-label" for="user_name">Email PGP/GPG Key</label>
       	<div class="controls">
       		<label class="checkbox">
             	<input type="checkbox" checked disabled> Send securely when possible.
       		</label>
         </div>
-    </div>-->
+    </div>
     <div class="control-group">
-      	<label class="control-label" for="user_name">Email PGP/GPG Key</label>
+      	<label class="control-label" for="user_name">PGP/GPG Key</label>
       	<div class="controls">
-	      	<textarea name="message" class="input-block-level" data-ng-model="security.pgp_key" rows="6" data-ng-minlength="1" required></textarea>
+	      	<textarea name="message" class="input-block-level" data-ng-model="security.email.pgp_key" rows="6" data-ng-minlength="1" required></textarea>
       	</div>
-	</div>
+	</div>-->
     
     <!--<hr>
     
     <div class="control-group">
     	<b>Multi-Factor Authentication</b>
     </div>-->
-    
-    <!--<hr>
-    
-    <div class="control-group">
-    	<b>Time-based One-time Password (TOTP)</b>
-    </div>
-    
-    <div class="control-group">
-      	<label class="control-label" for="user_name">Notify me when</label>
-      	<div class="controls">
-      		<label class="checkbox">
-            	<input type="checkbox" disabled> <a href="">Google Authenticator</a>
-      		</label>
-        </div>
-    </div>-->
+     
     
     
     

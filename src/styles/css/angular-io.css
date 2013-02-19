@@ -81,6 +81,10 @@ form { margin:0; }
   color: #b94a48;
 }
 
+.help-block.success, .help-inline.success {
+  color: #468847;
+}
+
 /* image resize and crop */
 #resizecrop canvas, #resizecrop canvas:hover { 
     cursor: move;

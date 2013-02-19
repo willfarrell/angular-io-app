@@ -4,6 +4,13 @@ angular.module('io.init.rootScope', [])
 	function($rootScope, $locale, $cookies, $http, $window, $location) {
 	console.log('io.init.rootScope ('+$rootScope.$id+')');
  	
+ 	/*$rootScope.$watch(function () {
+	  	return $location.path();
+	  }, function(value) {
+	  	console.log("run ************");
+      	$rootScope.updateSession();
+    });*/
+    
 	$rootScope.default_settings = {
 		'client'			:'',	// https://static.domain.com/
 		'server'			:'',	// https://api.domain.com/
@@ -42,6 +49,11 @@ angular.module('io.init.rootScope', [])
 			'company_user'	:false
 		},
 		'notify': {},		// notify setting defaults - must sync with message.json
+		'security': {
+			'totp':{
+				'service':0
+			}
+		},
 		'onboard':{
 			'required'		:false,	// always true
 			'start'			:''		// url of dashboard ie #/app
