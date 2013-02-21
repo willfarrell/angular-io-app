@@ -66,7 +66,7 @@
 
 	<access origin="*" /><!-- origin="https://build.phonegap.com" OR origin="http://phonegap.com" subdomains="true" browserOnly="true"-->
 
-	<preference name="phonegap-version" 		value="2.1.0" /><!-- 2.1.0 -->
+	<preference name="phonegap-version" 		value="2.3.0" /><!-- 2.1.0 -->
 	<preference name="orientation" 				value="default" /><!-- default -->
 	<preference name="target-device" 			value="universal" /><!-- universal -->
 	<preference name="fullscreen" 				value="false" /><!-- false -->

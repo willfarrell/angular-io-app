@@ -50,5 +50,10 @@ cd dist-api/
 
 rm -rf config.xml css font img index.html index.web.html index.device.html js lang manifest.appcache view
 
-
 cd ../
+
+# zip device folder for Adobe Build upload
+echo "Zipping dist-device"
+(cd dist-device && zip -r ../dist-device.zip *)
+
+echo "Completed $(date)"

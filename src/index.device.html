@@ -3,13 +3,9 @@
 <head>
   	<meta http-equiv="Content-Type" 					content="text/html; charset=UTF-8">
   	<meta name="viewport" 								content="user-scalable=no, initial-scale=1, maximum-scale=1">
-	<meta name="apple-mobile-web-app-capable" 			content="yes"><!-- Sets whether a web application runs in full-screen mode. -->
-	
-
     <link rel="stylesheet" href="css/app.min.css">
 </head>
-<!-- Break out of iFrame -->
-<body class="ng-cloak" onload="if(this!=top){top.location.href=this.location.href}">
+<body class="ng-cloak">
 
 <!-- !Loading Screen -->
 <div id="init-blanket" data-ng-show="loader.count < loader.total">
@@ -93,7 +89,7 @@
 <script>window.$.fn.button || document.write('<script src="js/vendor/bootstrap.min.js"><\/script>')</script>
 
 
-<!-- build:js js/cordova.min.js -->
+<!-- build:js js/bp.min.js -->
 <!--<script src="js/phonegap.min.js"></script>-->
 <script src="components/html5-mobile-boilerplate/js/helper.js"></script>
 <!-- endbuild -->
