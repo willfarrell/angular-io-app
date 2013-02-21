@@ -18,33 +18,36 @@
 	<!-- Default -->
 	<icon 		src="img/icons/icon.png" />
 	<!-- iOS -->
-	<icon 		src="img/icons/ios/icon.png" 				gap:platform="ios" width="57" height="57" />
-	<icon 		src="img/icons/ios/icon-72.png" 			gap:platform="ios" width="72" height="72" />
+	<icon 		src="img/icons/ios/Icon.png" 				gap:platform="ios" width="57" 	height="57" />
+	<icon 		src="img/icons/ios/Icon-72.png" 			gap:platform="ios" width="72" 	height="72" />
+	<icon 		src="img/icons/ios/Icon@2x.png" 			gap:platform="ios" width="114" 	height="114" />
+	<icon 		src="img/icons/ios/Icon-72@2x.png" 			gap:platform="ios" width="144" 	height="144" />
 	<!-- Android -->
 	<icon 		src="img/icons/android/ldpi.png" 			gap:platform="android" gap:density="ldpi" />
 	<icon 		src="img/icons/android/mdpi.png" 			gap:platform="android" gap:density="mdpi" />
 	<icon 		src="img/icons/android/hdpi.png" 			gap:platform="android" gap:density="hdpi" />
+	<icon 		src="img/icons/android/xhdpi.png" 			gap:platform="android" gap:density="xhdpi" />
 	<!-- BlackBerry (<16kb) -->
-	<icon 		src="img/icons/bb/icon.png" 				gap:platform="blackberry" />
-	<icon 		src="img/icons/bb/icon_hover.png" 			gap:platform="blackberry" gap:state="hover"/>
+	<icon 		src="img/icons/blackberry/icon.png" 		gap:platform="blackberry" />
+	<icon 		src="img/icons/blackberry/icon_hover.png" 	gap:platform="blackberry" gap:state="hover"/>
 	<!-- Windows Phone -->
 	<icon 		src="img/icons/winphone/icon.png" 			gap:platform="winphone" />
 	<icon 		src="img/icons/winphone/tileicon.png" 		gap:platform="winphone" gap:role="background" />
 	<!-- WebOS -->
 	<icon 		src="img/icons/webos/icon.png" 				gap:platform="webos" />
-	<icon 		src="img/icons/webos/miniicon.png" 			gap:platform="webos" gap:role="mini" />
+	<icon 		src="img/icons/webos/miniicon.png" 			gap:platform="webos" 	gap:role="mini" />
 
 	<!-- Default -->
 	<gap:splash src="img/splash/splash.png" />
 	<!-- iOS -->
-	<gap:splash src="img/splash/ios/Default.png" 			gap:platform="ios" width="320" height="480" />
-	<gap:splash src="img/splash/ios/Default_at_2x.png" 		gap:platform="ios" width="640" height="960" />
+	<gap:splash src="img/splash/ios/Default.png" 			gap:platform="ios" width="320" 	height="480" />
+	<gap:splash src="img/splash/ios/Default@2x.png" 		gap:platform="ios" width="640" 	height="960" />
 	<gap:splash src="img/splash/ios/Default-Landscape.png" 	gap:platform="ios" width="1024" height="768" />
-	<gap:splash src="img/splash/ios/Default-Portrait.png" 	gap:platform="ios" width="768" height="1024" />
+	<gap:splash src="img/splash/ios/Default-Portrait.png" 	gap:platform="ios" width="768" 	height="1024" />
 	<!-- Android -->
-	<gap:splash src="img/splash/android/ldpi.png" 			gap:platform="android" gap:density="ldpi" />
-	<gap:splash src="img/splash/android/mdpi.png" 			gap:platform="android" gap:density="mdpi" />
-	<gap:splash src="img/splash/android/hdpi.png" 			gap:platform="android" gap:density="hdpi" />
+	<gap:splash src="img/splash/android/ldpi.png" 			gap:platform="android" 	gap:density="ldpi" />
+	<gap:splash src="img/splash/android/mdpi.png" 			gap:platform="android" 	gap:density="mdpi" />
+	<gap:splash src="img/splash/android/hdpi.png" 			gap:platform="android" 	gap:density="hdpi" />
 	<!-- BlackBerry (<16kb) -->
 	<gap:splash src="img/splash/bb/splash.png" 				gap:platform="blackberry" />
 	<!-- Windows Phone -->

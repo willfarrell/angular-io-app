@@ -2,6 +2,15 @@
 
 sh run -c
 
+# rebuild icons
+echo "Rebuilding device icons from src/img/icon.png"
+rm src/img/icon/ src/img/splash/
+sh scripts/icon-splash-resize src/img/icon.png white src
+
+# https://github.com/shaurz/devo/blob/master/tools/make-ico
+# brew install icoutils
+icotool --create src/img/icon.png --width=16 --height=16 --output=src/favicon.ico
+
 ## Build based on Gruntfile.js ##
 
 yeoman build --force
