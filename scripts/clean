@@ -1,3 +1,4 @@
 #!/bin/sh
 
 rm -rf temp dist dist-web dist-device dist-api
+rm -rf src/img/icon/ src/img/spash/
