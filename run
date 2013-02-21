@@ -21,6 +21,7 @@ EOF
 BFLAG_DEFAULT=false
 CFLAG_DEFAULT=false
 HFLAG_DEFAULT=false
+IFLAG_DEFAULT=false
 TFLAG_DEFAULT=false
 UFLAG_DEFAULT=false
 VFLAG_DEFAULT=false
@@ -36,6 +37,9 @@ while getopts "bchtuv" OPTION; do
       ;;
     h)
       HFLAG=true
+      ;;
+    i)
+      IFLAG=true
       ;;
     t)
       TFLAG=true
@@ -58,6 +62,7 @@ done
 : ${BFLAG=$BFLAG_DEFAULT}
 : ${CFLAG=$CFLAG_DEFAULT}
 : ${HFLAG=$HFLAG_DEFAULT}
+: ${IFLAG=$HFLAG_DEFAULT}
 : ${TFLAG=$TFLAG_DEFAULT}
 : ${UFLAG=$UFLAG_DEFAULT}
 : ${VFLAG=$VFLAG_DEFAULT}
@@ -76,6 +81,12 @@ fi
 if $HFLAG || $_FLAG
 then
 	echo "$usage"
+fi
+
+# -i Icon Flag
+if $IFLAG || $_FLAG
+then
+	sh $SCRIPT_FOLDER/icon
 fi
 
 # -c Clean
