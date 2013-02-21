@@ -36,8 +36,8 @@ angular.module('io.init.settings', [])
 		},
 		'account': {
 			'user_name'		:false,	// Require username in profile
-			'company'		:true,
-			'company_username':true
+			'company'		:false,
+			'company_username':false
 		},
 		'notify': {		// notify setting defaults - must sync with message.json
 		 	"new_message":{"email":false},

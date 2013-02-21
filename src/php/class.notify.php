@@ -169,8 +169,54 @@ class Email {
   	}
   	
   	// PGP encrypt message
-  	function encrypt() {
+  	// import key - http://www.centos.org/docs/4/html/rhel-sbs-en-4/s1-gnupg-import.html - gpg --import public.key
+  	// rename key user_ID
+  	
+  	
+  	function encrypt($key, $to, $subject, $message) {
+	  	// http://www.pantz.org/software/php/pgpemailwithphp.html
 	  	
+		
+		//Tell gnupg where the key ring is. Home dir of user web server is running as.
+		putenv("GNUPGHOME=/var/www/.gnupg");
+		
+		// add key
+		
+		
+		//create a unique file name
+		$infile = tempnam("/tmp", "PGP.asc");
+		$outfile = $infile.".asc";
+		
+		//write form variables to email
+		$fp = fopen($infile, "w");
+		fwrite($fp, $message);
+		fclose($fp);
+		
+		//set up the gnupg command. Note: Remember to put E-mail address on the gpg keyring. --pgp2 --pgp6 --pgp7 
+		$command = "gpg -a --local-user '' --recipient '<$to>' --encrypt -o $outfile $infile";
+		
+		//execute the gnupg command
+		system($command, $result);
+		
+		//delete the unencrypted temp file
+		unlink($infile);
+		
+		if ($result==0) {
+			$fp = fopen($outfile, "r");
+			
+			if(!$fp||filesize ($outfile)==0) {
+			  $result = -1;
+			} else {
+				//read the encrypted file
+				$pgp_message = fread ($fp, filesize ($outfile));
+				//delete the encrypted file
+				unlink($outfile);
+			
+				//send the email
+				$this->send($to, $subject, $pgp_message);
+		    }
+		}
+		
   	}
 }
 

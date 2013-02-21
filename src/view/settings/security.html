@@ -8,7 +8,6 @@
     - PGP Key
     - Two Factor Authentication
      - Security Questions
-    - One Time Pass Tokens
     -->
     
     <div class="control-group">
@@ -20,8 +19,9 @@
       	<div class="controls">
 	      	<select class="input-block-level" data-ng-model="security.totp.service" data-ng-change="loadTOTPService()">
 	      		<option value="0">None</option>
-	      		<!--<option value="sms">SMS</option>-->
 	      		<option value="google">Google Authenticator</option>
+	      		<!--<option value="email">Email</option>-->
+	      		<!--<option value="sms">SMS</option>-->
 	      		<!--<option value="rsa">RSA SecurID</option>-->
 	      		<!--<option value="symantec">Symantec VIP</option>-->
 	      		<!--<option value="authy">Authy.com</option>-->
