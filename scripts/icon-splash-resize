@@ -17,7 +17,7 @@ usage() { echo "usage: $0 icon colour [dest_dir]"; exit 1; }
 [ "$1" ] && [ "$2" ] || usage
 [ "$3" ] || set "$1" "$2" "."
 
-devices=android,blackberry,ios,webos,winphone
+devices=favicon,android,blackberry,ios,webos,winphone
 eval mkdir -p "$3/img/{icon,splash}/{$devices}"
 
 # Show the user some progress by outputing all commands being run.
@@ -43,6 +43,17 @@ $convert "$1" -resize 64x64 "$3/img/icon/webos/icon-64.png"
 $convert "$1" -resize 48x48 "$3/img/icon/winphone/icon-48.png"
 $convert "$1" -resize 173x173 "$3/img/icon/winphone/icon-173-tile.png"
 $convert "$1" -resize 62x62 "$3/img/icon/winphone/icon-62-tile.png"
+
+# favicon
+$convert "$1" -resize 256x256 "$3/img/icon/favicon/icon-256.png"
+$convert "$1" -resize 256x256 "$3/img/icon/favicon/icon-128.png"
+$convert "$1" -resize 256x256 "$3/img/icon/favicon/icon-64.png"
+$convert "$1" -resize 256x256 "$3/img/icon/favicon/icon-32.png"
+$convert "$1" -resize 256x256 "$3/img/icon/favicon/icon-16.png"
+$convert $3/img/icon/favicon/icon-{16,32,64,128,256}.png -colors 256 favicon.ico "$3/img/icon/favicon.ico"
+
+# fluid icon
+$convert "$1" -resize 512x512 "$3/img/icon/fluidicon.png"
 
 convert="convert $1 -background $2 -gravity center"
 $convert -resize 512x512 -extent 1280x720 "$3/img/splash/android/screen-xhdpi-landscape.png"
