@@ -62,6 +62,7 @@ API ready dist.
 #### To Do
 - message compose
 - scroll to load more
+
 #### Wishlist
 - encrypt client side, unreadable by web app. PGP?
 
@@ -69,14 +70,17 @@ API ready dist.
 #### Supports
 - file upload (single / multi) via select or drag and drop.
 - image upload with resizing and cropping before saving.
+
 #### To Do
 - AWS CORS support
 - upload file from URL (requires proxy server due to browser security)
 - support upload from third party services
 - refactor code - seperate pages into services, remove controller.
 - Connect into camerea to take photo
+
 #### Bugs
 - 
+
 #### Wishlist
 - User side encryption (for file upload).  Mega?
 
