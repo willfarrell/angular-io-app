@@ -1,14 +1,39 @@
 # Angular.io - AngularJS + Bootstrap
-Requires: >= Yeoman 1.0 Beta
 
-## Init
-npm install generator-angular-io generator-testacular  # install generators
-yo angular-io                  # scaffold out a AngularJS project
-npm install && bower install   # install default dependencies
-#bower install angular-ui      # install a dependency for your project from Bower
-grunt test                     # test your app
-grunt server                   # preview your app
-grunt 						   # build app for distribution
+## Usage
+If you don't have Yeoman 1.0 Beta install:
+```
+npm install -g yo grunt-cli bower 
+```
+
+First make a new directory, and `cd` into it:
+```
+mkdir my-new-project && cd $_
+```
+
+Then fetch `angular-io`:
+```
+curl -OLk https://github.com/willfarrell/angular-io/tarball/master
+```
+
+Then extract `angular-io`:
+```
+tar -zxvf master && rm master
+cp -rf willfarrell-angular-io-.../* ./ && rm -rf willfarrell-angular-io-...
+```
+
+Finally, install npm and bower dependencies:
+```
+npm install && bower install --dev
+```
+
+Build project:
+```
+grunt icon_convert
+grunt
+grunt deploy
+grunt phonegap
+```
 
 ## To Do
 - build as generator (generator-angular-io)
@@ -20,7 +45,7 @@ CDN ready dist.
 - crossdomain.xml
 - robots.txt
 
-### dist-device
+### dist-phonegap
 PhoneGap ready dist.
 - index.device.html
 - config.xml

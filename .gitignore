@@ -1,25 +1,17 @@
 # Folders #
 _notes/*
 _*
-files/*
+files/build/*
 src/components/*
-src/img/icons/*
 src/img/user/*
 src/img/company/*
 src/php/inc.config.php
-components/*
 node_modules/*
 .tmp/*
 dist/*
 dist-api/*
 dist-web/*
 dist-device/*
-
-!emptybin/*
-
-# Generated Files #
-*.crontab
-timers.txt
 
 # Compiled source #
 ###################
@@ -38,7 +30,7 @@ timers.txt
 *.dmg
 *.gz
 *.iso
-#*.jar
+*.jar
 *.rar
 *.tar
 *.zip
