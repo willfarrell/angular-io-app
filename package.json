@@ -1,6 +1,6 @@
 {
   "name": "angular.io",
-  "version": "0.7.5",
+  "version": "0.7.0",
   "description": "Yeoman generator for Angular-io",
   "keywords": [
     "yeoman-generator",
@@ -33,12 +33,17 @@
     "grunt-bower-hooks": "~0.2.0",
     "grunt-usemin": "~0.1.7",
     "grunt-regarde": "~0.1.1",
+    "gruntacular": "~0.1.1",
     "grunt-mocha": "~0.2.2",
     "grunt-open": "~0.1.0",
     "matchdep": "~0.1.1",
+    "grunt-google-cdn": "~0.1.0",
+    "grunt-ngmin": "~0.0.1",
     
+    "grunt-contrib-compress": "~0.4.1",
     "grunt-imagemagick": "~0.1.5",
-    "grunt-zipstream": "~0.2.0"
+    "grunt-closure-compiler": "~0.0.13",
+    "grunt-webfont": "~0.1.0"
   },
   "engines": {
     "node": ">=0.8.0"

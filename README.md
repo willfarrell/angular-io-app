@@ -1,9 +1,14 @@
 # Angular.io - AngularJS + Bootstrap
 
 ## Usage
+As few brew requirements if not installed:
+```
+brew install git git-flow closure-compiler openssl scrypt gpgme
+```
+
 If you don't have Yeoman 1.0 Beta install:
 ```
-npm install -g yo grunt-cli bower 
+npm install -g yo grunt-cli bower testacular ngmin
 ```
 
 First make a new directory, and `cd` into it:

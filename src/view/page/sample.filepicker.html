@@ -17,7 +17,7 @@
 	<div class="controls">
 		<button class="btn" data-ng-click="filepicker.upload({action:'user_multi_files',multi:true}, session.user_ID);">Upload</button><button class="btn" data-ng-click="filepicker.download({action:'user_multi_files',multi:true}, session.user_ID);">Download</button>
 		<!--<span class="help-block">This photo is your identity and appears with your content.</span>-->
-		<ng-include src="'filepicker-edit-list'"></ng-include>
+		<div data-ng-include src="'filepicker-edit-list'"></div>
 	</div>
 </div>
 

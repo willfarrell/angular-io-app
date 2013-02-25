@@ -11,7 +11,7 @@ node_modules/*
 dist/*
 dist-api/*
 dist-web/*
-dist-device/*
+dist-phonegap/*
 
 # Compiled source #
 ###################

@@ -6,7 +6,7 @@ var mountFolder = function (connect, dir) {
 
 module.exports = function(grunt) {
 	// load all grunt tasks
-    require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+    require('matchdep').filterDev('grunt-*').concat(['gruntacular']).forEach(grunt.loadNpmTasks);
     
      // configurable paths
     var yeomanConfig = {
@@ -86,8 +86,9 @@ module.exports = function(grunt) {
             }
         },
         clean: {
-            dist: ['.tmp', '<%= yeoman.dist %>/*', '<%= yeoman.web %>/*', '<%= yeoman.api %>/*', '<%= yeoman.phonegap %>/*'],
-            build: ['<%= yeoman.dist %>/img/user/*', '<%= yeoman.dist %>/img/company/*'],
+            dist: ['.tmp', '<%= yeoman.dist %>/*'],
+            deploy: ['<%= yeoman.dist %>/img/user/*', '<%= yeoman.dist %>/img/company/*', '<%= yeoman.web %>', '<%= yeoman.api %>'],
+            phonegap: ['<%= yeoman.phonegap %>', 'build.phonegap.zip'],
             server: '.tmp'
         },
         jshint: {
@@ -142,7 +143,9 @@ module.exports = function(grunt) {
         },
         // not used since Uglify task does concat,
         // but still available if needed
-        /*concat: {},*/
+        /*concat: {
+            dist: {}
+        },*/
         
         uglify: {
             dist: {
@@ -372,19 +375,42 @@ module.exports = function(grunt) {
         htmlmin: {
             dist: {
                 options: {
+                	/*//removeComments: true,
                     removeCommentsFromCDATA: true,
-                    // https://github.com/yeoman/grunt-usemin/issues/44
+                    //removeCDATASectionsFromCDATA: true,
                     //collapseWhitespace: true,
+                    collapseBooleanAttributes: true,
+                    removeAttributeQuotes: true,
+                    removeRedundantAttributes: true,
+                    useShortDoctype: true,
+                    //removeEmptyAttributes: true,
+                    removeOptionalTags: true
+                    //removeEmptyElements:false*/
+                },
+                files: [{
+                    expand: true,
+                    cwd: '<%= yeoman.app %>',
+                    src: ['*.html', 'view/**/*.html'],
+                    dest: '<%= yeoman.dist %>'
+                }]
+            },
+            minify: {
+                options: {
+                	removeComments: true,
+                    removeCommentsFromCDATA: true,
+                    removeCDATASectionsFromCDATA: true,
+                    collapseWhitespace: true,
                     collapseBooleanAttributes: true,
                     removeAttributeQuotes: true,
                     removeRedundantAttributes: true,
                     useShortDoctype: true,
                     removeEmptyAttributes: true,
                     removeOptionalTags: true
+                    //removeEmptyElements:false
                 },
                 files: [{
                     expand: true,
-                    cwd: '<%= yeoman.app %>',
+                    cwd: '<%= yeoman.dist %>',
                     src: ['*.html', 'view/**/*.html'],
                     dest: '<%= yeoman.dist %>'
                 }]
@@ -404,7 +430,6 @@ module.exports = function(grunt) {
 	                        'img/**/*.ico',				// favicon
 	                        'font/*',
 	                        'css/**/*.css',
-	                        
 	                        '{i18n,json}/**/*.json',
 	                        'php/**/*.php'
 	                    ]
@@ -482,14 +507,17 @@ module.exports = function(grunt) {
             },
             phonegap: {
                 files: [
-                	{
+                    {
+	                    src: '<%= yeoman.dist %>/index.device.html',
+	                    dest: '<%= yeoman.phonegap %>/index.html'
+                    },
+                    {
 	                    expand: true,
 	                    dot: true,
 	                    cwd: '<%= yeoman.dist %>',
 	                    dest: '<%= yeoman.phonegap %>',
 	                    src: [
 	                        'config.xml',	// boilerplate
-	                        'index.device.html',
 	                        'css/**/*.css',
 	                        'js/**/*.js',
 	                        '{i18n,json}/**/*.json'
@@ -518,15 +546,47 @@ module.exports = function(grunt) {
                 ]
             }
         },
-        zip: {
+	    compress: {
 	        phonegap: {
-	            src: ['<%= yeoman.phonegap %>/**/*'],
-	            dest: 'build.phonegap.zip',
-	            base: '<%= yeoman.phonegap %>',
-	            zlib: {
-	                level: 1
-	            }
+	        	options: {
+		        	archive:'build.phonegap.zip',
+		        	pretty:true
+	        	},
+	        	files: [
+	        		{
+		        		src: ['<%= yeoman.phonegap %>/*'],
+		        		dest: ''
+	        		}
+	        	]
+	            
 	        }
+	    },
+	    /*'closure-compiler': {
+		    frontend: {
+		      closurePath: '/src/to/closure-compiler',
+		      js: 'static/src/frontend.js',
+		      jsOutputFile: 'static/js/frontend.min.js',
+		      maxBuffer: 500
+		      options: {
+		        compilation_level: 'SIMPLE_OPTIMIZATIONS',
+		        language_in: 'ECMASCRIPT5_STRICT'
+		      }
+		    }
+		},*/
+		cdnify: {
+	      dist: {
+	        html: ['<%= yeoman.dist %>/*.html']
+	      }
+	    },
+	    ngmin: {
+	      dist: {
+	        files: [{
+	          expand: true,
+	          cwd: '<%= yeoman.dist %>/scripts',
+	          src: '*.js',
+	          dest: '<%= yeoman.dist %>/scripts'
+	        }]
+	      }
 	    },
         bower: {
         	dir: '<%= yeoman.app %>/components',
@@ -638,6 +698,7 @@ module.exports = function(grunt) {
     
     // seperate web and api for deploymen
     grunt.registerTask('deploy', [
+        'clean:deploy',
         'copy:web',
         'copy:api'
         //'git:web',	// push to server
@@ -646,26 +707,30 @@ module.exports = function(grunt) {
     
     // build phonegap ready
     grunt.registerTask('phonegap', [
+        'clean:phonegap',
         'copy:phonegap',
-        //'zip:phonegap'			// doesn't work
+        'compress:phonegap'
         //'git:phonegap'			// push to compile service
     ]);
 
     grunt.registerTask('build', [
-        'clean:dist',
+        'clean',
         //'jshint',
         //'test',
-        'coffee',
-        'compass:dist',
+        //'coffee',
+        //'compass:dist',
         'useminPrepare',
         'imagemin:dist',
         'cssmin',
-        'htmlmin',
+        'htmlmin:dist',
         'concat',
         'uglify',
-        'clean:build',
+        //'ngmin',
         'copy:dist',
-        'usemin'
+        'usemin',
+        //'cdnify',
+        //'htmlmin:minify',
+        
     ]);
 
     grunt.registerTask('default', ['build']); // , 'deploy', 'phonegap'
