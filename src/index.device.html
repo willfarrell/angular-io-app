@@ -54,49 +54,27 @@
 <div data-ng-include="'view/partials/follow.html'"></div>
 <div data-ng-include="'view/partials/filepicker.html'"></div>
 <div data-ng-include="'view/partials/message.html'"></div>
-
-<!-- alertModal -->
-<div class="modal hide fade" id="alertModal">
-  <div class="modal-header" data-ng-hide="modal.hide.header">
-    <button type="button" class="close" data-dismiss="modal" data-ng-hide="modal.hide.close">&times;</button>
-    <h3 data-ng-bind-template="{{modal.header}}"></h3>
-  </div>
-  <div class="modal-body" data-ng-bind-html-unsafe="modal.content"></div>
-  <div class="modal-footer" data-ng-hide="modal.hide.footer">
-  	<button class="btn {{button.class}}" data-dismiss="modal" data-ng-repeat="button in modal.buttons" data-ng-click="button.callback()" data-ng-bind-template="{{button.value}}"></button>
-  </div>
-</div>
+<div data-ng-include="'view/partials/alert.html'"></div>
 <!-- !End Plugin Modals & Partials -->
 
-<!--[if lt IE 7]>
-    <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
-<![endif]-->
-
 <!-- !Frameworks -->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')</script>
+<script src="js/vendor/jquery.min.js"><\/script><!-- to be removed -->
 
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js"></script>
-<script>window.angular || document.write('<script src="js/vendor/angular.min.js"><\/script>')</script>
-<script src="js/vendor/angular-cookies.min.js"></script>
+<script src="js/vendor/angular.min.js"><\/script>
 <script>
 	// loads i18n files for Angular
 	locale = JSON.parse(localStorage.getItem('locale'));
 	if (locale) document.write('<script src="js/i18n/angular-locale_'+locale+'.js"><\/script>');
 </script>
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.2/bootstrap.min.js"></script>
-<script>window.$.fn.button || document.write('<script src="js/vendor/bootstrap.min.js"><\/script>')</script>
+<script src="js/vendor/bootstrap.min.js"><\/script><!-- to be removed -->
 
 
-<script src="phonegap.js"></script>
-<!-- build:js js/bp.min.js -->
-<!--<script src="js/phonegap.min.js"></script>-->
+<script src="phonegap.js"></script><!-- required for phonegap -->
+<!-- build:js js/device.min.js -->
 <script src="components/html5-mobile-boilerplate/js/helper.js"></script>
 <!-- endbuild -->
 
 <script src="js/app.min.js"></script>
-<script src="js/angular-io.min.js"></script>
 
 
 </body>

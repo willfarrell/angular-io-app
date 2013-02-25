@@ -1,0 +1,10 @@
+<div class="modal hide fade" id="alertModal">
+  <div class="modal-header" data-ng-hide="modal.hide.header">
+    <button type="button" class="close" data-dismiss="modal" data-ng-hide="modal.hide.close">&times;</button>
+    <h3 data-ng-bind-template="{{modal.header}}"></h3>
+  </div>
+  <div class="modal-body" data-ng-bind-html-unsafe="modal.content"></div>
+  <div class="modal-footer" data-ng-hide="modal.hide.footer">
+  	<button class="btn {{button.class}}" data-dismiss="modal" data-ng-repeat="button in modal.buttons" data-ng-click="button.callback()" data-ng-bind-template="{{button.value}}"></button>
+  </div>
+</div>

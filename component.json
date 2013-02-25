@@ -4,7 +4,6 @@
 	"dependencies":{
 		"html5-boilerplate":null,
 		"html5-mobile-boilerplate":null,
-		"angular":null,
 		"angular-complete":null,
 		"angular-bootstrap":null,
 		"angular-strap":null,

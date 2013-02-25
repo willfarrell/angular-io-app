@@ -14,42 +14,45 @@
 			email="iam@willfarrell.ca">
 			will Farrell
 	</author>
-
+	
+	<!-- Icons -->
 	<!-- Default -->
-	<icon 		src="img/icons/icon.png" />
-	<!-- iOS -->
-	<icon 		src="img/icons/ios/Icon.png" 				gap:platform="ios" width="57" 	height="57" />
-	<icon 		src="img/icons/ios/Icon-72.png" 			gap:platform="ios" width="72" 	height="72" />
-	<icon 		src="img/icons/ios/Icon@2x.png" 			gap:platform="ios" width="114" 	height="114" />
-	<icon 		src="img/icons/ios/Icon-72@2x.png" 			gap:platform="ios" width="144" 	height="144" />
+	<icon 		src="img/icon/icon.png" />
 	<!-- Android -->
-	<icon 		src="img/icons/android/ldpi.png" 			gap:platform="android" gap:density="ldpi" />
-	<icon 		src="img/icons/android/mdpi.png" 			gap:platform="android" gap:density="mdpi" />
-	<icon 		src="img/icons/android/hdpi.png" 			gap:platform="android" gap:density="hdpi" />
-	<icon 		src="img/icons/android/xhdpi.png" 			gap:platform="android" gap:density="xhdpi" />
+	<icon 		src="img/icon/android/icon-36-ldpi.png" 	gap:platform="android" gap:density="ldpi" />
+	<icon 		src="img/icon/android/icon-48-mdpi.png" 	gap:platform="android" gap:density="mdpi" />
+	<icon 		src="img/icon/android/icon-72-hdpi.png" 	gap:platform="android" gap:density="hdpi" />
+	<icon 		src="img/icon/android/icon-96-xhdpi.png" 	gap:platform="android" gap:density="xhdpi" />
 	<!-- BlackBerry (<16kb) -->
-	<icon 		src="img/icons/blackberry/icon.png" 		gap:platform="blackberry" />
-	<icon 		src="img/icons/blackberry/icon_hover.png" 	gap:platform="blackberry" gap:state="hover"/>
-	<!-- Windows Phone -->
-	<icon 		src="img/icons/winphone/icon.png" 			gap:platform="winphone" />
-	<icon 		src="img/icons/winphone/tileicon.png" 		gap:platform="winphone" gap:role="background" />
+	<icon 		src="img/icon/blackberry/icon-80.png" 		gap:platform="blackberry" />
+	<icon 		src="img/icon/blackberry/icon-80.png" 		gap:platform="blackberry" gap:state="hover"/>
+	<!-- iOS -->
+	<icon 		src="img/icon/ios/icon-57.png" 				gap:platform="ios" width="57" 	height="57" />
+	<icon 		src="img/icon/ios/icon-72.png" 				gap:platform="ios" width="72" 	height="72" />
+	<icon 		src="img/icon/ios/icon-57-2x.png" 			gap:platform="ios" width="114" 	height="114" />
+	<icon 		src="img/icon/ios/icon-72-2x.png" 			gap:platform="ios" width="144" 	height="144" />
 	<!-- WebOS -->
-	<icon 		src="img/icons/webos/icon.png" 				gap:platform="webos" />
-	<icon 		src="img/icons/webos/miniicon.png" 			gap:platform="webos" 	gap:role="mini" />
-
+	<icon 		src="img/icon/webos/icon-64.png" 			gap:platform="webos" />
+	<!--<icon 		src="img/icon/webos/miniicon.png" 			gap:platform="webos" 	gap:role="mini" />-->
+	<!-- Windows Phone -->
+	<icon 		src="img/icon/winphone/icon-48.png" 		gap:platform="winphone" />
+	<icon 		src="img/icon/winphone/icon-173-tile.png" 	gap:platform="winphone" gap:role="background" />
+	
+	<!-- Spash Screens -->
 	<!-- Default -->
 	<gap:splash src="img/splash/splash.png" />
-	<!-- iOS -->
-	<gap:splash src="img/splash/ios/Default.png" 			gap:platform="ios" width="320" 	height="480" />
-	<gap:splash src="img/splash/ios/Default@2x.png" 		gap:platform="ios" width="640" 	height="960" />
-	<gap:splash src="img/splash/ios/Default-Landscape.png" 	gap:platform="ios" width="1024" height="768" />
-	<gap:splash src="img/splash/ios/Default-Portrait.png" 	gap:platform="ios" width="768" 	height="1024" />
 	<!-- Android -->
-	<gap:splash src="img/splash/android/ldpi.png" 			gap:platform="android" 	gap:density="ldpi" />
-	<gap:splash src="img/splash/android/mdpi.png" 			gap:platform="android" 	gap:density="mdpi" />
-	<gap:splash src="img/splash/android/hdpi.png" 			gap:platform="android" 	gap:density="hdpi" />
+	<gap:splash src="img/splash/android/ldpi-portrait.png" 	gap:platform="android" 	gap:density="ldpi" />
+	<gap:splash src="img/splash/android/mdpi-portrait.png" 	gap:platform="android" 	gap:density="mdpi" />
+	<gap:splash src="img/splash/android/hdpi-portrait.png" 	gap:platform="android" 	gap:density="hdpi" />
+	<gap:splash src="img/splash/android/xhdpi-portrait.png"	gap:platform="android" 	gap:density="xhdpi" />
 	<!-- BlackBerry (<16kb) -->
-	<gap:splash src="img/splash/bb/splash.png" 				gap:platform="blackberry" />
+	<gap:splash src="img/splash/blackberry/splash.png" 		gap:platform="blackberry" />
+	<!-- iOS -->
+	<gap:splash src="img/splash/ios/iphone-portrait.png" 	gap:platform="ios" width="320" 	height="480" />
+	<gap:splash src="img/splash/ios/iphone-portrait-2x.png" gap:platform="ios" width="640" 	height="960" />
+	<gap:splash src="img/splash/ios/ipad-portrait.png" 		gap:platform="ios" width="768" 	height="1024" />
+	<gap:splash src="img/splash/ios/ipad-landscape.png" 	gap:platform="ios" width="1024" height="768" />
 	<!-- Windows Phone -->
 	<gap:splash src="img/splash/winphone/splash.jpg" 		gap:platform="winphone" />
 
@@ -69,7 +72,7 @@
 
 	<access origin="*" /><!-- origin="https://build.phonegap.com" OR origin="http://phonegap.com" subdomains="true" browserOnly="true"-->
 
-	<preference name="phonegap-version" 		value="2.3.0" /><!-- 2.1.0 -->
+	<preference name="phonegap-version" 		value="2.3.0" /><!-- 2.3.0 -->
 	<preference name="orientation" 				value="default" /><!-- default -->
 	<preference name="target-device" 			value="universal" /><!-- universal -->
 	<preference name="fullscreen" 				value="false" /><!-- false -->

@@ -1,6 +1,0 @@
-#!/bin/sh
-
-# rebuild icons
-echo "Rebuilding device icons from src/img/icon.png"
-rm -rf src/img/icon/ src/img/splash/
-sh scripts/icon-splash-resize src/img/icon.png white src

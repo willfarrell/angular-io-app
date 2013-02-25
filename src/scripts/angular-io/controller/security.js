@@ -33,6 +33,7 @@ function SecurityCtrl($scope, $http) {
  	
  	$scope.updateSecurity = function() {
  		console.log('updateSecurity()');
+ 		console.log($scope.security);
  		$http.put($scope.settings.server+'/user/security', $scope.security)
  			.success(function(data) {
 	 			$rootScope.alerts = [{"class":"success", "label":"Security:", "message":"Saved"}]
@@ -63,6 +64,18 @@ function SecurityCtrl($scope, $http) {
 			.success(function(data) {
 				console.log(data);
 				$scope.test_code_return = data;
+			})
+			.error(function(){
+				
+			});
+	};
+	
+	$scope.testPGP = function(email) {
+		console.log('testPGP()');
+		
+		$http.put($rootScope.settings.server+"/user/pgp/", email)
+			.success(function(data) {
+				console.log(data);
 			})
 			.error(function(){
 				

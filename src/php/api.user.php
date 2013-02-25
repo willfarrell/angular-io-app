@@ -66,7 +66,6 @@ class User extends Core {
 			}*/
 		}
 		
-		
 		return $return;
 	}
 	
@@ -75,14 +74,14 @@ class User extends Core {
 		$r = $this->db->select("users", array("user_ID"=>USER_ID), array("notify_json"));
 		if ($r) {
 			$json = $this->db->fetch_assoc($r);
-			return json_decode($json['notify_json']);
+			return json_decode($json['notify_json'], true);
 		}
 	}
 	
 	function put_notify($request_data=array()) {
 		$this->__log($request_data);
 		$this->db->update("users", array("notify_json" => json_encode($request_data)), array("user_ID"=>USER_ID));
-		echo $this->db->last_query;
+		//echo $this->db->last_query;
 	}
 	
 	// security settings
@@ -90,17 +89,25 @@ class User extends Core {
 		$r = $this->db->select("users", array("user_ID"=>USER_ID), array("security_json"));
 		if ($r) {
 			$json = $this->db->fetch_assoc($r);
-			return json_decode($json['security_json']);
+			return json_decode($json['security_json'], true);
 		}
 	}
 	
+	// test pgp email
+	function put_pgp($request_data=NULL) {
+		
+		list($message, $subject) = $this->notify->compile("pgp_test", array());
+		
+		$this->notify->email->encrypt($request_data['key'], $request_data['recipient'], USER_EMAIL, $subject, $message);
+	}
+	
 	function put_security($request_data=array()) {
-		$this->__log($request_data);
+		//$this->__log($request_data);
 		
 		if (isset($request_data['totp']) && $request_data['totp']['service'] == "0") {
 			unset($request_data['totp']);
 		}
-		$this->__log($request_data);
+		//$this->__log($request_data);
 		$this->db->update("users", array("security_json" => json_encode($request_data)), array("user_ID"=>USER_ID));
 	}
 	

@@ -20,7 +20,7 @@ class Notify {
 		"to" => array()
 	);
 
-	private $templates = array();
+	public $templates = array();
 
 	function __construct() {
 		global $database;
@@ -63,6 +63,7 @@ class Notify {
 		
 		// get user details
 		$select[] = "notify_json";
+		$select[] = "security_json";
 		$to = $this->db->select("users", array("user_ID" => $user_ID), $select);
 		if (!$to) return;
 		$to = $this->db->fetch_assoc($to);
@@ -76,20 +77,33 @@ class Notify {
 			
 		// get user privacy settings
 		// {message_ID:{"email":true,"sms":false}
-		$notify_all = json_decode($to['notify_json']);
-		if (!is_array($notify_all)) $notify_all = array();
+		$notify_json = json_decode($to['notify_json'], true);
+		if (!is_array($notify_json)) $notify_json = array();
 		
-		if (in_array($message_ID, $notify_all)) {
-			foreach ($notify_all[$message_ID] as $key => $value) {
+		if (in_array($message_ID, $notify_json)) {
+			foreach ($notify_json[$message_ID] as $key => $value) {
 				$notify[$key] = $value;
 			}
 		}
 		
 		list($message, $subject) = $this->compile($message_ID, $args); // support legacy
 		
+		$security_json = json_decode($to['security_json'], true);
+		if (!is_array($security_json)) $security_json = array();
+		
+		//print_r($notify_json);
+		//print_r($security_json);
+		//print_r($notify);
+		
 		// send via types
-		if (in_array("email", $types) && $notify['email'])
-			$this->email->send($to['user_email'], $subject, $message);
+		if (in_array("email", $types) && $notify['email']) {
+			if ($security_json['email']['key']) {
+				//$this->email->encrypt($security_json['email']['key'], $to['user_email'], $subject, $message);
+				$this->email->encrypt($security_json['email']['key'], $to['user_email'], $subject, $message);
+			} else {
+				$this->email->send($to['user_email'], $subject, $message);
+			}
+		}
 		if (in_array("sms", $types) && $notify['sms'])
 			$this->sms->send($to['user_phone'], $message);
 		/*
@@ -104,7 +118,7 @@ class Notify {
 		$this->email->send($user_email, $subject, $message);
 	}
 	
-	private function compile($message_ID, $args = array()) {
+	public function compile($message_ID, $args = array()) {
 		if (!isset($this->templates[$message_ID])) return array("", "");
 		
 		
@@ -146,14 +160,14 @@ class Email {
 		//parent::__destruct();
   	}
   	
-  	function send($to, $subject, $message) {
+  	function send($email, $subject, $message) {
   		//echo "$to, $subject, $message";
   		
   		if (EMAIL_MAILGUN_APIKEY) {
 	  		exec("curl -s --user api:".EMAIL_MAILGUN_APIKEY." \
 				    https://api.mailgun.net/v2/".EMAIL_MAILGUN_DOMAIN."/messages \
 				    -F from='".NOTIFY_FROM_NAME." <".NOTIFY_FROM_EMAIL.">' \
-				    -F to=$to\
+				    -F to=$email\
 				    -F subject='$subject' \
 				    -F text='$message'",
 				    $output, $return
@@ -168,56 +182,82 @@ class Email {
 	  	
   	}
   	
+  	function encrypt($pubkey, $email, $subject, $message) {
+	  	putenv("GNUPGHOME=/var/www/.gnupg");
+	  	
+	  	$pgp_message = (null);
+	  	//$gpg = new gnupg();
+	  	$res = gnupg_init();
+		$rtv = gnupg_import($res, $pubkey);
+		gnupg_addencryptkey($res,$rtv['fingerprint']);
+		$pgp_message = gnupg_encrypt($res, $message);
+		if ($pgp_message) {
+			$this->send($email, $subject, $pgp_message);
+		} else {
+			$this->send($email, $subject, $message);
+		}
+  	}
+  	
   	// PGP encrypt message
   	// import key - http://www.centos.org/docs/4/html/rhel-sbs-en-4/s1-gnupg-import.html - gpg --import public.key
   	// rename key user_ID
   	
-  	
-  	function encrypt($key, $to, $subject, $message) {
+  	/*function encrypt($pubkey, $recipient, $email, $subject, $message) {
 	  	// http://www.pantz.org/software/php/pgpemailwithphp.html
-	  	
+	  	$dir = "files/pgp";
 		
 		//Tell gnupg where the key ring is. Home dir of user web server is running as.
 		putenv("GNUPGHOME=/var/www/.gnupg");
 		
-		// add key
+		// make temp key
+		//$tempkey = tempnam("files/pgp", "newkey-");
+		$tempkey = "newkey-".md5(time().rand());
 		
+		$fp = fopen($dir.'/'.$tempkey, "w");
+		fwrite($fp, $pubkey);
+		fclose($fp);
+		
+		system("gpg --import $dir/$tempkey && ", $result);
+		unlink($dir.'/'.$tempkey);
 		
 		//create a unique file name
-		$infile = tempnam("/tmp", "PGP.asc");
+		//$infile = tempnam("/tmp", "message-");
+		$infile = "message-".md5(time().rand());
 		$outfile = $infile.".asc";
 		
 		//write form variables to email
-		$fp = fopen($infile, "w");
+		$fp = fopen($dir.'/'.$infile, "w");
 		fwrite($fp, $message);
 		fclose($fp);
 		
 		//set up the gnupg command. Note: Remember to put E-mail address on the gpg keyring. --pgp2 --pgp6 --pgp7 
-		$command = "gpg -a --local-user '' --recipient '<$to>' --encrypt -o $outfile $infile";
+		//$command = "gpg --no-default-keyring --keyring $tempkey --armor --local-user '' --recipient 'willfarrell <will.farrell@gmail.com>'  --output $outfile --trust-model always --verbose --encrypt $infile";
+		$command = "gpg --armor --recipient '$recipient <$email>' --armor --output $dir/$outfile --yes --always-trust --verbose --encrypt $dir/$infile";
+		echo "$command\n\n";
 		
 		//execute the gnupg command
-		system($command, $result);
-		
+		exec($command, $result);
+		var_dump($result);
 		//delete the unencrypted temp file
-		unlink($infile);
+		//unlink($dir.'/'.$infile);
 		
-		if ($result==0) {
-			$fp = fopen($outfile, "r");
+		if (file_exists($dir.'/'.$outfile)) {
+			$fp = fopen($dir.'/'.$outfile, "r");
 			
-			if(!$fp||filesize ($outfile)==0) {
-			  $result = -1;
-			} else {
+			if($fp && filesize($dir.'/'.$outfile) != 0) {
 				//read the encrypted file
-				$pgp_message = fread ($fp, filesize ($outfile));
+				$pgp_message = fread ($fp, filesize ($dir.'/'.$outfile));
 				//delete the encrypted file
-				unlink($outfile);
+				unlink($dir.'/'.$outfile);
 			
 				//send the email
-				$this->send($to, $subject, $pgp_message);
+				$this->send($email, $subject, $pgp_message);
 		    }
-		}
-		
-  	}
+		} else {
+		  	//$this->send($email, $subject, $message);
+	  	}
+	  	
+  	}*/
 }
 
 /*
@@ -296,5 +336,6 @@ class Fax {
 	  	// http://www.efaxdeveloper.com/developer/faq
   	}
 }
+
 
 ?>

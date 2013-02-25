@@ -1,15 +1,17 @@
 # Angular.io - AngularJS + Bootstrap
+Requires: >= Yeoman 1.0 Beta
 
-## Terminal
-Requires: Yeoman
+## Init
+npm install generator-angular-io generator-testacular  # install generators
+yo angular-io                  # scaffold out a AngularJS project
+npm install && bower install   # install default dependencies
+#bower install angular-ui      # install a dependency for your project from Bower
+grunt test                     # test your app
+grunt server                   # preview your app
+grunt 						   # build app for distribution
 
-$ sh **run -b:** runs yeoman and creates dist folders
-
-$ sh **run -t:** runs build, followed by yeoman test
-
-$ sh **run -u:** updates bower packages, then runs build
-
-$ sh **run -c:** removes all folders created by build
+## To Do
+- build as generator (generator-angular-io)
 
 ## build folders
 ### dist-web
@@ -34,7 +36,6 @@ API ready dist.
 ### Massaging
 #### To Do
 - message compose
-- restyle css
 - scroll to load more
 #### Wishlist
 - encrypt client side, unreadable by web app. PGP?

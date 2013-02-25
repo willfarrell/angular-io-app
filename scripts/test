@@ -1,3 +1,0 @@
-#!/bin/sh
-
-testacular start test/client/testacular.conf.js

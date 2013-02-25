@@ -90,8 +90,8 @@ class Session {
 		
 		// totp
 		if ($r['security_json']) {
-			$secret_json = json_decode($r['security_json']);
-			$totp_secret = (!is_array($secret_json)) ? $secret_json->totp->secret : null;
+			$secret_json = json_decode($r['security_json'], true);
+			$totp_secret = (!is_array($secret_json)) ? $secret_json['totp']['secret'] : null;
 		} else {
 			$totp_secret = null;
 		}

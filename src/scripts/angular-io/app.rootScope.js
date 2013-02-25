@@ -50,9 +50,6 @@ angular.module('io.init.rootScope', [])
 		},
 		'notify': {},		// notify setting defaults - must sync with message.json
 		'security': {
-			'totp':{
-				'service':0
-			}
 		},
 		'onboard':{
 			'required'		:false,	// always true

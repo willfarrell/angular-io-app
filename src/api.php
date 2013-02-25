@@ -46,8 +46,9 @@ require_once 'php/api.filepicker.php';	// plugin
 require_once 'php/api.contact.php';		// plugin
 
 // App
-//require_once 'php/api.__class__.php';
 
+
+// REST API
 $r = new Restler();
 $r->setSupportedFormats('JsonpFormat');
 //$r->setSupportedFormats('JsonFormat', 'JsFormat'); // , 'XmlFormat'

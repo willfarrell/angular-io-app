@@ -1,13 +1,15 @@
 # Folders #
 _notes/*
 _*
+files/*
 src/components/*
 src/img/icons/*
 src/img/user/*
 src/img/company/*
 src/php/inc.config.php
 components/*
-temp/*
+node_modules/*
+.tmp/*
 dist/*
 dist-api/*
 dist-web/*

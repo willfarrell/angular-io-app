@@ -42,6 +42,14 @@
 		"message": "Your {{global:site_name}} account email was just changed.\n\nTo confirm your email, please proceed to\n {{global:site_url}}#/confirm/{{args:hash}}\n\nThis action was requested from the IP address {{_SERVER:REMOTE_ADDR}}."
 	},
 	
+	"pgp_test": {
+		"default": {
+			"email":true
+		},
+		"subject": "PGP Test",
+		"message": "This message is to test your PGP/GPG Public Key.  If this message was not encrypted then there was an issue with your key."
+	},
+	
 	
 	"new_follow": {
 		"subject": "You were just followed.",
