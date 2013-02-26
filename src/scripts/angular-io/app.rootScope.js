@@ -495,7 +495,7 @@ angular.module('io.init.rootScope', [])
 			setTimeout(function() {  // timeout is required to bypass some weird bug in angular **
 	          $rootScope.offline.run_request();
 	        }, 1000);
-			
+			$rootScope.checkSession();
 		}
         $rootScope.offline._state = false;
         $rootScope.$digest();
@@ -523,7 +523,7 @@ angular.module('io.init.rootScope', [])
 	$rootScope.href = function(url, open) {
 		url || (url = '#');
 		console.log('href -> '+url);
-		if (open) window.open(url);
+		if (open) window.open(url, '_blank', 'location=yes'); // http://docs.phonegap.com/en/edge/cordova_inappbrowser_inappbrowser.md.html#InAppBrowser
 		else window.location.href=url;
 	};
 	

@@ -59,12 +59,11 @@
 
 <!-- !Frameworks -->
 <script src="js/vendor/jquery.min.js"><\/script><!-- to be removed -->
-
 <script src="js/vendor/angular.min.js"><\/script>
 <script>
 	// loads i18n files for Angular
 	locale = JSON.parse(localStorage.getItem('locale'));
-	if (locale) document.write('<script src="js/i18n/angular-locale_'+locale+'.js"><\/script>');
+	if (locale) document.write('<script src="js/vendor/i18n/angular-locale_'+locale+'.js"><\/script>');
 </script>
 <script src="js/vendor/bootstrap.min.js"><\/script><!-- to be removed -->
 
@@ -72,6 +71,7 @@
 <script src="phonegap.js"></script><!-- required for phonegap -->
 <!-- build:js js/device.min.js -->
 <script src="components/html5-mobile-boilerplate/js/helper.js"></script>
+<script src="scripts/app.device.js"></script>
 <!-- endbuild -->
 
 <script src="js/app.min.js"></script>

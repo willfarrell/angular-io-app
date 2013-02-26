@@ -35,11 +35,3 @@ function AppCtrl(rootScope, $scope, $http, filepicker, accessibility, message, f
 	
 }
 //}]);
-
-
-/*function onDeviceReady() {
-    angular.bootstrap(document, ['ngView']);
-}
-
-document.addEventListener("deviceready", onDeviceReady, true);
-*/

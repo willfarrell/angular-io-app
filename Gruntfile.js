@@ -148,26 +148,7 @@ module.exports = function(grunt) {
         },*/
         
         uglify: {
-            dist: {
-                files: {
-                    '<%= yeoman.dist %>/js/vendor/bootstrap.min.js': [
-                        //'<%= yeoman.app %>/components/bootstrap/js/bootstrap-*.js'
-                        '<%= yeoman.app %>/components/bootstrap/js/bootstrap-affix.js',
-						'<%= yeoman.app %>/components/bootstrap/js/bootstrap-alert.js',
-						'<%= yeoman.app %>/components/bootstrap/js/bootstrap-button.js',
-						'<%= yeoman.app %>/components/bootstrap/js/bootstrap-carousel.js',
-						'<%= yeoman.app %>/components/bootstrap/js/bootstrap-collapse.js',
-						'<%= yeoman.app %>/components/bootstrap/js/bootstrap-dropdown.js',
-						'<%= yeoman.app %>/components/bootstrap/js/bootstrap-modal.js',
-						'<%= yeoman.app %>/components/bootstrap/js/bootstrap-popover.js',
-						'<%= yeoman.app %>/components/bootstrap/js/bootstrap-scrollspy.js',
-						'<%= yeoman.app %>/components/bootstrap/js/bootstrap-tab.js',
-						'<%= yeoman.app %>/components/bootstrap/js/bootstrap-tooltip.js',
-						'<%= yeoman.app %>/components/bootstrap/js/bootstrap-transition.js',
-						'<%= yeoman.app %>/components/bootstrap/js/bootstrap-typehead.js'
-                    ],
-                }
-            }
+            dist: {}
         },
         useminPrepare: {
             html: ['<%= yeoman.app %>/index.html', '<%= yeoman.app %>/index.web.html', '<%= yeoman.app %>/index.device.html'],
@@ -462,6 +443,10 @@ module.exports = function(grunt) {
             web: {
                 files: [
                 	{
+	                    src: '<%= yeoman.dist %>/index.web.html',
+	                    dest: '<%= yeoman.web %>/index.html'
+                    },
+                    {
 	                    expand: true,
 	                    dot: true,
 	                    cwd: '<%= yeoman.dist %>',
@@ -470,7 +455,7 @@ module.exports = function(grunt) {
 	                        '*.{txt,appcache}',	// boilerplate
 	                        'crossdomain.xml',
 	                        '.htaccess',				// apache
-	                        '**/*.html',
+	                        'view/**/*.html',
 	                        'img/*',
 	                        'font/*',
 	                        'css/**/*.css',
@@ -520,6 +505,7 @@ module.exports = function(grunt) {
 	                        'config.xml',	// boilerplate
 	                        'css/**/*.css',
 	                        'js/**/*.js',
+	                        'view/**/*.html',
 	                        '{i18n,json}/**/*.json'
 	                    ]
                     },
