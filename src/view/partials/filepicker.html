@@ -32,8 +32,8 @@
 	        <i class="icon-picture icon-large"></i>
 	    </div>
 
-	    <!-- computer -->
-	    <div class="center" data-ng-show="filepicker.args.service == 'COMPUTER'">
+	    <!-- computer OR URL -->
+	    <div class="center" data-ng-show="filepicker.args.service == 'COMPUTER' || filepicker.args.service == 'URL'">
 		    <div id="dropbox" class="thumbnail {{dropClass}}">
 	            <h2 data-ng-show="filepicker.dropzone_name == 'image' 	&& !filepicker.args.multi">Drop image here...</h2>
 	            <h2 data-ng-show="filepicker.dropzone_name == 'image' 	&& filepicker.args.multi">Drop images here...</h2>
@@ -43,32 +43,26 @@
 	            <h2 data-ng-show="filepicker.dropzone_name == '!file'">Only files are allowed!</h2>
 	        </div>
 	        <br>
-        	<span data-ng-show="filepicker.dropzone_name == 'image'">or select an image.</span>
-        	<span data-ng-show="filepicker.dropzone_name == 'file'">or select a file.</span>
-        	&nbsp;
-        	<button class="btn btn-success" data-ng-click="computer.buttonClick()"><i class="icon-upload-alt"></i>&nbsp;Upload</button>
-        	<input class="hidden" type="file" id="file_upload" accept="{{filepicker.accept}}" onchange="angular.element(this).scope().computer.buttonSelect(this)" ng-model-instant />
-        	<input class="hidden" type="file" id="file_multi_upload" accept="{{filepicker.accept}}" onchange="angular.element(this).scope().computer.buttonSelect(this)" ng-model-instant multiple />
-            <br>
-            
+	        
+	        <div data-ng-show="filepicker.args.service == 'COMPUTER'">
+	        	<span data-ng-show="filepicker.dropzone_name == 'image'">or select an image.</span>
+	        	<span data-ng-show="filepicker.dropzone_name == 'file'">or select a file.</span>
+	        	&nbsp;
+	        	<button class="btn btn-success" data-ng-click="computer.buttonClick()"><i class="icon-upload-alt"></i>&nbsp;Upload</button>
+	        	<input class="hidden" type="file" id="file_upload" accept="{{filepicker.accept}}" onchange="angular.element(this).scope().computer.buttonSelect(this)" ng-model-instant />
+	        	<input class="hidden" type="file" id="file_multi_upload" accept="{{filepicker.accept}}" onchange="angular.element(this).scope().computer.buttonSelect(this)" ng-model-instant multiple />
+	        </div>
+	        
+	        <div data-ng-show="filepicker.args.service == 'URL'">
+            	<p>or paste in a url.</p>
+				<form name="filepickerURL" class="input-append">
+					<!-- input-block-level -->
+					<input type="url" name="url" class="span4" placeholder="e.g. http://example.com/someImage.jpg" data-ng-model="url.value">
+					<button class="btn btn-success" data-ng-click="url.load(url.value)" data-ng-disabled="filepickerURL.$invalid"><i class="icon-upload-alt"></i>&nbsp;Upload</button>
+				</form>
+	        </div>
 	    </div>
 
-	    <!-- url -->
-		<div class="center" data-ng-show="filepicker.args.service == 'URL'">
-			<h2>Files from the Web</h2>
-			<form class="form-vertical" id="urlForm">
-				<fieldset>
-				<div class="control-group">
-		            <!--<label class="control-label" for="urlInput">URL of the file</label>-->
-		            <div class="controls">
-		              <input type="text" id="urlInput" name="url" style="width:80%" placeholder="e.g. http://example.com/someImage.jpg" data-ng-model="url.value" data-ng-change="url.load(url.value)">
-		              <p class="help-block">Grab any file off the web. Just provide the link.</p>
-		              <button class="btn" data-ng-click="url.load(url.value)">go</button>
-		            </div>
-		          </div>
-				</fieldset>
-			</form>
-		</div>
 
 		<!-- ftp -->
 

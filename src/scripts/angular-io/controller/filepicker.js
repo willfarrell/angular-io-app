@@ -22,8 +22,14 @@ angular.module('io.controller.filepicker', [])
     dropbox.addEventListener("dragover", function(evt) {
         evt.stopPropagation();
         evt.preventDefault();
-        //console.log(evt.dataTransfer);
-        var ok = evt.dataTransfer && evt.dataTransfer.types && evt.dataTransfer.types.indexOf('Files') >= 0; //***** Investigate!!
+        
+        //console.log(objectClone(evt.dataTransfer));
+        
+        var ok = evt.dataTransfer && evt.dataTransfer.types && (
+    				evt.dataTransfer.types.indexOf('Files') >= 0				// file from computer
+    				|| evt.dataTransfer.types.indexOf('text/uri-list') >= 0		// url from other window
+    			);
+        	
         $scope.$apply(function(){
         	$scope.filepicker.setDropzoneName(ok);
             $scope.dropClass = ok ? 'alert-success' : 'alert-error';
@@ -78,7 +84,7 @@ angular.module('io.controller.filepicker', [])
 	// Simply start chrome with ‘–allow-file-access-from-files’ argument of test server
 	// 413 - Request Entity Too Large - The image you are trying to fetch is too large. The limit for image size is 1MB.
 	$scope.url = {};
-	$scope.url.value = 'http://www.gravatar.com/avatar/blank.png';
+	$scope.url.value = '';
     $scope.url.load = function(url) {
 	    url = encodeURIComponent(url);
 	    if ($scope.filepicker.args.resizecrop) {

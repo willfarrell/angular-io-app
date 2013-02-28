@@ -49,7 +49,7 @@ angular.module('io.factory.filepicker', [])
 		action:'',
 		types: ['*/*'],	// image/*
 		extensions: [],	// ['.png','.jpg']
-		services: ['COMPUTER'],
+		services: ['COMPUTER', 'URL'],
 		service: 'COMPUTER',
 		multi:true,
 		ID:''		// params passed to backend, ie object_ID
@@ -199,7 +199,7 @@ angular.module('io.factory.filepicker', [])
     	} else {
         	$scope.dropzone_name = ok ? 'file' : '!file';
     	}*/
-    	if ($scope.args.cropresize) {
+    	if ($scope.args.resizecrop) {
         	$scope.dropzone_name = 'image';
     	} else {
         	$scope.dropzone_name = 'file';

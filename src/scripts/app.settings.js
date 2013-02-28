@@ -1,7 +1,7 @@
 angular.module('io.init.settings', [])
 .run(['$rootScope', function($rootScope) {
 	console.log('io.init.settings ('+$rootScope.$id+')');
-	$rootScope.version = "β.7.0";
+	$rootScope.version = "β.7.3";
 	$rootScope.settings = {
 		'client'		:'',				// https://static.domain.com
 		'server'		:'',				// https://api.domain.com
@@ -54,7 +54,7 @@ angular.module('io.init.settings', [])
 				action:'user_single_image',
 				types: ['image/*'],
 				extensions: ['.jpg', '.jpeg', '.gif', '.bmp', '.png'],
-				services: ['COMPUTER'],
+				services: ['COMPUTER', 'URL'],
 				service: 'COMPUTER',
 				multi:false,
 				resizecrop:true,
@@ -65,7 +65,7 @@ angular.module('io.init.settings', [])
 				action:'company_single_image',
 				types: ['image/*'],
 				extensions: ['.jpg', '.jpeg', '.gif', '.bmp', '.png'],
-				services: ['COMPUTER'],
+				services: ['COMPUTER', 'URL'],
 				service: 'COMPUTER',
 				multi:false,
 				resizecrop:true,
