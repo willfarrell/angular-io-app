@@ -216,8 +216,8 @@ class MySQL
 	    
 	    // cast numbers
 	    if (is_array($ignore) && is_array($result)) {
-		    for ($i = count($result); $i >= 0; $i--) {
-			    if (!in_array($i, $ignore) && is_numeric($value)) $result[$key] += 0;
+		    for ($i = count($result)-1; $i >= 0; $i--) {
+			    if (isset($result[$i]) && !in_array($i, $ignore) && is_numeric($result[$i])) $result[$i] += 0;
 		    }
 	    }
 	    

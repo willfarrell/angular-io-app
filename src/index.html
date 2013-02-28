@@ -102,7 +102,7 @@
     <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
 <![endif]-->
 
-<!-- !Frameworks - Dev -->
+<!-- !Frameworks - Dev - do not build -->
 <script src="components/jquery/jquery.js"></script>
 <script src="components/angular-complete/angular.js"></script>
 <script src="components/angular-complete/angular-cookies.js"></script>
@@ -111,21 +111,22 @@
 	locale = JSON.parse(localStorage.getItem('locale'));
 	if (locale) document.write('<script src="components/angular-complete/i18n/angular-locale_'+locale+'.js"><\/script>');
 </script>
+<!-- end - do not build -->
 
 <!-- build:js js/vendor/bootstrap.min.js -->
-<script src="components/bootstrap/bootstrap-affix.js"></script>
-<script src="components/bootstrap/bootstrap-alert.js"></script>
-<script src="components/bootstrap/bootstrap-button.js"></script>
-<script src="components/bootstrap/bootstrap-carousel.js"></script>
-<script src="components/bootstrap/bootstrap-collapse.js"></script>
-<script src="components/bootstrap/bootstrap-dropdown.js"></script>
-<script src="components/bootstrap/bootstrap-modal.js"></script>
-<script src="components/bootstrap/bootstrap-popover.js"></script>
-<script src="components/bootstrap/bootstrap-scrollspy.js"></script>
-<script src="components/bootstrap/bootstrap-tab.js"></script>
-<script src="components/bootstrap/bootstrap-tooltip.js"></script>
-<script src="components/bootstrap/bootstrap-transition.js"></script>
-<script src="components/bootstrap/bootstrap-typeahead.js"></script>
+<!--<script src="components/bootstrap/js/bootstrap-affix.js"></script>-->
+<script src="components/bootstrap/js/bootstrap-alert.js"></script>
+<script src="components/bootstrap/js/bootstrap-button.js"></script>
+<!--<script src="components/bootstrap/js/bootstrap-carousel.js"></script>
+<script src="components/bootstrap/js/bootstrap-collapse.js"></script>-->
+<script src="components/bootstrap/js/bootstrap-dropdown.js"></script>
+<script src="components/bootstrap/js/bootstrap-modal.js"></script>
+<!--<script src="components/bootstrap/js/bootstrap-popover.js"></script>
+<script src="components/bootstrap/js/bootstrap-scrollspy.js"></script>
+<script src="components/bootstrap/js/bootstrap-tab.js"></script>
+<script src="components/bootstrap/js/bootstrap-tooltip.js"></script>
+<script src="components/bootstrap/js/bootstrap-transition.js"></script>
+<script src="components/bootstrap/js/bootstrap-typeahead.js"></script>-->
 <!-- endbuild -->
 
 <!-- build:js js/web.min.js -->

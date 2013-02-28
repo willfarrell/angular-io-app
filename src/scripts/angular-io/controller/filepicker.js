@@ -80,19 +80,23 @@ angular.module('io.controller.filepicker', [])
 	$scope.url = {};
 	$scope.url.value = 'http://www.gravatar.com/avatar/blank.png';
     $scope.url.load = function(url) {
-	    console.log(url);
-	    
+	    url = encodeURIComponent(url);
 	    if ($scope.filepicker.args.resizecrop) {
-	    	var type = 'image/'+url.substr(url.lastIndexOf('.'));
-	    	$scope.resizecrop.initParams($scope.settings.proxy+'?q='+url, type);
-	    	$scope.resizecrop.generate();
+	    	$scope.setFiles([
+	    		{
+		    		name: url,
+		    		type: 'image/'+url.substr(url.lastIndexOf('.'))
+	    		}
+	    	]);
 	    } else {
-		    
+		    //$scope.settings.server+'/filepicker/url/'+url.replace(/\./g, '%2E');
 	    }
     }
 	
     //-- RESIZECROP --//
-	$scope.resizecrop = {};
+	$scope.resizecrop = {
+		img:{}
+	};
 	
 	$scope.resizecrop.initParams = function(src, type) {
 		var img = {};
@@ -116,7 +120,7 @@ angular.module('io.controller.filepicker', [])
 	        	var reader = new FileReader();  
 
 		        reader.onload = function(evt) {
-		            console.log('reader.onload');
+		            console.log('loadFile.reader.onload');
 		            $scope.resizecrop.initParams(evt.target.result, file.type)
 		            $scope.$apply(function(){
 		            	$scope.resizecrop.generate();
@@ -132,13 +136,22 @@ angular.module('io.controller.filepicker', [])
 
     };
     
-    $scope.resizecrop.loadUrl = function(url) {
-	    var type = 'image/'+url.substr(url.lastIndexOf('.'));
-
-		/*$http.jsonp(url+"?callback=JSON_CALLBACK", {headers:{'Content-Type':'image/*'}})
+    $scope.resizecrop.loadURL = function(src, type) {
+    	var src = $scope.files[0].name,//.replace(/\./g, '%2E'),
+    		proxy = $scope.settings.server+'/filepicker/url/?url='+src,
+    		type = $scope.files[0].type;
+    	
+        $http.get(proxy+"&callback=JSON_CALLBACK")
 			.success(function(data){
 				//console.log(data);
-				$scope.resizecrop.generate(data, file.type);
+				console.log('loadURL.get.success');
+				$scope.resizecrop.initParams(proxy, type);
+				//$scope.$apply(function(){
+	            	$scope.resizecrop.generate();
+	            	if ($scope.filepicker.args.multi == false) {
+		            	$scope.filepicker.args.service = 'RESIZECROP';
+	            	}
+	            //});
 			})
 			.error(function(){
 				$scope.filepicker.alerts = [{
@@ -146,24 +159,8 @@ angular.module('io.controller.filepicker', [])
 	        		"label":"Failed",
 	        		"message":"There was an error attempting to obtain the image."
 	        	}];
-			});*/
-		
-		/*$http({'method':'', 'url':url, 'headers':{'Content-Type':'image/png'}})
-			.success(function(data){
-				console.log(data);
-				$scope.resizecrop.generate(data, file.type);
-			})
-			.error(function(){
-				$scope.filepicker.alerts = [{
-	        		"class":"error",
-	        		"label":"Failed",
-	        		"message":"There was an error attempting to obtain the image."
-	        	}];
-			});*/
-		
-		//$rootScope.loadScript(url);
-		
-		
+			});
+
     };
 	
 	$scope.resizecrop.generate = function() {
@@ -434,6 +431,7 @@ angular.module('io.controller.filepicker', [])
 	            $scope.files = [];
 	            var error = false;
 	            for (var i = 0; i < files.length; i++) {
+	            	console.log(files[i]);
                 	var extension = files[i].name.substr(files[i].name.lastIndexOf('.'));
                 	//console.log(extension);
                 	var allowedType = (
@@ -464,8 +462,15 @@ angular.module('io.controller.filepicker', [])
                 	}
                 }
 	            if ($scope.files.length) {
-	                if ($scope.filepicker.args.resizecrop)	$scope.resizecrop.loadFile();
-	                else									$scope.uploadFiles();
+	                if ($scope.filepicker.args.resizecrop) {	// one file
+	                	if ($scope.files[0].name.match(/^http/)) {	// url
+		                	$scope.resizecrop.loadURL();
+	                	} else {
+		                	$scope.resizecrop.loadFile();
+	                	}
+	                } else {
+		                $scope.uploadFiles();
+	                }									
 	            }
             //});
         }

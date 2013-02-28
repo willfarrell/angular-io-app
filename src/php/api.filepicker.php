@@ -62,6 +62,53 @@ class Filepicker extends FilepickerConfig {
 		
 	}
 	
+	// to support drag and drop of url
+	function get_url($url=NULL) {
+		//echo urldecode($url);
+		$ch = curl_init( urldecode($url) );
+  
+		if ( strtolower($_SERVER['REQUEST_METHOD']) == 'post' ) {
+		    curl_setopt( $ch, CURLOPT_POST, true );
+		    curl_setopt( $ch, CURLOPT_POSTFIELDS, $_POST );
+		}
+		  
+		/*if ( $_GET['send_cookies'] ) {
+		    $cookie = array();
+		    foreach ( $_COOKIE as $key => $value ) {
+		      	$cookie[] = $key . '=' . $value;
+		    }
+		    if ( $_GET['send_session'] ) {
+		      	$cookie[] = SID;
+		    }
+		    $cookie = implode( '; ', $cookie );
+		    
+		    curl_setopt( $ch, CURLOPT_COOKIE, $cookie );
+		}*/
+		  
+		curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );
+		curl_setopt( $ch, CURLOPT_HEADER, true );
+		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+		  
+		curl_setopt( $ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT'] );
+		  
+		list( $header, $contents ) = preg_split( '/([\r\n][\r\n])\\1/', curl_exec( $ch ), 2 );
+		  
+		$status = curl_getinfo( $ch );
+		 
+		curl_close( $ch );
+		
+		// Split header text into an array.
+		$header_text = preg_split( '/[\r\n]+/', $header );
+		// Propagate headers to response.
+		foreach ( $header_text as $header ) {
+	    	if ( preg_match( '/^(?:Content-Type|Content-Language|Set-Cookie):/i', $header ) ) {
+		    	header( $header );
+		    }
+		}
+  
+		print $contents;
+	}
+	
 	//-- View / Download --//
 	function get_list($action = '', $ID=NULL) {
 		if (!$action) $action = $this->action_default;

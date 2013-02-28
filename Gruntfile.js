@@ -380,7 +380,7 @@ module.exports = function(grunt) {
                 	removeComments: true,
                     removeCommentsFromCDATA: true,
                     removeCDATASectionsFromCDATA: true,
-                    collapseWhitespace: true,
+                    //collapseWhitespace: true,
                     collapseBooleanAttributes: true,
                     removeAttributeQuotes: true,
                     removeRedundantAttributes: true,
@@ -401,6 +401,10 @@ module.exports = function(grunt) {
             dist: {
                 files: [
                 	{
+	                    src: '<%= yeoman.dist %>/index.web.html',
+	                    dest: '<%= yeoman.dist %>/index.html'
+                    },
+                    {
 	                    expand: true,
 	                    dot: true,
 	                    cwd: '<%= yeoman.app %>',
@@ -547,30 +551,29 @@ module.exports = function(grunt) {
 	            
 	        }
 	    },
-	    /*'closure-compiler': {
-		    frontend: {
-		      closurePath: '/src/to/closure-compiler',
-		      js: 'static/src/frontend.js',
-		      jsOutputFile: 'static/js/frontend.min.js',
-		      maxBuffer: 500
+	    'closure-compiler': {
+		    dist: {
+		      closurePath: '/usr/local/opt/closure-compiler/libexec', // brew --prefix closure-compiler # + /libexec
+		      js: '<%= yeoman.dist %>/js/app.min.js',
+		      jsOutputFile: '<%= yeoman.dist %>/js/app.min.cc.js',
 		      options: {
 		        compilation_level: 'SIMPLE_OPTIMIZATIONS',
 		        language_in: 'ECMASCRIPT5_STRICT'
 		      }
 		    }
-		},*/
+		},
 		cdnify: {
 	      dist: {
-	        html: ['<%= yeoman.dist %>/*.html']
+	        html: ['<%= yeoman.dist %>/index.web.html']
 	      }
 	    },
 	    ngmin: {
 	      dist: {
 	        files: [{
 	          expand: true,
-	          cwd: '<%= yeoman.dist %>/scripts',
+	          cwd: '<%= yeoman.dist %>/js',
 	          src: '*.js',
-	          dest: '<%= yeoman.dist %>/scripts'
+	          dest: '<%= yeoman.dist %>/js'
 	        }]
 	      }
 	    },
@@ -687,8 +690,6 @@ module.exports = function(grunt) {
         'clean:deploy',
         'copy:web',
         'copy:api'
-        //'git:web',	// push to server
-        //'git:api',	// push to server
     ]);
     
     // build phonegap ready
@@ -696,7 +697,6 @@ module.exports = function(grunt) {
         'clean:phonegap',
         'copy:phonegap',
         'compress:phonegap'
-        //'git:phonegap'			// push to compile service
     ]);
 
     grunt.registerTask('build', [
@@ -711,11 +711,12 @@ module.exports = function(grunt) {
         'htmlmin:dist',
         'concat',
         'uglify',
-        //'ngmin',
+        //'closure-compiler',	// Warning: Object #<Object> has no method 'expandFiles' 2013-02-15
+        //'ngmin', 				// make a larger file 2013-02-15
         'copy:dist',
         'usemin',
-        //'cdnify',
-        //'htmlmin:minify',
+        //'cdnify',				// angular error 2013-02-15
+        'htmlmin:minify',
         
     ]);
 

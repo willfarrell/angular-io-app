@@ -74,7 +74,7 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 					if (data.totp) {
 						$scope.action = 'totp';
 						$scope.user_ID = data.user_ID;
-					} else {
+					} else if (data) {
 						$rootScope.session = syncVar(data, $rootScope.session);
 						//if ($rootScope.session != {})
 						$rootScope.session.save = $scope.signin.remember;
@@ -88,6 +88,9 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 						var redirect = ($cookies.redirect ? $cookies.redirect : $rootScope.settings.dashboard);
 						$cookies.redirect = null;
 						$scope.href('#/'+redirect);
+					} else {
+						// catch any server side errors
+						$rootScope.alerts = [{'class':'error', 'label':'Internal Error', 'message':'Please notify us about it.'}];
 					}
 					
 				}
