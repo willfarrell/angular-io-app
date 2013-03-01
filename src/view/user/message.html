@@ -3,14 +3,13 @@
       	<div class="span4">
       		<input data-ng-model="query" type="text" placeholder="Search" class="input-block-level">
 	        <ul class="nav nav-tabs nav-stacked">
-	        	<li data-ng-repeat="m in list | filter:query | orderBy:'-timestamp'">
-	        		<a href="" data-ng-click="loadThread(m.user.user_ID, m.user.user_name_first+' '+m.user.user_name_last)"><!-- #/user/message/{{m.user.user_ID}} -->
-		        		<p class="pull-right">
-		        			<i data-ng-class="{true:'icon-envelope', false:'icon-blank'}[(!m.read && session.user_ID == m.user_to_ID)]"></i>
-		        			&nbsp;{{m.timestamp*1000 | date:'shortDate'}}</p>
+	        	<li data-ng-repeat="m in list | filter:query | orderBy:'-timestamp'" data-ng-click="loadThread(m.user.user_ID, m.user.user_name_first+' '+m.user.user_name_last)">
+	        		<!-- #/user/message/{{m.user.user_ID}} -->
+	        		<a href="" style="height:50px">
+		        		<span class="pull-right"><i data-ng-class="{true:'icon-envelope', false:'icon-blank'}[(!m.read && session.user_ID == m.user_to_ID)]"></i> {{m.timestamp*1000 | date:'shortDate'}}</span>
 		        		<img data-ng-src="img/user/{{m.user.user_ID}}.png?{{filepicker.timestamp}}" class="img-rounded" style="width:50px; height:50px; margin-right:10px" align="left"/>
-		        		<b class="">{{m.user.user_name_first}} {{m.user.user_name_last}}&nbsp;</b>
-		        		<p>{{m.message | truncate:20}}</p>
+		        		<b class="">{{m.user.user_name_first}} {{m.user.user_name_last}} </b><br>
+		        		<span>{{m.message | truncate:20}}</span>
 		        	</a>
 	        	</li>
 	        </ul>

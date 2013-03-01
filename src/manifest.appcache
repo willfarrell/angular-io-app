@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# Version 1313704845
+# Version {{version}} {{timestamp}}
 # Changing the version forces cache update
 # http://www.html5rocks.com/en/tutorials/appcache/beginner/
 

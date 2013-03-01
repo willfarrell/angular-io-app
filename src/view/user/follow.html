@@ -78,7 +78,7 @@
 	    <h2>Groups</h2>
     	<div data-ng-repeat="group in follow.groups" class="btn-group" style="margin-bottom:5px;">
 		  	<button class="btn">
-		  		<!--<span class="badge" style="background-color:#{{group.color}};">&nbsp;({{group.group_count}})</span>-->
+		  		<!--<span class="badge" style="background-color:#{{group.color}};"> ({{group.group_count}})</span>-->
 		  		{{group.group_name}}
 		  	</button>
 		  	<button class="btn dropdown-toggle" data-ng-click="follow.removeGroup(group.group_ID)">&times;</button>

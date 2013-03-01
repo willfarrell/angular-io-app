@@ -16,7 +16,7 @@
         	</div>
 			<a class="brand" href="#">&nbsp;&nbsp;{{i18n.title}} <i class="icon-spinner icon-spin" data-ng-show="loading"></i></a>
 			<div class="btn-group pull-right">
-				<a class="btn" href="#/sign/in"><i class="icon-signin"></i>&nbsp;Sign In</a>
+				<a class="btn" href="#/sign/in"><i class="icon-signin"></i> Sign In</a>
 			</div>
         </div>
 	</div>
@@ -46,30 +46,30 @@
 			        <a href="#" class="dropdown-toggle" data-ng-show="!session.user.user_name && session.user.user_name_first" data-toggle="dropdown">{{session.user.user_name_first}} <b class="caret"></b></a>
 			        <a href="#" class="dropdown-toggle" data-ng-hide="session.user.user_name || session.user.user_name_first" data-toggle="dropdown">{{session.user.user_email}} <b class="caret"></b></a>
 			        <ul class="dropdown-menu">
-			        	<li><a href="#/user/message"><i class="icon-envelope"></i>&nbsp;Messages<span class="badge badge-important pull-right" data-ng-show="message.unread">{{message.unread}}</span></a></li>
-			        	<li data-ng-show="settings.account.user_name"><a href="#/user/profile"><i class="icon-user"></i>&nbsp;Profile</a></li>
-			        	<!--<li><a href="#/user/follow"><i class="icon-group"></i>&nbsp;Follow</a></li>-->
-			        	<li><a href="#/user/invite"><i class="icon-share"></i>&nbsp;Invite</a></li>
-			        	<li><a href="#/settings/profile"><i class="icon-cogs"></i>&nbsp;Edit Profile</a></li>
+			        	<li><a href="#/user/message"><i class="icon-envelope"></i> Messages<span class="badge badge-important pull-right" data-ng-show="message.unread">{{message.unread}}</span></a></li>
+			        	<li data-ng-show="settings.account.user_name"><a href="#/user/profile"><i class="icon-user"></i> Profile</a></li>
+			        	<!--<li><a href="#/user/follow"><i class="icon-group"></i> Follow</a></li>-->
+			        	<li><a href="#/user/invite"><i class="icon-share"></i> Invite</a></li>
+			        	<li><a href="#/settings/profile"><i class="icon-cogs"></i> Edit Profile</a></li>
 			        </ul>
 			    </li>
 			    <li class="divider-vertical"></li>
 			    <li class="dropdown">
 			        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <b class="caret"></b></a>
 			        <ul class="dropdown-menu">
-			        	<li data-ng-show="settings.account.company_username"><a href="#/company/profile"><i class="icon-user"></i>&nbsp;Company Profile</a></li>
-			            <li><a href="#/settings/billing"><i class="icon-credit-card"></i>&nbsp;Billing</a></li>
+			        	<li data-ng-show="settings.account.company_username"><a href="#/company/profile"><i class="icon-user"></i> Company Profile</a></li>
+			            <li><a href="#/settings/billing"><i class="icon-credit-card"></i> Billing</a></li>
 			            <!--<li><a href="#/api/">API</a></li>-->
 			            <!--<li><a href="#/setings/user">
-			            	<img data-ng-src="img/user/{{session.user_ID}}.png?{{filepicker.timestamp}}" class="img-rounded" style="width:40px; height:40px;"/><span>&nbsp;{{session.user.user_name_first}} {{session.user.user_name_last}}<br>Edit Profile</span>
+			            	<img data-ng-src="img/user/{{session.user_ID}}.png?{{filepicker.timestamp}}" class="img-rounded" style="width:40px; height:40px;"/><span> {{session.user.user_name_first}} {{session.user.user_name_last}}<br>Edit Profile</span>
 			            </a></li>-->
 			            
 			            <li class="divider"></li>
-			            <li><a href="#/support/faq"><i class="icon-bullhorn"></i>&nbsp;Help</a></li>
+			            <li><a href="#/support/faq"><i class="icon-bullhorn"></i> Help</a></li>
 			            <li class="divider"></li>
-			            <li><a href="#/settings/account"><i class="icon-cogs"></i>&nbsp;Settings</a></li>
-			            <li><a href="#/sign/out"><i class="icon-signout"></i>&nbsp;Sign Out</a></li>
-			            <!--<li><a href="#/help/faq"><i class="icon-question-sign"></i>&nbsp;Help</a></li>-->
+			            <li><a href="#/settings/account"><i class="icon-cogs"></i> Settings</a></li>
+			            <li><a href="#/sign/out"><i class="icon-signout"></i> Sign Out</a></li>
+			            <!--<li><a href="#/help/faq"><i class="icon-question-sign"></i> Help</a></li>-->
 			        </ul>
 			    </li>
 			</ul>

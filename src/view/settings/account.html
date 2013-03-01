@@ -78,10 +78,10 @@
       	<div class="controls">
       		<select class="input-block-level" data-ng-model="country_code" data-ng-options="key as value for (key, value) in json.countries"></select>
       		<div class="btn-group">
-				<button class="btn dropdown-toggle" data-toggle="dropdown"><!--<i class="flag-{{country_code}}"></i>&nbsp;-->{{json.languages[locale]}}</button>
+				<button class="btn dropdown-toggle" data-toggle="dropdown"><!--<i class="flag-{{country_code}}"></i> -->{{json.languages[locale]}}</button>
 			    <ul class="dropdown-menu">
 			    	<li data-ng-repeat="locale in settings.i18n.options">
-		        		<a href="" data-ng-click="changeLocale(locale)"><!--<i class="flag-{{locale.substr(3,2)}}"></i>&nbsp;-->{{json.languages[locale]}}</a>
+		        		<a href="" data-ng-click="changeLocale(locale)"><!--<i class="flag-{{locale.substr(3,2)}}"></i> -->{{json.languages[locale]}}</a>
 		        	</li>
 		        </ul>
 			</div>

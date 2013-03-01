@@ -169,7 +169,7 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true,
                     cwd: '<%= yeoman.app %>/img',
-                    src: '**/*.{gif,png,jpg,jpeg}',
+                    src: '**/*.{png,jpg,jpeg}',
                     dest: '<%= yeoman.dist %>/img'
                 }]
             }
@@ -380,7 +380,7 @@ module.exports = function(grunt) {
                 	removeComments: true,
                     removeCommentsFromCDATA: true,
                     removeCDATASectionsFromCDATA: true,
-                    //collapseWhitespace: true,
+                    //collapseWhitespace: true,			// <span>foo</span> <span>bar</span> fails waiting on fix - remove replace after
                     collapseBooleanAttributes: true,
                     removeAttributeQuotes: true,
                     removeRedundantAttributes: true,
@@ -412,7 +412,7 @@ module.exports = function(grunt) {
 	                    src: [
 	                        '*.{txt,xml,appcache,php}',	// boilerplate
 	                        '.htaccess',				// apache
-	                        'img/**/*.ico',				// favicon
+	                        'img/**/*.{ico,svg,gif}',	// non-compress imags
 	                        'font/*',
 	                        'css/**/*.css',
 	                        '{i18n,json}/**/*.json',
@@ -508,6 +508,7 @@ module.exports = function(grunt) {
 	                    src: [
 	                        'config.xml',	// boilerplate
 	                        'css/**/*.css',
+	                        'img/*',
 	                        'js/**/*.js',
 	                        'view/**/*.html',
 	                        '{i18n,json}/**/*.json'
@@ -535,6 +536,78 @@ module.exports = function(grunt) {
                     }
                 ]
             }
+        },
+        // repalce vars in files with grunt vars ie version number
+        replace: {
+	        dist: {
+		        options: {
+			        // grunt-string-replace
+			        replacements: [
+			        	{
+				        	pattern: '{{version}}',
+				        	replacement: '<%= pkg.version %>'
+			        	},
+			        	{
+				        	pattern: '{{date}}',
+				        	replacement: '<%= new Date().toString() %>'
+			        	},
+			        	{
+				        	pattern: '{{timestamp}}',
+				        	replacement: '<%= new Date().getTime() %>'
+			        	}
+			        ]
+		        },
+		        files: [
+			      	{
+			      		src: ['<%= yeoman.dist %>/manifest.appcache'],
+			      		dest: '<%= yeoman.dist %>/manifest.appcache'
+			      	},
+			      	{
+			      		src: ['<%= yeoman.dist %>/humans.txt'],
+			      		dest: '<%= yeoman.dist %>/humans.txt'
+			      	},
+			      	{
+			      		src: ['<%= yeoman.dist %>/view/footer.html'],
+			      		dest: '<%= yeoman.dist %>/view/footer.html'
+			      	}
+			    ]
+	        },
+	        // collapseWhitespace replacement - make sure you have no comments in your inline <script>
+	        htmlmin: {
+			    options: {
+			        replacements: [
+			        	// multi spaces
+			        	{
+				        	pattern: /\s+/g,
+				        	replacement: " "
+			        	},
+			        	// whitespace
+			        	{
+				        	pattern: /\s*\n\s*/g,
+				        	replacement: ""
+			        	},
+			        	
+			        	// spaces between tags
+			        	{
+				        	pattern: /\s*\>\s*\<\s*/g,
+				        	replacement: "><"
+			        	}
+			        ]
+		        },
+			    files: [
+			      	{
+			      		expand: true,
+	                    dot: true,
+	                    cwd: '<%= yeoman.dist %>',
+	                    dest: '<%= yeoman.dist %>',
+	                    src: [
+	                        '*.html',
+	                        'view/**/*.html'
+	                    ]
+			      	}
+			    ]
+			    
+	        }
         },
 	    compress: {
 	        phonegap: {
@@ -589,6 +662,8 @@ module.exports = function(grunt) {
     // remove when mincss task is renamed
     grunt.renameTask('mincss', 'cssmin');
 
+    grunt.renameTask('string-replace', 'replace');
+    
     grunt.registerTask('server', function (target) {
         if (target === 'dist') {
             return grunt.task.run(['open', 'connect:dist:keepalive']);
@@ -714,7 +789,9 @@ module.exports = function(grunt) {
         //'closure-compiler',	// Warning: Object #<Object> has no method 'expandFiles' 2013-02-15
         //'ngmin', 				// make a larger file 2013-02-15
         'copy:dist',
+        'replace:dist',
         'usemin',
+        'replace:htmlmin',
         //'cdnify',				// angular error 2013-02-15
         'htmlmin:minify',
         

@@ -21,7 +21,10 @@ function AppCtrl(rootScope, $scope, $http, filepicker, accessibility, message, f
 	// Events
 	$scope.$on('$viewContentLoaded', function(event) {
 		
-		//$window._gaq.push(['_trackPageView', $location.path()]);	// ga
+		// ga - add $window and $location to $inject if adding in
+		// use $rootScope.$on('$routeChangeSuccess', ...) or angular-googleanalytics
+		//$window._gaq.push(['_trackPageView', $location.path()]);	
+		
 	});
 	$scope.$on('$includeContentLoaded', function(event) {
 		

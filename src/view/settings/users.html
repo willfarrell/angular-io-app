@@ -20,8 +20,8 @@
 				<td>
 					<b><i class="icon-edit pull-right"></i>{{u.user_name_first}} {{u.user_name_last}}</b><br>
 					<p>{{u.user_function}}</p>
-		            <i class="icon-envelope"></i>&nbsp;{{u.user_email}}<br>
-		            <i class="icon-phone"></i>&nbsp;+{{json.calling_codes[company.location.country_code]}} {{u.user_phone | phone}}<br>
+		            <i class="icon-envelope"></i> {{u.user_email}}<br>
+		            <i class="icon-phone"></i> +{{json.calling_codes[company.location.country_code]}} {{u.user_phone | phone}}<br>
 		            <i>{{json.user_levels[u.user_level]}}</i>
 				</td>
 			</tr>

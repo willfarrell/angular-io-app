@@ -14,14 +14,14 @@
 	    <ul class="dropdown-menu">
 		    <li data-ng-repeat="group in follow.db.groups" data-ng-show="group.group_ID">
 		    	<a data-ng-click="follow.addFollow(follow.f.company_ID, follow.f.user_ID, group.group_ID);" data-ng-hide="inArray(group.group_ID, follow.f.groups)">
-		    		<i class="icon-blank"></i>&nbsp;{{group.group_name}}
+		    		<i class="icon-blank"></i> {{group.group_name}}
 		    	</a>
 		    	<a data-ng-click="follow.deleteFollow(follow.f.company_ID, follow.f.user_ID, group.group_ID);" data-ng-show="inArray(group.group_ID, follow.f.groups)">
-		    		<i class="icon-ok"></i>&nbsp;{{group.group_name}}
+		    		<i class="icon-ok"></i> {{group.group_name}}
 		    	</a>
 		    </li>
 		    <li class="divider" data-ng-show="objectLength(follow.db.groups)"></li>
-		    <li><a data-ng-click="follow.deleteFollow(follow.f.company_ID, follow.f.user_ID, 0)"><i class="icon-blank"></i>&nbsp;Unfollow</a></li>
+		    <li><a data-ng-click="follow.deleteFollow(follow.f.company_ID, follow.f.user_ID, 0)"><i class="icon-blank"></i> Unfollow</a></li>
 	    </ul>
 	</div>
 </script>
@@ -41,14 +41,14 @@
 	    <ul class="dropdown-menu">
 		    <li data-ng-repeat="group in follow.db.groups" data-ng-show="group.group_ID">
 		    	<a data-ng-click="follow.addFollow(f.company_ID, f.user_ID, group.group_ID);" data-ng-hide="inArray(group.group_ID, f.groups)">
-		    		<i class="icon-blank"></i>&nbsp;{{group.group_name}}
+		    		<i class="icon-blank"></i> {{group.group_name}}
 		    	</a>
 		    	<a data-ng-click="follow.deleteFollow(f.company_ID, f.user_ID, group.group_ID);" data-ng-show="inArray(group.group_ID, f.groups)">
-		    		<i class="icon-ok"></i>&nbsp;{{group.group_name}}
+		    		<i class="icon-ok"></i> {{group.group_name}}
 		    	</a>
 		    </li>
 		    <li class="divider" data-ng-show="objectLength(follow.groups)"></li>
-		    <li><a data-ng-click="follow.deleteFollow(f.company_ID, f.user_ID, 0)"><i class="icon-blank"></i>&nbsp;Unfollow</a></li>
+		    <li><a data-ng-click="follow.deleteFollow(f.company_ID, f.user_ID, 0)"><i class="icon-blank"></i> Unfollow</a></li>
 	    </ul>
 	</div>
 </script>
@@ -86,14 +86,14 @@
 	    <ul class="dropdown-menu">
 		    <li data-ng-repeat="group in follow.groups" data-ng-show="group.group_ID">
 		    	<a data-ng-click="addFollow(f.user_ID, 'company', group.group_ID);" data-ng-hide="inArray(group.group_ID, f.groups)">
-		    		<i class="icon-blank"></i>&nbsp;{{group.group_name}}
+		    		<i class="icon-blank"></i> {{group.group_name}}
 		    	</a>
 		    	<a data-ng-click="deleteFollow(f.user_ID, 'company', group.group_ID);" data-ng-show="inArray(group.group_ID, f.groups)">
-		    		<i class="icon-ok"></i>&nbsp;{{group.group_name}}
+		    		<i class="icon-ok"></i> {{group.group_name}}
 		    	</a>
 		    </li>
 		    <li class="divider" data-ng-show="objectLength(follow.groups)"></li>
-		    <li><a data-ng-click="deleteFollow(f.user_ID, 'company'); f.following = !f.following"><i class="icon-blank"></i>&nbsp;Unfollow</a></li>
+		    <li><a data-ng-click="deleteFollow(f.user_ID, 'company'); f.following = !f.following"><i class="icon-blank"></i> Unfollow</a></li>
 	    </ul>
 	</div>
 </script>

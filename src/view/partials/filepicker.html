@@ -6,7 +6,7 @@
   	<!-- header -->
   	<div class="modal-header">
     	<button type="button" class="close" data-dismiss="modal" data-ng-click="filepicker.close()">&times;</button>
-    	<h3><i class="icon-{{filepicker.services[filepicker.args.service].icon}}"></i>&nbsp;{{filepicker.services[filepicker.args.service].name}}</h3>
+    	<h3><i class="icon-{{filepicker.services[filepicker.args.service].icon}}"></i> {{filepicker.services[filepicker.args.service].name}}</h3>
     </div>
     <!-- body -->
     <div class="modal-body" data-ng-show="filepicker.args.type == 'UPLOAD'">
@@ -59,8 +59,8 @@
 	        <div data-ng-show="filepicker.args.service == 'COMPUTER'">
 	        	<span data-ng-show="filepicker.dropzone_name == 'image'">or select an image.</span>
 	        	<span data-ng-show="filepicker.dropzone_name == 'file'">or select a file.</span>
-	        	&nbsp;
-	        	<button class="btn btn-success" data-ng-click="computer.buttonClick()"><i class="icon-upload-alt"></i>&nbsp;Upload</button>
+	        	 
+	        	<button class="btn btn-success" data-ng-click="computer.buttonClick()"><i class="icon-upload-alt"></i> Upload</button>
 	        	<input class="hidden" type="file" id="file_upload" accept="{{filepicker.accept}}" onchange="angular.element(this).scope().computer.buttonSelect(this)" ng-model-instant />
 	        	<input class="hidden" type="file" id="file_multi_upload" accept="{{filepicker.accept}}" onchange="angular.element(this).scope().computer.buttonSelect(this)" ng-model-instant multiple />
 	        </div>
@@ -69,7 +69,7 @@
             	<p>or paste in a url.</p>
 				<form name="filepickerURL" class="input-append">
 					<input type="url" name="url" class="span4" placeholder="e.g. http://example.com/someImage.jpg" data-ng-model="url.value" required>
-					<button class="btn btn-success" data-ng-click="url.load(url.value)" data-ng-disabled="filepickerURL.$invalid"><i class="icon-upload-alt"></i>&nbsp;Upload</button>
+					<button class="btn btn-success" data-ng-click="url.load(url.value)" data-ng-disabled="filepickerURL.$invalid"><i class="icon-upload-alt"></i> Upload</button>
 				</form>
 	        </div>
 	    </div>
@@ -123,7 +123,7 @@
 	    	<button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
             <ul class="dropdown-menu left">
 			    <li data-ng-repeat="key in filepicker.args.services" data-ng-show="filepicker.services[key]">
-			    	<a href="" data-ng-click="filepicker.location(key)"><i class="icon-{{filepicker.services[key].icon}}"></i>&nbsp;{{filepicker.services[key].name}}</a>
+			    	<a href="" data-ng-click="filepicker.location(key)"><i class="icon-{{filepicker.services[key].icon}}"></i> {{filepicker.services[key].name}}</a>
 			    </li>
 			</ul>
         </div>
@@ -135,7 +135,7 @@
 	        </div>
 	        <!-- camera -->
 	        <div class="btn-group">
-	        	<button	class="btn btn-primary" data-ng-click="camera.save()" data-ng-show="filepicker.args.service == 'CAMERA'">Snap &amp; Save</button>
+	        	<button	class="btn btn-primary" data-ng-click="camera.save()" data-ng-show="filepicker.args.service == 'CAMERA'">Snap Photo</button>
 	        </div>
 	        <div class="btn-group">
 	        	<button class="btn" data-dismiss="modal" data-ng-click="filepicker.close()">Close</button>
@@ -148,7 +148,7 @@
 	    	<button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
             <ul class="dropdown-menu left">
 			    <li data-ng-repeat="key in filepicker.args.services" data-ng-show="filepicker.services[key]">
-			    	<a href="" data-ng-click="filepicker.location(key)"><i class="icon-{{filepicker.services[key].icon}}"></i>&nbsp;{{filepicker.services[key].name}}</a>
+			    	<a href="" data-ng-click="filepicker.location(key)"><i class="icon-{{filepicker.services[key].icon}}"></i> {{filepicker.services[key].name}}</a>
 			    </li>
 			</ul>
         </div>
@@ -168,7 +168,7 @@
 	<!--  data-ng-init="filepicker.view(args, ID)" -->
 	<ul class="unstyled">
     	<li data-ng-repeat="file in filepicker.args.files" data-ng-click="filepicker.confirmDelete(file.name, filepicker.delete)">
-    		<i class="icon-remove"></i>&nbsp;
+    		<i class="icon-remove"></i> 
     		<span>{{file.name}} ({{file.size_str}})</span>
     		<i class="pull-right">{{file.date*1000 | date}}</i>
     	</li>
@@ -179,7 +179,7 @@
 	<ul class="unstyled">
     	<li data-ng-repeat="file in filepicker.args.files" data-ng-click="filepicker.downloadFile(file.name)">
     		<a data-ng-href="{{settings.server}}/filepicker/download/{{filepicker.args.action}}/{{filepicker.args.ID}}/{{file.name}}">
-        		<i class="icon-cloud-download"></i>&nbsp;
+        		<i class="icon-cloud-download"></i> 
         		<span>{{file.name}} ({{file.size_str}})</span>
         		<i class="pull-right">{{file.date*1000 | date}}</i>
     		</a>

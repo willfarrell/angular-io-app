@@ -9,7 +9,7 @@
 
 
 /* SITE */
-	Last Update: 2012/10/01
+	Last Update: {{date}}
 	Language: English-Canadian
 	Standards: HTML5, CSS3, W3C
 	Software: Coda 2, Terminal, MySQL Workbench, Querious, MAMP Pro, Gitbox, Kaleidoscope, LiveReload, Adobe Edge Inspect, Chrome, Dash, Alfred
