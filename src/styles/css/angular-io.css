@@ -253,7 +253,7 @@ body {
 	
 	.nav-slider-button {
 		margin: 5px 6px; /* 6 = 5 + 1 for border */
-		z-index: 1060;
+		z-index: 1040;
 	}
 	
 	.nav-slider-open, .page-slider-closed {

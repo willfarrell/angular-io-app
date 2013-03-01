@@ -5,6 +5,8 @@ angular.module('io.controller.filepicker', [])
 	console.log('FilepickerCtrl ('+$scope.$id+')');
 	//$scope.errors = {};
 	
+	$scope.filepicker = filepicker;
+	
 	//-- dropzone --//
 	var dropbox = document.getElementById("dropbox");
 
@@ -79,10 +81,6 @@ angular.module('io.controller.filepicker', [])
     
     
 	//-- URL --//
-	// Image - http://www.maxnov.com/getimagedata/ requires nginx proxy
-	// Got "Uncaught Error: SECURITY_ERR: DOM Exception 18"?
-	// Simply start chrome with ‘–allow-file-access-from-files’ argument of test server
-	// 413 - Request Entity Too Large - The image you are trying to fetch is too large. The limit for image size is 1MB.
 	$scope.url = {};
 	$scope.url.value = '';
     $scope.url.load = function(url) {
@@ -96,8 +94,19 @@ angular.module('io.controller.filepicker', [])
 	    	]);
 	    } else {
 		    //$scope.settings.server+'/filepicker/url/'+url.replace(/\./g, '%2E');
+		    $http.post($scope.settings.server+'/filepicker/url/'+$scope.filepicker.args.action+'/'+$scope.filepicker.args.ID, {url:url})
+		    	.success(function(data){
+		    		console.log('url.load.post.success');
+		    		console.log(data);
+		    		data = {target:{responseText:data}};
+			    	uploadComplete(JSON.stringify(data));
+		    	})
+		    	.error(function(){
+			    	console.log('url.load.post.error');
+			    	uploadFailed();
+		    	});
 	    }
-    }
+    };
 	
     //-- RESIZECROP --//
 	$scope.resizecrop = {
@@ -425,8 +434,43 @@ angular.module('io.controller.filepicker', [])
     	$scope.uploadFiles();
     };
     
+    $scope.camera = {};
+    $scope.camera.save = function() {
+    	console.log('camera.save');
+    	console.log(filepicker.camera);
+    	
+    	if (!$scope.filepicker.camera.video.videoWidth
+    		&& !$scope.filepicker.camera.video.videoHeight) return; // camera not loaded yet
+    	
+    	// reset canvas to camera size
+    	$scope.filepicker.camera.canvas.width = $scope.filepicker.camera.video.videoWidth;
+    	$scope.filepicker.camera.canvas.height = $scope.filepicker.camera.video.videoHeight;
+    	
+    	
+    	// draw webcam picture in canvas
+        $scope.filepicker.camera.ctx.drawImage(
+        	$scope.filepicker.camera.video,
+        	0, 0
+        );
+        // create data URL and insert into <img/>
+        //$scope.filepicker.camera.img.src = $scope.filepicker.camera.canvas.toDataURL('image/png');
+        
+        //$scope.filepicker.camera.img.data = $scope.filepicker.camera.canvas.toDataURL($scope.filepicker.camera.img.type);
+        
+        // resize and crop
+        $scope.files[0] = {
+	    	name:'camera'+(+new Date())+'.png',
+	    	type:'image/png'
+        };
+        $scope.resizecrop.initParams($scope.filepicker.camera.canvas.toDataURL('image/png'), 'image/png');
+        $scope.resizecrop.generate();
+        if ($scope.filepicker.args.multi == false) {
+        	$scope.filepicker.args.service = 'RESIZECROP';
+        	$scope.filepicker.cameraStop();
+    	}
+    };
     
-    
+    $scope.files = [];
     // Turn the FileList object into an Array - *** move to computer service
     $scope.setFiles = function(files) {
     	console.log('setFiles(files)');
@@ -511,6 +555,7 @@ angular.module('io.controller.filepicker', [])
     
     
     function uploadProgress(evt) {
+    	//console.log('uploadProgress');
         $scope.$apply(function(){
             if (evt.lengthComputable) {
                 $scope.progress = Math.round(evt.loaded * 100 / evt.total);
@@ -521,18 +566,17 @@ angular.module('io.controller.filepicker', [])
     }
 
     function uploadComplete(evt) {
+    	console.log('uploadComplete');
     	$scope.$apply(function(){
     		$scope.progressVisible = false;
-    		/* This event is raised when the server send back a response */
-    		console.log('uploadComplete');
-    		console.log(evt.target.responseText);
-    		var res = JSON.parse(evt.target.responseText);
-	    	$scope.filepicker.alerts = [res];
+    		console.log(JSON.parse(evt.target.responseText));
+	    	$scope.filepicker.alerts = [JSON.parse(evt.target.responseText)];
 	    	$scope.filepicker.loadFiles();
         });
     }
 
     function uploadFailed(evt) {
+    	console.log('uploadFailed');
         $scope.$apply(function(){
         	$scope.filepicker.alerts = [{
         		"class":"error",
@@ -543,6 +587,7 @@ angular.module('io.controller.filepicker', [])
     }
 
     function uploadCanceled(evt) {
+    	console.log('uploadCanceled');
         $scope.$apply(function(){
             $scope.progressVisible = false;
             $scope.filepicker.alerts = [{
@@ -564,5 +609,25 @@ angular.module('io.controller.filepicker', [])
 	    return new Blob([new Uint8Array(array)], {type: 'image/png'});
 	}
 	
+	//-- Remote Services --//
+	
+    //-- FTP --//
+    $scope.ftp = {};
+	$scope.ftp.connect = function(url, username, password) {
+	    url = encodeURIComponent(url);
+	    //$scope.settings.server+'/filepicker/url/'+url.replace(/\./g, '%2E');
+	    $http.post($scope.settings.server+'/filepicker/url/'+$scope.filepicker.args.action+'/'+$scope.filepicker.args.ID, {url:url})
+	    	.success(function(data){
+	    		console.log('url.load.post.success');
+	    		console.log(data);
+	    		data = {target:{responseText:data}};
+		    	uploadComplete(JSON.stringify(data));
+	    	})
+	    	.error(function(){
+		    	console.log('url.load.post.error');
+		    	uploadFailed();
+	    	});
+	    
+    };
 //}
 }]);

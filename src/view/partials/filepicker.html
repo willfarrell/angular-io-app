@@ -10,7 +10,6 @@
     </div>
     <!-- body -->
     <div class="modal-body" data-ng-show="filepicker.args.type == 'UPLOAD'">
-
 	    <div class="left alert alert-{{alert.class}}" data-ng-repeat="alert in filepicker.alerts">
 		  	<button class="close" data-dismiss="alert">&times;</button>
 		  	<strong>{{alert.label}}</strong> {{alert.message}}
@@ -31,6 +30,19 @@
 	        <input type="range" min="100" max="250" id="resizecrop-zoom" data-ng-model="resizecrop.img.zoom" />
 	        <i class="icon-picture icon-large"></i>
 	    </div>
+	    
+	     <!-- camera -->
+	    <div class="center" data-ng-show="filepicker.args.service == 'CAMERA'">
+	    	
+	        <!--<img id="resizecrop-img" src="" />
+	        <canvas id="resizecrop-canvas" src=""></canvas>-->
+	        <div id="camera">
+		        <video autoplay></video>
+		        <img src="" />
+		        <canvas style="display:none;"></canvas>
+	        </div>
+	    </div>
+	    
 
 	    <!-- computer OR URL -->
 	    <div class="center" data-ng-show="filepicker.args.service == 'COMPUTER' || filepicker.args.service == 'URL'">
@@ -56,19 +68,28 @@
 	        <div data-ng-show="filepicker.args.service == 'URL'">
             	<p>or paste in a url.</p>
 				<form name="filepickerURL" class="input-append">
-					<!-- input-block-level -->
-					<input type="url" name="url" class="span4" placeholder="e.g. http://example.com/someImage.jpg" data-ng-model="url.value">
+					<input type="url" name="url" class="span4" placeholder="e.g. http://example.com/someImage.jpg" data-ng-model="url.value" required>
 					<button class="btn btn-success" data-ng-click="url.load(url.value)" data-ng-disabled="filepickerURL.$invalid"><i class="icon-upload-alt"></i>&nbsp;Upload</button>
 				</form>
 	        </div>
 	    </div>
 
-
 		<!-- ftp -->
+		<div class="center" data-ng-show="filepicker.args.service == 'FTP'">
+			<form name="filepickerFTP">
+		 	<input type="url" name="url" class="span5" placeholder="server (e.g. ftp://example.com/)" data-ng-model="url.value" required>
+		 	
+		 	<div class="form-inline">
+			 	<input type="text" name="user" class="span2" placeholder="username" data-ng-model="url.username">
+			 	<input type="password" name="pass" class="span2" placeholder="password" data-ng-model="url.password">
+			 	<button class="btn btn-primary" data-ng-click="ftp.load(url.value, url.username, url.password)" data-ng-disabled="filepickerFTP.$invalid">Connect</button>
+		 	</div>
+		 	</form>
+		 	<p style="margin-top: 10px">We'll open a new page to help you connect your {{param.attr}} account</p>
+		</div>
+		<!-- webDAV (future)-->
 
-		<!-- webDAV -->
-
-		<!-- service,service_name -->
+		<!-- service,service_name (future) -->
 		<div class="center" data-ng-show="filepicker.args.service == 'service'">
 		 	<h1>Upload files from {{param.attr}}</h1>
 		 	<a class="btn btn-large btn-primary" href="">Connect to {{param.attr}}</a>
@@ -76,7 +97,6 @@
 		</div>
 	
 		<!-- upload - progress bars -->
-		<br>
 		<div data-ng-repeat="file in files.slice(0)" class="left" data-ng-show="filepicker.args.multi">
             <span>{{file.webkitRelativePath || file.name}}</span>
             (<span data-ng-switch="file.size > 1024*1024">
@@ -109,8 +129,13 @@
         </div>
         
         <div class="pull-right">
+        	<!-- resizecrop -->
 	        <div class="btn-group">
 	        	<button	class="btn btn-primary" data-ng-click="resizecrop.save()" data-ng-show="filepicker.args.service == 'RESIZECROP'">Save</button>
+	        </div>
+	        <!-- camera -->
+	        <div class="btn-group">
+	        	<button	class="btn btn-primary" data-ng-click="camera.save()" data-ng-show="filepicker.args.service == 'CAMERA'">Snap &amp; Save</button>
 	        </div>
 	        <div class="btn-group">
 	        	<button class="btn" data-dismiss="modal" data-ng-click="filepicker.close()">Close</button>

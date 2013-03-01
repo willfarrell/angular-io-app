@@ -174,6 +174,105 @@ class Filepicker extends FilepickerConfig {
 		return $result;
 	}
 	
+	//-- Services --//
+	private function download($url, $file, $user = NULL, $pass = NULL) {
+		// refactor to private function - add server user:pass, ftp, webdev options
+		$url = str_replace(" ","%20", $url);
+		
+		set_time_limit(0);
+		$fp = fopen ($file, 'w+');
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 50);
+		curl_setopt($ch, CURLOPT_FILE, $fp);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+		if ($user && $pass) curl_setopt($ch, CURLOPT_USERPWD, "$user:$pass");
+		$data = curl_exec($ch);//get curl response
+		curl_close($ch);
+		//fwrite($fp, $data);//write curl response to file
+		fclose($fp);
+	}
+	
+	// upload via url
+	function post_url($action = '', $ID=NULL, $request_data=NULL) {
+		if (!$action) $action = $this->action_default;
+		$path = $this->makePath($action, $ID);
+		
+		if (!$this->permissionAllowed('post', $action, $ID)) {
+			return array("alerts" => array('class' => 'error', 'label' => 'Error', 'message' => 'Permission Denied.'));
+		}
+		
+		$url = urldecode($request_data['url']);
+		$pathinfo = pathinfo($url);
+		
+		return $this->download($url, $path.$pathinfo['basename'])
+			? array('class' => 'success', 'label' => 'Upload Complete')
+			: array('class' => 'error', 'label' => 'Error', 'message'=> 'Could not save remote file. The retrieval was cancelled, or server error encountered');
+	}
+	
+	//-- FTP Service --//
+	// get list of ftp files
+	function get_ftp($url, $user='', $pass='') {
+		if (!($conn = ftp_connect($url)))
+			return array('class' => 'error', 'label' => 'Error', 'message'=> 'Cannot connect to host');
+		if (!ftp_login($conn, $user, $pass))
+			return array('class' => 'error', 'label' => 'Error', 'message'=> 'Could not login.');
+
+		if (!ftp_pasv($conn, true))
+			return array('class' => 'error', 'label' => 'Error', 'message'=> 'Could not enable passive mode.');
+
+		$files = array();
+        $contents = ftp_rawlist($conn, $path);
+        $i = 0;
+
+        if (count($contents)) {
+            foreach($contents as $line) {
+
+                preg_match("#([drwx\-]+)([\s]+)([0-9]+)([\s]+)([0-9]+)([\s]+)([a-zA-Z0-9\.]+)([\s]+)([0-9]+)([\s]+)([a-zA-Z]+)([\s ]+)([0-9]+)([\s]+)([0-9]+):([0-9]+)([\s]+)([a-zA-Z0-9\.\-\_ ]+)#si", $line, $out);
+                //print_r($out);
+                if ($out[3] != 1 && ($out[18] == "." || $out[18] == "..")) {
+                    // do nothing
+                } else {
+                    $file = array();
+                    $file['rights'] = $out[1];
+                    $file['type'] = $out[3] == 1 ? "file":"folder";
+                    $file['owner_id'] = $out[5];
+                    $file['owner'] = $out[7];
+                    //$file['size'] = $this->filesize_format($out[9]);
+                    $file['date_modified'] = $out[11]." ".$out[13] . " ".$out[13].":".$out[16]."";
+                    $file['name'] = $out[18];
+                    
+                    $files[$i++] = $file;
+                }
+            }
+        }
+        
+		ftp_close($conn);
+		
+		return $files;
+	}
+	
+	// pick ftp file to upload
+	function post_ftp($action = '', $ID=NULL, $request_data=NULL) {
+		if (!$action) $action = $this->action_default;
+		$path = $this->makePath($action, $ID);
+		
+		if (!$this->permissionAllowed('post', $action, $ID)) {
+			return array("alerts" => array('class' => 'error', 'label' => 'Error', 'message' => 'Permission Denied.'));
+		}
+		
+		$url = urldecode($request_data['url']);
+		$pathinfo = pathinfo($url);
+		
+		return $this->download($url, $path.$pathinfo['basename'], $request_data['user'], $request_data['pass'])
+			? array('class' => 'success', 'label' => 'Upload Complete')
+			: array('class' => 'error', 'label' => 'Error', 'message'=> 'Could not save remote file. The retrieval was cancelled, or server error encountered');
+	}
+	
+	// put a file onto ftp server
+	function put_ftp() {
+		
+	}
+	
 	/*
 	// to do
 	// files paths for type

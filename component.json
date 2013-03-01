@@ -2,6 +2,7 @@
 	"name":"Angular.io App",
 	"version":"1.0.0",
 	"dependencies":{
+		"modernizr":null,
 		"html5-boilerplate":null,
 		"html5-mobile-boilerplate":null,
 		"angular-complete":null,

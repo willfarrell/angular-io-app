@@ -52,7 +52,7 @@ class FilepickerConfig extends Core {
 	
 	
 	function makePath($action, $ID=NULL) {
-		
+		// dirname(__FILE__) . 
 		$path = getcwd().'/'.$this->actions[$action]['path'].'/';
 		
 		switch ($action) {

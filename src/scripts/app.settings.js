@@ -54,7 +54,7 @@ angular.module('io.init.settings', [])
 				action:'user_single_image',
 				types: ['image/*'],
 				extensions: ['.jpg', '.jpeg', '.gif', '.bmp', '.png'],
-				services: ['COMPUTER', 'URL'],
+				services: ['COMPUTER', 'URL', 'CAMERA'],
 				service: 'COMPUTER',
 				multi:false,
 				resizecrop:true,
