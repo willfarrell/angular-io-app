@@ -3,39 +3,17 @@
 <head>
   	<meta http-equiv="Content-Type" 				content="text/html; charset=UTF-8">
     <meta name="robots" 							content="index, follow"><!-- index, noindex, follow, nofollow -->
-
-    <!-- !mobile tags -->
-    <!--<meta name="HandheldFriendly" content="True">
-    <meta name="MobileOptimized" content="320">-->
 	<meta name="viewport" 							content="user-scalable=no, initial-scale=1, maximum-scale=1">
-	<meta name="apple-mobile-web-app-capable" 		content="yes"><!-- Sets whether a web application runs in full-screen mode. -->
-	<!--<meta name="format-detection" 						content="telephone=no">-->
-    <!--<meta name="apple-mobile-web-app-status=bar-style" 	content="black-translucent">--><!-- black, black-translucent, default -->
-    <!-- http://david-smith.org/blog/2012/09/20/implementing-smart-app-banners/ -->
-    <!--<meta name="apple-itunes-app" content="app-id="/>-->
-  	<!-- !end mobile tags -->
   	
-  	<link rel="icon" 							sizes="32x32" 	href="favicon/icon-32.png">
-  	<link rel="shortcut icon" 	type="image/x-icon" 			href="favicon.ico">
-  	<link rel="fluid-icon"		title="Angular.io" 				href="fluidicon.png">
-  	
-    <link rel="apple-touch-icon-precomposed" 	sizes="57x57" 	href="icons/ios/icon-57.png">
-    <link rel="apple-touch-icon-precomposed" 	sizes="114x114" href="icons/ios/icon-57-2x.png">
-    <link rel="apple-touch-icon-precomposed" 	sizes="72x72"	href="icons/ios/icon-72.png">
-    <link rel="apple-touch-icon-precomposed" 	sizes="144x144" href="icons/ios/icon-72-2x.png">
-    <meta name="msapplication-TileImage" 		content="icons/winphone/icon-173-tile.png">
-    <meta name="msapplication-TileColor" 		content="#ffffff">
-
   	<title data-ng-bind-template="{{i18n.title}}"></title>
     <meta name="description" 	content="{{i18n.meta_description}}">
     <meta name="author" 		content="humans.txt">
 
-    <!-- CSS -->
-    
     <!-- build:css css/app.min.css -->
     <link rel="stylesheet" href="styles/bootstrap.min.css"><!-- generated from styles/less/bootstrap.less -->
     <link rel="stylesheet" href="components/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="styles/angular-io.css">
+    <!--<link href="styles/css/famfamfam-styles.css" rel="stylesheet">--><!-- not needed if font-awesome is included -->
     <!--<link rel="stylesheet" href="styles/famfamfam-flags.css">-->
     
     <!-- endbuild -->
@@ -105,7 +83,6 @@
 <!-- !Frameworks - Dev - do not build -->
 <script src="components/jquery/jquery.js"></script>
 <script src="components/angular-complete/angular.js"></script>
-<script src="components/angular-complete/angular-cookies.js"></script>
 <script>
 	locale = JSON.parse(localStorage.getItem('locale'));
 	if (locale) document.write('<script src="components/angular-complete/i18n/angular-locale_'+locale+'.js"><\/script>');
@@ -129,8 +106,7 @@
 <script src="components/bootstrap/js/bootstrap-collapse.js"></script>-->
 <script src="components/bootstrap/js/bootstrap-dropdown.js"></script>
 <script src="components/bootstrap/js/bootstrap-modal.js"></script>
-<!--
-<script src="components/bootstrap/js/bootstrap-scrollspy.js"></script>
+<!--<script src="components/bootstrap/js/bootstrap-scrollspy.js"></script>
 <script src="components/bootstrap/js/bootstrap-tab.js"></script>
 <script src="components/bootstrap/js/bootstrap-tooltip.js"></script>
 <script src="components/bootstrap/js/bootstrap-popover.js"></script>--><!-- requires tooltip -->
@@ -138,12 +114,13 @@
 <script src="components/bootstrap/js/bootstrap-typeahead.js"></script>-->
 <!-- endbuild -->
 
-<!-- build:js js/web.min.js -->
-<!-- !Boilerplate -->
-<script src="components/html5-boilerplate/js/plugins.js"></script>
-<!-- endbuild -->
-
 <!-- build:js js/app.min.js -->
+<!-- !Non-CDN Components -->
+<script src="components/angular-complete/angular-cookies.js"></script>
+
+<!-- Boilerplate -->
+<script src="components/html5-boilerplate/js/plugins.js"></script>
+
 <!-- !Liabraries -->
 <!-- Markdown (user/edit, user/profile, company/edit, company/profile -->
 <script src="scripts/angular-io/plugins/markdown/Markdown.Converter.min.js"></script>
@@ -217,7 +194,8 @@
 <!-- endbuild -->
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-<!--<script>var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'));</script>-->
+<!--<script>var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'));</script>-->
 
+<!--<script data-main="scripts/main.js" src="scripts/lib/require.min.js"></script>-->
 </body>
 </html>

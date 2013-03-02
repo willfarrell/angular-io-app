@@ -283,7 +283,10 @@ angular.module('io.init.rootScope', [])
 	
 	//!-- Lang --//
 	$rootScope.init = function() {
-		$rootScope.locale 	= db.get('locale', $locale.id);							// en-ca
+		//$rootScope.locale 	= localStorage.getItem('locale');	
+		//$rootScope.locale || ($rootScope.locale = localStorage.setItem('locale', $locale.id));// en-ca
+		$rootScope.locale = db.get('locale', $locale.id);
+								
 	 	$rootScope.language = db.get('language', $rootScope.locale.substr(0,2)); 	// en
 		db.set('language', $rootScope.language);
 	 	if ($rootScope.locale.length > 2) {
@@ -294,6 +297,7 @@ angular.module('io.init.rootScope', [])
 		}
 	};
 	$rootScope.changeLocale = function(locale) {
+		//localStorage.setItem('locale', locale);
 		db.set('locale', locale);
 		db.set('language', locale.substr(0,2));
 		

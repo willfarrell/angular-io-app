@@ -1,3 +1,5 @@
+//(function(window, angular, undefined) {
+//'use strict';
 
 // io settings
 angular.module('io.config', []).value('io.config', {});
@@ -49,17 +51,33 @@ angular.module('app.init', ['app.config', 'app.route']);
 
 var app = angular.module('app', ['ngCookies', 'io', 'app.directives', 'app.filters', 'app.factories', 'app.init', 'app.config']);
 
-/*angular.element(document.documentElement).ready(function() {
-    //locale = JSON.parse(localStorage.getItem('locale'));
-	//if (locale) document.write('<script src="components/angular-complete/i18n/angular-locale_'+locale+'.js"><\/script>');
-    
-    var locale = localStorage.getItem('locale');    
-    var url = 'i18n/angular-locale_'+locale+'.js';
 
-    yepnope({
-        load: url,
-        callback: function(url, result, key) {
-            angular.bootstrap(document,['myapp']);
-        }
-    });
+
+/*angular.element(document.documentElement).ready(function() {
+	console.log('*** READY **');
+    
+    var locale = JSON.parse(localStorage.getItem('locale'));    
+    //var url = 'i18n/angular-locale_'+locale+'.js';
+    //if (locale) document.write('<script src="js/vendor/i18n/angular-locale_'+locale+'.js"><\/script>');
+    
+    //angular.bootstrap(document,['app']);
 });*/
+
+//})(window, window.angular);
+
+/*window.onload = function() {
+	console.log('Load any missing CDN scripts');
+	
+	// jQuery
+	window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>');
+	
+	// angular
+	window.angular || document.write('<script src="js/vendor/angular.min.js"><\/script>');
+	
+	// bootstrap
+	(window.$.fn.button || window.$.fn.modal) || document.write('<script src="js/vendor/bootstrap.min.js"><\/script>');
+	
+	//var locale = JSON.parse(localStorage.getItem('locale'));    
+    //var url = 'i18n/angular-locale_'+locale+'.js';
+    //if (locale) document.write('<script src="js/vendor/i18n/angular-locale_'+locale+'.js"><\/script>');
+}*/

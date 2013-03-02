@@ -144,7 +144,14 @@ module.exports = function(grunt) {
         // not used since Uglify task does concat,
         // but still available if needed
         /*concat: {
-            dist: {}
+            options: {
+            	stripBanners: true
+		    //    banner: '/ <%= baz %> /\n',   // '/ abcde /\n'
+		    },
+            dist: {
+            	src: ['<%= yeoman.dist %>/app.min.js'],
+            	dest: 'dist/built.js'
+			}
         },*/
         
         uglify: {
@@ -343,10 +350,6 @@ module.exports = function(grunt) {
         cssmin: {
             dist: {
                 files: {
-                    /*'<%= yeoman.dist %>/styles/main.css': [
-                        '.tmp/styles/*.css',
-                        '<%= yeoman.app %>/styles/*.css'
-                    ],*/
                     '<%= yeoman.dist %>/css/accessibility.min.css': [
                     	'<%= yeoman.app %>/styles/accessibility.css'
                     ]
@@ -572,6 +575,32 @@ module.exports = function(grunt) {
 			      	}
 			    ]
 	        },
+	        
+	        cssmin: {
+		        options: {
+			        replacements: [
+			        	// removes /*! ---- */ banner comments for max compression
+			        	{
+				        	pattern: /\/\*([\s\S]*?)\*\//g,
+				        	replacement: ''
+			        	},
+			        	// Remove query strings from static resources ie ?v=3.0.1
+			        	{
+				        	pattern: /\?[\w=\.]+/g,
+				        	replacement: ''
+			        	}
+			        ]
+		        },
+		        files: [
+			      	{
+			      		expand: true,
+	                    dot: true,
+	                    cwd: '<%= yeoman.dist %>',
+	                    dest: '<%= yeoman.dist %>',
+	                    src: ['css/**/*.css']
+			      	}
+			    ]
+	        },
 	        // collapseWhitespace replacement - make sure you have no comments in your inline <script>
 	        htmlmin: {
 			    options: {
@@ -781,10 +810,11 @@ module.exports = function(grunt) {
         //'coffee',
         //'compass:dist',
         'useminPrepare',
+        'concat',
+        'replace:cssmin',	// remove banners
         'imagemin:dist',
         'cssmin',
         'htmlmin:dist',
-        'concat',
         'uglify',
         //'closure-compiler',	// Warning: Object #<Object> has no method 'expandFiles' 2013-02-15
         //'ngmin', 				// make a larger file 2013-02-15
