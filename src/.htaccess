@@ -589,7 +589,7 @@ ServerSignature Off
 	# Only allow JavaScript from the same domain to be run.
 	# Don't allow inline JavaScript to run.
 	# https://wiki.mozilla.org/Security/CSP/Specification
-	Header set X-Content-Security-Policy "allow 'self'"
+	# Header set X-Content-Security-Policy "default-src 'self'"
 	
 	# prevent mime based attacks
 	Header set X-Content-Type-Options "nosniff"

@@ -177,7 +177,7 @@ img { -ms-interpolation-mode: bicubic; }
 	display:block;
 	padding-top:15%;
     background-color: #FFF;
-    background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAANklEQVQYV2NkIAIwEqHGmJAiY6AhZwkpAluESxHYBJhTsClCUYDPJBT/IJuEYQK6dTgVgBQCAIq0BT1Kwa4sAAAAAElFTkSuQmCC);
+    /*background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAANklEQVQYV2NkIAIwEqHGmJAiY6AhZwkpAluESxHYBJhTsClCUYDPJBT/IJuEYQK6dTgVgBQCAIq0BT1Kwa4sAAAAAElFTkSuQmCC); CSP WARN in FireFox */
     
 	color:#222;
 }

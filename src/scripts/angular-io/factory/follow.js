@@ -31,7 +31,6 @@ angular.module('io.factory.follow', [])
 			$scope.db.user[user_ID].groups || ($scope.db.user[user_ID].groups = []);
 		}
 	};
-	$scope.init();
 	
 	$scope.addFollow = function(company_ID, user_ID, group_ID) {
 		console.log('addFollow("'+company_ID+'", "'+user_ID+'", "'+group_ID+'")');
@@ -239,7 +238,10 @@ angular.module('io.factory.follow', [])
 	
 	// load on signin
 	$rootScope.$watch('session.user_ID', function(value) {
-      	if (value) $scope.loadGroups();
+      	if (value) {
+      		$scope.loadGroups();
+      		$scope.init();
+	}
     });
 	
 	return $scope;

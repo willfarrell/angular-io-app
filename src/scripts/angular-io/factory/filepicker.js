@@ -94,7 +94,8 @@ angular.module('io.factory.filepicker', [])
 		$scope.args = syncVar(args, $scope.args_upload);
 		$scope.args.ID = ID;
 		
-		$scope.location($scope.args.service); // incase camera is default
+		$scope.cameraModernizr(); // incase camera is default
+		$scope.location($scope.args.service);
 		$scope.loadFiles();
 		
 		// input accept tag
@@ -217,7 +218,8 @@ angular.module('io.factory.filepicker', [])
 	
 	//-- Camera --//
 	$scope.camera = {};
-	$scope.cameraInit = function() {
+	$scope.cameraModernizr = function() {
+		console.log('cameraModernizr');
 		// check if able - if not disable
 		var hasUserMedia = function() {
 		    if (!navigator.getUserMedia) {
@@ -230,74 +232,86 @@ angular.module('io.factory.filepicker', [])
 		    return !!(navigator.getUserMedia);
 		}
 		
-		if (hasUserMedia()) {
-			// load in
-			var dom = document.getElementById("camera");
-			$scope.camera.video = dom.querySelector('video');
-			$scope.camera.canvas = dom.querySelector('canvas');
-			$scope.camera.canvas.width = $scope.args.width * 2;
-		    $scope.camera.canvas.height = $scope.args.height * 2;
-			$scope.camera.ctx = $scope.camera.canvas.getContext('2d');
-			//$scope.camera.img = dom.querySelector('img');
-			//$scope.camera.link = document.createElement('a');
-		
-		    var failure = function(e) {
-		        console.log("hasUserMedia Fail", e);
-		    };
-		
-		    var success = function(stream) {
-		    	
-		        if (/Chrome/.test(navigator.userAgent)) {
-		          	$scope.camera.video.src = window.URL.createObjectURL(stream);
-		        } else {
-		          	$scope.camera.video.src = stream;
-		        }
-		        $scope.camera.stream = stream;	// for stopping
-		        
-		        $scope.camera.video.width = $scope.camera.canvas.width;
-		    	$scope.camera.video.height = $scope.camera.canvas.height;
-		    	
-		        // Note: onloadedmetadata doesn't fire in Chrome when using it with getUserMedia.
-		        // See crbug.com/110938.
-		        $scope.camera.video.onloadedmetadata = function(e) {
-		            console.log("metadata loaded");
-		        }
-		    }
-		
-		    navigator.getUserMedia({video:true}, success, failure);
-		
-		    /*$scope.camera.video.addEventListener('click', function() {
-		        //var width = this.videoWidth;
-		        //var height = this.videoHeight;
-		        //canvas.width = width;
-		        //canvas.height = height;
-		        
-		        // draw webcam picture in canvas
-		        $scope.camera.ctx.drawImage(video, 0, 0);
-		        // create data URL and insert into <img/>
-		        $scope.camera.img.src = $scope.camera.canvas.toDataURL('image/png');
-		        // download picture when clicking on it
-		        $scope.camera.img.onclick = function() {
-		            // set filename for downloading picture
-		            // https://developer.mozilla.org/en-US/docs/HTML/Element/a#attr-download
-		           // $scope.camera.link.setAttribute('download', 'webcam-'+location.hostname+'-'+Date.now()+'.png');
-		            //$scope.camera.link.href = $scope.camera.canvas.toDataURL('image/png');
-		            //$scope.camera.link.click();
-		        };
-		        
-		        $scope.camera.img.data = $scope.camera.canvas.toDataURL($scope.camera.img.type);
-		        
-		    }, false);*/
-		} else {
-			// remove from list of services
-		    $scope.args.services.splice($scope.args.services.indexOf('CAMERA'), 1);
-		    // reset current service if camera
-		    if ($scope.args.service === 'CAMERA') {
-			    $scope.args.service = $scope.args.services[0];
-		    }
+		if (!hasUserMedia()) {
+			console.log('!hasUserMedia');
+			$scope.cameraRemove();
 		}
-		
-		
+	};
+	$scope.cameraRemove = function() {
+		// remove from list of services
+	    $scope.args.services.splice($scope.args.services.indexOf('CAMERA'), 1);
+	    // reset current service if camera
+	    if ($scope.args.service === 'CAMERA') {
+		    $scope.args.service = $scope.args.services[0];
+	    }
+	};
+	$scope.cameraInit = function() {
+		if (!navigator.getUserMedia) {
+		        navigator.getUserMedia = navigator.webkitGetUserMedia ||
+		            navigator.mozGetUserMedia || navigator.msGetUserMedia;
+		    }
+		    if (!window.URL) {
+		        window.URL = window.webkitURL || window.mozURL;
+		    }
+		    
+		// load in
+		var dom = document.getElementById("camera");
+		$scope.camera.video = dom.querySelector('video');
+		$scope.camera.canvas = dom.querySelector('canvas');
+		$scope.camera.canvas.width = $scope.args.width * 2;
+	    $scope.camera.canvas.height = $scope.args.height * 2;
+		$scope.camera.ctx = $scope.camera.canvas.getContext('2d');
+		//$scope.camera.img = dom.querySelector('img');
+		//$scope.camera.link = document.createElement('a');
+	
+	    var failure = function(e) {
+	        console.log("camera Fail", e);
+	        $scope.cameraRemove();
+	    };
+	
+	    var success = function(stream) {
+	    	
+	        if (/Chrome/.test(navigator.userAgent)) {
+	          	$scope.camera.video.src = window.URL.createObjectURL(stream);
+	        } else {
+	          	$scope.camera.video.src = stream;
+	        }
+	        $scope.camera.stream = stream;	// for stopping
+	        
+	        $scope.camera.video.width = $scope.camera.canvas.width;
+	    	$scope.camera.video.height = $scope.camera.canvas.height;
+	    	
+	        // Note: onloadedmetadata doesn't fire in Chrome when using it with getUserMedia.
+	        // See crbug.com/110938.
+	        $scope.camera.video.onloadedmetadata = function(e) {
+	            console.log("metadata loaded");
+	        }
+	    }
+	
+	    navigator.getUserMedia({video:true}, success, failure);
+	
+	    /*$scope.camera.video.addEventListener('click', function() {
+	        //var width = this.videoWidth;
+	        //var height = this.videoHeight;
+	        //canvas.width = width;
+	        //canvas.height = height;
+	        
+	        // draw webcam picture in canvas
+	        $scope.camera.ctx.drawImage(video, 0, 0);
+	        // create data URL and insert into <img/>
+	        $scope.camera.img.src = $scope.camera.canvas.toDataURL('image/png');
+	        // download picture when clicking on it
+	        $scope.camera.img.onclick = function() {
+	            // set filename for downloading picture
+	            // https://developer.mozilla.org/en-US/docs/HTML/Element/a#attr-download
+	           // $scope.camera.link.setAttribute('download', 'webcam-'+location.hostname+'-'+Date.now()+'.png');
+	            //$scope.camera.link.href = $scope.camera.canvas.toDataURL('image/png');
+	            //$scope.camera.link.click();
+	        };
+	        
+	        $scope.camera.img.data = $scope.camera.canvas.toDataURL($scope.camera.img.type);
+	        
+	    }, false);*/
 	};
 	// doesn't work
 	$scope.cameraStop = function() {

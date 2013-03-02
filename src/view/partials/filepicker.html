@@ -1,7 +1,7 @@
-<!--
 
-<button class="btn" data-ng-click="filepicker.download({action:'user_multi_files'},1);">Download</button>
--->
+
+
+
 <div class="modal hide" id="filepickerModal" data-ng-controller="FilepickerCtrl">
   	<!-- header -->
   	<div class="modal-header">
@@ -165,7 +165,6 @@
 </div>
 
 <script type="text/ng-template" id="filepicker-edit-list">
-	<!--  data-ng-init="filepicker.view(args, ID)" -->
 	<ul class="unstyled">
     	<li data-ng-repeat="file in filepicker.args.files" data-ng-click="filepicker.confirmDelete(file.name, filepicker.delete)">
     		<i class="icon-remove"></i> 

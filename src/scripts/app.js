@@ -48,3 +48,18 @@ angular.module('app.factories', ['app.config']);
 angular.module('app.init', ['app.config', 'app.route']);
 
 var app = angular.module('app', ['ngCookies', 'io', 'app.directives', 'app.filters', 'app.factories', 'app.init', 'app.config']);
+
+/*angular.element(document.documentElement).ready(function() {
+    //locale = JSON.parse(localStorage.getItem('locale'));
+	//if (locale) document.write('<script src="components/angular-complete/i18n/angular-locale_'+locale+'.js"><\/script>');
+    
+    var locale = localStorage.getItem('locale');    
+    var url = 'i18n/angular-locale_'+locale+'.js';
+
+    yepnope({
+        load: url,
+        callback: function(url, result, key) {
+            angular.bootstrap(document,['myapp']);
+        }
+    });
+});*/

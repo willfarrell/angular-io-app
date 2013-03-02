@@ -33,10 +33,10 @@
     <!-- CSS -->
     
     <!-- build:css css/app.min.css -->
-    <link rel="stylesheet" href="styles/css/bootstrap.min.css"><!-- generated from styles/less/bootstrap.less -->
+    <link rel="stylesheet" href="styles/bootstrap.min.css"><!-- generated from styles/less/bootstrap.less -->
     <link rel="stylesheet" href="components/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="styles/css/angular-io.css">
-    <!--<link rel="stylesheet" href="styles/css/famfamfam-flags.css">-->
+    <link rel="stylesheet" href="styles/angular-io.css">
+    <!--<link rel="stylesheet" href="styles/famfamfam-flags.css">-->
     
     <!-- endbuild -->
 
@@ -103,21 +103,22 @@
 <![endif]-->
 
 <!-- !Frameworks - Dev - do not build -->
-<script src="components/jquery/jquery.js"></script>
 <script src="components/angular-complete/angular.js"></script>
+<script src="components/jquery/jquery.js"></script>
 <script src="components/angular-complete/angular-cookies.js"></script>
 <script>
-	// loads i18n files for Angular
 	locale = JSON.parse(localStorage.getItem('locale'));
 	if (locale) document.write('<script src="components/angular-complete/i18n/angular-locale_'+locale+'.js"><\/script>');
 </script>
 <!-- end - do not build -->
 
 <!-- build:js js/vendor/modernizr.min.js -->
-<!--<script src="components/modernizr/modernizr.js"></script>
+<!--
+<script src="components/modernizr/modernizr.js"></script>
 <script src="components/modernizr/feature-detects/canvas.js"></script>
 <script src="components/modernizr/feature-detects/draganddrop.js"></script>
-<script src="components/modernizr/feature-detects/history.js"></script>-->
+<script src="components/modernizr/feature-detects/history.js"></script>
+-->
 <!-- endbuild -->
 
 <!-- build:js js/vendor/bootstrap.min.js -->
@@ -138,6 +139,7 @@
 <!-- endbuild -->
 
 <!-- build:js js/web.min.js -->
+<!-- FYI: commented out <script> are still added to build -->
 <!-- !Boilerplate -->
 <script src="components/html5-boilerplate/js/plugins.js"></script>
 <!-- endbuild -->

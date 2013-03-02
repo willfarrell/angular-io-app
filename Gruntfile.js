@@ -362,7 +362,7 @@ module.exports = function(grunt) {
                     //collapseWhitespace: true,
                     collapseBooleanAttributes: true,
                     removeAttributeQuotes: true,
-                    removeRedundantAttributes: true,
+                    //removeRedundantAttributes: true,
                     useShortDoctype: true,
                     //removeEmptyAttributes: true,
                     removeOptionalTags: true
@@ -383,7 +383,7 @@ module.exports = function(grunt) {
                     //collapseWhitespace: true,			// <span>foo</span> <span>bar</span> fails waiting on fix - remove replace after
                     collapseBooleanAttributes: true,
                     removeAttributeQuotes: true,
-                    removeRedundantAttributes: true,
+                    //removeRedundantAttributes: true, // removes type="text" from <input> causes style issues in bootstrap
                     useShortDoctype: true,
                     removeEmptyAttributes: true,
                     removeOptionalTags: true

@@ -14,7 +14,6 @@ function MessageCtrl($scope, $http, $routeParams) {
 	
 	// inbox
 	$scope.loadMessages = function() {
-		$scope.init();
 		console.log('loadMessages()');
 		$http.get($rootScope.settings.server+'/message/list')
 			.success(function(data) {

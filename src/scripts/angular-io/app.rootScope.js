@@ -264,14 +264,14 @@ angular.module('io.init.rootScope', [])
 		console.log('loadJSON('+key+', '+file+')');
 		$http.get($rootScope.settings.client+'/'+folder+'/'+file+'.json')
 			.success(function(data){
-				console.log('loadJSON.get.success');
+				console.log('loadJSON.get('+key+'/'+file+').success');
 				//console.log(data);
 				//$rootScope.json[config.id] = data;
 				$rootScope.$emit('loaderEvent', key);
 				$rootScope.json[key] = data;
 			})
 			.error(function(){
-				console.log('loadJSON.get.error');
+				console.log('loadJSON.get('+key+'/'+file+').error');
 				$rootScope.$emit('loaderEvent', key);
 				$rootScope.json[key] = {};
 			});
