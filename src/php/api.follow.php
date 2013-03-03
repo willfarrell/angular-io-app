@@ -275,7 +275,7 @@ class Follow extends Core {
 		$this->db->insert_update($this->table, $insert, $insert);
 		
 		
-		//$this->notify->send($follow_ID, 'new_follow', array(), "email,sms,push");
+		$this->notify->send($user_ID, 'new_follow', array(), "email,sms,push");
 		
 		return;
 	}

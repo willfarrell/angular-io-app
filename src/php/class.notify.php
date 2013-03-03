@@ -80,7 +80,7 @@ class Notify {
 		$notify_json = json_decode($to['notify_json'], true);
 		if (!is_array($notify_json)) $notify_json = array();
 		
-		if (in_array($message_ID, $notify_json)) {
+		if (array_key_exists($message_ID, $notify_json)) {
 			foreach ($notify_json[$message_ID] as $key => $value) {
 				$notify[$key] = $value;
 			}
@@ -97,7 +97,7 @@ class Notify {
 		
 		// send via types
 		if (in_array("email", $types) && $notify['email']) {
-			if ($security_json['email']['key']) {
+			if (array_key_exists('email', $security_json) && $security_json['email']['key']) {
 				//$this->email->encrypt($security_json['email']['key'], $to['user_email'], $subject, $message);
 				$this->email->encrypt($security_json['email']['key'], $to['user_email'], $subject, $message);
 			} else {

@@ -70,7 +70,7 @@
       		</select>
       	</div>
     </div>
-	<script>/*
+    <!--
     <hr>
     
     <div class="control-group" data-ng-class="{error: (errors.email.password)}">
@@ -78,10 +78,10 @@
       	<div class="controls">
       		<select class="input-block-level" data-ng-model="country_code" data-ng-options="key as value for (key, value) in json.countries"></select>
       		<div class="btn-group">
-				<button class="btn dropdown-toggle" data-toggle="dropdown"><!--<i class="flag-{{country_code}}"></i> -->{{json.languages[locale]}}</button>
+				<button class="btn dropdown-toggle" data-toggle="dropdown"><!--<i class="flag-{{country_code}}"></i> --{{json.languages[locale]}}</button>
 			    <ul class="dropdown-menu">
 			    	<li data-ng-repeat="locale in settings.i18n.options">
-		        		<a href="" data-ng-click="changeLocale(locale)"><!--<i class="flag-{{locale.substr(3,2)}}"></i> -->{{json.languages[locale]}}</a>
+		        		<a href="" data-ng-click="changeLocale(locale)"><!--<i class="flag-{{locale.substr(3,2)}}"></i> --{{json.languages[locale]}}</a>
 		        	</li>
 		        </ul>
 			</div>
@@ -109,12 +109,10 @@
 				    	<li style="zoom:1; 	MozTransform:scale(0.010)"><a href="" data-ng-click="accessibility.zoom(1)">Default</a></li>
 				    	<li style="zoom:1.2;MozTransform:scale(0.012)"><a href="" data-ng-click="accessibility.zoom(1.2)">Large</a></li>
 				    	<li style="zoom:1.4;MozTransform:scale(0.014)"><a href="" data-ng-click="accessibility.zoom(1.4)">X-Large</a></li>
-			        </ul>-->
+			        </ul>--
 				</div>
         </div>
-    </div>
-    */
-    </script>
+    </div>-->
     
     <!--<div class="control-group">
       	<label class="control-label" for="user_level">Permissions</label>

@@ -359,7 +359,7 @@ module.exports = function(grunt) {
         htmlmin: {
             dist: {
                 options: {
-                	/*//removeComments: true,
+                	/*removeComments: true,
                     removeCommentsFromCDATA: true,
                     //removeCDATASectionsFromCDATA: true,
                     //collapseWhitespace: true,
@@ -609,18 +609,17 @@ module.exports = function(grunt) {
 			        	{
 				        	pattern: /\s+/g,
 				        	replacement: " "
-			        	},
+			        	}//,
 			        	// whitespace
-			        	{
-				        	pattern: /\s*\n\s*/g,
-				        	replacement: ""
-			        	},
-			        	
+			        	//{
+				        //	pattern: /\s*\n\s*/g,
+				        //	replacement: ""
+			        	//},
 			        	// spaces between tags
-			        	{
-				        	pattern: /\s*\>\s*\<\s*/g,
-				        	replacement: "><"
-			        	}
+			        	//{
+				        //	pattern: /\s*\>\s*\<\s*/g,
+				        //	replacement: "><"
+			        	//}
 			        ]
 		        },
 			    files: [
@@ -636,7 +635,31 @@ module.exports = function(grunt) {
 			      	}
 			    ]
 			    
-	        }
+	        },
+	        // remove all console function calls - production only (call before uglify)
+	        /*jsmin: {
+			    options: {
+			        replacements: [
+			        	// nested recursion not support in js
+			        	{
+				        	pattern: /console.log\(([\s\S]*?)\)[;,\n]+/g,
+				        	replacement: ''
+			        	}
+			        ]
+		        },
+			    files: [
+			      	{
+			      		expand: true,
+	                    dot: true,
+	                    cwd: '<%= yeoman.dist %>',
+	                    dest: '<%= yeoman.dist %>',
+	                    src: [
+	                        'js/** /*.js'
+	                    ]
+			      	}
+			    ]
+			    
+	        }*/
         },
 	    compress: {
 	        phonegap: {
@@ -664,6 +687,27 @@ module.exports = function(grunt) {
 		      }
 		    }
 		},
+		manifest: {
+		    generate: {
+		      	options: {
+			        basePath: '<%= yeoman.dist %>/',
+			        //cache: ["js/app.js", "css/style.css"]
+			        //network: ["http://*", "https://*"],
+			        //fallback: ["/ /offline.html"],
+			        exclude: ['js/vendor/*', 'js/device.min.js'],
+			        preferOnline: true,
+			        verbose: true,
+			        timestamp: true
+		        },
+		        src: [
+		      		// load top level html files
+		          	"*.html", "view/*.html", //"view/**/*.html",
+		          	"js/*.min.js",
+		          	"css/**/*.css"
+		        ],
+		        dest: "<%= yeoman.dist %>/manifest.appcache"
+		    }
+	    },
 		cdnify: {
 	      dist: {
 	        html: ['<%= yeoman.dist %>/index.web.html']
@@ -804,18 +848,19 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask('build', [
-        'clean',
+        'clean:dist',
         //'jshint',
         //'test',
         //'coffee',
         //'compass:dist',
         'useminPrepare',
         'concat',
+        //'replace:jsmin',	// remove console fct calls - prod only 
         'replace:cssmin',	// remove banners
         'imagemin:dist',
         'cssmin',
         'htmlmin:dist',
-        //'uglify',
+        'uglify',
         //'closure-compiler',	// Warning: Object #<Object> has no method 'expandFiles' 2013-02-15
         //'ngmin', 				// make a larger file 2013-02-15
         'copy:dist',
@@ -824,7 +869,8 @@ module.exports = function(grunt) {
         'replace:htmlmin',
         //'cdnify',				// angular error 2013-02-15
         'htmlmin:minify',
-        
+        'manifest',
+        'clean:deploy',
     ]);
 
     grunt.registerTask('default', ['build']); // , 'deploy', 'phonegap'
