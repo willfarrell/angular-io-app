@@ -34,6 +34,7 @@ $script(cdn.AngularJS, 'AngularJS', function() {
 	locale = JSON.parse(localStorage.getItem('locale'));
 	if (locale) $script('js/vendor/i18n/angular-locale_'+locale+'.js', function() {
 		console.log('AngularJS.ngLocale ready');
+		//angular.module('ngLocal.us', [])._invokeQueue.push(angular.module('ngLocale')._invokeQueue[0]);
 		bootstrap();
 	});
 }, function(depsNotFound) { fallback(depsNotFound); });
@@ -71,9 +72,8 @@ function bootstrap() {
 	console.log($.fn);*/
 	
   	if (window.$ && $.fn.dropdown && angular.bootstrap && hasModule('app')) {
-  	  	$(function(){
-    		angular.bootstrap(document, ['app']);
-    	});
+  	  	console.log('angular.bootstrap');
+    	angular.bootstrap(document, ['app']);
     }
 }
 

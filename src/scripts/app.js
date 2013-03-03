@@ -31,6 +31,7 @@ angular.module('io.plugins', 		['io.follow', 'io.message', 'io.filepicker', 'io.
 
 angular.module('io', ['io.directives', 'io.filters', 'io.factories', 'io.plugins', 'io.init', 'io.config']);
 
+angular.module('ui', ['ui.directives']); // 'ui.directives.if', 'ui.bootstrap.tabs'
 
 // app settings
 angular.module('app.config', []).value('app.config', {});
@@ -43,13 +44,13 @@ angular.module('app.controllers', [
 	'app.controller.dashboard'
 ]);
 
-angular.module('app.directives', ['app.config', 'ui.directives.if', 'ng.components']);
+angular.module('app.directives', ['app.config']);
 angular.module('app.filters', ['app.config']);
 angular.module('app.factories', ['app.config']);
 
 angular.module('app.init', ['app.config', 'app.route']);
 
-var app = angular.module('app', ['ngCookies', 'io', 'app.directives', 'app.filters', 'app.factories', 'app.init', 'app.config']);
+var app = angular.module('app', ['ngCookies', 'ui', 'io', 'app.directives', 'app.filters', 'app.factories', 'app.init', 'app.config']);
 
 
 

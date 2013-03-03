@@ -1,4 +1,4 @@
-angular.module('io.controller.filepicker', [])
+angular.module('io.controller.filepicker', ['io.factory.filepicker'])
 .controller('FilepickerCtrl', ['$scope', '$http', '$filepicker', function($scope, $http, filepicker) {
 //FilepickerCtrl.$inject = ['$scope', '$http', '$filepicker'];
 //function FilepickerCtrl($scope, $http, filepicker) {

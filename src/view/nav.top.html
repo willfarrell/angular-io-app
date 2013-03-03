@@ -31,8 +31,8 @@
 	        	</div>
 	        	<!-- page controllers -->
         		<div class="btn-group hidden-phone">
-					<button class="btn" data-ng-click="history.back()" data-ng-disabled="history.length <= 2" data-ui-if="device"><i class="icon-arrow-left"></i></button>
-					<button class="btn" data-ng-click="refresh()" data-ui-if="device"><i class="icon-refresh"></i></button>
+					<button class="btn" data-ng-click="history.back()" data-ng-disabled="history.length <= 2" data-ng-show="device"><i class="icon-arrow-left"></i></button>
+					<button class="btn" data-ng-click="refresh()" data-ng-show="device"><i class="icon-refresh"></i></button>
 					<a class="btn" href="#/{{settings.dashboard}}"><i class="icon-dashboard"></i></a>
 				</div>
         	</div>

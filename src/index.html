@@ -1,5 +1,8 @@
-<!DOCTYPE HTML>
-<html data-ng-app="app" data-ng-controller="AppCtrl"><!-- manifest="manifest.appcache">-->
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en" data-ng-app="app"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en" data-ng-app="app"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en" data-ng-app="app"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" data-ng-app="app"><!--<![endif]-->
 <head>
   	<meta http-equiv="Content-Type" 				content="text/html; charset=UTF-8">
     <meta name="robots" 							content="index, follow"><!-- index, noindex, follow, nofollow -->
@@ -24,7 +27,7 @@
     
 </head>
 <!-- Break out of iFrame -->
-<body class="ng-cloak" onload="if(this!=top){top.location.href=this.location.href}">
+<body class="ng-cloak" onload="if(this!=top){top.location.href=this.location.href}" data-ng-controller="AppCtrl">
 
 <!-- !Loading Screen -->
 <div id="init-blanket" data-ng-show="loader.count < loader.total">
@@ -132,7 +135,8 @@
 <script src="scripts/lib.keydb.js"></script>
 
 <!-- !Modules -->
-<script src="scripts/angular-io/directive/tabs.js"></script><!-- from angular-js-bootstrap -->
+<!--<script src="components/angular-bootstrap/src/tabs/tabs.js"></script><!-- from angular-js-bootstrap -->
+<!--<script src="components/angular-ui/modules/directives/if/if.js"></script><!-- from angular-ui -->
 <script src="scripts/angular-io/directive/if.js"></script><!-- from angular-ui -->
 
 <script src="scripts/angular-io/directive/htmlExtend.js"></script>
