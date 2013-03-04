@@ -497,9 +497,10 @@ angular.module('io.init.rootScope', [])
 		if ($rootScope.offline._state) {	// was offline
 			$rootScope.offline.alertOnline();
 			setTimeout(function() {  // timeout is required to bypass some weird bug in angular **
+	          $rootScope.checkSession();
 	          $rootScope.offline.run_request();
 	        }, 1000);
-			$rootScope.checkSession();
+			
 		}
         $rootScope.offline._state = false;
         $rootScope.$digest();

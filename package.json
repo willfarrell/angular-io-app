@@ -40,7 +40,9 @@
     "matchdep": "~0.1.1",
     
     "grunt-string-replace": "~0.2.1",
-    "grunt-manifest": "~0.4.0"
+    "grunt-manifest": "~0.4.0",
+    "grunt-imagemagick": "~0.1.5",
+    "grunt-webfont": "~0.1.0"
   },
   "engines": {
     "node": ">=0.8.0"

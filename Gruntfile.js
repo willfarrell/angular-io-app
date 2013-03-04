@@ -347,6 +347,17 @@ module.exports = function(grunt) {
 	        }
 	        
 	    },
+	    webfont: {
+		  	icons: {
+			    src: 'files/webfont/*.svg',
+			    dest: '<%= yeoman.dist %>/fonts',
+			    destCss: '<%= yeoman.dist %>/css',
+			    stylesheet: 'bootstrap',
+			    options: {
+			        font: 'ponies'
+			    }
+		    }
+		},
         cssmin: {
             dist: {
                 files: {
@@ -416,22 +427,20 @@ module.exports = function(grunt) {
 	                        '*.{txt,xml,appcache,php}',	// boilerplate
 	                        '.htaccess',				// apache
 	                        'img/**/*.{ico,svg,gif}',	// non-compress imags
-	                        'font/*',
+	                        'font/*.{eot,ttf,woff,otf}',
 	                        'css/**/*.css',
 	                        '{i18n,json}/**/*.json',
 	                        'php/**/*.php'
 	                    ]
 	                },
+	                // component font-awesome fonts (build)
 	                {
 	        			expand: true,
-	        			cwd:'<%= yeoman.app %>/components',
+	        			cwd:'<%= yeoman.app %>/components/font-awesome/build',
 	        			src: [
-	        				'**/*.eot',
-	        				'**/*.ttf',
-	        				'**/*.woff',
-	        				'**/*.otf'
+	        				'**/*.{eot,ttf,woff,otf}'
 	        			],
-	        			dest: '<%= yeoman.dist %>/font'
+	        			dest: '<%= yeoman.dist %>/css'
 	        		},
 	                {
 	        			expand: true,

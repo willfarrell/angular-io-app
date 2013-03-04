@@ -96,20 +96,22 @@ class Notify {
 		//print_r($notify);
 		
 		// send via types
+		$sent = true;
 		if (in_array("email", $types) && $notify['email']) {
 			if (array_key_exists('email', $security_json) && $security_json['email']['key']) {
 				//$this->email->encrypt($security_json['email']['key'], $to['user_email'], $subject, $message);
-				$this->email->encrypt($security_json['email']['key'], $to['user_email'], $subject, $message);
+				$sent = $sent && $this->email->encrypt($security_json['email']['key'], $to['user_email'], $subject, $message);
 			} else {
-				$this->email->send($to['user_email'], $subject, $message);
+				$sent = $sent && $this->email->send($to['user_email'], $subject, $message);
 			}
 		}
 		if (in_array("sms", $types) && $notify['sms'])
-			$this->sms->send($to['user_phone'], $message);
+			$sent = $sent && $this->sms->send($to['user_phone'], $message);
 		/*
 		if (in_array("mobilepush", $types) && isset($notify['mobilepush']) && $notify['mobilepush'])
 			$this->mobilepush->send($user_phone, $message);
 		*/
+		return $sent;
 	}
 	
 	// for non-regestered users
@@ -161,25 +163,34 @@ class Email {
   	}
   	
   	function send($email, $subject, $message) {
-  		//echo "$to, $subject, $message";
+  		$sent = false;
   		
   		if (EMAIL_MAILGUN_APIKEY) {
 	  		exec("curl -s --user api:".EMAIL_MAILGUN_APIKEY." \
 				    https://api.mailgun.net/v2/".EMAIL_MAILGUN_DOMAIN."/messages \
-				    -F from='".NOTIFY_FROM_NAME." <".NOTIFY_FROM_EMAIL.">' \
+				    -F from=".escapeshellarg(NOTIFY_FROM_NAME." <".NOTIFY_FROM_EMAIL.">")." \
 				    -F to=$email\
-				    -F subject='$subject' \
-				    -F text='$message'",
+				    -F subject=".escapeshellarg($subject)." \
+				    -F text=".escapeshellarg($message)."",
 				    $output, $return
 			);
+			
+			// confirm sent
+			$output = json_decode(implode("", $output), true);
+			if ($output['message'] == 'Queued. Thank you.') {
+				$sent = true;
+			}
   		} else if (EMAIL_AWS_APIKEY) {
 	  		
-	  	} else {
+	  	} 
+	  	
+	  	if (!$sent) {
 	  		$headers = 	"From: ".NOTIFY_FROM_NAME." <".NOTIFY_FROM_EMAIL.">\r\n" .
 					    "Reply-To: ".NOTIFY_FROM_EMAIL."\r\n";
-	  		mail($to, $subject, $message, $headers);
+	  		$sent = mail($to, $subject, $message, $headers);
   		}
 	  	
+	  	return $sent;
   	}
   	
   	function encrypt($pubkey, $email, $subject, $message) {
@@ -275,15 +286,17 @@ class SMS {
   	}
   	
   	function send($to, $message) {
+  		$sent = false;
+  		
 	  	if (SMS_NEXMO_APIKEY) {
 	  		// https://www.nexmo.com/documentation/index.html#txt
 		  	exec("curl -s  \
 				    http://rest.nexmo.com/sms/json \
 				    -F api_key=".SMS_NEXMO_APIKEY." \
 				    -F api_secret=".SMS_NEXMO_APISECRET." \
-				    -F from=".NOTIFY_FROM_NAME." \
+				    -F from=".escapeshellarg(NOTIFY_FROM_NAME)." \
 				    -F to=$to\
-				    -F text=$message",
+				    -F text=".escapeshellarg($message)."",
 				    $output, $return
 			);
 		} else if (SMS_TWILIO_APIKEY) {
@@ -292,14 +305,16 @@ class SMS {
 				    https://api.twilio.com/2010-04-01/Accounts/".SMS_TWILIO_APIKEY."/SMS/Messages \
 				    -F from=".NOTIFY_FROM_NUMBER." \
 				    -F to=$to\
-				    -F text=$message",
+				    -F text=".escapeshellarg($message)."",
 				    $output, $return
 			);
 		} else if (SMS_AWS_APIKEY) {
 			// http://aws.amazon.com/sns/
 	  	} else {
-		  	
+		  	$sent = true;
 	  	}
+	  	
+	  	return $sent;
   	}
 }
 
@@ -317,6 +332,7 @@ class PushNotification {
   	
   	function send($to, $message) {
 	  	// https://docs.urbanairship.com/display/DOCS/Getting+Started
+	  	return true;
   	}
 }
 
@@ -334,6 +350,7 @@ class Fax {
   	
   	function send($to, $message) {
 	  	// http://www.efaxdeveloper.com/developer/faq
+	  	return true;
   	}
 }
 
