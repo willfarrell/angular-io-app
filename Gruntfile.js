@@ -22,7 +22,7 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		yeoman: yeomanConfig,
 		pkg: grunt.file.readJSON('package.json'),
-		watch: {
+		/*watch: {
             coffee: {
                 files: ['<%= yeoman.app %>/scripts/*.coffee'],
                 tasks: ['coffee:dist']
@@ -85,22 +85,6 @@ module.exports = function(grunt) {
                 url: 'http://localhost:<%= connect.options.port %>'
             }
         },
-        clean: {
-            dist: ['.tmp', '<%= yeoman.dist %>/*'],
-            deploy: ['<%= yeoman.dist %>/img/user/*', '<%= yeoman.dist %>/img/company/*', '<%= yeoman.web %>', '<%= yeoman.api %>'],
-            phonegap: ['<%= yeoman.phonegap %>', 'build.phonegap.zip'],
-            server: '.tmp'
-        },
-        jshint: {
-            options: {
-                jshintrc: '.jshintrc'
-            },
-            all: [
-                'Gruntfile.js',
-                '<%= yeoman.app %>/scripts/*.js',
-                'test/spec/*.js'
-            ]
-        },
         mocha: {
             all: {
                 options: {
@@ -140,7 +124,34 @@ module.exports = function(grunt) {
                     debugInfo: true
                 }
             }
+        },*/
+        less: {
+		  	dev: {
+			    options: {
+			      	paths: ["<%= yeoman.app %>/styles/less/"]
+			    },
+			    files: {
+			      	"<%= yeoman.app %>/styles/bootstrap.css": "<%= yeoman.app %>/styles/less/bootstrap.less"
+			    }
+		    }
+		},
+        clean: {
+            dist: ['.tmp', '<%= yeoman.dist %>/*'],
+            deploy: ['<%= yeoman.dist %>/img/user/*', '<%= yeoman.dist %>/img/company/*', '<%= yeoman.web %>', '<%= yeoman.api %>'],
+            phonegap: ['<%= yeoman.phonegap %>', 'build.phonegap.zip'],
+            server: '.tmp'
         },
+        jshint: {
+            options: {
+                jshintrc: '.jshintrc'
+            },
+            all: [
+                'Gruntfile.js',
+                '<%= yeoman.app %>/scripts/*.js',
+                'test/spec/*.js'
+            ]
+        },
+        
         // not used since Uglify task does concat,
         // but still available if needed
         /*concat: {
@@ -219,47 +230,47 @@ module.exports = function(grunt) {
 	        },
 	        
 	      	"icon-android-ldpi":{
-	        	args:['./files/icon.png','-background', 'none', '-resize', '36x36', 'files/build/icons/android/icon-36-ldpi.png']
+	        	args:['./files/icon.png','-background', 'none', '-resize', '36x36', 'files/build/icon/android/icon-36-ldpi.png']
 	        },
 			"icon-android-mdpi":{
-	        	args:['./files/icon.png','-background', 'none', '-resize', '48x48', 'files/build/icons/android/icon-48-mdpi.png']
+	        	args:['./files/icon.png','-background', 'none', '-resize', '48x48', 'files/build/icon/android/icon-48-mdpi.png']
 	        },
 			"icon-android-hdpi":{
-	        	args:['./files/icon.png','-background', 'none', '-resize', '72x72', 'files/build/icons/android/icon-72-hdpi.png']
+	        	args:['./files/icon.png','-background', 'none', '-resize', '72x72', 'files/build/icon/android/icon-72-hdpi.png']
 	        },
 			"icon-android-xhdpi":{
-	        	args:['./files/icon.png','-background', 'none', '-resize', '96x96', 'files/build/icons/android/icon-96-xhdpi.png']
+	        	args:['./files/icon.png','-background', 'none', '-resize', '96x96', 'files/build/icon/android/icon-96-xhdpi.png']
 	        },
 			
 			"icon-blackberry-80":{
-	        	args:['./files/icon.png','-background', 'none', '-resize', '80x80', 'files/build/icons/blackberry/icon-80.png']
+	        	args:['./files/icon.png','-background', 'none', '-resize', '80x80', 'files/build/icon/blackberry/icon-80.png']
 	        },
 			
 			"icon-ios-57":{
-	        	args:['./files/icon.png','-background', 'none', '-resize', '57x57', 'files/build/icons/ios/icon-57.png']
+	        	args:['./files/icon.png','-background', 'none', '-resize', '57x57', 'files/build/icon/ios/icon-57.png']
 	        },
 			"icon-ios-72":{
-	        	args:['./files/icon.png','-background', 'none', '-resize', '72x72', 'files/build/icons/ios/icon-72.png']
+	        	args:['./files/icon.png','-background', 'none', '-resize', '72x72', 'files/build/icon/ios/icon-72.png']
 	        },
 			"icon-ios-57-2x":{
-	        	args:['./files/icon.png','-background', 'none', '-resize', '114x114', 'files/build/icons/ios/icon-57-2x.png']
+	        	args:['./files/icon.png','-background', 'none', '-resize', '114x114', 'files/build/icon/ios/icon-57-2x.png']
 	        },
 			"icon-ios-72-2x":{
-	        	args:['./files/icon.png','-background', 'none', '-resize', '144x144', 'files/build/icons/ios/icon-72-2x.png']
+	        	args:['./files/icon.png','-background', 'none', '-resize', '144x144', 'files/build/icon/ios/icon-72-2x.png']
 	        },
 			
 			"icon-webos-64":{
-	        	args:['./files/icon.png','-background', 'none', '-resize', '64x64', 'files/build/icons/webos/icon-64.png']
+	        	args:['./files/icon.png','-background', 'none', '-resize', '64x64', 'files/build/icon/webos/icon-64.png']
 	        },
 			
 			"icon-winphone-48":{
-	        	args:['./files/icon.png','-background', 'none', '-resize', '48x48', 'files/build/icons/winphone/icon-48.png']
+	        	args:['./files/icon.png','-background', 'none', '-resize', '48x48', 'files/build/icon/winphone/icon-48.png']
 	        },
 			"icon-winphone-62":{
-	        	args:['./files/icon.png','-background', 'none', '-resize', '62x62', 'files/build/icons/winphone/icon-62-tile.png']
+	        	args:['./files/icon.png','-background', 'none', '-resize', '62x62', 'files/build/icon/winphone/icon-62-tile.png']
 	        },
 			"icon-winphone-173":{
-	        	args:['./files/icon.png','-background', 'none', '-resize', '173x173', 'files/build/icons/winphone/icon-173-tile.png']
+	        	args:['./files/icon.png','-background', 'none', '-resize', '173x173', 'files/build/icon/winphone/icon-173-tile.png']
 	        },
 	        
 	        // phonegap splash
@@ -347,7 +358,7 @@ module.exports = function(grunt) {
 	        }
 	        
 	    },
-	    webfont: {
+	    /*webfont: {
 		  	icons: {
 			    src: 'files/webfont/*.svg',
 			    dest: '<%= yeoman.dist %>/fonts',
@@ -357,7 +368,7 @@ module.exports = function(grunt) {
 			        font: 'ponies'
 			    }
 		    }
-		},
+		},*/
         cssmin: {
             dist: {
                 files: {
@@ -711,6 +722,7 @@ module.exports = function(grunt) {
 		        src: [
 		      		// load top level html files
 		          	"*.html", "view/*.html", //"view/**/*.html",
+		          	"favicon.ico",
 		          	"js/*.min.js",
 		          	"css/**/*.css"
 		        ],
@@ -731,12 +743,12 @@ module.exports = function(grunt) {
 	          dest: '<%= yeoman.dist %>/js'
 	        }]
 	      }
-	    },
+	    }/*,
         bower: {
         	dir: '<%= yeoman.app %>/components',
             //rjsConfig: '<%= yeoman.app %>/scripts/main.js',
             indent: '    '
-        }
+        }*/
         
 	});
 	
@@ -862,6 +874,7 @@ module.exports = function(grunt) {
         //'test',
         //'coffee',
         //'compass:dist',
+        'less:dev',
         'useminPrepare',
         'concat',
         //'replace:jsmin',	// remove console fct calls - prod only 

@@ -44,16 +44,17 @@ function MessageCtrl($scope, $http, $routeParams) {
 				console.log('loadThread.get.success');
 				console.log(data);
 				//$scope.dbing[id].name = data.name;
-				$rootScope.message.to_name = data.user.user_name_first+' '+data.user.user_name_last;
+				if (data) {
+					$rootScope.message.to_name = data.user.user_name_first+' '+data.user.user_name_last;
 				
-				$scope.thread = data.thread;
-				
-				setTimeout(function() {
-					$scope.scrollBottom();
-				}, 100);
-				
-				// update unread count
-				$rootScope.message.updateUnreadCount();
+					$scope.thread = data.thread;
+					
+					setTimeout(function() {
+						$scope.scrollBottom();
+					}, 100);
+					// update unread count
+					$rootScope.message.updateUnreadCount();
+				}
 			})
 			.error(function() {
 				console.log('loadThread.get.error');
@@ -81,8 +82,11 @@ function MessageCtrl($scope, $http, $routeParams) {
     	t.scrollTop = t.scrollHeight;
 	};
 	
-	$scope.loadMessages();
-	if ($routeParams.user_ID) {
-		$scope.loadThread($routeParams.user_ID);
-	}
+	$scope.require_signin(function() {
+		$scope.loadMessages();
+		if ($routeParams.user_ID) {
+			$scope.loadThread($routeParams.user_ID);
+		}
+	});
+	
 }

@@ -281,6 +281,20 @@ class Account extends Core {
 	// Reset Step 2 - Confirm request still valid
 	function reset_check($hash=NULL) {
 		$return = array();
+		
+		
+		
+		$return = $this->reset_check_hash($hash);
+		if (isset($return["alerts"])) return $return;
+		
+		// ** add check if addition security is enabled
+		// $return['security']
+		// else return true
+		return $return;
+	}
+	
+	private function reset_check_hash($hash=NULL) {
+		$return = array();
 
 		$result = $this->db->select('user_reset', array('hash' => $hash));
 		//$result = $this->redis->hgetall($hash);
@@ -302,7 +316,7 @@ class Account extends Core {
 	// Reset Step 3 - Confirm identity (2-step verification)
 	function put_reset_verify($request_data=NULL) {
 		$return = array();
-
+		
 		//$reset_check = $this->reset_check($request_data['hash']);
 		//if (is_array($reset_check)) return $reset_check;
 
@@ -312,7 +326,11 @@ class Account extends Core {
 	// Reset Step 4 - Update password | Change password
 	function put_reset_password($request_data=NULL) {
 		$return = array();
-
+		
+		// reconfirm hash is still valid
+		$return = $this->reset_check_hash($hash);
+		if (isset($return["alerts"])) return $return;
+		
 		$this->filter->set_request_data($request_data);
 		$this->filter->set_group_rules('password');
 		$this->filter->set_key_rules(array('hash', 'new_password'), 'required');

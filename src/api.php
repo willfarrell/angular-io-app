@@ -11,7 +11,7 @@
  * @author    will Farrell <will.farrell@gmail.com>
  * @copyright 2012 Farrell Labs
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
- * @version   GIT: 0.0.0
+ * @version   {{version}} {{date}}
  * @link      http://domainsicle.com
  */
 

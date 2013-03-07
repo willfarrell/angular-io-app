@@ -162,7 +162,7 @@
 
 <script type="text/ng-template" id="filepicker-edit-list">
 	<ul class="unstyled">
-    	<li data-ng-repeat="file in filepicker.args.files" data-ng-click="filepicker.confirmDelete(file.name, filepicker.delete)">
+    	<li data-ng-repeat="file in filepicker.args.files" data-ng-click="filepicker.confirmDelete(file.name, filepicker.deleteFile)">
     		<i class="icon-remove"></i> 
     		<span>{{file.name}} ({{file.size_str}})</span>
     		<i class="pull-right">{{file.date*1000 | date}}</i>

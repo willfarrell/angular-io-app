@@ -119,7 +119,7 @@ class Follow extends Core {
 				." LEFT JOIN ".$this->table." UF ON UF.user_ID = FU.follow_user_ID AND UF.follow_user_ID = FU.user_ID"
 				." LEFT JOIN users U ON U.user_ID = FU.user_ID"
 				." WHERE FU.follow_user_ID = '{{follow_user_ID}}'"
-				." AND (user_name LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%')"
+				." AND (user_name LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%@')"
 				." GROUP BY FU.user_ID, FU.follow_user_ID";
 		$followers = $this->db->query($query, array('follow_user_ID' => $user_ID, 'keyword' => $keyword));
 		if ($followers) {
@@ -148,6 +148,35 @@ class Follow extends Core {
 				." WHERE FU.user_ID = '{{user_ID}}'"
 				." AND (user_name LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%@')"
 				." GROUP BY FU.user_ID, FU.follow_user_ID";
+		$followings = $this->db->query($query, array('user_ID' => $user_ID, 'keyword' => $keyword));
+		if ($followings) {
+			while ($following = $this->db->fetch_assoc($followings)) {
+				if ($user_ID == USER_ID) $following['groups'] = explode(',', $following['groups']);
+				else unset ($following['groups']);
+				$following['following'] = true;
+				$return[] = $following;
+			}
+		}
+
+		return $return;
+	}
+	
+	//mutual following - aka friends
+	function get_friends($company_ID = 0, $user_ID = 0, $keyword = '') { // $type='user'
+		$company_ID = preg_replace( '/[^0-9]+/', '', $company_ID);
+		$user_ID = preg_replace( '/[^0-9]+/', '', $user_ID);
+		if (!$company_ID) $company_ID = COMPANY_ID;
+		if (!$user_ID) $user_ID = USER_ID;
+		$return = array();
+		
+		$query = "SELECT U.user_ID, U.company_ID, user_name, CONCAT(user_name_first, ' ', user_name_last) AS name, UF.timestamp as following, GROUP_CONCAT(UF.group_ID) AS groups" // , UF.group_ID
+				." FROM ".$this->table." UF"
+				." LEFT JOIN ".$this->table." FU ON (UF.user_ID = FU.follow_user_ID AND UF.follow_user_ID = FU.user_ID)"
+				." LEFT JOIN users U ON U.user_ID = FU.user_ID"
+				." WHERE UF.user_ID = '{{user_ID}}' AND FU.user_ID IS NOT NULL"
+				." AND (user_name LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%@')"
+				." GROUP BY FU.user_ID, FU.follow_user_ID";
+				
 		$followings = $this->db->query($query, array('user_ID' => $user_ID, 'keyword' => $keyword));
 		if ($followings) {
 			while ($following = $this->db->fetch_assoc($followings)) {

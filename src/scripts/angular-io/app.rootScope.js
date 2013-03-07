@@ -4,12 +4,13 @@ angular.module('io.init.rootScope', [])
 	function($rootScope, $locale, $cookies, $http, $window, $location) {
 	console.log('io.init.rootScope ('+$rootScope.$id+')');
  	
- 	/*$rootScope.$watch(function () {
+ 	$rootScope.$watch(function () {
 	  	return $location.path();
 	  }, function(value) {
-	  	console.log("run ************");
-      	$rootScope.updateSession();
-    });*/
+	  	// antuo scroll to top of page when ng-view doesn't chenge
+	  	document.getElementsByClassName('page')[0].scrollTop = 0;
+      	//$rootScope.updateSession();
+    });
     
 	$rootScope.default_settings = {
 		'client'			:'',	// https://static.domain.com/

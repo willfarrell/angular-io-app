@@ -26,8 +26,6 @@ class Notify {
 		global $database;
 		$this->db = $database;
 		
-		
-		
 		$this->vars["_SERVER"]["REMOTE_ADDR"] = $_SERVER['REMOTE_ADDR'];
 		
 		// include messages
@@ -61,7 +59,7 @@ class Notify {
 			$this->vars['from'] = $from;
 		}
 		
-		// get user details
+		// to user details
 		$select[] = "notify_json";
 		$select[] = "security_json";
 		$to = $this->db->select("users", array("user_ID" => $user_ID), $select);
@@ -86,14 +84,16 @@ class Notify {
 			}
 		}
 		
-		list($message, $subject) = $this->compile($message_ID, $args); // support legacy
-		
+		// get user security settings
 		$security_json = json_decode($to['security_json'], true);
 		if (!is_array($security_json)) $security_json = array();
 		
 		//print_r($notify_json);
 		//print_r($security_json);
 		//print_r($notify);
+		
+		// compile message
+		list($message, $subject) = $this->compile($message_ID, $args); // support legacy
 		
 		// send via types
 		$sent = true;

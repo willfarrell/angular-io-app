@@ -11,7 +11,7 @@
 			"email":true
 		},
 		"subject": "Account Access Attempted",
-		"message": "You (or someone else) entered this email address when trying to change the password of your {{global:site_name}} account.\n\nIf you did not request this, someone else may have access to your email account. We recommend you change your email account password and your {{global:site_name}} account password to be safe.\n\nTo continue the password reset process, please proceed to\n {{global:site_url}}#/reset/{{args:hash}}\n within 60 minutes of receiving this email.\n\nThis action was requested from the IP address {{_SERVER:REMOTE_ADDR}}."
+		"message": "You (or someone else) entered this email address when trying to change the password of your {{global:site_name}} account.\n\nIf you did not request this, someone else may have access to your email account. We recommend you change your {{global:site_name}} account password to be safe.\n\nTo continue the password reset process, please proceed to\n {{global:site_url}}#/reset/{{args:hash}}\n within 60 minutes of receiving this email.\n\nThis action was requested from the IP address {{_SERVER:REMOTE_ADDR}}."
 	},
 	"password_reset_request_fail": {
 		"default": {

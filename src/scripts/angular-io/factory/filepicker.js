@@ -175,7 +175,7 @@ angular.module('io.factory.filepicker', [])
 		$('#alertModal').modal('show');
 	};
 	
-	$scope.delete = function(file) {
+	$scope.deleteFile = function(file) {
 		$http.delete($rootScope.settings.server+'/filepicker/'+$scope.args.action+'/'+$scope.args.ID+'/'+encodeURIComponent(file))
 			.success(function(data) {
 				if (data.errors) $scope.errors = data.errors;

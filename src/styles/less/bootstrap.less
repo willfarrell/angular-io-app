@@ -14,7 +14,7 @@
 @import "../../components/bootstrap/less/reset.less";
 
 // Core variables and mixins
-@import "../../components/bootstrap/less/variables.less"; // Modify this for custom colors, font-sizes, etc
+@import "bootstrap.variables.less"; // Modify this for custom colors, font-sizes, etc
 @import "../../components/bootstrap/less/mixins.less";
 
 // Grid system and page structure
@@ -24,15 +24,15 @@
 
 // Base CSS
 @import "../../components/bootstrap/less/type.less";
-@import "../../components/bootstrap/less/code.less";
+@import "../../components/bootstrap/less/code.less"; // pre, code
 @import "../../components/bootstrap/less/forms.less";
 @import "../../components/bootstrap/less/tables.less";
 
 // Components: common
-@import "../../components/bootstrap/less/sprites.less";
+//@import "../../components/bootstrap/less/sprites.less"; // builtin icons
 @import "../../components/bootstrap/less/dropdowns.less";
 @import "../../components/bootstrap/less/wells.less";
-@import "../../components/bootstrap/less/component-animations.less";
+@import "../../components/bootstrap/less/component-animations.less";	// .fade, .collapse
 @import "../../components/bootstrap/less/close.less";
 
 // Components: Buttons & Alerts
@@ -100,4 +100,4 @@
 // ------------------
 
 // From 979px and below, show a button to toggle navbar contents
-@import "../../components/bootstrap/less/responsive-navbar.less";
+//@import "../../components/bootstrap/less/responsive-navbar.less";
