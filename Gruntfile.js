@@ -151,6 +151,12 @@ module.exports = function(grunt) {
                 'test/spec/*.js'
             ]
         },
+        htmllint: {
+	        dist: [
+	        	'<%= yeoman.app %>/**/*.html',
+	        	'!<%= yeoman.app %>/components/'
+	        ]
+        },
         
         // not used since Uglify task does concat,
         // but still available if needed
@@ -181,6 +187,22 @@ module.exports = function(grunt) {
                 dirs: ['<%= yeoman.dist %>']
             }
         },
+        rev: {
+		    options: {
+		      	algorithm: 'md5',
+		      	length: 4
+		    },
+		    assets: {
+		      	files: [{
+		        	src: [
+		        		'<%= yeoman.dist %>/css/**/*.css', '!<%= yeoman.dist %>/css/**/accessibility.min.css',
+		        		//'<%= yeoman.dist %>/img/**/*.{jpg,jpeg,gif,png,webp}',
+		        		//'<%= yeoman.dist %>/js/**/*.js', '!<%= yeoman.dist %>/js/vendor/**/*.js'
+		        		//'**/*.{eot,svg,ttf,woff}'
+		        	]
+		        }]
+		    }
+		},
         
         imagemin: {
             dist: {
@@ -887,12 +909,18 @@ module.exports = function(grunt) {
         //'ngmin', 				// make a larger file 2013-02-15
         'copy:dist',
         'replace:dist',
+        'rev',
         'usemin',
         'replace:htmlmin',
         //'cdnify',				// angular error 2013-02-15
         'htmlmin:minify',
         'manifest',
         'clean:deploy',
+    ]);
+    
+    grunt.registerTask('lint', [
+        'htmllint',
+        'jshint'
     ]);
 
     grunt.registerTask('default', ['build']); // , 'deploy', 'phonegap'

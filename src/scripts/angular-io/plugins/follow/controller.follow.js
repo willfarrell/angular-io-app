@@ -78,10 +78,10 @@ angular.module('io.controller.follow', [])
 			});
 	};
 	
-	$scope.loadSuggestions = function() {
+	$scope.loadSuggestions = function(ref_bool, query) {
 		console.log('loadSuggestions()');
-		
-		$http.get($rootScope.settings.server+'/follow/suggestions/'+true)
+		query || (query = '');
+		$http.get($rootScope.settings.server+'/follow/suggestions/'+(ref_bool ? true : false)+'/'+query)
 			.success(function(data) {
 				console.log('loadSuggestions.get.success');
 				console.log(data);
@@ -135,8 +135,8 @@ angular.module('io.controller.follow', [])
 	
 	
 	
-	$scope.require_signin(function(){
+	//$scope.require_signin(function(){
 		$scope.loadGroups();
-	});
+	//});
 //}
 }]);

@@ -176,7 +176,11 @@ angular.module('io.factory.filepicker', [])
 	};
 	
 	$scope.deleteFile = function(file) {
-		$http.delete($rootScope.settings.server+'/filepicker/'+$scope.args.action+'/'+$scope.args.ID+'/'+encodeURIComponent(file))
+		var http_config = {
+	        'method':'delete', // get,head,post,put,delete,jsonp
+	        'url':$rootScope.settings.server+'/filepicker/'+$scope.args.action+'/'+$scope.args.ID+'/'+encodeURIComponent(file)
+	    };
+		$http(http_config)
 			.success(function(data) {
 				if (data.errors) $scope.errors = data.errors;
 				if (data.alerts) $scope.alerts = data.alerts;

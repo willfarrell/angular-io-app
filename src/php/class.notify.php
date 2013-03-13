@@ -187,7 +187,7 @@ class Email {
 	  	if (!$sent) {
 	  		$headers = 	"From: ".NOTIFY_FROM_NAME." <".NOTIFY_FROM_EMAIL.">\r\n" .
 					    "Reply-To: ".NOTIFY_FROM_EMAIL."\r\n";
-	  		$sent = mail($to, $subject, $message, $headers);
+	  		$sent = mail($email, $subject, $message, $headers);
   		}
 	  	
 	  	return $sent;

@@ -1,7 +1,7 @@
 <div class="navbar navbar-fixed-top" data-ng-hide="session.user_ID">
 	<div class="navbar-inner">
         <div class="container">
-        	<div class="pull-left">
+        	<ul class="nav pull-left">
         		<!-- sliding nav, space holder -->
         		<div class="btn-group visible-phone">
 	        		<button class="btn"><i class="icon-list-ul"></i></button>
@@ -13,8 +13,8 @@
 					
 					<button class="btn" data-ng-click="refresh()"><i class="icon-refresh"></i></button>
 				</div>
-        	</div>
-			<a class="brand" href="#">&nbsp;&nbsp;{{i18n.title}} <i class="icon-spinner icon-spin" data-ng-show="loading"></i></a>
+        	</ul>
+			<a class="navbar-brand" href="#">{{i18n.title}} <i class="icon-spinner icon-spin" data-ng-show="loading"></i></a>
 			<div class="btn-group pull-right">
 				<a class="btn" href="#/sign/in"><i class="icon-signin"></i> Sign In</a>
 			</div>
@@ -24,7 +24,8 @@
 <div class="navbar navbar-fixed-top" data-ng-show="session.user_ID">
 	<div class="navbar-inner">
         <div class="container">
-        	<div class="pull-left">
+        	<ul class="nav">
+        		<li>
         		<!-- sliding nav, space holder -->
 	        	<div class="btn-group visible-phone">
 	        		<button class="btn"><i class="icon-list-ul"></i></button>
@@ -35,8 +36,9 @@
 					<button class="btn" data-ng-click="refresh()" data-ui-if="device"><i class="icon-refresh"></i></button>
 					<a class="btn" href="#/{{settings.dashboard}}"><i class="icon-dashboard"></i></a>
 				</div>
-        	</div>
-			<a class="brand" href="#">&nbsp;&nbsp;{{i18n.title}} <i class="icon-spinner icon-spin" data-ng-show="loading"></i></a>
+        		</li>
+        	</ul>
+			<a class="navbar-brand" href="#">{{i18n.title}} <i class="icon-spinner icon-spin" data-ng-show="loading"></i></a>
 			<ul class="nav pull-right hidden-phone">
 				<!--<li class="" id="loading" ><a href="#" rel="tooltip" title="first tooltip">( Loading... )</a></li>-->
 			    <!--<li><a href="#/app"><i class="icon-home"></i></a></li>-->

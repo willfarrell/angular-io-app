@@ -123,6 +123,35 @@ angular.module('io.factory.follow', [])
 			});
 	};
 	
+	$scope.loadFollowType = function(type, company_ID, user_ID, query) {
+		var api = 'friends';
+		
+		if (type == 'followers') {
+			api = 'ers';
+		} else if (type == 'following') {
+			api = 'ing';
+		}
+		
+		company_ID || (company_ID = 0);
+		user_ID || (user_ID = 0);
+		query || (query = '');
+		
+		$http.get($rootScope.settings.server+'/follow/'+api+'/'+company_ID+'/'+user_ID+'/'+query)
+			.success(function(data) {
+				console.log('loadFollowers.get.success');
+				console.log(data);
+				for (var i in data) {
+					if (data[i]['company_ID']) $scope.db.company[data[i]['company_ID']] = data[i];
+					else if (data[i]['user_ID']) $scope.db.user[data[i]['user_ID']] = data[i]
+					else delete data[i];
+				}
+			})
+			.error(function() {
+				console.log('loadFollowers.get.error');
+				$rootScope.http_error();
+			});
+	};
+	
 	$scope.loadFollowers = function(company_ID, user_ID, query) {
 		
 		company_ID || (company_ID = 0);

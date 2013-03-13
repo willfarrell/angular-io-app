@@ -328,7 +328,7 @@ class Account extends Core {
 		$return = array();
 		
 		// reconfirm hash is still valid
-		$return = $this->reset_check_hash($hash);
+		$return = $this->reset_check_hash($request_data['hash']);
 		if (isset($return["alerts"])) return $return;
 		
 		$this->filter->set_request_data($request_data);

@@ -22,7 +22,7 @@ class Follow extends Core {
     }
 
     // self only
-    function get_suggestions($ref_bool = NULL) {
+    function get_suggestions($ref_bool = NULL, $keyword = '') {
 		$return = array();
 		
 		$limit = 10;
@@ -40,19 +40,21 @@ class Follow extends Core {
 					." FROM companies C"
 					." LEFT JOIN ".$this->table." CF ON CF.follow_company_ID = C.company_ID AND CF.company_ID = '{{company_ID}}'"
 					." WHERE C.company_ID != '{{company_ID}}' AND CF.follow_company_ID IS NULL"
+					." AND (user_name LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%@')"
 					." ORDER BY RAND()"
 					." LIMIT 0,$limit";
 
-				$suggestions = $this->db->query($query, array('company_ID' => COMPANY_ID));
+				$suggestions = $this->db->query($query, array('company_ID' => COMPANY_ID, 'keyword' => $keyword));
 			} else {
 				$query = "SELECT U.user_ID, U.company_ID, U.user_name, CONCAT(U.user_name_first, ' ', U.user_name_last) AS name" // , GROUP_CONCAT(UF.group_ID) AS groups
 					." FROM users U"
 					." LEFT JOIN ".$this->table." UF ON UF.follow_user_ID = U.user_ID AND UF.user_ID = '{{user_ID}}'"
 					." WHERE U.user_ID != '{{user_ID}}' AND U.timestamp_create != 0 AND UF.follow_user_ID IS NULL"
+					." AND (user_name LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%@')"
 					." ORDER BY RAND()"
 					." LIMIT 0,$limit";
 
-					$suggestions = $this->db->query($query, array('user_ID' => USER_ID));
+					$suggestions = $this->db->query($query, array('user_ID' => USER_ID, 'keyword' => $keyword));
 			}
 			
 			while ($suggestions && $suggestion = $this->db->fetch_assoc($suggestions)) {
@@ -124,10 +126,10 @@ class Follow extends Core {
 		$followers = $this->db->query($query, array('follow_user_ID' => $user_ID, 'keyword' => $keyword));
 		if ($followers) {
 			while ($follower = $this->db->fetch_assoc($followers)) {
-				if ($id == USER_ID) $follower['groups'] = explode(',', $follower['groups']);
+				if ($user_ID == USER_ID) $follower['groups'] = explode(',', $follower['groups']);
 				else unset ($follower['groups']);
 				$follower['follower'] = true;
-				$return[$follower['ID']] = $follower;
+				$return[] = $follower;
 			}
 		}
 
@@ -183,6 +185,7 @@ class Follow extends Core {
 				if ($user_ID == USER_ID) $following['groups'] = explode(',', $following['groups']);
 				else unset ($following['groups']);
 				$following['following'] = true;
+				$following['follower'] = true;
 				$return[] = $following;
 			}
 		}

@@ -51,7 +51,7 @@ class User extends Core {
 		} else {
 			return $return;
 		}
-		$db_select = array("user_ID", "user_name", "user_name_first", "user_name_last", "user_email", "user_phone", "user_details");
+		$db_select = array("user_ID", "user_name", "user_name_first", "user_name_last", "user_email", "user_function", "user_phone", "user_url", "user_details");
 
 		$results = $this->db->select('users', $db_where, $db_select);
 		if ($results) {
@@ -127,7 +127,7 @@ class User extends Core {
 		} else {
 			$db_where['user_ID'] = USER_ID;
 		}
-		$db_select = array("user_ID", "user_name", "user_name_first", "user_name_last", "user_email", "user_phone", "user_details");
+		$db_select = array("user_ID", "user_name", "user_name_first", "user_name_last", "user_email", "user_function", "user_phone", "user_url", "user_details");
 		
 		$results = $this->db->select('users', $db_where, $db_select);
 		if ($results) {

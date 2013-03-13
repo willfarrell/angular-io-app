@@ -44,7 +44,13 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 			});
 	};
 	//-- End Sign Up --//
-
+	
+	$scope.redirect = function() {
+		var redirect = ($cookies.redirect ? $cookies.redirect : $rootScope.settings.dashboard);
+		delete $cookies.redirect;
+		$scope.href('#/'+redirect);
+	}
+	
 	//-- Sign In --//
 	$scope.signin = {
 		//email:'',
@@ -76,18 +82,15 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 						$scope.user_ID = data.user_ID;
 					} else if (data) {
 						$rootScope.session = syncVar(data, $rootScope.session);
-						//if ($rootScope.session != {})
-						$rootScope.session.save = $scope.signin.remember;
+						if ($rootScope.session.user_ID) {
+							$rootScope.session.save = $scope.signin.remember;
+						}
 						console.log($rootScope.session);
 						$rootScope.saveSession();
 						$scope.signin = {};	// clear form
 	
-						//$scope.signin_callbacks(); // runs all callbacks that were set by siblings
-						// refresh page
-						//$scope.refresh();
-						var redirect = ($cookies.redirect ? $cookies.redirect : $rootScope.settings.dashboard);
-						$cookies.redirect = null;
-						$scope.href('#/'+redirect);
+						$scope.redirect();
+						
 					} else {
 						// catch any server side errors
 						$rootScope.alerts = [{'class':'error', 'label':'Internal Error', 'message':'Please notify us about it.'}];
@@ -125,9 +128,7 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 					//$scope.signin_callbacks(); // runs all callbacks that were set by siblings
 					// refresh page
 					//$scope.refresh();
-					var redirect = ($cookies.redirect ? $cookies.redirect : $rootScope.settings.dashboard);
-					$cookies.redirect = null;
-					$scope.href('#/'+redirect);
+					$scope.redirect();
 				} else {
 					$scope.errors.totp = "Verification Failed";
 				}
@@ -169,7 +170,7 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 		$scope.action = 'in';
 	} else if ($rootScope.session.user_ID) {
 		// redirect if already signed in
-		$scope.href('#/'+$rootScope.settings.dashboard);
+		$scope.redirect();
 	}
 	
 

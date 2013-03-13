@@ -17,7 +17,7 @@
 		"default": {
 			"email":true
 		},
-		"subject": "",
+		"subject": "Reset Password",
 		"message": "You (or someone else) entered this email address when trying to change the password of an account at {{global:site_name}}.\n\nHowever, this email address is not in our database of registered users and therefore the attempted password change has failed.\n\nIf you are a customer of {{global:site_name}} and were expecting this email, please try again using the email address you gave when you opened your account.\n\nIf you are not a customer of {{global:site_name}}, please ignore this email.\n\nFor information about {{global:site_name}}, please visit {{global:site_url}}.\n\nThis action was requested from the IP address {{_SERVER:REMOTE_ADDR}}."
 	},
 	"password_reset_request_new": {
@@ -53,10 +53,10 @@
 	
 	"new_follow": {
 		"subject": "You were just followed.",
-		"message": "You were just followed by {{from:user_name_first}}.  Check out their profile at {{global:site_url}}#/user/profile/{{from:user_ID}} and maybe follow them back."
+		"message": "{{from:user_name_first}} is now following you.  Check out their profile at {{global:site_url}}#/user/profile/{{from:user_ID}} and maybe follow them back.\n\nTo change your notification options, sign in at {{global:site_url}} and go to User Settings."
 	},
 	"new_message": {
 		"subject": "New direct message waiting for you.",
-		"message": "You were just send a direct message from {{from:user_name_first}}.  You can read it and reply at {{global:site_url}}#/user/message/{{from:user_ID}}."
+		"message": "{{from:user_name_first}} sent a message to you.  You can read it and reply at {{global:site_url}}#/user/message/{{from:user_ID}}.\n\nTo change your notification options, sign in at {{global:site_url}} and go to User Settings."
 	}
 }

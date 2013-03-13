@@ -25,14 +25,14 @@ function ResetCtrl($scope, $http, $routeParams) {
 				$scope.errors = (data.errors) ? data.errors : {};
 				$rootScope.alerts = (data.alerts) ? data.alerts : [];
 				if (!data.alerts && !data.errors) {
-					if (data) {
+					if (data === 'true') {
+						$scope.state.reset = true;
+					} else if (data) {
 						$scope.state.verify = true;
 						$scope.auth = data;
 					} else {
-						$scope.state.reset = true;
+						
 					}
-
-					$('#passwordModal').modal('show');
 				}
 			})
 			.error(function() {

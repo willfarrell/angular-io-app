@@ -22,7 +22,7 @@
 		    <ul class="thumbnails well" data-ng-init="follow.loadFollowing(user.company_ID, user.user_ID)">
 		    	<li class="img-polaroid" data-ng-repeat="f in objectArray(follow.db.user) | filter:{following:true}">
 		    		<a href="#/user/profile/{{f.user_ID}}" rel="tooltip" title="{{f.name}}">
-		    			<img data-ng-src="/img/user/{{f.user_ID}}.png?{{filepicker.timestamp}}" style="width:50px;height:50px" />
+		    			<img data-ng-src="/img/user/{{f.user_ID}}.png?{{filepicker.timestamp}}" width="50" height="50" />
 		    		</a>
 		    	</li>
 		    </ul>

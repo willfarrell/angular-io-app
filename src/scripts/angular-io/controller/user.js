@@ -160,6 +160,7 @@ function UserCtrl($scope, $http, $routeParams) {
 			$scope.user = $rootScope.session.user ? objectClone($rootScope.session.user) : {
 				user_ID:$rootScope.session.user_ID
 			};
+			$scope.loadUser();
 		}
 		console.log($scope.user);
 	});

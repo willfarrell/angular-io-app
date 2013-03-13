@@ -2,7 +2,7 @@ angular.module('io.init.rootScope', [])
 .run(
 	['$rootScope', '$locale', '$cookies', '$http', '$window', '$location',
 	function($rootScope, $locale, $cookies, $http, $window, $location) {
-	console.log('io.init.rootScope ('+$rootScope.$id+')');
+	console.group('io.init.rootScope ('+$rootScope.$id+')');
  	
  	$rootScope.$watch(function () {
 	  	return $location.path();
@@ -164,11 +164,12 @@ angular.module('io.init.rootScope', [])
 		console.log('require_signin(callback)');
 		console.log(callback);
 		//console.log($rootScope.settings);
-		//console.log($rootScope.session);
+		console.log($rootScope.session);
 		
 		// not signed in -> sign/in
-		if (objectIsEmpty($rootScope.session)) {
-			if ($rootScope.uri() != '#/sign/in') { // prevent redirect loop
+		if (!$rootScope.session.user_ID) {
+			console.log("not signed in");
+			if ($rootScope.uri().match(/#\/sign\/in/) === null) { // prevent redirect loop
 				$cookies.redirect = $rootScope.uri().substr(2);
 				$rootScope.href('#/sign/in');
 			}
@@ -306,7 +307,7 @@ angular.module('io.init.rootScope', [])
 			db.set('country_code', locale.substr(3,2).toUpperCase());
 		}
 		
-		window.location.reload();
+		$window.location.reload();
 	};
 	$rootScope.loadLocaleFile = function(locale, file) {
 		console.log('loadLocaleFile('+locale+', '+file+')');
@@ -329,15 +330,15 @@ angular.module('io.init.rootScope', [])
 		console.log('loadLocale()');
 		
 		for (var i = 0, l = $rootScope.settings.i18n['lang'].length; i < l; i++) {
-			console.log($rootScope.language+'/'+$rootScope.settings.i18n['lang'][i]);
+			//console.log($rootScope.language+'/'+$rootScope.settings.i18n['lang'][i]);
 			$rootScope.loadLocaleFile($rootScope.language, $rootScope.settings.i18n['lang'][i]);
 		}
 		for (var i = 0, l = $rootScope.settings.i18n['lang-locale'].length; i < l; i++) {
-			console.log($rootScope.locale+'/'+$rootScope.settings.i18n['lang-locale'][i]);
+			//console.log($rootScope.locale+'/'+$rootScope.settings.i18n['lang-locale'][i]);
 			$rootScope.loadLocaleFile($rootScope.locale, $rootScope.settings.i18n['lang-locale'][i]);
 		}
 		for (var i = 0, l = $rootScope.settings.i18n['json'].length; i < l; i++) {
-			console.log($rootScope.language+'/'+$rootScope.settings.i18n['json'][i]);
+			//console.log($rootScope.language+'/'+$rootScope.settings.i18n['json'][i]);
 			$rootScope.loadJSON($rootScope.settings.i18n['json'][i], $rootScope.language+'/'+$rootScope.settings.i18n['json'][i], 'i18n');
 		}
 	};
@@ -491,7 +492,7 @@ angular.module('io.init.rootScope', [])
 	// $http.get().error()
 	$rootScope.http_error = function() {
 		$rootScope.alerts = [{'class':'error', 'label':'Connection Error:', 'message':'We were unable to complete you request at this time.'}];
-	}
+	};
 	
 	$window.addEventListener("online", function () {
 		console.log('Event online');
@@ -529,8 +530,8 @@ angular.module('io.init.rootScope', [])
 	$rootScope.href = function(url, open) {
 		url || (url = '#');
 		console.log('href -> '+url);
-		if (open) window.open(url, '_blank', 'location=yes'); // http://docs.phonegap.com/en/edge/cordova_inappbrowser_inappbrowser.md.html#InAppBrowser
-		else window.location.href=url;
+		if (open) $window.open(url, '_blank', 'location=yes'); // http://docs.phonegap.com/en/edge/cordova_inappbrowser_inappbrowser.md.html#InAppBrowser
+		else $window.location.href=url;
 	};
 	
 	// refreshes current page
@@ -693,4 +694,5 @@ angular.module('io.init.rootScope', [])
 	};
 	
 	//!-- End JS Functions --//
+	console.groupEnd();
 }]);

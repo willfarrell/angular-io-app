@@ -15,7 +15,7 @@
     <div class="control-group" data-ng-class="{error: (errors.user_name_first)}">
       	<label class="control-label" for="user_name_first">First Name</label>
       	<div class="controls">
-            <input type="text" class="input-block-level" name="user_name_first" placeholder="" data-ng-model="user.user_name_first">
+            <input type="text" class="input-block-level" name="user_name_first" placeholder="" data-ng-model="user.user_name_first" required>
             <!--<span class="help-block error" data-ng-show="userForm.user_name_first.$error.required">Required</span>-->
             <span class="help-block error" data-ng-show="errors.user.user_name_first">{{errors.user.user_name_first}}</span>
         </div>
