@@ -49,36 +49,11 @@ angular.module('io.init.rootScope', [])
 			'company'		:false,
 			'company_user'	:false
 		},
-		'notify': {},		// notify setting defaults - must sync with message.json
 		'security': {
 		},
 		'onboard':{
 			'required'		:false,	// always true
 			'start'			:''		// url of dashboard ie #/app
-		},
-		'filepicker': {
-			'user_single_image': {
-				action:'user_single_image',
-				types: ['image/*'],
-				extensions: ['.jpg', '.jpeg', '.gif', '.bmp', '.png'],
-				services: ['COMPUTER'],
-				service: 'COMPUTER',
-				multi:false,
-				resizecrop:true,
-				width:200,
-				height:200
-			},
-			'company_single_image' : {
-				action:'company_single_image',
-				types: ['image/*'],
-				extensions: ['.jpg', '.jpeg', '.gif', '.bmp', '.png'],
-				services: ['COMPUTER'],
-				service: 'COMPUTER',
-				multi:false,
-				resizecrop:true,
-				width:300,
-				height:200
-			}
 		}
 		
 	};
@@ -261,21 +236,24 @@ angular.module('io.init.rootScope', [])
     });
 	
 	//!-- JSON -- //
-	$rootScope.loadJSON = function(key, file, folder) {
+	$rootScope.loadJSON = function(key, file, folder, callback) {
 		folder || (folder = 'json');
 		console.log('loadJSON('+key+', '+file+')');
 		$http.get($rootScope.settings.client+'/'+folder+'/'+file+'.json')
 			.success(function(data){
-				console.log('loadJSON.get('+key+'/'+file+').success');
+				console.log('loadJSON.get('+folder+'/'+file+').success');
 				//console.log(data);
 				//$rootScope.json[config.id] = data;
 				$rootScope.$emit('loaderEvent', key);
-				$rootScope.json[key] = data;
+				if (callback) {
+					callback(data);
+				} else {
+					$rootScope.json[key] = data;
+				}
 			})
 			.error(function(){
-				console.log('loadJSON.get('+key+'/'+file+').error');
+				console.log('loadJSON.get('+folder+'/'+file+').error');
 				$rootScope.$emit('loaderEvent', key);
-				$rootScope.json[key] = {};
 			});
 	};
 
@@ -300,7 +278,10 @@ angular.module('io.init.rootScope', [])
 	};
 	$rootScope.changeLocale = function(locale) {
 		//localStorage.setItem('locale', locale);
+		$cookies.locale = locale;
 		db.set('locale', locale);
+		
+		$cookies.locale = locale.substr(0,2);
 		db.set('language', locale.substr(0,2));
 		
 		if (locale.length > 2) {

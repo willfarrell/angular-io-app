@@ -46,9 +46,17 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 	//-- End Sign Up --//
 	
 	$scope.redirect = function() {
-		var redirect = ($cookies.redirect ? $cookies.redirect : $rootScope.settings.dashboard);
-		delete $cookies.redirect;
-		$scope.href('#/'+redirect);
+		console.log('redirect('+$rootScope.session.user_ID+')');
+		if ($rootScope.session.user_ID) {
+			var redirect = ($cookies.redirect ? $cookies.redirect : $rootScope.settings.dashboard);
+			delete $cookies.redirect;
+			$scope.href('#/'+redirect);
+		} else {
+			window.setTimeout(function() {
+				//alert(JSON.stringify($rootScope.session));
+				$scope.redirect();
+			}, 100);
+		}
 	}
 	
 	//-- Sign In --//

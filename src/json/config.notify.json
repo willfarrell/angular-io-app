@@ -1,0 +1,30 @@
+{
+	"signup_confirm_email": {
+		"email":true
+	},
+	"password_reset_request": {
+		"email":true
+	},
+	"password_reset_request_fail": {
+		"email":true
+	},
+	"password_reset_request_new": {
+		"email":true
+	},
+	"password_changed_notification": {
+		"email":true
+	},
+	"email_changed_notification": {
+		"email":true
+	},
+	"pgp_test": {
+		"email":true
+	},
+	
+	"new_follow": {
+		"email":false
+	},
+	"new_message": {
+		"email":false
+	}
+}

@@ -284,12 +284,12 @@ html, body { height: 100%; }
 	min-height: 100%;
 	height: auto !important;
 	height: 100%;
-	margin: 0 auto -66px;
+	margin: 0 auto -66px; /* neg .footer-push.height */
 }
 
 
 .footer-push {
-	height:66px;
+	height:66px; /* height of .footer + padding-top + padding-bottom + margin-top + margin-bottom */
 }
 .footer {
   padding: 10px 0 10px;

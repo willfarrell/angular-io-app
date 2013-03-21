@@ -21,6 +21,7 @@ class Notify {
 	);
 
 	public $templates = array();
+	public $defaults = array();
 
 	function __construct() {
 		global $database;
@@ -31,6 +32,10 @@ class Notify {
 		// include messages
 		$templates = file_get_contents('json/messages.json');
 		$this->templates = json_decode($templates, true);
+		
+		// default notification types
+		$defaults = file_get_contents('json/config.notify.json');
+		$this->defaults = json_decode($defaults, true);
 		
 		$this->email = new Email;
 		$this->sms = new SMS;
@@ -68,7 +73,7 @@ class Notify {
 		$this->vars['to'] = $to;
 		
 		// privacy defaults
-		$notify = (isset($this->templates[$message_ID]['default'])) ? $this->templates[$message_ID]['default'] : array();
+		$notify = (isset($this->defaults[$message_ID])) ? $this->defaults[$message_ID] : array();
 		foreach ($types as $type) {
 			if (!isset($notify[$type])) $notify[$type] = false;
 		}

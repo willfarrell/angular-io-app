@@ -10,7 +10,14 @@ function SettingsCtrl($scope, $http, $routeParams) {
  	// defaults as per class.notify.php
  	// email:true
  	// sms:false
- 	$scope.notify = $rootScope.settings.notify;
+ 	if ($rootScope.settings.notify) {
+	 	$scope.notify = $rootScope.settings.notify;
+ 	} else {
+	 	$rootScope.loadJSON(null, 'config.notify', 'json', function(data){
+		 	$rootScope.settings.notify = data;
+		 	$scope.notify = data;
+	 	});
+ 	}
  	
  	$scope.loadNotifications = function() {
  		$http.get($scope.settings.server+'/user/notify')
@@ -36,7 +43,8 @@ function SettingsCtrl($scope, $http, $routeParams) {
  			});
  	};
  	
- 	$scope.loadNotifications();
- 	$scope.require_signin();
+ 	$scope.require_signin(function() {
+	 	$scope.loadNotifications();
+ 	});
 }
 //}]);

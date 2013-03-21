@@ -1,0 +1,24 @@
+{
+	"user_single_image": {
+		"action": "user_single_image",
+		"types": ["image/*"],
+		"extensions": [".jpg", ".jpeg", ".gif", ".bmp", ".png"],
+		"services": ["COMPUTER"],
+		"service": "COMPUTER",
+		"multi": false,
+		"resizecrop": true,
+		"width": 200,
+		"height": 200
+	},
+	"company_single_image": {
+		"action": "company_single_image",
+		"types": ["image/*"],
+		"extensions": [".jpg", ".jpeg", ".gif", ".bmp", ".png"],
+		"services": ["COMPUTER", "URL"],
+		"service": "COMPUTER",
+		"multi": false,
+		"resizecrop": true,
+		"width": 300,
+		"height": 200
+	}
+}

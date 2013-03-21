@@ -20,7 +20,48 @@ class Follow extends Core {
     function __destruct() {
 	    parent::__destruct();
     }
+    
+    // search users
+    
+    function get_search($keyword = '') {
+		$return = array();
+		
+		$limit = 10;
+		
+		if ($limit > 0) {
+			if (COMPANY_ID) {
+				/*$query = "SELECT C.company_ID, C.company_name" // , GROUP_CONCAT(UF.group_ID) AS groups
+					." FROM companies C"
+					." LEFT JOIN ".$this->table." CF ON CF.follow_company_ID = C.company_ID AND CF.company_ID = '{{company_ID}}'"
+					." WHERE C.company_ID != '{{company_ID}}'"
+					." AND (user_name LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%@')"
+					." GROUP BY C.company_ID"
+					." LIMIT 0,$limit";
 
+				$suggestions = $this->db->query($query, array('company_ID' => COMPANY_ID, 'keyword' => $keyword));*/
+			} else {
+				$query = "SELECT U.user_ID, U.company_ID, user_name, CONCAT(user_name_first, ' ', user_name_last) AS name, UF.timestamp as following, FU.timestamp as follower" // , UF.group_ID
+						." FROM users U"
+						." LEFT JOIN ".$this->table." UF ON U.user_ID = UF.follow_user_ID"
+						." LEFT JOIN ".$this->table." FU ON (UF.user_ID = FU.follow_user_ID AND UF.follow_user_ID = FU.user_ID)"
+						
+						." WHERE (UF.user_ID = '{{user_ID}}' OR UF.user_ID IS NULL)"
+						." AND (user_name LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%@')"
+						." GROUP BY U.user_ID"
+						." LIMIT 0,$limit";
+
+					$suggestions = $this->db->query($query, array('user_ID' => USER_ID, 'keyword' => $keyword));
+			}
+			
+			while ($suggestions && $suggestion = $this->db->fetch_assoc($suggestions)) {
+				//$suggestion['groups'] = explode(',', $suggestion['groups']);
+				$return[] = $suggestion;
+			}
+		}
+		
+		return $return;
+	}
+	
     // self only
     function get_suggestions($ref_bool = NULL, $keyword = '') {
 		$return = array();
@@ -41,6 +82,7 @@ class Follow extends Core {
 					." LEFT JOIN ".$this->table." CF ON CF.follow_company_ID = C.company_ID AND CF.company_ID = '{{company_ID}}'"
 					." WHERE C.company_ID != '{{company_ID}}' AND CF.follow_company_ID IS NULL"
 					." AND (user_name LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%@')"
+					." GROUP BY C.company_ID"
 					." ORDER BY RAND()"
 					." LIMIT 0,$limit";
 
@@ -51,6 +93,7 @@ class Follow extends Core {
 					." LEFT JOIN ".$this->table." UF ON UF.follow_user_ID = U.user_ID AND UF.user_ID = '{{user_ID}}'"
 					." WHERE U.user_ID != '{{user_ID}}' AND U.timestamp_create != 0 AND UF.follow_user_ID IS NULL"
 					." AND (user_name LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%@')"
+					." GROUP BY U.user_ID"
 					." ORDER BY RAND()"
 					." LIMIT 0,$limit";
 

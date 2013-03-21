@@ -32,46 +32,18 @@ angular.module('io.init.settings', [])
 			'options'	:['en']					// which locales to allow
 		},
 		'json':{								// load json files into $rootScope.json[key] = JSON.parse(file);
-			'calling_codes'	:'calling_codes',	// {'country_code':'calling_code'}
+			'calling_codes'	:'calling_codes'	// {'country_code':'calling_code'}
 		},
 		'account': {
 			'user_name'		:false,	// Require username in profile
 			'company'		:false,
 			'company_username':false
 		},
-		'notify': {		// notify setting defaults - must sync with message.json
-		 	"new_message":{"email":false},
-		 	"new_follow":{"email":false}
-		},
 		// pulgins //
 		// onboard - view/onboard
 		'onboard':{
 			'required'		:true,		// always true
 			'start'			:'user'		// ** make smart so not needed
-		},
-		'filepicker': {
-			'user_single_image': {
-				action:'user_single_image',
-				types: ['image/*'],
-				extensions: ['.jpg', '.jpeg', '.gif', '.bmp', '.png'],
-				services: ['COMPUTER', 'URL'],//, 'CAMERA'
-				service: 'COMPUTER',
-				multi:false,
-				resizecrop:true,
-				width:200,
-				height:200
-			},
-			'company_single_image' : {
-				action:'company_single_image',
-				types: ['image/*'],
-				extensions: ['.jpg', '.jpeg', '.gif', '.bmp', '.png'],
-				services: ['COMPUTER', 'URL'],
-				service: 'COMPUTER',
-				multi:false,
-				resizecrop:true,
-				width:300,
-				height:200
-			}
 		},
 		'follow':'user'
 		// browser plugin - view/page/sign 

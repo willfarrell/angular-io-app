@@ -492,7 +492,7 @@ angular.module('io.controller.filepicker', ['io.factory.filepicker'])
             		);
             		var allowedExtension = (
             			($scope.filepicker.args.extensions.length == 0)
-            			|| ($scope.filepicker.args.extensions.indexOf(extension) !== -1)
+            			|| ($scope.filepicker.args.extensions.indexOf(extension.toLowerCase()) !== -1) // toLowerCase to catch windows problems
             		);
                 	// check type && extension
                 	if (!allowedType) {

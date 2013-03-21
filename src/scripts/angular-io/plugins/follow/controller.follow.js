@@ -99,6 +99,28 @@ angular.module('io.controller.follow', [])
 				$rootScope.http_error();
 			});
 	};
+	
+	$scope.loadSearch = function(query) {
+		console.log('loadSearch()');
+		query || (query = '');
+		$http.get($rootScope.settings.server+'/follow/search/'+query)
+			.success(function(data) {
+				console.log('loadSearch.get.success');
+				console.log(data);
+				for (var i = 0, l = data.length; i < l; i++) {
+					data[i].following = (data[i].following) ? true : false;
+					if (data[i]['company_ID']) $scope.follow.db.company[data[i]['company_ID']] = data[i];
+					else if (data[i]['user_ID']) $scope.follow.db.user[data[i]['user_ID']] = data[i];
+				}
+
+				if (objectLength(data)) $scope.follow_suggest = data;
+				console.log($rootScope.objectLength($scope.follow_suggest));
+			})
+			.error(function() {
+				console.log('loadSearch.get.error');
+				$rootScope.http_error();
+			});
+	};
 
 	
 	
