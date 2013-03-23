@@ -47,16 +47,16 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 	
 	$scope.redirect = function() {
 		console.log('redirect('+$rootScope.session.user_ID+')');
-		if ($rootScope.session.user_ID) {
+		//if ($rootScope.session.user_ID) {
 			var redirect = ($cookies.redirect ? $cookies.redirect : $rootScope.settings.dashboard);
 			delete $cookies.redirect;
-			$scope.href('#/'+redirect);
-		} else {
-			window.setTimeout(function() {
+			$scope.href('/'+redirect);
+		//} else {
+		//	window.setTimeout(function() {
 				//alert(JSON.stringify($rootScope.session));
-				$scope.redirect();
-			}, 100);
-		}
+		//		$scope.redirect();
+		//	}, 100);
+		//}
 	}
 	
 	//-- Sign In --//
@@ -88,17 +88,16 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 					if (data.totp) {
 						$scope.action = 'totp';
 						$scope.user_ID = data.user_ID;
-					} else if (data) {
+					} else if (data.user_ID) {
 						$rootScope.session = syncVar(data, $rootScope.session);
-						if ($rootScope.session.user_ID) {
-							$rootScope.session.save = $scope.signin.remember;
-						}
+						$rootScope.session.save = $scope.signin.remember;
+						$rootScope.offline.run_request();
+						
 						console.log($rootScope.session);
 						$rootScope.saveSession();
 						$scope.signin = {};	// clear form
 	
 						$scope.redirect();
-						
 					} else {
 						// catch any server side errors
 						$rootScope.alerts = [{'class':'error', 'label':'Internal Error', 'message':'Please notify us about it.'}];
@@ -159,7 +158,7 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 					console.log(data);
 					$rootScope.alerts = [{'class':'info', 'label':'Signed Out'}];
 					$scope.action = 'in';
-					//$rootScope.href('#/sign/in');
+					//$rootScope.href('/sign/in');
 					console.log(objectLength($rootScope.session));
 				})
 				.error(function() {

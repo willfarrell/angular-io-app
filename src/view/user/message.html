@@ -12,6 +12,9 @@
 		        		<span>{{m.message | truncate:20}}</span>
 		        	</a>
 	        	</li>
+	        	<li data-ng-hide="list.length">
+	        		<a>No past messages.</a>
+	        	</li>
 	        </ul>
         </div>
       	<div class="span7 well-white">

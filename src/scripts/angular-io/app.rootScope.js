@@ -4,6 +4,11 @@ angular.module('io.init.rootScope', [])
 	function($rootScope, $locale, $cookies, $http, $window, $location) {
 	console.group('io.init.rootScope ('+$rootScope.$id+')');
  	
+ 	// HTML5SHIV
+ 	if ($window.addEvent) {	// <= IE8
+ 		$window.addEventListener = $window.attachEvent; // event = window.attachEvent ? 'onclick' : 'click';
+	}
+	
  	$rootScope.$watch(function () {
 	  	return $location.path();
 	  }, function(value) {
@@ -87,7 +92,7 @@ angular.module('io.init.rootScope', [])
 				console.log('updateSession.get.success');
 				console.log(data);
 				if (data == []) {
-					$rootScope.href('#/sign/out');
+					$rootScope.href('/sign/out');
 				} else {
 					$rootScope.session = syncVar(data, $rootScope.session);
 					//$rootScope.session.timestamp = +new Date();
@@ -127,7 +132,7 @@ angular.module('io.init.rootScope', [])
 						$rootScope.$eval(callback());
 					}
 				} else if ($rootScope.session.user_ID) {
-					$rootScope.href('#/sign/out');
+					$rootScope.href('/sign/out');
 				}
 			})
 			.error(function() {
@@ -144,29 +149,29 @@ angular.module('io.init.rootScope', [])
 		// not signed in -> sign/in
 		if (!$rootScope.session.user_ID) {
 			console.log("not signed in");
-			if ($rootScope.uri().match(/#\/sign\/in/) === null) { // prevent redirect loop
+			if ($rootScope.uri().match(/\/sign\/in/) === null) { // prevent redirect loop
 				$cookies.redirect = $rootScope.uri().substr(2);
-				$rootScope.href('#/sign/in');
+				$rootScope.href('/sign/in');
 			}
 		
 		// email not confirmed -> onboard
-		} else if ($rootScope.settings.onboard.required && !$rootScope.session.email_confirm && $rootScope.uri().match(/#\/onboard\/email/) === null) {
-			console.log("email not confirmed = "+($rootScope.settings.onboard.required)+" && "+!$rootScope.session.email_confirm+" && "+($rootScope.uri().match(/#\/onboard/) === null));
-			$rootScope.href('#/onboard/email');
+		} else if ($rootScope.settings.onboard.required && !$rootScope.session.email_confirm && $rootScope.uri().match(/\/onboard\/email/) === null) {
+			console.log("email not confirmed = "+($rootScope.settings.onboard.required)+" && "+!$rootScope.session.email_confirm+" && "+($rootScope.uri().match(/\/onboard/) === null));
+			$rootScope.href('/onboard/email');
 		
 		// haven't completed manditory onboard steps -> onboard
-		} else if ($rootScope.settings.onboard.required && !$rootScope.session.timestamp_create && $rootScope.uri().match(/#\/onboard/) === null) {
-			console.log("onboard not completed = "+($rootScope.settings.onboard.required)+" && "+!$rootScope.session.timestamp_create+" && "+($rootScope.uri().match(/#\/onboard/) === null));
-			$rootScope.href('#/onboard/'+$rootScope.settings.onboard.start);
+		} else if ($rootScope.settings.onboard.required && !$rootScope.session.timestamp_create && $rootScope.uri().match(/\/onboard/) === null) {
+			console.log("onboard not completed = "+($rootScope.settings.onboard.required)+" && "+!$rootScope.session.timestamp_create+" && "+($rootScope.uri().match(/\/onboard/) === null));
+			$rootScope.href('/onboard/'+$rootScope.settings.onboard.start);
 		
 		// has an old password -> change pass
 		} else if ($rootScope.settings.password.max_age && $rootScope.session.password_age > $rootScope.settings.password.max_age) {
 			console.log(($rootScope.settings.password.max_age)+" && "+($rootScope.session.password_age > $rootScope.settings.password.max_age));
-			$rootScope.href('#/onboard/password');
+			$rootScope.href('/onboard/password');
 		
 		// force password change set -> change password
 		} else if ($rootScope.settings.password.min_timestamp && $rootScope.session.password_timestamp < $rootScope.settings.password.min_timestamp) {
-			$rootScope.href('#/onboard/password');
+			$rootScope.href('/onboard/password');
 		
 		// all good -> eval callback
 		} else if (callback) {
@@ -254,6 +259,11 @@ angular.module('io.init.rootScope', [])
 			.error(function(){
 				console.log('loadJSON.get('+folder+'/'+file+').error');
 				$rootScope.$emit('loaderEvent', key);
+				if (callback) {
+					callback(null);
+				} else {
+					$rootScope.json[key] = null;
+				}
 			});
 	};
 
@@ -480,8 +490,10 @@ angular.module('io.init.rootScope', [])
 		if ($rootScope.offline._state) {	// was offline
 			$rootScope.offline.alertOnline();
 			setTimeout(function() {  // timeout is required to bypass some weird bug in angular **
-	          $rootScope.checkSession();
-	          $rootScope.offline.run_request();
+	          $rootScope.checkSession(function(){
+		          $rootScope.offline.run_request();
+	          });
+	          
 	        }, 1000);
 			
 		}
@@ -504,15 +516,17 @@ angular.module('io.init.rootScope', [])
 		var uri = ($location.$$url.indexOf("?") == -1)
 			? $location.$$url
 			: $location.$$url.substr(0, $location.$$url.indexOf("?"));
-		return "#"+uri;
+		return uri;
 	};
 	
 	// redirect to new page
 	$rootScope.href = function(url, open) {
-		url || (url = '#');
+		url || (url = '/');
 		console.log('href -> '+url);
 		if (open) $window.open(url, '_blank', 'location=yes'); // http://docs.phonegap.com/en/edge/cordova_inappbrowser_inappbrowser.md.html#InAppBrowser
-		else $window.location.href=url;
+		else if (url.substr(0,1) == '#') $location.url(url.substr(1));
+		else if (url.substr(0,1) == '/') $location.url(url);
+		else $window.location.href = url;
 	};
 	
 	// refreshes current page

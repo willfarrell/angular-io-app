@@ -86,7 +86,7 @@ function UserCtrl($scope, $http, $routeParams) {
 		if (confirm('Are you sure you want to delete your account?')) {
 			$http.get($scope.settings.server+'/user/delete')
 				.success(function(){
-					$scope.href('#/sign/out');
+					$scope.href('/sign/out');
 				})
 				.error(function() {
 					$rootScope.http_error();

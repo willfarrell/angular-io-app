@@ -10,8 +10,8 @@ $script('//google-analytics.com/ga.js');
 
 // CDN
 var cdn = {
-    jQuery: 	'//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js',
-    Bootstrap: 	'//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.2/bootstrap.min.js',
+    jQuery: 	'//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+    Bootstrap: 	'//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js',
     AngularJS: 	'//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js'
 };
 var cdnFallback = {

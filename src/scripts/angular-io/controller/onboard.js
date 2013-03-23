@@ -5,7 +5,7 @@ function OnboardCtrl($scope, $cookies, $http, $routeParams) {
 	console.log('OnboardCtrl ('+$scope.$id+') page:'+$routeParams.page);
 	$scope.errors = {};
 
-	if (!$routeParams.page || $routeParams.page == 'start') $scope.href('#/onboard/'+$rootScope.settings.onboard.start);
+	if (!$routeParams.page || $routeParams.page == 'start') $scope.href('/onboard/'+$rootScope.settings.onboard.start);
 	$scope.page_url = 'view/onboard/'+encodeURIComponent($routeParams.page)+'.html';
 
 	$scope.BuildProgressTracker = function(page, action) {
@@ -30,7 +30,7 @@ function OnboardCtrl($scope, $cookies, $http, $routeParams) {
 			    				$rootScope.updateSession(function(){
 			    					var redirect = ($cookies.redirect ? $cookies.redirect : $rootScope.settings.dashboard);
 			    					$cookies.redirect = null;
-			    					$scope.href('#/'+redirect);
+			    					$scope.href('/'+redirect);
 			    				});
 			    			})
 							.error(function() {

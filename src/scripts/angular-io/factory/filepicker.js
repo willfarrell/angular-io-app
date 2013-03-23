@@ -59,7 +59,7 @@ angular.module('io.factory.filepicker', [])
 		action:'',
 		types: ['*/*'],	// image/*
 		extensions: [],	// ['.png','.jpg']
-		services: ['COMPUTER'], //, 'URL'
+		services: ['COMPUTER'], // , 'URL'
 		service: 'COMPUTER',
 		multi:true,
 		ID:''		// params passed to backend, ie object_ID
@@ -99,7 +99,7 @@ angular.module('io.factory.filepicker', [])
 		
 		$scope.args = syncVar(args, $scope.args_upload);
 		$scope.args.ID = ID;
-console.log($scope.args);		
+		
 		$scope.cameraModernizr(); // incase camera is default
 		$scope.location($scope.args.service);
 		$scope.loadFiles();

@@ -483,6 +483,12 @@ module.exports = function(grunt) {
 	        		},
 	        		{
 	        			expand: true,
+	        			cwd:'<%= yeoman.app %>/components/json3/libs',
+	        			src: ['json3.min.js'],
+	        			dest: '<%= yeoman.dist %>/js/vendor'
+	        		},
+	        		{
+	        			expand: true,
 	        			cwd:'<%= yeoman.app %>/components/angular-complete',
 	        			src: ['angular.min.js', 'angular-cookies.min.js', 'i18n/*.js'],
 	        			dest: '<%= yeoman.dist %>/js/vendor'

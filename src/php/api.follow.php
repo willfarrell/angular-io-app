@@ -42,7 +42,7 @@ class Follow extends Core {
 			} else {
 				$query = "SELECT U.user_ID, U.company_ID, user_name, CONCAT(user_name_first, ' ', user_name_last) AS name, UF.timestamp as following, FU.timestamp as follower" // , UF.group_ID
 						." FROM users U"
-						." LEFT JOIN ".$this->table." UF ON U.user_ID = UF.follow_user_ID"
+						." LEFT JOIN ".$this->table." UF ON (U.user_ID = UF.follow_user_ID && UF.user_ID = '{{user_ID}}')"
 						." LEFT JOIN ".$this->table." FU ON (UF.user_ID = FU.follow_user_ID AND UF.follow_user_ID = FU.user_ID)"
 						
 						." WHERE (UF.user_ID = '{{user_ID}}' OR UF.user_ID IS NULL)"
