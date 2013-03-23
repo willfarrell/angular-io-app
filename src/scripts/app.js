@@ -21,7 +21,6 @@ angular.module('io.init', ['io.config', 'io.init.settings', 'io.init.rootScope']
 
 
 // io plugings
-angular.module('io.markdown', 		['io.config', 'io.directive.markdown']);
 angular.module('io.follow', 		['io.config', 'io.factory.follow', 'io.controller.follow']);
 angular.module('io.message', 		['io.config', 'io.filter.truncate', 'io.factory.message']);
 angular.module('io.filepicker', 	['io.config', 'io.factory.filepicker', 'io.controller.filepicker']);

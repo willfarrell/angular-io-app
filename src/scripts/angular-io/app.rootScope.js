@@ -5,7 +5,7 @@ angular.module('io.init.rootScope', [])
 	console.group('io.init.rootScope ('+$rootScope.$id+')');
  	
  	// HTML5SHIV
- 	if ($window.addEvent) {	// <= IE8
+ 	if ($window.attachEvent) {	// <= IE8
  		$window.addEventListener = $window.attachEvent; // event = window.attachEvent ? 'onclick' : 'click';
 	}
 	
