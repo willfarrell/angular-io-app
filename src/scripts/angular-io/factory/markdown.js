@@ -6,6 +6,8 @@ angular.module('io.markdown', [])
 	var $scope = marked;
 	
 	/*
+	https://github.com/chjj/marked
+	
 	pedantic: Conform to obscure parts of markdown.pl as much as possible. Don't fix any of the original markdown bugs or poor behavior.
 	gfm: Enable github flavored markdown (enabled by default).
 	sanitize: Sanitize the output. Ignore any HTML that has been input.

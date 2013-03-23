@@ -219,6 +219,10 @@ body {
 	.page {
 		border-left: solid 1px #DDD;
 	}
+	
+	.navbar-fixed-top, .navbar-fixed-bottom {
+		position: absolute; /* override */
+	}
 	.nav-slider {
 		width:200px;
 		height: 100%;
@@ -257,6 +261,8 @@ body {
 	}
 	
 	.nav-slider-open, .page-slider-closed {
+		position: absolute;
+		top:0px;
 		left:0px;
 	}
 	

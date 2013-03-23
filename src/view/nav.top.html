@@ -4,7 +4,7 @@
         	<div class="pull-left">
         		<!-- sliding nav, space holder -->
         		<div class="btn-group visible-phone">
-	        		<button class="btn"><i class="icon-list-ul"></i></button>
+	        		<button class="btn" data-ng-click="slideNav()"><i class="icon-list-ul"></i></button>
 	        	</div>
 	        	<!-- page controllers -->
         		<div class="btn-group hidden-phone" data-ui-if="device">
@@ -27,11 +27,11 @@
         	<div class="pull-left">
         		<!-- sliding nav, space holder -->
 	        	<div class="btn-group visible-phone">
-	        		<button class="btn"><i class="icon-list-ul"></i></button>
+	        		<button class="btn" data-ng-click="slideNav()"><i class="icon-list-ul"></i></button>
 	        	</div>
 	        	<!-- page controllers -->
         		<div class="btn-group hidden-phone">
-					<button class="btn" data-ng-click="history.back()" data-ng-disabled="history.length <= 2" data-ng-show="device"><i class="icon-arrow-left"></i></button>
+					<button class="btn" data-ng-click="history.back()" data-ng-disabled="history.length <= 2" data-ui-if="device"><i class="icon-arrow-left"></i></button>
 					<button class="btn" data-ng-click="refresh()" data-ui-if="device"><i class="icon-refresh"></i></button>
 					<a class="btn" href="#/{{settings.dashboard}}"><i class="icon-dashboard"></i></a>
 				</div>
