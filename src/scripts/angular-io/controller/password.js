@@ -10,12 +10,11 @@ function PasswordCtrl($scope, $http) {
 		$http.put($scope.settings.server+'/account/password_change/', $scope.password)
 			.success(function(data) {
 				console.log('updatePassword.put.success');
-				console.log(data);
-				$scope.errors			= (data.errors) ? data.errors : {};
-				$rootScope.alerts 		= (data.alerts) ? data.alerts : [];
-				if (!data.alerts && !data.errors) {
+				if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
 					$scope.password = {};
 					$rootScope.alerts = [{'class':'success', 'label':'Change Password:', 'message':'Saved'}];
+				} else {
+					$scope.errors = (data.errors) ? data.errors : {};
 				}
 			})
 			.error(function() {
@@ -29,10 +28,11 @@ function PasswordCtrl($scope, $http) {
 		$http.get($scope.settings.server+'/account/reset_send/'+encodeURIComponent(email))
 			.success(function(data) {
 				console.log('resetPassword.get.success');
-				console.log(data);
-				$scope.errors = (data.errors) ? data.errors : {};
-				$rootScope.alerts = (data.alerts) ? data.alerts : [];
-				$rootScope.alerts = [{'class':'info', 'message':'We have sent an email to '+email+' with further instructions.'}]; // replace in {{signin.email}}
+				if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
+					$rootScope.alerts = [{'class':'info', 'message':'We have sent an email to '+email+' with further instructions.'}]; // replace in {{signin.email}}
+				} else {
+					$scope.errors = (data.errors) ? data.errors : {};
+				}
 			})
 			.error(function() {
 				console.log('resetPassword.get.error');

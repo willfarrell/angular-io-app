@@ -22,6 +22,11 @@ class Company extends Core {
 		if (!$limit) $limit = 10;
 		$return = array();
 		
+		// Check permissions
+		if(!$this->permission->check()) {
+			return $this->permission->errorMessage();
+		};
+		
 		$query = "SELECT company_ID, company_name, company_url, company_phone" //
 				." FROM companies C"
 				." WHERE"
@@ -42,7 +47,12 @@ class Company extends Core {
 	 */
 	function get_user($user_ID=NULL) {
 		$return = array();
-
+		
+		// Check permissions
+		if(!$this->permission->check(array("user_ID" => $user_ID))) {
+			return $this->permission->errorMessage();
+		};
+		
 		$db_where = array('company_ID' => COMPANY_ID);
 		if (!is_null($user_ID)) {
 			$db_where['user_ID'] = $user_ID;
@@ -84,7 +94,12 @@ class Company extends Core {
 		foreach ($params as $key) {
 			$request_data[$key] = isset($request_data[$key]) ? $request_data[$key] : NULL;
 		}
-
+		
+		// Check permissions
+		if(!$this->permission->check($request_data)) {
+			return $this->permission->errorMessage();
+		};
+		
 		$this->filter->set_request_data($request_data);
 		$this->filter->set_group_rules('users');
 		if(!$this->filter->run()) {
@@ -137,7 +152,12 @@ class Company extends Core {
 		foreach ($params as $key) {
 			$request_data[$key] = isset($request_data[$key]) ? $request_data[$key] : NULL;
 		}
-
+		
+		// Check permissions
+		if(!$this->permission->check($request_data)) {
+			return $this->permission->errorMessage();
+		};
+		
 		$this->filter->set_request_data($request_data);
 		$this->filter->set_group_rules('users');
 		if(!$this->filter->run()) {
@@ -146,7 +166,6 @@ class Company extends Core {
 		}
 		$request_data = $this->filter->get_request_data();
 		
-		$this->permission->check($request_data);
 		
 		// update
 		$user = array(
@@ -169,6 +188,11 @@ class Company extends Core {
 	
 	function get_name($username=NULL) {
 		$return = array();
+		
+		// Check permissions
+		if(!$this->permission->check(array("company_username" => $username))) {
+			return $this->permission->errorMessage();
+		};
 		
 		// add in user_name check
 		
@@ -245,6 +269,11 @@ class Company extends Core {
 	function get($company_ID=NULL) {
 		$return = array();
 		$company_ID = is_null($company_ID) ? COMPANY_ID: $company_ID;
+		
+		// Check permissions
+		if(!$this->permission->check(array("company_ID" => $company_ID))) {
+			return $this->permission->errorMessage();
+		};
 
 		$results = $this->db->select('companies',
 			array('company_ID' => $company_ID),
@@ -317,7 +346,10 @@ class Company extends Core {
 			$request_data[$key] = isset($request_data[$key]) ? $request_data[$key] : NULL;
 		}
 		
-		$this->permission->check($request_data);
+		// Check permissions
+		if(!$this->permission->check($request_data)) {
+			return $this->permission->errorMessage();
+		};
 		
 		// validate and sanitize
 		/*$this->filter->set_request_data($request_data);
@@ -365,7 +397,10 @@ class Company extends Core {
 			$request_data[$key] = isset($request_data[$key]) ? $request_data[$key] : NULL;
 		}
 		
-		$this->permission->check($request_data);
+		// Check permissions
+		if(!$this->permission->check($request_data)) {
+			return $this->permission->errorMessage();
+		};
 		
 		// company //
 		$company = array(

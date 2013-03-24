@@ -17,6 +17,11 @@ class Message extends Core {
 	}
 	
 	function unread() {
+		// Check permissions
+		if(!$this->permission->check()) {
+			return $this->permission->errorMessage();
+		};
+		
 		$count = 0;
 		
 		$query = "SELECT COUNT(*) AS count"
@@ -41,6 +46,11 @@ class Message extends Core {
 	}
 	
     function get_list() {
+    	// Check permissions
+		if(!$this->permission->check()) {
+			return $this->permission->errorMessage();
+		};
+		
 		$return = array();
 		
 		$query = "SELECT *"
@@ -74,6 +84,11 @@ class Message extends Core {
 	}
 	
 	function get($user_ID=NULL) {
+		// Check permissions
+		if(!$this->permission->check(array("user_ID" => $user_ID))) {
+			return $this->permission->errorMessage();
+		};
+		
 		$return = array();
 		$user_key = $this->user_key($user_ID);
 		
@@ -108,6 +123,11 @@ class Message extends Core {
 	}
 
     function post($request_data=NULL) {
+		// Check permissions
+		if(!$this->permission->check($request_data)) {
+			return $this->permission->errorMessage();
+		};
+		
 		$insert = array(
 			'user_key' => $this->user_key($request_data['user_ID']),
 			'user_from_ID' => USER_ID,
@@ -121,6 +141,11 @@ class Message extends Core {
     }
 
     function delete($user_ID=NULL, $timestamp=NULL) {
+    	// Check permissions
+		if(!$this->permission->check(array("user_ID" => $user_ID))) {
+			return $this->permission->errorMessage();
+		};
+		
     	$user_key = $this->user_key($user_ID);
     	
     	$where = array(

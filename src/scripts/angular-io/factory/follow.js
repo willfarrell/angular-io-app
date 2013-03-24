@@ -113,9 +113,11 @@ angular.module('io.factory.follow', [])
 			.success(function(data) {
 				console.log('loadFollow.get.success');
 				console.log(data);
-				$scope.db.company[data.company_ID] = data;
-				$scope.db.user[data.user_ID] = data;
-				$scope.f = data;
+				if ($rootScope.checkHTTPReturn(data)) {
+					$scope.db.company[data.company_ID] = data;
+					$scope.db.user[data.user_ID] = data;
+					$scope.f = data;
+				}
 			})
 			.error(function() {
 				console.log('loadFollow.put.error');
@@ -140,10 +142,12 @@ angular.module('io.factory.follow', [])
 			.success(function(data) {
 				console.log('loadFollowers.get.success');
 				console.log(data);
-				for (var i in data) {
-					if (data[i]['company_ID']) $scope.db.company[data[i]['company_ID']] = data[i];
-					else if (data[i]['user_ID']) $scope.db.user[data[i]['user_ID']] = data[i]
-					else delete data[i];
+				if ($rootScope.checkHTTPReturn(data)) {
+					for (var i in data) {
+						if (data[i]['company_ID']) $scope.db.company[data[i]['company_ID']] = data[i];
+						else if (data[i]['user_ID']) $scope.db.user[data[i]['user_ID']] = data[i]
+						else delete data[i];
+					}
 				}
 			})
 			.error(function() {
@@ -162,13 +166,15 @@ angular.module('io.factory.follow', [])
 			.success(function(data) {
 				console.log('loadFollowers.get.success');
 				console.log(data);
-				for (var i in data) {
-					if (i) {
-						data[i].following = (data[i].following) ? true : false;
-						data[i].follower = true;
-						$scope.db[type][i] = data[i];
-					} else {
-						delete data[i];
+				if ($rootScope.checkHTTPReturn(data)) {
+					for (var i in data) {
+						if (i) {
+							data[i].following = (data[i].following) ? true : false;
+							data[i].follower = true;
+							$scope.db[type][i] = data[i];
+						} else {
+							delete data[i];
+						}
 					}
 				}
 			})
@@ -187,13 +193,14 @@ angular.module('io.factory.follow', [])
 			.success(function(data) {
 				console.log('loadFollowing.get.success');
 				console.log(data);
-				console.log(typeof data);
-				for (var i = 0, l = data.length; i < l; i++) {
-					data[i].following = (data[i].following) ? true : false;
-					if (data[i]['company_ID']) $scope.db.company[data[i]['company_ID']] = data[i];
-					else if (data[i]['user_ID']) $scope.db.user[data[i]['user_ID']] = data[i];
+				if ($rootScope.checkHTTPReturn(data)) {
+					console.log(typeof data);
+					for (var i = 0, l = data.length; i < l; i++) {
+						data[i].following = (data[i].following) ? true : false;
+						if (data[i]['company_ID']) $scope.db.company[data[i]['company_ID']] = data[i];
+						else if (data[i]['user_ID']) $scope.db.user[data[i]['user_ID']] = data[i];
+					}
 				}
-				
 			})
 			.error(function() {
 				console.log('loadFollowing.get.error');
@@ -207,8 +214,10 @@ angular.module('io.factory.follow', [])
 			.success(function(data) {
 				console.log('loadGroups.get.success');
 				console.log(data);
-				for (var i in data) {
-					$scope.db.groups[i] = data[i];
+				if ($rootScope.checkHTTPReturn(data)) {
+					for (var i in data) {
+						$scope.db.groups[i] = data[i];
+					}
 				}
 			})
 			.error(function() {
@@ -224,14 +233,16 @@ angular.module('io.factory.follow', [])
 			.success(function(data) {
 				console.log('addGroup.post.success');
 				console.log(data);
-				$scope.db.groups[data.toString()] = {
-					group_name:group_name,
-					group_ID:data,
-					group_count:0,
-					color:color
-				};
-				console.log($scope.db.groups);
-				$scope.group_name = ""; // clear form
+				if ($rootScope.checkHTTPReturn(data)) {
+					$scope.db.groups[data.toString()] = {
+						group_name:group_name,
+						group_ID:data,
+						group_count:0,
+						color:color
+					};
+					console.log($scope.db.groups);
+					$scope.group_name = ""; // clear form
+				}
 			})
 			.error(function() {
 				console.log('addGroup.post.error');
@@ -245,17 +256,19 @@ angular.module('io.factory.follow', [])
 			.success(function(data) {
 				console.log('removeGroup.delete.success');
 				console.log(data);
-				delete $scope.db.groups[group_ID];
-				for (var id in $scope.db.company) {
-					if ($scope.db.company[id].groups) {
-						var index = $scope.db.company[id].groups.indexOf(group_ID);
-						if (index != -1) delete $scope.db.company[id].groups.splice(index,1);
+				if ($rootScope.checkHTTPReturn(data)) {
+					delete $scope.db.groups[group_ID];
+					for (var id in $scope.db.company) {
+						if ($scope.db.company[id].groups) {
+							var index = $scope.db.company[id].groups.indexOf(group_ID);
+							if (index != -1) delete $scope.db.company[id].groups.splice(index,1);
+						}
 					}
-				}
-				for (var id in $scope.db.user) {
-					if ($scope.db.user[id].groups) {
-						var index = $scope.db.user[id].groups.indexOf(group_ID);
-						if (index != -1) delete $scope.db.user[id].groups.splice(index,1);
+					for (var id in $scope.db.user) {
+						if ($scope.db.user[id].groups) {
+							var index = $scope.db.user[id].groups.indexOf(group_ID);
+							if (index != -1) delete $scope.db.user[id].groups.splice(index,1);
+						}
 					}
 				}
 			})

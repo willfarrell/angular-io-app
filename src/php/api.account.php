@@ -27,8 +27,9 @@ class Account extends Core {
 	}
 	
 	// don't upgrade with global vars, use $this->session->cookie
-	function get_session() {
+	function get_session() {		
 		$return = array();
+		
 		// same as in session - refactor
 		$query = "SELECT * FROM users WHERE user_ID = '{{user_ID}}' LIMIT 0,1";
 		$result = $this->db->query($query, array('user_ID' => $this->session->cookie['user_ID']));
@@ -104,8 +105,6 @@ class Account extends Core {
 		}
 		$request_data = $this->filter->get_request_data();
 		
-		$this->permission->check($request_data);
-		
 		$email = $request_data["email"];
 
 		// referral
@@ -159,8 +158,6 @@ class Account extends Core {
 			return $return;
 		}
 		$request_data = $this->filter->get_request_data();
-		
-		$this->permission->check($request_data);
 		
 		//if ($request_data['remember'] == 'true') $remember = true;
 		//else  $remember = false;
@@ -227,17 +224,20 @@ class Account extends Core {
 	}
 	
 	function get_onboard_done() {
-		if (USER_ID) {
-			$this->db->update(
-				'users',
-				array(
-					'timestamp_create'  => $_SERVER['REQUEST_TIME'],
-					'timestamp_update'  => $_SERVER['REQUEST_TIME'],
-				),
-				array('user_ID' => USER_ID)
-			);
-			$this->session->update();
-		}
+		// Check permissions
+		if(!$this->permission->check()) {
+			return $this->permission->errorMessage();
+		};
+		
+		$this->db->update(
+			'users',
+			array(
+				'timestamp_create'  => $_SERVER['REQUEST_TIME'],
+				'timestamp_update'  => $_SERVER['REQUEST_TIME'],
+			),
+			array('user_ID' => USER_ID)
+		);
+		$this->session->update();
 	}
 	
 	//!-- Two Factor Authentication --//
@@ -384,8 +384,14 @@ class Account extends Core {
 
 	function put_password_change($request_data=NULL) {
 		$return = array();
+		
+		// Check permissions
+		if(!$this->permission->check($request_data)) {
+			return $this->permission->errorMessage();
+		};
+		
 		$user_ID = USER_ID;
-
+		
 		$this->filter->set_request_data($request_data);
 		$this->filter->set_group_rules('password');
 		$this->filter->set_key_rules(array('old_password', 'new_password'), 'required');
@@ -427,6 +433,12 @@ class Account extends Core {
 
 	function put_email_change($request_data=NULL) {
 		$return = array();
+		
+		// Check permissions
+		if(!$this->permission->check($request_data)) {
+			return $this->permission->errorMessage();
+		};
+		
 		$email = $request_data["user_email"];
 
 		// unique email?
@@ -466,6 +478,11 @@ class Account extends Core {
 
 
 	function delete() {
+		// Check permissions
+		if(!$this->permission->check()) {
+			return $this->permission->errorMessage();
+		};
+		
 		$this->db->update('users',
 			array('timestamp_delete' => $_SERVER['REQUEST_TIME']),
 			array('user_ID' => USER_ID)

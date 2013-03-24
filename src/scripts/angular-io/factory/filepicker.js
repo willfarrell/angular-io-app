@@ -84,7 +84,9 @@ angular.module('io.factory.filepicker', [])
 		// get files json
 		$http.get($rootScope.settings.server+'/filepicker/list/'+$scope.args.action+'/'+$scope.args.ID)
 			.success(function(data) {
-				$scope.args.files = data;
+				if ($rootScope.checkHTTPReturn(data)) {
+					$scope.args.files = data;
+				}
 			})
 			.error(function() {
 				
@@ -139,16 +141,16 @@ angular.module('io.factory.filepicker', [])
 	$scope.downloadFile = function(file) {
 		$http.post($rootScope.settings.server+'/filepicker/download/'+$scope.args.action+'/'+$scope.args.ID, {"file":file})
 			.success(function(data) {
-				console.log(data);
-				if (data.errors) $scope.errors = data.errors;
-				if (data.alerts) $scope.alerts = data.alerts;
-				
-				if (!data.errors && !data.alerts) {
+				console.log('downloadFile.post.success');
+				if ($rootScope.checkHTTPReturn(data, {'alerts':true,'errors':true})) {
 					$rootScope.alerts = [{"class":"success", "label":"File deleted"}];
+				} else {
+					$scope.alerts = (data.alerts) ? data.alerts : [];
+					$scope.errors = (data.errors) ? data.errors : {};
 				}
 			})
 			.error(function() {
-				
+				console.log('downloadFile.post.error');
 			});
 	}
 	
@@ -188,12 +190,12 @@ angular.module('io.factory.filepicker', [])
 	    };
 		$http(http_config)
 			.success(function(data) {
-				if (data.errors) $scope.errors = data.errors;
-				if (data.alerts) $scope.alerts = data.alerts;
-				
-				if (!data.errors && !data.alerts) {
+				if ($rootScope.checkHTTPReturn(data, {'alerts':true,'errors':true})) {
 					$rootScope.alerts = [{"class":"success", "label":"File deleted"}];
 					$scope.view($scope.args, $scope.args.ID); // reload list
+				} else {
+					$scope.alerts = (data.alerts) ? data.alerts : [];
+					$scope.errors = (data.errors) ? data.errors : {};
 				}
 			})
 			.error(function() {

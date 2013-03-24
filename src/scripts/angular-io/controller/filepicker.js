@@ -98,9 +98,10 @@ angular.module('io.controller.filepicker', ['io.factory.filepicker'])
 		    $http.post($scope.settings.server+'/filepicker/url/'+$scope.filepicker.args.action+'/'+$scope.filepicker.args.ID, {url:url})
 		    	.success(function(data){
 		    		console.log('url.load.post.success');
-		    		console.log(data);
-		    		data = {target:{responseText:data}};
-			    	uploadComplete(JSON.stringify(data));
+		    		if ($rootScope.checkHTTPReturn(data)) {
+			    		data = {target:{responseText:data}};
+				    	uploadComplete(JSON.stringify(data));
+			    	}
 		    	})
 		    	.error(function(){
 			    	console.log('url.load.post.error');
@@ -161,13 +162,15 @@ angular.module('io.controller.filepicker', ['io.factory.filepicker'])
 			.success(function(data){
 				//console.log(data);
 				console.log('loadURL.get.success');
-				$scope.resizecrop.initParams(proxy, type);
-				//$scope.$apply(function(){
-	            	$scope.resizecrop.generate();
-	            	if ($scope.filepicker.args.multi == false) {
-		            	$scope.filepicker.args.service = 'RESIZECROP';
-	            	}
-	            //});
+				if ($rootScope.checkHTTPReturn(data)) {
+					$scope.resizecrop.initParams(proxy, type);
+					//$scope.$apply(function(){
+		            	$scope.resizecrop.generate();
+		            	if ($scope.filepicker.args.multi == false) {
+			            	$scope.filepicker.args.service = 'RESIZECROP';
+		            	}
+		            //});
+	            }
 			})
 			.error(function(){
 				$scope.filepicker.alerts = [{
@@ -621,8 +624,10 @@ angular.module('io.controller.filepicker', ['io.factory.filepicker'])
 	    	.success(function(data){
 	    		console.log('url.load.post.success');
 	    		console.log(data);
-	    		data = {target:{responseText:data}};
-		    	uploadComplete(JSON.stringify(data));
+	    		if ($rootScope.checkHTTPReturn(data)) {
+		    		data = {target:{responseText:data}};
+			    	uploadComplete(JSON.stringify(data));
+		    	}
 	    	})
 	    	.error(function(){
 		    	console.log('url.load.post.error');

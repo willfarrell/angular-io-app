@@ -917,7 +917,7 @@ module.exports = function(grunt) {
         'replace:dist',
         'rev',
         'usemin',
-        'replace:htmlmin',
+        	//'replace:htmlmin',	// causing bugs
         //'cdnify',				// angular error 2013-02-15
         'htmlmin:minify',
         'manifest',

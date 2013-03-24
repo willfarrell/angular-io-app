@@ -41,13 +41,14 @@ angular.module('io.controller.follow', [])
 		$http.get($rootScope.settings.server+'/follow/ers/'+company_ID+'/'+user_ID+'/'+query)
 			.success(function(data) {
 				console.log('loadFollowing.get.success');
-				console.log(data);
-				console.log(typeof data);
-				for (var i = 0, l = data.length; i < l; i++) {
-					data[i].follower = (data[i].follower) ? true : false;
+				if ($rootScope.checkHTTPReturn(data)) {
+					console.log(typeof data);
+					for (var i = 0, l = data.length; i < l; i++) {
+						data[i].follower = (data[i].follower) ? true : false;
+					}
+					
+					$scope.followers = data; // for profile page
 				}
-				
-				$scope.followers = data; // for profile page
 			})
 			.error(function() {
 				console.log('loadFollowing.get.error');
@@ -64,13 +65,14 @@ angular.module('io.controller.follow', [])
 		$http.get($rootScope.settings.server+'/follow/ing/'+company_ID+'/'+user_ID+'/'+query)
 			.success(function(data) {
 				console.log('loadFollowing.get.success');
-				console.log(data);
-				console.log(typeof data);
-				for (var i = 0, l = data.length; i < l; i++) {
-					data[i].following = (data[i].following) ? true : false;
+				if ($rootScope.checkHTTPReturn(data)) {
+					console.log(typeof data);
+					for (var i = 0, l = data.length; i < l; i++) {
+						data[i].following = (data[i].following) ? true : false;
+					}
+					
+					$scope.following = data; // for profile page
 				}
-				
-				$scope.following = data; // for profile page
 			})
 			.error(function() {
 				console.log('loadFollowing.get.error');
@@ -84,15 +86,16 @@ angular.module('io.controller.follow', [])
 		$http.get($rootScope.settings.server+'/follow/suggestions/'+(ref_bool ? true : false)+'/'+query)
 			.success(function(data) {
 				console.log('loadSuggestions.get.success');
-				console.log(data);
-				for (var i = 0, l = data.length; i < l; i++) {
-					data[i].following = (data[i].following) ? true : false;
-					if (data[i]['company_ID']) $scope.follow.db.company[data[i]['company_ID']] = data[i];
-					else if (data[i]['user_ID']) $scope.follow.db.user[data[i]['user_ID']] = data[i];
+				if ($rootScope.checkHTTPReturn(data)) {
+					for (var i = 0, l = data.length; i < l; i++) {
+						data[i].following = (data[i].following) ? true : false;
+						if (data[i]['company_ID']) $scope.follow.db.company[data[i]['company_ID']] = data[i];
+						else if (data[i]['user_ID']) $scope.follow.db.user[data[i]['user_ID']] = data[i];
+					}
+	
+					if (objectLength(data)) $scope.follow_suggest = data;
+					console.log($rootScope.objectLength($scope.follow_suggest));
 				}
-
-				if (objectLength(data)) $scope.follow_suggest = data;
-				console.log($rootScope.objectLength($scope.follow_suggest));
 			})
 			.error(function() {
 				console.log('loadSuggestions.get.error');
@@ -106,15 +109,16 @@ angular.module('io.controller.follow', [])
 		$http.get($rootScope.settings.server+'/follow/search/'+query)
 			.success(function(data) {
 				console.log('loadSearch.get.success');
-				console.log(data);
-				for (var i = 0, l = data.length; i < l; i++) {
-					data[i].following = (data[i].following) ? true : false;
-					if (data[i]['company_ID']) $scope.follow.db.company[data[i]['company_ID']] = data[i];
-					else if (data[i]['user_ID']) $scope.follow.db.user[data[i]['user_ID']] = data[i];
+				if ($rootScope.checkHTTPReturn(data)) {
+					for (var i = 0, l = data.length; i < l; i++) {
+						data[i].following = (data[i].following) ? true : false;
+						if (data[i]['company_ID']) $scope.follow.db.company[data[i]['company_ID']] = data[i];
+						else if (data[i]['user_ID']) $scope.follow.db.user[data[i]['user_ID']] = data[i];
+					}
+	
+					if (objectLength(data)) $scope.follow_suggest = data;
+					console.log($rootScope.objectLength($scope.follow_suggest));
 				}
-
-				if (objectLength(data)) $scope.follow_suggest = data;
-				console.log($rootScope.objectLength($scope.follow_suggest));
 			})
 			.error(function() {
 				console.log('loadSearch.get.error');

@@ -91,7 +91,8 @@ angular.module('io.init.rootScope', [])
 			.success(function(data) {
 				console.log('updateSession.get.success');
 				console.log(data);
-				if (data == []) {
+				
+				if (data == []) { // special case no 'if ($rootScope.checkHTTPReturn(data)) {'
 					$rootScope.href('/sign/out');
 				} else {
 					$rootScope.session = syncVar(data, $rootScope.session);
@@ -139,6 +140,34 @@ angular.module('io.init.rootScope', [])
 				console.log('checkSession.get.error');
 				$rootScope.http_error();
 			});
+	};
+	$rootScope.checkHTTPReturn = function(data, config) {
+		console.log(data);
+		config || (config = {
+			alerts:false,	// place alerts in local scope
+			errors:false	// place errors in local scope
+		});
+		var result = true;
+		
+		// session check ... signout?
+		if (data.session == "signout") {
+			$rootScope.href('/sign/out');
+			result = false;
+		}
+		
+		// alert and errors
+		if (data.alerts) {
+			if (!config.alerts) $rootScope.alerts = data.alerts;
+			result = false;
+		}
+		
+		if (data.errors) {
+			if (!config.errors) $rootScope.errors = data.errors;
+			result = false;
+		}
+		
+		// if all good return true
+		return result;
 	};
 	$rootScope.require_signin = function(callback) {
 		console.log('require_signin(callback)');
@@ -224,6 +253,7 @@ angular.module('io.init.rootScope', [])
 	$rootScope.loading 	= false;	// nav bar loading indicator
 	$rootScope.sliderNav 	= -1;		// slider nav state (-1,+1)
 	$rootScope.alerts 	= [];	// for alert-fixed-top
+	$rootScope.errors 	= {};	// global place holder
 	$rootScope.modal 	= {};	// for alertModal
 	$rootScope.datetime = new Date();
 	$rootScope.timezone_min = new Date().getTimezoneOffset();
@@ -286,18 +316,21 @@ angular.module('io.init.rootScope', [])
 			$rootScope.country_code = db.get('country_code', $locale.id.substr(3,2).toUpperCase());
 		}
 	};
-	$rootScope.changeLocale = function(locale) {
+	$rootScope.saveLocale = function(locale) {
 		//localStorage.setItem('locale', locale);
 		$cookies.locale = locale;
 		db.set('locale', locale);
 		
-		$cookies.locale = locale.substr(0,2);
-		db.set('language', locale.substr(0,2));
+		$cookies.lang = locale.substr(0,2).toLowerCase();
+		db.set('language', $cookies.lang);
 		
 		if (locale.length > 2) {
-			db.set('country_code', locale.substr(3,2).toUpperCase());
+			$cookies.country = locale.substr(3,2).toUpperCase();
+			db.set('country_code', $cookies.country);
 		}
-		
+	};
+	$rootScope.changeLocale = function(locale) {
+		$rootScope.saveLocale(locale);
 		$window.location.reload();
 	};
 	$rootScope.loadLocaleFile = function(locale, file) {
@@ -354,6 +387,7 @@ angular.module('io.init.rootScope', [])
 	
 	$rootScope.init();
 	$rootScope.loadLocale($rootScope.locale); // $locale.id == 'en-us'
+	$rootScope.saveLocale($rootScope.locale); // save locale
 	
 	$rootScope.json.month = $locale.DATETIME_FORMATS.SHORTMONTH;
 	// days in a month

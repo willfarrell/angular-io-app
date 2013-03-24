@@ -15,6 +15,11 @@ class Location extends Core {
 	session company only (privacy)
 	*/
 	function get($location_ID=NULL) {
+		// Check permissions
+		if(!$this->permission->check(array("location_ID" => $location_ID))) {
+			return $this->permission->errorMessage();
+		};
+		
 		$return = array();
 
 		$db_where = array('company_ID' => COMPANY_ID);
@@ -55,9 +60,14 @@ class Location extends Core {
 		foreach ($params as $key) {
 			$request_data[$key] = isset($request_data[$key]) ? $request_data[$key] : NULL;
 		}
-
+		
 		$request_data['company_ID'] = COMPANY_ID;
-
+		
+		// Check permissions
+		if(!$this->permission->check($request_data)) {
+			return $this->permission->errorMessage();
+		};
+		
 		$this->filter->set_request_data($request_data);
 		$this->filter->set_group_rules('locations');
 		if(!$this->filter->run()) {
@@ -135,7 +145,12 @@ class Location extends Core {
 		}
 		
 		$request_data['company_ID'] = COMPANY_ID;
-
+		
+		// Check permissions
+		if(!$this->permission->check($request_data)) {
+			return $this->permission->errorMessage();
+		};
+		
 		$this->filter->set_request_data($request_data);
 		$this->filter->set_group_rules('locations');
 		if(!$this->filter->run()) {
@@ -192,6 +207,11 @@ class Location extends Core {
 	}
 
 	function delete($location_ID=NULL) {
+		// Check permissions
+		if(!$this->permission->check(array("location_ID" => $location_ID))) {
+			return $this->permission->errorMessage();
+		};
+		
 		$this->db->delete('locations', array('company_ID' => COMPANY_ID, 'location_ID' => $location_ID));
 	}
 

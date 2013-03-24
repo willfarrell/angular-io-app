@@ -1,9 +1,7 @@
-(function (angular) {
+(function (angular, marked) {
 angular.module('io.markdown', [])
 .factory('$markdown', ['$rootScope', function($rootScope) {
-	console.log('deviceFactory ('+$rootScope.$id+')');
-	
-	var $scope = marked;
+	console.log('markdownFactory ('+$rootScope.$id+')');
 	
 	/*
 	https://github.com/chjj/marked
@@ -16,8 +14,8 @@ angular.module('io.markdown', [])
 	breaks: Enable GFM line breaks. Disabled by default.
 	smartLists: Use smarter list behavior than the original markdown. Disabled by default. May eventually be default with the old behavior moved into pedantic.
 	langPrefix: Set the prefix for code block classes. Defaults to lang-.
-	*/			
-	$scope.setOptions({
+				
+	$scope.markdown.setOptions({
 	  	gfm: true,
 	  	tables: true,
 	  	breaks: false,
@@ -31,10 +29,10 @@ angular.module('io.markdown', [])
 		    }
 		    return code;
 	    }
-	});
+	});*/
 	
 	
-	return $scope;
+	return marked;
 }]);
 
-})(angular)
+})(angular, marked)

@@ -37,10 +37,10 @@ angular.module('io.factory.message', [])
 		$http.get($rootScope.settings.server+'/message/unread')
 			.success(function(data) {
 				console.log('updateUnreadCount.get.success');
-				console.log(data);
 				//$scope.dbing[id].name = data.name;
-				
-				$scope.unread = data;
+				if ($rootScope.checkHTTPReturn(data)) {
+					$scope.unread = data;
+				}
 			})
 			.error(function() {
 				console.log('updateUnreadCount.get.error');
@@ -56,9 +56,10 @@ angular.module('io.factory.message', [])
 				console.log('send.get.success');
 				console.log(data);
 				//$scope.dbing[id].name = data.name;
-				
-				$scope.compose.message = '';
-				$scope.alerts = [{'class':'success', 'label':'Message sent:', 'message':'Click to go to conversation.'}];
+				if ($rootScope.checkHTTPReturn(data)) {
+					$scope.compose.message = '';
+					$scope.alerts = [{'class':'success', 'label':'Message sent:', 'message':'Click to go to conversation.'}];
+				}
 			})
 			.error(function() {
 				console.log('send.get.error');

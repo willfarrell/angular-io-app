@@ -19,6 +19,11 @@
 
 Additional Notes:
 
+Use Case:
+Place before filter
+if(!$this->permission->check($request_data)) {
+	return $this->permission->errorMessage();
+};
 
  */
 
@@ -42,6 +47,8 @@ include_once "inc.permission.php";
 class Permission
 {
 	private $tests = array();
+    private $signout = false;	// signout flag set by test that that check session
+    //private $access = false;	// access flag set by test that that check a users access
     
     /**
      * Constructor
@@ -79,6 +86,7 @@ class Permission
 	private function build_function_array($file = 'php/inc.permission.php') {
 		
 		ob_start();
+		ksort($this->tests); // reorder list
 		var_export($this->tests);
 		$result = ob_get_clean();
 		
@@ -91,6 +99,19 @@ class Permission
 		$label = ucwords($label);
 		return $label;
 	}
+    
+    function errorMessage() {
+    	$return = array(
+	    	"alerts" => array(
+	    		"message" => "You don't have permission to make that request."
+	    	)
+	    );
+    	if ($this->signout) {
+	    	$return["session"] = "signout";
+    	}
+    	
+	    return $return;
+    }
     
     /**
      * 
@@ -121,7 +142,7 @@ class Permission
 		if ($tests[0]) {
 			foreach($tests as $test_str) {
 				preg_match("/([\w-]*)\[?([^\[\]]*)\]?/", $test_str, $matches);
-				
+						
 				$test = $matches[1];
 				$params = explode(",", $matches[2]);
 				
@@ -152,7 +173,11 @@ class Permission
     
     // is user connected
     function connected() {
-	    return (USER_ID && USER_LEVEL);
+    	if (!USER_ID) {
+	    	$this->signout = true;
+	    	return false;
+    	}
+	    return true;
     }
     
     // user_level[1-3,5,9]

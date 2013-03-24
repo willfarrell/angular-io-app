@@ -42,7 +42,6 @@
     <!--
     Only use ng-bind in this file only
     -->
-    
 </head>
 <!-- Break out of iFrame -->
 <body class="ng-cloak" onload="if(this!=top){top.location.href=this.location.href}" data-ng-controller="AppCtrl">
@@ -60,13 +59,8 @@
 </div>
 <!-- !End Loading Screen -->
 
-<!-- to be refactored, parent scope holding sliderNav not reachable in ng-include -->
-<div class="btn-group visible-phone nav-slider-button" data-ng-class="{'1':'page-slider-open', '-1':'page-slider-closed'}[sliderNav]">
-	<button class="btn" data-ng-click="sliderNav = sliderNav * -1"><i class="icon-list-ul"></i></button>
-</div>
-
-<div class="nav-slider visible-phone" data-ng-include="'view/nav.slide.html'" data-ng-class="{'1':'nav-slider-open', '-1':'nav-slider-closed'}[sliderNav]" data-ng-click="sliderNav = sliderNav * -1"></div>
-<div class="page" data-ng-class="{'1':'page-slider-open', '-1':'page-slider-closed'}[sliderNav]" data-ng-click="sliderNav = -1">
+<div class="nav-slider visible-phone" data-ng-include="'view/nav.slide.html'" data-ng-class="{'1':'nav-slider-open', '-1':'nav-slider-closed'}[slideNavBool]" data-ng-click="slideNav()"></div>
+<div class="page" data-ng-class="{'1':'page-slider-open', '-1':'page-slider-closed'}[slideNavBool]">
 
 	<!-- !Top Nav -->
 	<header class="header" data-ng-include="'view/nav.top.html'"></header>
@@ -91,7 +85,7 @@
 	<!-- !End Top Nav -->
 		
 	<!-- !View -->
-	<div class="wrapper"><!-- wrapper used for sticky footer -->
+	<div class="wrapper" data-ng-click="slideNav(-1)"><!-- wrapper used for sticky footer -->
 		<div class="container" data-ng-view></div>
 		<div class="footer-push"></div><!-- footer-push used for sticky footer -->
 	</div>

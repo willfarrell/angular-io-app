@@ -22,10 +22,7 @@ function CompanyCtrl($scope, $http, $routeParams) {
 		
 		$http.get($scope.settings.server+'/company/'+profile_ID)
 			.success(function(data) {
-				console.log(data);
-				$scope.errors.user	= (data.errors) ? data.errors : {};
-				$rootScope.alerts 	= (data.alerts) ? data.alerts : [];
-				if (!data.alerts && !data.errors) {
+				if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
 					$scope.company = data;
 					$scope.location = data.location_default_ID ? data.location : $scope.location;
 					$scope.location.primary = true;
@@ -34,6 +31,8 @@ function CompanyCtrl($scope, $http, $routeParams) {
 						$scope.loadUsers();
 						$scope.loadLocations();
 					}*/
+				} else {
+					$scope.errors.company	= (data.errors) ? data.errors : {};
 				}
 			})
 			.error(function() {
@@ -48,10 +47,7 @@ function CompanyCtrl($scope, $http, $routeParams) {
 		$http.get($scope.settings.server+'/company/name/'+profile_name)
 			.success(function(data) {
 				console.log('loadCompanyName.get.success');
-				console.log(data);
-				$scope.errors.user	= (data.errors) ? data.errors : {};
-				$rootScope.alerts 	= (data.alerts) ? data.alerts : [];
-				if (!data.alerts && !data.errors) {
+				if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
 					$scope.company = data;
 					$scope.location = data.location_default_ID ? data.location : $scope.location;
 					$scope.location.primary = true;
@@ -60,6 +56,8 @@ function CompanyCtrl($scope, $http, $routeParams) {
 						$scope.loadUsers();
 						$scope.loadLocations();
 					}*/
+				} else {
+					$scope.errors.company	= (data.errors) ? data.errors : {};
 				}
 			})
 			.error(function() {
@@ -75,13 +73,13 @@ function CompanyCtrl($scope, $http, $routeParams) {
 			$http.put($scope.settings.server+'/company/', $scope.company)
 				.success(function(data) {
 					console.log(data);
-					$scope.errors 		= (data.errors) ? data.errors : {};
-					$rootScope.alerts 	= (data.alerts) ? data.alerts : [];
-					if (!data.alerts && !data.errors) {
+					if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
 						$rootScope.session.company = $scope.company;
 						$rootScope.saveSession();
 						//$rootScope.updateSession();
 						$rootScope.alerts = [{'class':'success', 'label':'Company Profile:', 'message':'Saved'}];
+					} else {
+						$scope.errors.company	= (data.errors) ? data.errors : {};
 					}
 				})
 				.error(function() {
@@ -91,15 +89,15 @@ function CompanyCtrl($scope, $http, $routeParams) {
 			$http.post($scope.settings.server+'/company/', $scope.company)
 				.success(function(data) {
 					console.log(data);
-					$scope.errors 		= (data.errors) ? data.errors : {};
-					$rootScope.alerts 	= (data.alerts) ? data.alerts : [];
-					if (!data.alerts && !data.errors) {
+					if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
 						$scope.company.company_ID = data;
 						$rootScope.session.company_ID = data;
 						$rootScope.session.company = $scope.company;
 						$rootScope.saveSession();
 						//$rootScope.updateSession();
 						$rootScope.alerts = [{'class':'success', 'label':'Company Profile:', 'message':'Saved'}];
+					} else {
+						$scope.errors	= (data.errors) ? data.errors : {};
 					}
 				})
 				.error(function() {

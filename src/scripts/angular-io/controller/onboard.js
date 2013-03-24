@@ -26,12 +26,13 @@ function OnboardCtrl($scope, $cookies, $http, $routeParams) {
 			    		$http.get($rootScope.settings.server+'/account/onboard_done')
 			    			.success(function(data) {
 			    				console.log('BuildProgressTracker.get.success');
-			    				console.log(data);
-			    				$rootScope.updateSession(function(){
-			    					var redirect = ($cookies.redirect ? $cookies.redirect : $rootScope.settings.dashboard);
-			    					$cookies.redirect = null;
-			    					$scope.href('/'+redirect);
-			    				});
+			    				if ($rootScope.checkHTTPReturn(data)) {
+				    				$rootScope.updateSession(function(){
+				    					var redirect = ($cookies.redirect ? $cookies.redirect : $rootScope.settings.dashboard);
+				    					$cookies.redirect = null;
+				    					$scope.href('/'+redirect);
+				    				});
+			    				}
 			    			})
 							.error(function() {
 								console.log('BuildProgressTracker.get.error');

@@ -45,7 +45,7 @@ require_once 'php/api.filepicker.php';	// plugin
 //-- Add-ons --//
 require_once 'php/api.contact.php';		// plugin
 
-// App
+
 
 
 // REST API
@@ -57,19 +57,16 @@ $r->setSupportedFormats('JsonpFormat');
 $r->addAPIClass('Account');
 $r->addAPIClass('TOTP');
 $r->addAPIClass('Contact'); // replace with message???
-//$r->addAPIClass('Img');
 
-//if ($session->cookie['user_ID']) {	// Users Only
-	$r->addAPIClass('User');
-	$r->addAPIClass('Company');
-	$r->addAPIClass('Location');
+$r->addAPIClass('User');
+$r->addAPIClass('Company');
+$r->addAPIClass('Location');
 
-	$r->addAPIClass('Filepicker');
-	
-	$r->addAPIClass('Follow');
-	$r->addAPIClass('Message');
+$r->addAPIClass('Filepicker');
 
-//}
+$r->addAPIClass('Follow');
+$r->addAPIClass('Message');
+
 
 $r->handle();
 

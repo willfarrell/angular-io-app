@@ -21,10 +21,7 @@ function ResetCtrl($scope, $http, $routeParams) {
 	$scope.check = function() {
 		$http.get($scope.settings.server+'/account/reset_check/'+encodeURIComponent($scope.hash))
 			.success(function(data) {
-				console.log(data);
-				$scope.errors = (data.errors) ? data.errors : {};
-				$rootScope.alerts = (data.alerts) ? data.alerts : [];
-				if (!data.alerts && !data.errors) {
+				if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
 					if (data === 'true') {
 						$scope.state.reset = true;
 					} else if (data) {
@@ -33,6 +30,8 @@ function ResetCtrl($scope, $http, $routeParams) {
 					} else {
 						
 					}
+				} else {
+					$scope.errors = (data.errors) ? data.errors : {};
 				}
 			})
 			.error(function() {
@@ -44,14 +43,13 @@ function ResetCtrl($scope, $http, $routeParams) {
 	$scope.verify = function() {
 		$http.put($scope.settings.server+'/account/reset_verify/', {hash:$scope.hash, id:$scope.ID})
 			.success(function(data) {
-				console.log(data);
-				$scope.errors = (data.errors) ? data.errors : {};
-				$rootScope.alerts = (data.alerts) ? data.alerts : [];
-				if (!data.alerts && !data.errors) {
+				if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
 					$scope.state.verify = false;
 					$scope.state.reset = true;
 					$scope.auth = {};
 					//$('#passwordModal').modal('show');
+				} else {
+					$scope.errors = (data.errors) ? data.errors : {};
 				}
 			})
 			.error(function() {
@@ -62,16 +60,15 @@ function ResetCtrl($scope, $http, $routeParams) {
 	$scope.reset = function() {
 		$http.put($scope.settings.server+'/account/reset_password/', $scope.password)
 			.success(function(data) {
-				console.log(data);
-				$scope.errors = (data.errors) ? data.errors : {};
-				$rootScope.alerts = (data.alerts) ? data.alerts : [];
-				if (!data.alerts && !data.errors) {
+				if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
 					$scope.state.reset = false;
 					$scope.state.signin = true;
 					$scope.password.new_password = '';
 
 					//window.location.href="app#/";
 					$rootScope.alerts = [{'class':'success','label':'Password Saved'}];
+				} else {
+					$scope.errors = (data.errors) ? data.errors : {};
 				}
 			})
 			.error(function() {

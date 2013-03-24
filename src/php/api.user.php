@@ -21,6 +21,11 @@ class User extends Core {
 		if (!$limit) $limit = 10;
 		$return = array();
 		
+		// Check permissions
+		if(!$this->permission->check()) {
+			return $this->permission->errorMessage();
+		};
+		
 		$query = "SELECT user_ID, user_name, user_name_first, user_name_last, user_phone, user_function" //
 				." FROM users U"
 				." WHERE"
@@ -39,6 +44,11 @@ class User extends Core {
 	*/
 	function get_name($username=NULL) {
 		$return = array();
+		
+		// Check permissions
+		if(!$this->permission->check(array("user_name" => $username))) {
+			return $this->permission->errorMessage();
+		};
 		
 		// add in user_name check
 		
@@ -71,6 +81,11 @@ class User extends Core {
 	
 	// notification privacy settings
 	function get_notify() {
+		// Check permissions
+		if(!$this->permission->check()) {
+			return $this->permission->errorMessage();
+		};
+		
 		$r = $this->db->select("users", array("user_ID"=>USER_ID), array("notify_json"));
 		if ($r) {
 			$json = $this->db->fetch_assoc($r);
@@ -79,13 +94,22 @@ class User extends Core {
 	}
 	
 	function put_notify($request_data=array()) {
-		$this->__log($request_data);
+		// Check permissions
+		if(!$this->permission->check()) {
+			return $this->permission->errorMessage();
+		};
+		
 		$this->db->update("users", array("notify_json" => json_encode($request_data)), array("user_ID"=>USER_ID));
 		//echo $this->db->last_query;
 	}
 	
 	// security settings
 	function get_security() {
+		// Check permissions
+		if(!$this->permission->check()) {
+			return $this->permission->errorMessage();
+		};
+		
 		$r = $this->db->select("users", array("user_ID"=>USER_ID), array("security_json"));
 		if ($r) {
 			$json = $this->db->fetch_assoc($r);
@@ -95,6 +119,10 @@ class User extends Core {
 	
 	// test pgp email
 	function put_pgp($request_data=NULL) {
+		// Check permissions
+		if(!$this->permission->check($request_data)) {
+			return $this->permission->errorMessage();
+		};
 		
 		list($message, $subject) = $this->notify->compile("pgp_test", array());
 		
@@ -102,7 +130,10 @@ class User extends Core {
 	}
 	
 	function put_security($request_data=array()) {
-		//$this->__log($request_data);
+		// Check permissions
+		if(!$this->permission->check($request_data)) {
+			return $this->permission->errorMessage();
+		};
 		
 		if (isset($request_data['totp']) && $request_data['totp']['service'] == "0") {
 			unset($request_data['totp']);
@@ -118,6 +149,10 @@ class User extends Core {
 	function get($user_ID=NULL) {
 		$return = array();
 		
+		// Check permissions
+		if(!$this->permission->check(array("user_ID" => $user_ID))) {
+			return $this->permission->errorMessage();
+		};
 		
 		// check user_ID
 		$db_where = array();
@@ -165,6 +200,11 @@ class User extends Core {
 		foreach ($params as $key) {
 			$request_data[$key] = isset($request_data[$key]) ? $request_data[$key] : NULL;
 		}
+		
+		// Check permissions
+		if(!$this->permission->check($request_data)) {
+			return $this->permission->errorMessage();
+		};
 		
 		//unset($request_data['user_email']);	// incase it was passed - angular passes disabled fields
 		

@@ -27,15 +27,14 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 		$http.post($scope.settings.server+'/account/signup', $scope.signup)
 			.success(function(data) {
 				console.log('account_signup.post.success');
-				console.log(data);
-				$scope.errors = (data.errors) ? data.errors : {};
-				$rootScope.alerts = (data.alerts) ? data.alerts : [];
-				if (!data.alerts && !data.errors) {
+				if ($rootScope.checkHTTPReturn(data)) {
 					//$scope.signup = {};
 					$scope.signin.email = $scope.signup.email;
 					
 					$scope.action = 'in';
 					$rootScope.alerts = [{'class':'success', 'label':'Account created!', 'message':'Check your email for an activation link.'}];
+				} else { // only if using local alerts and errors
+					$scope.errors = (data.errors) ? data.errors : {};
 				}
 			})
 			.error(function() {
@@ -79,11 +78,7 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 			})
 			.success(function(data) {
 				console.log('account_signin.post.success');
-				console.log(data);
-
-				$scope.errors = (data.errors) ? data.errors : {};
-				$rootScope.alerts = (data.alerts) ? data.alerts : [];
-				if (!data.alerts && !data.errors) {
+				if ($rootScope.checkHTTPReturn(data)) {
 					
 					if (data.totp) {
 						$scope.action = 'totp';
@@ -102,7 +97,8 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 						// catch any server side errors
 						$rootScope.alerts = [{'class':'error', 'label':'Internal Error', 'message':'Please notify us about it.'}];
 					}
-					
+				} else { // only if using local alerts and errors
+					$scope.errors = (data.errors) ? data.errors : {};
 				}
 			})
 			.error(function() {
@@ -119,11 +115,7 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 		$http.put($scope.settings.server+'/account/totp/'+code)
 			.success(function(data) {
 				console.log('account_totp.put.success');
-				console.log(data);
-
-				$scope.errors = (data.errors) ? data.errors : {};
-				$rootScope.alerts = (data.alerts) ? data.alerts : [];
-				if (data && !data.alerts && !data.errors) {
+				if ($rootScope.checkHTTPReturn(data) && data) {
 					
 					$rootScope.session = syncVar(data, $rootScope.session);
 					//if ($rootScope.session != {})

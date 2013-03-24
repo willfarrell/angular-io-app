@@ -24,11 +24,10 @@ function UserCtrl($scope, $http, $routeParams) {
 		$http.get($scope.settings.server+'/user/'+profile_ID)
 			.success(function(data) {
 				console.log('loadUser.get.success');
-				console.log(data);
-				$scope.errors.user	= (data.errors) ? data.errors : {};
-				$rootScope.alerts 	= (data.alerts) ? data.alerts : [];
-				if (!data.alerts && !data.errors) {
+				if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
 					$scope.user = data;
+				} else {
+					$scope.errors.user	= (data.errors) ? data.errors : {};
 				}
 			})
 			.error(function() {
@@ -43,11 +42,10 @@ function UserCtrl($scope, $http, $routeParams) {
 		$http.get($scope.settings.server+'/user/name/'+profile_name)
 			.success(function(data) {
 				console.log('loadUser.get.success');
-				console.log(data);
-				$scope.errors.user	= (data.errors) ? data.errors : {};
-				$rootScope.alerts 	= (data.alerts) ? data.alerts : [];
-				if (!data.alerts && !data.errors) {
+				if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
 					$scope.user = data;
+				} else {
+					$scope.errors.user	= (data.errors) ? data.errors : {};
 				}
 			})
 			.error(function() {
@@ -62,13 +60,12 @@ function UserCtrl($scope, $http, $routeParams) {
 			$http.put($scope.settings.server+'/user/', $scope.user)
 				.success(function(data) {
 					console.log('updateUser.put.success');
-					console.log(data);
-					$scope.errors.user	= (data.errors) ? data.errors : {};
-					$rootScope.alerts 	= (data.alerts) ? data.alerts : [];
-					if (!data.alerts && !data.errors) {
+					if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
 						$rootScope.updateSession();
 						console.log($rootScope.session);
 						$rootScope.alerts = [{'class':'success', 'label':'User Information:', 'message':'Saved'}];
+					} else {
+						$scope.errors.user	= (data.errors) ? data.errors : {};
 					}
 				})
 				.error(function() {
@@ -86,7 +83,9 @@ function UserCtrl($scope, $http, $routeParams) {
 		if (confirm('Are you sure you want to delete your account?')) {
 			$http.get($scope.settings.server+'/user/delete')
 				.success(function(){
-					$scope.href('/sign/out');
+					if ($rootScope.checkHTTPReturn(data)) {
+						$scope.href('/sign/out');
+					}
 				})
 				.error(function() {
 					$rootScope.http_error();
@@ -102,11 +101,10 @@ function UserCtrl($scope, $http, $routeParams) {
 			//$scope.user.user_name = user_name.replace(/[^a-z0-9_]/, "");
 			$http.get($scope.settings.server+'/account/unique/'+encodeURIComponent(user_name))
 				.success(function(data) {
-					console.log(data);
-					$scope.errors.user 	= (data.errors) ? data.errors : {};
-					$rootScope.alerts 	= (data.alerts) ? data.alerts : [];
-					if (!data.alerts && !data.errors) {
-
+					if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
+						
+					} else {
+						$scope.errors.user 	= (data.errors) ? data.errors : {};
 					}
 				})
 				.error(function() {
@@ -123,13 +121,12 @@ function UserCtrl($scope, $http, $routeParams) {
 	$scope.updateEmail = function() {
 		$http.put($scope.settings.server+'/account/email_change/', $scope.email)
 			.success(function(data) {
-				console.log(data);
-				$scope.errors.email		= (data.errors) ? data.errors : {};
-				$rootScope.alerts 		= (data.alerts) ? data.alerts : [];
-				if (!data.alerts && !data.errors) {
+				if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
 					$scope.email = {};
 					$rootScope.updateSession();
 					$rootScope.alerts = [{'class':'success', 'label':'Change Email:', 'message':'Saved'}];
+				} else {
+					$scope.errors.email		= (data.errors) ? data.errors : {};
 				}
 			})
 			.error(function() {

@@ -115,11 +115,11 @@ class Session {
 		$this->cookie["PHPSESSID"] 		= session_id();
 		$this->cookie["ip"] 			= $_SERVER['REMOTE_ADDR'];
 		$this->cookie["ua"] 			= $_SERVER['HTTP_USER_AGENT'];
-		$this->cookie["lang"] 			= '';
+		//$this->cookie["lang"] 			= '';
 		$this->cookie["user_ID"] 		= 0;
 		$this->cookie["user_email"] 	= '';
-		$this->cookie["user_level"] 	= 0;
-		$this->cookie["remember"] 		= 0;
+		$this->cookie["user_level"] 	= null;
+		$this->cookie["remember"] 		= null;
 		$this->cookie["company_ID"] 	= 0;
 		$this->cookie["totp_secret"] 	= null;
 		$this->cookie["timestamp"] 		= $_SERVER['REQUEST_TIME'] + COOKIE_EXPIRE;

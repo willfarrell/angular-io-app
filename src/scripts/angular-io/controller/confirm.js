@@ -14,14 +14,13 @@ function ConfirmCtrl($scope, $http, $routeParams) {
 		hash || (hash = $scope.hash);
 		$http.get($scope.settings.server+'/account/confirm_email/'+encodeURIComponent(hash))
 			.success(function(data) {
-				console.log(data);
-				if (data.alerts) $rootScope.alerts = data.alerts;
-				if (data.errors) $scope.errors = data.errors;
-				if (!data.alerts && !data.errors) {
+				if ($rootScope.checkHTTPReturn(data)) {
 					$rootScope.session.email_confirm = true;
 					console.log($rootScope.session);
 					$rootScope.saveSession();
 					$rootScope.alerts = [{'class':'success', 'label':'Email Confirmation:', 'message':'Confirmed'}];
+				} else {
+					$scope.errors = (data.errors) ? data.errors : {};
 				}
 			});
 	};
@@ -30,11 +29,10 @@ function ConfirmCtrl($scope, $http, $routeParams) {
 		$scope.errors = {};
 		$http.get($scope.settings.server+'/account/resend_confirm_email/')
 			.success(function(data) {
-				console.log(data);
-				if (data.alerts) $rootScope.alerts = data.alerts;
-				if (data.errors) $scope.errors = data.errors;
-				if (!data.alerts && !data.errors) {
+				if ($rootScope.checkHTTPReturn(data)) {
 					$rootScope.alerts = [{'class':'info', 'label':'Email Confirmation:', 'message':'Sent'}];
+				} else {
+					$scope.errors = (data.errors) ? data.errors : {};
 				}
 			});
 	};

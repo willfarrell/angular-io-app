@@ -18,10 +18,10 @@ function MessageCtrl($scope, $http, $routeParams) {
 		$http.get($rootScope.settings.server+'/message/list')
 			.success(function(data) {
 				console.log('loadMessages.get.success');
-				console.log(data);
-				//$scope.dbing[id].name = data.name;
-				
-				$scope.list = data;
+				if ($rootScope.checkHTTPReturn(data)) {
+					//$scope.dbing[id].name = data.name;
+					$scope.list = data;
+				}
 			})
 			.error(function() {
 				console.log('loadMessages.get.error');
@@ -42,9 +42,8 @@ function MessageCtrl($scope, $http, $routeParams) {
 		$http.get($rootScope.settings.server+'/message/'+user_ID)
 			.success(function(data) {
 				console.log('loadThread.get.success');
-				console.log(data);
 				//$scope.dbing[id].name = data.name;
-				if (data) {
+				if ($rootScope.checkHTTPReturn(data)) {
 					$rootScope.message.to_name = data.user.user_name_first+' '+data.user.user_name_last;
 				
 					$scope.thread = data.thread;

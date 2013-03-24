@@ -11,12 +11,11 @@ function ContactCtrl($scope, $http) {
 
 		$http.post($scope.settings.server+'/contact/', $scope.contact)
 			.success(function(data) {
-				console.log(data);
-				if (data.alerts) $rootScope.alerts = data.alerts;
-				if (data.errors) $scope.errors = data.errors;
-				if (!data.alerts && !data.errors) {
+				if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
 					$scope.contact = {};
 					$rootScope.alerts = [{'class':'success', 'label':'Message Sent'}];
+				} else {
+					$scope.errors = (data.errors) ? data.errors : {};
 				}
 			});
 	};
@@ -27,12 +26,10 @@ function ContactCtrl($scope, $http) {
 
 		$http.post($scope.settings.server+'/contact/', $scope.contact)
 			.success(function(data) {
-				console.log(data);
-				if (data.alerts) $rootScope.alerts = data.alerts;
-				if (data.errors) $scope.errors = data.errors;
-				if (!data.alerts && !data.errors) {
-
+				if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
 					$rootScope.alerts = [{'class':'success', 'label':'Joined Newsletter'}];
+				} else {
+					$scope.errors = (data.errors) ? data.errors : {};
 				}
 			});
 	};
