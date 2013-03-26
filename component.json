@@ -12,7 +12,7 @@
 		"angular-strap":null,
 		"marked":null,
 		"font-awesome":null,
-		"bootstrap":null,
+		"bootstrap":"~2.3.1",
 		"jquery":null
 	}
 }

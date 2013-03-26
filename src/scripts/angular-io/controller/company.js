@@ -191,7 +191,13 @@ function CompanyCtrl($scope, $http, $routeParams) {
 	
 	$scope.deleteLocation = function(id) {
 		console.log('deleteLocation('+id+')');
-		$http.delete($scope.settings.server+'/location/'+id)
+		
+		var http_config = {
+			"method":"delete",
+			"url":$scope.settings.server+'/location/'+id
+		};
+		
+		$http(http_config)
 			.success(function(data) {
 				console.log('deleteLocation.delete.success');
 				console.log(data);

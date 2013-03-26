@@ -24,7 +24,15 @@
 
     <!--
     Only use ng-bind in this file only
+    ng-templates & partials cannot have leading \n in IE8
     -->
+    <!--[if lte IE 8]>
+      <script>
+        document.createElement('header');
+        document.createElement('footer');
+        document.createElement('button');
+      </script>
+    <![endif]-->
 </head>
 <!-- Break out of iFrame -->
 <body class="ng-cloak" onload="if(this!=top){top.location.href=this.location.href}" data-ng-controller="AppCtrl">
@@ -46,7 +54,7 @@
 <div class="page" data-ng-class="{'1':'page-slider-open', '-1':'page-slider-closed'}[slideNavBool]">
 
 	<!-- !Top Nav -->
-	<header class="header" data-ng-include="'view/nav.top.html'"></header>
+	<div class="header" data-ng-include="'view/nav.top.html'"></div>
 	<div class="alert-fixed-top">
 		<div class="alert alert-{{alert.class}}" data-ng-repeat="alert in alerts" data-dismiss="alert">
 		  	<div class="container">
@@ -74,7 +82,7 @@
 	</div>
 	<!-- !End View -->
 	
-	<footer class="footer" data-ng-include="'view/footer.html'"></footer>
+	<div class="footer" data-ng-include="'view/footer.html'"></div>
 </div>
 
 <!-- !Plugin Modals & Partials -->
@@ -85,7 +93,7 @@
 <!-- !End Plugin Modals & Partials -->
 
 <!-- !Frameworks - Dev - do not build -->
-<!--[if lt IE 8]>
+<!--[if lt IE 9]>
 <script src="components/libs/json3.min.js"></script>
 <![endif]-->
 <script src="components/jquery/jquery.js"></script>
@@ -144,7 +152,7 @@
 <!--<script src="components/angular-ui/modules/directives/if/if.js"></script><!-- from angular-ui -->
 <script src="scripts/angular-io/directive/if.js"></script><!-- from angular-ui -->
 
-<script src="scripts/angular-io/directive/htmlExtend.js"></script><!-- IE8 bug -->
+<!--<script src="scripts/angular-io/directive/htmlExtend.js"></script><!-- IE8 bug -->
 <script src="scripts/angular-io/directive/inputMask.js"></script>
 <script src="scripts/angular-io/factory/markdown.js"></script>
 <script src="scripts/angular-io/filter/range.js"></script>

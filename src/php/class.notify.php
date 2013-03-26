@@ -6,12 +6,15 @@ class Notify {
 	// refactor into json settings
 	public $admin_email = EMAIL_ADMIN_EMAIL;
 	private $signature = EMAIL_SIGNATURE;
-	
+	private $footer = EMAIL_FOOTER;
 	
 	private $vars = array(
-		"global" => array(
+		"global" => array(	// order is important for nested vars
+			"signature"	=> EMAIL_SIGNATURE,
+			"footer"	=> EMAIL_FOOTER,
+			
 			"site_name" => NOTIFY_FROM_NAME,
-			"site_url"	=> NOTIFY_FROM_URL
+			"site_url"	=> NOTIFY_FROM_URL,
 		),
 		"_SERVER" => array(
 			"REMOTE_ADDR" => ""
@@ -30,7 +33,7 @@ class Notify {
 		$this->vars["_SERVER"]["REMOTE_ADDR"] = $_SERVER['REMOTE_ADDR'];
 		
 		// include messages
-		$templates = file_get_contents('json/messages.json');
+		$templates = file_get_contents('json/notify.templates.en.json');
 		$this->templates = json_decode($templates, true);
 		
 		// default notification types
@@ -136,8 +139,6 @@ class Notify {
 			$message = $this->replace_tags($message, $key, 	$value);
 		}
 		$message = $this->replace_tags($message, 'args', 	$args);
-
-		$message .= $this->signature;
 
 		$message = wordwrap($message, 70); // support legacy
 

@@ -910,7 +910,7 @@ module.exports = function(grunt) {
         'imagemin:dist',
         'cssmin',
         'htmlmin:dist',
-        'uglify',
+        //'uglify',
         //'closure-compiler',	// Warning: Object #<Object> has no method 'expandFiles' 2013-02-15
         //'ngmin', 				// make a larger file 2013-02-15
         'copy:dist',

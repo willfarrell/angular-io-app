@@ -279,11 +279,11 @@ body {
 /* Footer - Sticky
 -------------------------------------------------- */
 /* Allows for fixed nav header */
-@media(min-width:980px) {
+/*@media(min-width:980px) {*/
 .wrapper > .container {
 	padding-top:60px;
 }
-}
+/*}*/
 
 html, body { height: 100%; }
 .wrapper {

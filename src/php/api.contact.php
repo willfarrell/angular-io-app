@@ -28,7 +28,7 @@ class Contact extends Core {
 
 		$request_data['name'] = isset($request_data['name']) ? $request_data['name'] : '';
 
-		mail(MAIL_ADMIN_EMAIL, 'Contact', 'Name:'.$request_data['name'].'\n'.'From:'.$request_data['email'].'\n'.$request_data['message']);
+		mail(EMAIL_ADMIN_EMAIL, 'Contact', 'Name:'.$request_data['name'].'\n'.'From:'.$request_data['email'].'\n'.$request_data['message']);
 
 		return $return;
 	}

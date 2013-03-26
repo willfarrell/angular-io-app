@@ -7,7 +7,7 @@
     </div>
     <div class="modal-body">
 
-	    <div class="left alert alert-{{alert.class}}" data-ng-repeat="alert in message.alerts" data-ng-click="href('#/user/message/'+message.compose.user_ID); message.close();">
+	    <div class="left alert alert-{{alert.class}}" data-ng-repeat="alert in message.alerts" data-ng-click="href('/user/message/'+message.compose.user_ID); message.close();">
 		  	<strong>{{alert.label}}</strong> {{alert.message}}
 		</div>
 		

@@ -124,9 +124,17 @@ class User extends Core {
 			return $this->permission->errorMessage();
 		};
 		
+		//if (!$request_data['key']) $request_data['key'] = ''; ///****** filter needed here
+		$this->filter->set_request_data($request_data);
+		if(!$this->filter->run()) {
+			$return["errors"] = $this->filter->get_errors();
+			return $return;
+		}
+		$request_data = $this->filter->get_request_data();
+		
 		list($message, $subject) = $this->notify->compile("pgp_test", array());
 		
-		$this->notify->email->encrypt($request_data['key'], $request_data['recipient'], USER_EMAIL, $subject, $message);
+		$this->notify->email->encrypt($request_data['key'], USER_EMAIL, $subject, $message);
 	}
 	
 	function put_security($request_data=array()) {

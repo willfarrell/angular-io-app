@@ -3,7 +3,7 @@
 ConfirmCtrl.$inject = ['$scope', '$http', '$routeParams'];
 function ConfirmCtrl($scope, $http, $routeParams) {
 	console.log('ConfirmCtrl ('+$scope.$id+')');
-	console.log($routeParams);
+	
 	$scope.errors = {};
 	$scope.hash = ($routeParams && $routeParams.confirm_hash) ? $routeParams.confirm_hash : '';
 	$scope.status = false; // used on confirm page

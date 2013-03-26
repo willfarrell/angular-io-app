@@ -160,8 +160,7 @@
     </div>
 </div>
 
-<script type="text/ng-template" id="filepicker-edit-list">
-	<ul class="unstyled">
+<script type="text/ng-template" id="filepicker-edit-list"><ul class="unstyled">
     	<li data-ng-repeat="file in filepicker.args.files" data-ng-click="filepicker.confirmDelete(file.name, filepicker.deleteFile)">
     		<i class="icon-remove"></i> 
     		<span>{{file.name}} ({{file.size_str}})</span>
@@ -170,8 +169,7 @@
     </ul>
 </script>
 
-<script type="text/ng-template" id="filepicker-download-list">
-	<ul class="unstyled">
+<script type="text/ng-template" id="filepicker-download-list"><ul class="unstyled">
     	<li data-ng-repeat="file in filepicker.args.files" data-ng-click="filepicker.downloadFile(file.name)">
     		<a data-ng-href="{{settings.server}}/filepicker/download/{{filepicker.args.action}}/{{filepicker.args.ID}}/{{file.name}}">
         		<i class="icon-cloud-download"></i> 

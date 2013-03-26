@@ -14,6 +14,7 @@ $permission_tests = array (
   'user_get' => '',
   'user_get_notify' => 'connected',
   'user_get_security' => 'connected',
+  'user_put_pgp' => '',
   'user_search' => '',
 );
 ?>

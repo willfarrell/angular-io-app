@@ -2,7 +2,7 @@
 //.controller('SignCtrl', ['$scope', '$http', '$cookies', '$routeParams', function($scope, $http, $cookies, $routeParams) {
 SignCtrl.$inject = ['$scope', '$http', '$cookies', '$routeParams'];
 function SignCtrl($scope, $http, $cookies, $routeParams) {
-	console.log('SignCtrl ('+$scope.$id+') '+$routeParams.action);
+	console.log('SignCtrl ('+$scope.$id+')');
 	
 	$scope.errors = {};		// form errors
 	$scope.action = $routeParams.action ? $routeParams.action : 'in';
@@ -56,7 +56,7 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 		//		$scope.redirect();
 		//	}, 100);
 		//}
-	}
+	};
 	
 	//-- Sign In --//
 	$scope.signin = {

@@ -14,7 +14,7 @@ angular.module('io.controllers', [
 	'io.controller.user',
 	'io.controller.password'
 ]);
-angular.module('io.directives', ['io.config', 'io.directive.htmlExtend', 'io.directive.inputMask']);
+angular.module('io.directives', ['io.config', 'io.directive.inputMask']); // 'io.directive.htmlExtend', 
 angular.module('io.filters', ['io.config', 'io.filter.format', 'io.filter.range']);
 angular.module('io.factories', ['io.config']);
 angular.module('io.init', ['io.config', 'io.init.settings', 'io.init.rootScope']);

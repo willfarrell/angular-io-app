@@ -5,6 +5,12 @@ angular.module('io.init.rootScope', [])
 	console.group('io.init.rootScope ('+$rootScope.$id+')');
  	
  	// HTML5SHIV
+ 	/*$rootScope.ie8 = function(obj) {
+	 	if (obj.attachEvent) {	// <= IE8
+	 		obj.addEventListener = obj.attachEvent; // event = window.attachEvent ? 'onclick' : 'click';
+		}
+ 	}
+ 	$window = $rootScope.ie8($window);*/
  	if ($window.attachEvent) {	// <= IE8
  		$window.addEventListener = $window.attachEvent; // event = window.attachEvent ? 'onclick' : 'click';
 	}
@@ -13,7 +19,7 @@ angular.module('io.init.rootScope', [])
 	  	return $location.path();
 	  }, function(value) {
 	  	// antuo scroll to top of page when ng-view doesn't chenge
-	  	document.getElementsByClassName('page')[0].scrollTop = 0;
+	  	document.querySelectorAll('.page')[0].scrollTop = 0;
       	//$rootScope.updateSession();
     });
     

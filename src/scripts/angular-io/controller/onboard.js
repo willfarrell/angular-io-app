@@ -11,7 +11,6 @@ function OnboardCtrl($scope, $cookies, $http, $routeParams) {
 	$scope.BuildProgressTracker = function(page, action) {
 		console.log('BuildProgressTracker('+page+', '+action+')');
 		var elements = dom$('#progress_tracker').getElementsByTagName("a");
-		var uri = $scope.uri();
 
 		var after = false;	// apple after class
 		for (var i = 0, l = elements.length; i < l; i++ ) {
@@ -43,7 +42,7 @@ function OnboardCtrl($scope, $cookies, $http, $routeParams) {
 			    elements[ i ].className = 'current';
 			    after = true;
 		    } else if (after) {
-		    	elements[ i ].href = null;
+		    	elements[ i ].href = '';
 		    	elements[ i ].className = 'after';
 		    }
 		}
