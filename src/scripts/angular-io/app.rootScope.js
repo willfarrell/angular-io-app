@@ -157,12 +157,14 @@ angular.module('io.init.rootScope', [])
 		
 		// session check ... signout?
 		if (data.session == "signout") {
-			$rootScope.href('/sign/out');
+			if ($rootScope.uri().match(/\/sign\//) === null) { // prevent redirect loop
+				$rootScope.href('/sign/out');
+			}
 			result = false;
 		}
 		
 		// alert and errors
-		if (data.alerts) {
+		if (result && data.alerts) {
 			if (!config.alerts) $rootScope.alerts = data.alerts;
 			result = false;
 		}
@@ -184,8 +186,8 @@ angular.module('io.init.rootScope', [])
 		// not signed in -> sign/in
 		if (!$rootScope.session.user_ID) {
 			console.log("not signed in");
-			if ($rootScope.uri().match(/\/sign\/in/) === null) { // prevent redirect loop
-				$cookies.redirect = $rootScope.uri().substr(2);
+			if ($rootScope.uri().match(/\/sign\//) === null) { // prevent redirect loop
+				$cookies.redirect = $rootScope.uri();
 				$rootScope.href('/sign/in');
 			}
 		

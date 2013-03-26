@@ -49,7 +49,7 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 		//if ($rootScope.session.user_ID) {
 			var redirect = ($cookies.redirect ? $cookies.redirect : $rootScope.settings.dashboard);
 			delete $cookies.redirect;
-			$scope.href('/'+redirect);
+			$scope.href(redirect);
 		//} else {
 		//	window.setTimeout(function() {
 				//alert(JSON.stringify($rootScope.session));

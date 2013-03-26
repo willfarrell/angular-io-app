@@ -101,13 +101,15 @@ class Permission
 	}
     
     function errorMessage() {
-    	$return = array(
-	    	"alerts" => array(
-	    		"message" => "You don't have permission to make that request."
-	    	)
-	    );
+    	
     	if ($this->signout) {
 	    	$return["session"] = "signout";
+    	} else {
+	    	$return = array(
+		    	"alerts" => array(
+		    		"message" => "You don't have permission to make that request."
+		    	)
+		    );
     	}
     	
 	    return $return;
