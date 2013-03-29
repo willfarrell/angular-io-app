@@ -6,7 +6,7 @@ angular.module('io.init.settings', [])
 		'client'		:'',				// https://static.domain.com
 		'server'		:'',				// https://api.domain.com
 		
-		'dashboard'		:'app',				// app dashboard ie #/app - special button
+		'dashboard'		:'/app',				// app dashboard ie #/app - special button
 		//'offline'		:[],
 		//'class':{							// add in classes at root level ($rootScope.class_name.class_attr)
 			//'validate':validate,			// validation (password)

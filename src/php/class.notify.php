@@ -148,6 +148,7 @@ class Notify {
 	private function replace_tags($str, $group = '', $tags = array()) {
 	    foreach ($tags as $key => $value) {
 	    	if ($group) $key = $group.":".$key;
+	    	if (is_string($key)) continue;
 	      	$str = preg_replace("/{{".$key."}}/i", $value, $str);
 	    }
 	    return $str;

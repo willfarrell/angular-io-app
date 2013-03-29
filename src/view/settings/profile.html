@@ -1,7 +1,7 @@
 <form name="userForm" class="form-horizontal" data-ng-controller="UserCtrl">
 	<legend>Profile</legend>
 	<hr>
-    
+    <!--[if gt IE 8]><!-->
     <div class="control-group" data-ui-if="filepicker">
 		<label class="control-label" for="user_img">Photo</label>
 
@@ -11,7 +11,7 @@
 			<!--<span class="help-block">This photo is your identity and appears with your content.</span>-->
     	</div>
     </div>
-
+    <!--<![endif]-->
     <div class="control-group" data-ng-class="{error: (errors.user_name_first)}">
       	<label class="control-label" for="user_name_first">First Name</label>
       	<div class="controls">

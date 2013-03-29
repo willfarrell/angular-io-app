@@ -576,9 +576,23 @@ angular.module('io.init.rootScope', [])
 		$rootScope.href($rootScope.uri()+'?'+(+new Date()));	// ? forces a refresh of user data
 	};
 	
+	// used by SignCtrl and OnboardCtrl
+	$rootScope.redirect = function() {
+		console.log('redirect('+$rootScope.session.user_ID+')');
+		//if ($rootScope.session.user_ID) {
+			var redirect = ($cookies.redirect ? $cookies.redirect : $rootScope.settings.dashboard);
+			delete $cookies.redirect;
+			$scope.href(redirect);
+		//} else {
+		//	window.setTimeout(function() {
+				//alert(JSON.stringify($rootScope.session));
+		//		$scope.redirect();
+		//	}, 100);
+		//}
+	};
 	
-	// history tracking - research History API - migrate?
-	$rootScope.history = history;
+	// history tracking - research History API / History.js (22Kb) - migrate?
+	$rootScope.history = history; // IE defaultes to 0, rest default to 1
 	/*$rootScope.back_history = [];
 	$rootScope.add_history = function() {
 		var uri = $rootScope.uri();

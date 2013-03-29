@@ -26,6 +26,14 @@
     Only use ng-bind in this file only
     ng-templates & partials cannot have leading \n in IE8
     -->
+    <!--[if lte IE 8]>
+      <script>
+        document.createElement('header');
+        document.createElement('footer');
+        document.createElement('section');
+        document.createElement('canvas');
+      </script>
+    <![endif]-->
 </head>
 <!-- Break out of iFrame -->
 <body class="ng-cloak" onload="if(this!=top){top.location.href=this.location.href}" data-ng-controller="AppCtrl">
@@ -145,7 +153,7 @@
 <!--<script src="components/angular-ui/modules/directives/if/if.js"></script><!-- from angular-ui -->
 <script src="scripts/angular-io/directive/if.js"></script><!-- from angular-ui -->
 
-<!--<script src="scripts/angular-io/directive/htmlExtend.js"></script><!-- IE8 bug -->
+<!--<script src="scripts/angular-io/directive/htmlExtend.js"></script>--><!-- IE8 bug -->
 <script src="scripts/angular-io/directive/inputMask.js"></script>
 <script src="scripts/angular-io/factory/markdown.js"></script>
 <script src="scripts/angular-io/filter/range.js"></script>

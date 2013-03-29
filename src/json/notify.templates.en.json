@@ -32,10 +32,10 @@
 	
 	"new_follow": {
 		"subject": "You were just followed.",
-		"message": "{{from:user_name_first}} is now following you.  Check out their profile at {{global:site_url}}#/user/profile/{{from:user_ID}} and maybe follow them back.\n\nTo change your notification options, sign in at {{global:site_url}} and go to User Settings.{{global:signature}}{{global:footer}}"
+		"message": "{{from:user_name_first}} is now following you.  Check out their profile at {{global:site_url}}#/user/profile/{{from:user_ID}} and maybe follow them back.{{global:signature}}{{global:footer}}"
 	},
 	"new_message": {
 		"subject": "New direct message waiting for you.",
-		"message": "{{from:user_name_first}} sent a message to you.  You can read it and reply at {{global:site_url}}#/user/message/{{from:user_ID}}.\n\nTo change your notification options, sign in at {{global:site_url}} and go to User Settings.{{global:signature}}{{global:footer}}"
+		"message": "{{from:user_name_first}} sent a message to you.  You can read it and reply at {{global:site_url}}#/user/message/{{from:user_ID}}.{{global:signature}}{{global:footer}}"
 	}
 }

@@ -41,7 +41,15 @@
 
     <!--
     Only use ng-bind in this file only
+    ng-templates & partials cannot have leading \n in IE8
     -->
+    <!--[if lte IE 8]>
+      <script>
+        document.createElement('header');
+        document.createElement('footer');
+        document.createElement('section');
+      </script>
+    <![endif]-->
 </head>
 <!-- Break out of iFrame -->
 <body class="ng-cloak" onload="if(this!=top){top.location.href=this.location.href}" data-ng-controller="AppCtrl">

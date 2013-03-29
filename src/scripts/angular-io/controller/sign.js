@@ -44,20 +44,6 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 	};
 	//-- End Sign Up --//
 	
-	$scope.redirect = function() {
-		console.log('redirect('+$rootScope.session.user_ID+')');
-		//if ($rootScope.session.user_ID) {
-			var redirect = ($cookies.redirect ? $cookies.redirect : $rootScope.settings.dashboard);
-			delete $cookies.redirect;
-			$scope.href(redirect);
-		//} else {
-		//	window.setTimeout(function() {
-				//alert(JSON.stringify($rootScope.session));
-		//		$scope.redirect();
-		//	}, 100);
-		//}
-	};
-	
 	//-- Sign In --//
 	$scope.signin = {
 		//email:'',
@@ -92,7 +78,7 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 						$rootScope.saveSession();
 						$scope.signin = {};	// clear form
 	
-						$scope.redirect();
+						$rootScope.redirect();
 					} else {
 						// catch any server side errors
 						$rootScope.alerts = [{'class':'error', 'label':'Internal Error', 'message':'Please notify us about it.'}];
@@ -127,7 +113,7 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 					//$scope.signin_callbacks(); // runs all callbacks that were set by siblings
 					// refresh page
 					//$scope.refresh();
-					$scope.redirect();
+					$rootScope.redirect();
 				} else {
 					$scope.errors.totp = "Verification Failed";
 				}
