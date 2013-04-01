@@ -11,7 +11,7 @@
 
 <div class="pull-center" data-ng-show="action == 'in'">
 	<form class="well" name="signinForm">
-	    <legend>{{i18n.sign_in_legend}}</legend>
+	    <fieldset><legend>{{i18n.sign_in_legend}}</legend></fieldset>
 	
 	    <!--<div class="control-group center"><img data-ng-src="img/user/{{session.user_ID}}.png" class="img-polaroid pull-center" width="100" height="100" /></div>-->
 	    
@@ -38,7 +38,7 @@
 
 <div class="pull-center" data-ng-show="action == 'reset'" data-ng-controller="PasswordCtrl">
 	<form class="well" name="resetForm">
-	    <legend>{{i18n.sign_reset_legend}}</legend>
+	    <fieldset><legend>{{i18n.sign_reset_legend}}</legend></fieldset>
 	    <div class="control-group" data-ng-class="{error: (errors.email)}">
 		    <input type="email" name="email" class="input-block-level" placeholder="{{i18n.sign_placeholder_email}}" data-ng-model="signin.email" required>
 		    <span class="error" data-ng-show="resetForm.email.$error.email">Not valid email</span>
@@ -52,7 +52,7 @@
 
 <div class="pull-center" data-ng-show="action == 'up'">
 	<form class="well" name="signupForm">
-	    <legend>{{i18n.sign_up_legend}}</legend>
+	    <fieldset><legend>{{i18n.sign_up_legend}}</legend></fieldset>
 	    <div class="control-group" data-ng-class="{error: (errors.email)}">
 	    	<input type="email" name="email" class="input-block-level" placeholder="{{i18n.sign_placeholder_email}}" data-ng-model="signup.email" required>
 	    	<!--<span class="error" data-ng-show="signinForm.email.$error.required">Email is required</span>-->
@@ -82,7 +82,7 @@
 
 <div class="pull-center" data-ng-show="action == 'totp'">
 	<form class="well" name="totpForm">
-	    <legend>{{i18n.sign_totp_legend}}</legend>
+	    <fieldset><legend>{{i18n.sign_totp_legend}}</legend></fieldset>
 	
 	    <!--<div class="control-group center"><img data-ng-src="img/user/{{session.user_ID}}.png" class="img-polaroid pull-center" width="100" height="100" /></div>-->
 	    <div class="control-group center"><img data-ng-src="/img/user/{{user_ID}}.png" class="img-rounded" width="100" height="100" /></div>

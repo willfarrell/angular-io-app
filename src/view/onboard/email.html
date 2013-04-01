@@ -1,22 +1,20 @@
-
-<!-- User Profile -->
 <div class="row-fluid" data-ng-controller="ConfirmCtrl">
 	<div class="span6 offset3 well" data-ng-show="session.email_confirm">
-		<legend>
+		<fieldset><legend>
     		Email Confirmed
     		<div class="btn-group pull-right">
 				<button class="btn" data-ng-disabled="!session.email_confirm" data-ng-click="button.skip()">Next &raquo;</button>
 			</div>
-    	</legend>
+    	</legend></fieldset>
 	</div>
 	
 	<div class="span6 offset3 well" data-ng-hide="session.email_confirm">
-		<legend>
+		<fieldset><legend>
     		Confirm Email
     		<div class="btn-group pull-right">
 				<button class="btn btn-primary" data-ng-click="resend()"><i class="icon-envelope"></i> Resend</button>
 			</div>
-    	</legend>
+    	</legend></fieldset>
 		
 		<p>Please check your email inbox and click the confirm link or paste the confirmation code below.</p>
 		

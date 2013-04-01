@@ -43,11 +43,10 @@
     Only use ng-bind in this file only
     ng-templates & partials cannot have leading \n in IE8
     -->
-    <!--[if lte IE 8]>
+    <!--[if lt IE 9]>
       <script>
-        document.createElement('header');
-        document.createElement('footer');
         document.createElement('section');
+        document.createElement('canvas');
       </script>
     <![endif]-->
 </head>
@@ -71,25 +70,25 @@
 <div class="page" data-ng-class="{'1':'page-slider-open', '-1':'page-slider-closed'}[slideNavBool]">
 
 	<!-- !Top Nav -->
-	<header class="header" data-ng-include="'view/nav.top.html'"></header>
+	<div class="header" data-ng-include="'view/nav.top.html'"></div>
+	<!--[if lte IE 9]>
 	<div class="alert-fixed-top">
-		<div class="alert alert-{{alert.class}}" data-ng-repeat="alert in alerts" data-dismiss="alert">
-		  	<div class="container">
-			  	<button class="close">&times;</button>
-			  	<strong>{{alert.label}}</strong> {{alert.message}}
-		  	</div>
-		</div>
-	</div>
-	<!--[if lt IE 9]>
-	<div class="alert-fixed-top">
-		<div class="alert alert-error">
-		  	<div class="container">
+		<div class="container">
+			<div class="alert alert-error">
 			  	<button class="close" data-dismiss="alert">&times;</button>
 			  	<strong>You are using an outdated browser.</strong> <a href="http://browsehappy.com/" target="_blank">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true" target="_blank">install Google Chrome Frame</a> to better experience this site.
-		  	</div>
+			</div>
 		</div>
 	</div>
 	<![endif]-->
+	<div class="alert-fixed-top">
+		<div class="container">
+			<div class="alert alert-{{alert.class}}" data-ng-repeat="alert in alerts">
+			  	<button class="close" data-dismiss="alert">&times;</button>
+			  	<strong>{{alert.label}}</strong> {{alert.message}}
+			</div>
+		</div>
+	</div>
 	<!-- !End Top Nav -->
 		
 	<!-- !View -->
@@ -99,7 +98,7 @@
 	</div>
 	<!-- !End View -->
 	
-	<footer class="footer" data-ng-include="'view/footer.html'"></footer>
+	<div class="footer" data-ng-include="'view/footer.html'"></div>
 </div>
 
 <!-- !Plugin Modals & Partials -->
@@ -128,11 +127,10 @@
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <!--<script>var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'));</script>-->
 
-<!--[if lt IE 8]>
-<script src="js/vendor/json3.min.js"></script>
-<![endif]-->
 <!-- build:js js/async.min.js -->
-<script src="scripts/script.min.js"></script>
+<!-- replace:inline -->
+<script src="components/html5-boilerplate/js/plugins.js"></script><!-- can be removed if no use of `console`, but that's unlikely -->
+<script src="scripts/script.js"></script>
 <script src="scripts/async.js"></script>
 <!-- endbuild -->
 

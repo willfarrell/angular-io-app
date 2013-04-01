@@ -1,8 +1,6 @@
 <div class="row-fluid" data-ng-controller="InviteCtrl">
 	<div class="span6 offset3 well center">
-		<legend>
-			Spread the Word...
-		</legend>
+		<fieldset><legend>Spread the Word...</legend></fieldset>
 
         <p>Share this link with friends and coworkers</p>
         <div class="input-append">
@@ -10,10 +8,10 @@
             <span class="add-on" onclick="clipboard('{{i18n.domain}}/#/?ref={{session.referral}}')"><i class="icon-copy"></i></span>
         </div>
         <div>
-            <a class="btn" href="mailto:?subject={{i18n.invite_mail_subject}}&body={{i18n.invite_mail_body}} {{i18n.domain}}/#/?ref={{session.referral}}" target="_blank"><i class="icon-envelope"></i> Share via Email</a>
-            <a class="btn" href="https://twitter.com/intent/tweet?url={{i18n.domain}}/%23/?ref={{session.referral}}&text={{i18n.invite_twitter_tweet}}" target="_blank">
+            <button class="btn" data-ng-click="mailto(i18n.invite_mail_subject,i18n.invite_mail_body+' '+i18n.domain+'/#/?ref='+session.referral)"><i class="icon-envelope"></i> Share via Email</button>
+            <button class="btn" data-ng-click="twitter(i18n.invite_twitter_tweet,i18n.domain+'/#/?ref='+session.referral)">
               	<i class="icon-twitter"></i> Share via Twitter
-            </a>
+            </button>
         </div>
 	</div>
 </div>

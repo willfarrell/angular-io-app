@@ -147,7 +147,7 @@ angular.module('io.init.rootScope', [])
 				$rootScope.http_error();
 			});
 	};
-	$rootScope.checkHTTPReturn = function(data, config) {
+	$rootScope.checkHTTPReturn = function(data, config, headers, config) {
 		console.log(data);
 		config || (config = {
 			alerts:false,	// place alerts in local scope
@@ -157,6 +157,7 @@ angular.module('io.init.rootScope', [])
 		
 		// session check ... signout?
 		if (data.session == "signout") {
+			//$rootScope.offline.que_request(http_config, http_callback);
 			if ($rootScope.uri().match(/\/sign\//) === null) { // prevent redirect loop
 				$rootScope.href('/sign/out');
 			}
@@ -241,6 +242,8 @@ angular.module('io.init.rootScope', [])
 		if ($rootScope.loader.count < $rootScope.loader.total) {	// progress bar
 			$rootScope.loader.width = (($rootScope.loader.count / $rootScope.loader.total)*100);
 			$rootScope.loader.details = name;
+		} else {
+			console.groupEnd();
 		}
 	});
 	//!-- End Loading Screen --//
@@ -566,8 +569,13 @@ angular.module('io.init.rootScope', [])
 		url || (url = '/');
 		console.log('href -> '+url);
 		if (open) $window.open(url, '_blank', 'location=yes'); // http://docs.phonegap.com/en/edge/cordova_inappbrowser_inappbrowser.md.html#InAppBrowser
+		// There is a bug where current Ctrla nd next Ctrl loop in loading, only when compressed
 		else if (url.substr(0,1) == '#') $location.url(url.substr(1));
 		else if (url.substr(0,1) == '/') $location.url(url);
+		//else if (url.substr(0,1) == '#') $location.path(url.substr(1));
+		//else if (url.substr(0,1) == '/') $location.path(url);
+		//else if (url.substr(0,1) == '#') $window.location.href = url;
+		//else if (url.substr(0,1) == '/') $window.location.href = '#'+url;
 		else $window.location.href = url;
 	};
 	
@@ -582,7 +590,7 @@ angular.module('io.init.rootScope', [])
 		//if ($rootScope.session.user_ID) {
 			var redirect = ($cookies.redirect ? $cookies.redirect : $rootScope.settings.dashboard);
 			delete $cookies.redirect;
-			$scope.href(redirect);
+			$rootScope.href(redirect);
 		//} else {
 		//	window.setTimeout(function() {
 				//alert(JSON.stringify($rootScope.session));
@@ -590,6 +598,11 @@ angular.module('io.init.rootScope', [])
 		//	}, 100);
 		//}
 	};
+	
+	// usecase: <div ng-bind-html-unsafe="renderIframe(item, 'http://url.com')"></div>
+	$rootScope.renderIframe = function (name, src) {
+		return '<iframe id="' + name + '" src="' + src + '" marginheight="0" marginwidth="0" frameborder="0"></iframe>';
+	}
 	
 	// history tracking - research History API / History.js (22Kb) - migrate?
 	$rootScope.history = history; // IE defaultes to 0, rest default to 1
@@ -745,5 +758,4 @@ angular.module('io.init.rootScope', [])
 	};
 	
 	//!-- End JS Functions --//
-	console.groupEnd();
 }]);

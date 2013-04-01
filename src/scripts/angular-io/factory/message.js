@@ -16,12 +16,13 @@ angular.module('io.factory.message', [])
 		
 	};
 	
-	$scope.open = function(user_ID, to_name) {
+	$scope.open = function(user_ID, to_name, message) {
 		$scope.init();
 		
 		// reset compose
 		$scope.compose = {
-			user_ID:user_ID
+			user_ID:user_ID,
+			message:message||''
 		};
 		$scope.to_name = to_name;
 		

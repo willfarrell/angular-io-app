@@ -7,7 +7,7 @@
 <div class="row-fluid">
     <div class="span4">
     	<!-- logo -->
-    	<p><img data-ng-src="/img/company/{{company.company_ID}}.png" width="300" height="200" /></p>
+    	<p><img data-ng-src="/img/company/{{company.company_ID}}.png" /></p>
         <p data-ng-show="company.company_url"><i class="icon-link"></i> <a data-ng-href="{{company.company_url}}" target="_blank">{{company.company_url}}</a></p>
         <p data-ng-show="company.company_phone"><i class="icon-phone"></i> <a data-ng-href="tel:+{{json.calling_codes[location.country_code]}} {{company.company_phone}}">+{{json.calling_codes[location.country_code]}} {{company.company_phone | phone}}</a></p>
         <!--<a href="" onclick="openURL({{company.company_url}})"><i class="icon-linkedin"></i> LinkenIn</a>
@@ -18,10 +18,10 @@
         <br>
         
         <!-- user -->
-        <legend><i class="icon-user"></i> Primary Contact</legend>
+        <fieldset><legend><i class="icon-user"></i> Primary Contact</legend></fieldset>
         <div class="row-fluid">
 	        <div class="span5">
-	            <img data-ng-src="img/user/{{company.user.user_ID}}.png?{{filepicker.timestamp}}" class="img-polaroid" style="width:100px; height:100px;" />
+	            <img data-ng-src="img/user/{{company.user.user_ID}}.png?{{filepicker.timestamp}}" class="img-polaroid" width="100" height="100" />
 	        </div>
 	        <div class="span1"></div>
 	        <div class="span6">
@@ -38,7 +38,7 @@
         <br>
         
         <!-- location -->
-        <legend data-ng-show="company.location"><i class="icon-map-marker"></i> Primary Location</legend>
+        <fieldset><legend data-ng-show="company.location"><i class="icon-map-marker"></i> Primary Location</legend></fieldset>
         <div class="row-fluid" data-ng-show="company.location">
 	        <div class="span5">
 	            <!--<img src="http://placehold.it/100x100" width="100" height="100" />-->
@@ -81,7 +81,7 @@ href="https://twitter.com/share" class="twitter-share-button" data-url="http://r
     <div class="span8">
     	<tabs>
     		<pane title="About">
-    			<div ng-bind-html-unsafe="compileMarkdown(company.company_details)"></div>
+    			<div data-ng-bind-html-unsafe="markdown(company.company_details)"></div>
     		</pane>
     		
     		<!--<pane title="Team">
@@ -98,7 +98,7 @@ href="https://twitter.com/share" class="twitter-share-button" data-url="http://r
 				            </div>
 							<b>{{u.user_name_first}} {{u.user_name_last}}</b><br>
 							<p>{{u.user_function}}</p>
-				            <div ng-bind-html-unsafe="compileMarkdown(u.user_details)"></div>
+				            <div data-ng-bind-html-unsafe="markdown(u.user_details)"></div>
 						</td>
 					</tr>
 					</tbody>

@@ -16,7 +16,7 @@
 		
     	<h2 data-ng-show="user.user_name">{{user.user_name}}</h2>
     	<h2 data-ng-hide="user.user_name">{{user.user_name_first}} {{user.user_name_last}}</h2>
-    	<div data-ng-bind-html-unsafe="compileMarkdown(user.user_details)"></div>
+    	<div data-ng-bind-html-unsafe="markdown(user.user_details)"></div>
     	
     	<div data-ng-controller="FollowCtrl">
 		    <ul class="thumbnails well" data-ng-init="follow.loadFollowing(user.company_ID, user.user_ID)">

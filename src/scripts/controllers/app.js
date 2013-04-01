@@ -29,15 +29,72 @@ function AppCtrl(rootScope, $scope, $http, $cookies, $location, filepicker, acce
 	$rootScope.markdown = markdown;
 	
 	// Events
-	$scope.$on('$viewContentLoaded', function(event) {
+	/*
+	jQuery Dependencies
+	- Bootstrap (modal, dropdown, etc)
+	- placeholder fallback
+	*/
+	$scope.jQueryInit = function() {
+		setTimeout(function() {
+			console.log('jQueryInit');
+	        
+	        // http://webdesignerwall.com/tutorials/cross-browser-html5-placeholder-text
+	        // To Do: rewrite to user angular.jslite - http://docs.angularjs.org/api/angular.element - move to $scope.Modernizr()
+	        if(!Modernizr.input.placeholder){
+	        	//console.log(angular.element('[placeholder]'));
+				$('[placeholder]').focus(function() {
+				  var input = $(this);
+				  if (input.val() == sinput.attr('placeholder')) {
+					input.val('');
+					input.removeClass('placeholder');
+					if (input.attr('type') == 'password') {	// special case
+						
+					}
+				  }
+				}).blur(function() {
+				  var input = $(this);
+				  if (input.attr('value')) input.attr('value') == '';
+				  if (input.val() == '' || input.val() == input.attr('placeholder')) {
+					input.addClass('placeholder');
+					input.val(input.attr('placeholder'));
+					if (input.attr('type') == 'password') {	// special case
+						
+					}
+				  }
+				}).blur(); // causes error in IE8 - SCRIPT256
+				// clear field on submit - not needed
+				/*$('[placeholder]').parents('form').submit(function() {
+				  $(this).find('[placeholder]').each(function() {
+					var input = $(this);
+					if (input.val() == input.attr('placeholder')) {
+					  input.val('');
+					}
+				  })
+				});*/
+	        
+			}
+	        
+		}, 500); // needed to ensure it load properly
 		
+		
+	};
+	
+	$scope.Modernizr = function() {
+	
+		
+	}
+	
+	$scope.$on('$viewContentLoaded', function(event) {
+		$scope.jQueryInit();
+		$scope.Modernizr();
 		// ga - add $window and $location to $inject if adding in
 		// use $rootScope.$on('$routeChangeSuccess', ...) or angular-googleanalytics
 		//$window._gaq.push(['_trackPageView', $location.path()]);	
 		
 	});
 	$scope.$on('$includeContentLoaded', function(event) {
-		
+		$scope.jQueryInit();
+		$scope.Modernizr();
 	});
 	
 	// referral param

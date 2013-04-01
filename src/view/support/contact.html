@@ -1,6 +1,6 @@
 <form name="contactForm" class="form-horizontal" data-ng-controller="ContactCtrl">
 	
-	<legend>Contact</legend>
+	<fieldset><legend>Contact</legend></fieldset>
 	<hr>
 
 	<div class="control-group">
@@ -15,7 +15,7 @@
       <div class="controls">
         <input type="email" name="email" class="input-block-level" data-ng-model="contact.email" required>
         <span class="help-block error" data-ng-show="contactForm.email.$error.email">Not valid email</span>
-            <span class="help-block error" data-ng-show="errors.email">{{errors.email}}</span>
+        <span class="help-block error" data-ng-show="errors.email">{{errors.email}}</span>
       </div>
     </div>
 

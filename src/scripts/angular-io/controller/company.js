@@ -297,14 +297,15 @@ function CompanyCtrl($scope, $http, $routeParams) {
 		if ($routeParams.profile_name) {
 			$scope.loadCompanyName($routeParams.profile_name);
 		} else if ($routeParams.profile_ID) {
-			$routeParams.profile_ID || ($routeParams.profile_ID = 0);
-			$scope.company.company_ID = $routeParams.profile_ID;
+			//$routeParams.profile_ID || ($routeParams.profile_ID = 0);
+			//$scope.company.company_ID = $routeParams.profile_ID;
 			$scope.loadCompany($routeParams.profile_ID);
 		} else {
 			$scope.company = $rootScope.session.company ? $rootScope.session.company : {
 				company_ID:$rootScope.session.company_ID,
 				country_code:$rootScope.country_code.toUpperCase()
 			};
+			$scope.loadCompany();
 		}
 		
 		// load on settings page

@@ -57,8 +57,8 @@
 	        	<span data-ng-show="filepicker.dropzone_name == 'file'">or select a file.</span>
 	        	 
 	        	<button class="btn btn-success" data-ng-click="computer.buttonClick()"><i class="icon-upload-alt"></i> Upload</button>
-	        	<input class="hidden" type="file" id="file_upload" accept="{{filepicker.accept}}" onchange="angular.element(this).scope().computer.buttonSelect(this)" ng-model-instant />
-	        	<input class="hidden" type="file" id="file_multi_upload" accept="{{filepicker.accept}}" onchange="angular.element(this).scope().computer.buttonSelect(this)" ng-model-instant multiple />
+	        	<input class="hidden" type="file" id="file_upload" accept="{{filepicker.accept}}" onchange="angular.element(this).scope().computer.buttonSelect(this)" data-ng-model-instant />
+	        	<input class="hidden" type="file" id="file_multi_upload" accept="{{filepicker.accept}}" onchange="angular.element(this).scope().computer.buttonSelect(this)" data-ng-model-instant multiple />
 	        </div>
 	        
 	        <div data-ng-show="filepicker.args.service == 'URL'">

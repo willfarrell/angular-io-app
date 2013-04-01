@@ -24,7 +24,9 @@ function SettingsCtrl($scope, $http, $routeParams) {
  			.success(function(data) {
 	 			if ($rootScope.checkHTTPReturn(data)) {
 		 			if (data != "") {
-		 				$scope.notify = data;
+		 				// sync with defaults, allows for new defaults to be added
+		 				$scope.notify = syncVar(data, $scope.notify); // will add system defaults
+		 				//$scope.notify = data;
 		 			}
 	 			}
  			})

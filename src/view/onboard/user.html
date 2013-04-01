@@ -1,16 +1,14 @@
-
-<!-- User Profile -->
 <div class="row-fluid" data-ng-controller="UserCtrl">
 	<div class="span6 offset3 well">
 
 		<form name="userForm" class="form-vertical">
-    		<legend>
+    		<fieldset><legend>
     			User Profile
     			<div class="btn-group pull-right">
     				<button class="btn btn-primary" data-ng-click="updateUser()" data-ng-disabled="userForm.$invalid"><i class="icon-ok"></i> Save</button>
     				<button class="btn" data-ng-disabled="!session.user.user_name && !session.user.user_name_first" data-ng-click="button.skip()">Next &raquo;</button>
     			</div>
-    		</legend>
+    		</legend></fieldset>
     		<!--[if gt IE 8]><!-->
     		 <div class="control-group" data-ui-if="filepicker">
 	    		<!--<label class="control-label" for="user_img">Photo</label>-->

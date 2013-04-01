@@ -1,7 +1,7 @@
 <form name="locationForm" class="form-horizontal" data-ng-controller="CompanyCtrl">
 	
 	<div data-ng-hide="toggle.location">
-		<legend>Locations</legend>
+		<fieldset><legend>Locations</legend></fieldset>
 		<hr>
 		<div class="control-group">
 	      	<div class="controls">
@@ -31,8 +31,8 @@
 	</div>
 	
 	<div data-ng-show="toggle.location">
-		<legend data-ng-show="!location.location_ID">New Location</legend>
-		<legend data-ng-show="location.location_ID">Edit Location</legend>
+		<fieldset><legend data-ng-show="!location.location_ID">New Location</legend>
+		<legend data-ng-show="location.location_ID">Edit Location</legend></fieldset>
 		<hr>
 		
 	    <div class="control-group" data-ng-class="{error: (errors.address_1)}">

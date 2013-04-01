@@ -1,16 +1,14 @@
-
-<!-- Company Profile -->
 <div class="row-fluid" data-ng-controller="CompanyCtrl">
 	<div class="span6 offset3 well">
 
 		<form name="onboardCompanyForm" class="form-vertical">
-	    	<legend>
+	    	<fieldset><legend>
 	    		Company Profile
 	    		<div class="btn-group pull-right">
 					<button class="btn btn-primary" data-ng-click="updateCompany()" data-ng-disabled="onboardCompanyForm.$invalid"><i class="icon-ok"></i> Save</button>
 					<button class="btn" data-ng-disabled="!company.company_ID" data-ng-click="button.skip()">Next &raquo;</button>
 				</div>
-	    	</legend>
+	    	</legend></fieldset>
 	    	
 	    	<div class="control-group" data-ng-show="filepicker && company.company_ID">
 				<!--<label class="control-label" for="company_img">Logo</label>-->

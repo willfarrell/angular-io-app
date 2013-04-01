@@ -53,6 +53,16 @@ angular.module('io.factory.filepicker', [])
 		}
 	};
 	
+	// remove service is not supported
+	$scope.removeService = function(service) {
+		// remove from list of services
+	    $scope.args.services.splice($scope.args.services.indexOf(service), 1);
+	    // reset current service if same service
+	    if ($scope.args.service === service) {
+		    $scope.args.service = $scope.args.services[0];
+	    }
+	};
+	
 	// defaults
 	$scope.args_upload = {
 		type:'UPLOAD',
@@ -246,17 +256,10 @@ angular.module('io.factory.filepicker', [])
 		
 		if (!hasUserMedia()) {
 			console.log('!hasUserMedia');
-			$scope.cameraRemove();
+			$scope.removeService('CAMERA');
 		}
 	};
-	$scope.cameraRemove = function() {
-		// remove from list of services
-	    $scope.args.services.splice($scope.args.services.indexOf('CAMERA'), 1);
-	    // reset current service if camera
-	    if ($scope.args.service === 'CAMERA') {
-		    $scope.args.service = $scope.args.services[0];
-	    }
-	};
+	
 	$scope.cameraInit = function() {
 		if (!navigator.getUserMedia) {
 		        navigator.getUserMedia = navigator.webkitGetUserMedia ||

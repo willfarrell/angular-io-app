@@ -19,7 +19,7 @@
         </div>
       	<div class="span7 well-white">
       		<form name="messageForm" data-ng-show="thread.length">
-	      		<legend>{{message.to_name}}</legend>
+	      		<fieldset><legend>{{message.to_name}}</legend></fieldset>
 	    		<hr>
 	    		<ul id="thread" class="unstyled control-group" style="height:400px; overflow-y:scroll;">
 	    			<li data-ng-repeat="m in thread | orderBy:'timestamp'" class="well">

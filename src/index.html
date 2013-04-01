@@ -23,13 +23,14 @@
     <!-- endbuild -->
 
     <!--
+    Angular Coding:
     Only use ng-bind in this file only
-    ng-templates & partials cannot have leading \n in IE8
+    ng-templates & partials cannot have leading white space (ie \n) in IE8
+    Always use data-ng- over ng-
+    Avoid <ng-> tags, use <div data-ng-></div>
     -->
-    <!--[if lte IE 8]>
+    <!--[if lt IE 9]>
       <script>
-        document.createElement('header');
-        document.createElement('footer');
         document.createElement('section');
         document.createElement('canvas');
       </script>
@@ -56,24 +57,24 @@
 
 	<!-- !Top Nav -->
 	<div class="header" data-ng-include="'view/nav.top.html'"></div>
+	<!--[if lte IE 9]>
 	<div class="alert-fixed-top">
-		<div class="alert alert-{{alert.class}}" data-ng-repeat="alert in alerts" data-dismiss="alert">
-		  	<div class="container">
-			  	<button class="close">&times;</button>
-			  	<strong>{{alert.label}}</strong> {{alert.message}}
-		  	</div>
-		</div>
-	</div>
-	<!--[if lt IE 9]>
-	<div class="alert-fixed-top">
-		<div class="alert alert-error">
-		  	<div class="container">
+		<div class="container">
+			<div class="alert alert-error">
 			  	<button class="close" data-dismiss="alert">&times;</button>
 			  	<strong>You are using an outdated browser.</strong> <a href="http://browsehappy.com/" target="_blank">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true" target="_blank">install Google Chrome Frame</a> to better experience this site.
-		  	</div>
+			</div>
 		</div>
 	</div>
 	<![endif]-->
+	<div class="alert-fixed-top">
+		<div class="container">
+			<div class="alert alert-{{alert.class}}" data-ng-repeat="alert in alerts">
+			  	<button class="close" data-dismiss="alert">&times;</button>
+			  	<strong>{{alert.label}}</strong> {{alert.message}}
+			</div>
+		</div>
+	</div>
 	<!-- !End Top Nav -->
 		
 	<!-- !View -->
@@ -93,12 +94,12 @@
 <div data-ng-include="'view/partials/alert.html'"></div>
 <!-- !End Plugin Modals & Partials -->
 
-<!-- !Frameworks - Dev - do not build -->
-<!--[if lt IE 9]>
-<script src="components/libs/json3.min.js"></script>
-<![endif]-->
-<script src="components/jquery/jquery.js"></script>
-<script src="components/angular-complete/angular.js"></script>
+<!-- Boilerplate - added to async -->
+<script src="components/html5-boilerplate/js/plugins.js"></script>
+
+<!-- !Frameworks - Dev - do not build, have special min settings -->
+<script src="components/jquery/jquery.js"></script><!-- CDN -->
+<script src="components/angular-complete/angular.js"></script><!-- CDN -->
 <script>
 	locale = JSON.parse(localStorage.getItem('locale'));
 	if (locale) document.write('<script src="components/angular-complete/i18n/angular-locale_'+locale+'.js"><\/script>');
@@ -106,12 +107,9 @@
 <!-- end - do not build -->
 
 <!-- build:js js/vendor/modernizr.min.js -->
-<!--
-<script src="components/modernizr/modernizr.js"></script>
-<script src="components/modernizr/feature-detects/canvas.js"></script>
-<script src="components/modernizr/feature-detects/draganddrop.js"></script>
-<script src="components/modernizr/feature-detects/history.js"></script>
--->
+<!-- http://modernizr.com/download/# -->
+
+<script src="components/modernizr/modernizr.js"></script><!-- CDN -->
 <!-- endbuild -->
 
 <!-- build:js js/vendor/bootstrap.min.js -->
@@ -134,13 +132,10 @@
 <!-- !Non-CDN Components -->
 <script src="components/angular-complete/angular-cookies.js"></script>
 
-<!-- Boilerplate -->
-<script src="components/html5-boilerplate/js/plugins.js"></script>
+
 
 <!-- !Liabraries -->
 <!-- Markdown (user/edit, user/profile, company/edit, company/profile -->
-<!--<script src="scripts/angular-io/plugins/markdown/Markdown.Converter.min.js"></script>
-<script src="scripts/angular-io/plugins/markdown/Markdown.Sanitizer.min.js"></script>-->
 <script src="components/marked/lib/marked.js"></script>
 
 <!-- !Dependencies - to be phased out -->
@@ -155,10 +150,11 @@
 
 <!--<script src="scripts/angular-io/directive/htmlExtend.js"></script>--><!-- IE8 bug -->
 <script src="scripts/angular-io/directive/inputMask.js"></script>
-<script src="scripts/angular-io/factory/markdown.js"></script>
+<script src="scripts/angular-io/factory/markdown.js"></script><!-- Requires components/marked/lib/marked.js -->
 <script src="scripts/angular-io/filter/range.js"></script>
 <script src="scripts/angular-io/filter/truncate.js"></script>
 <script src="scripts/angular-io/filter/format.js"></script>
+<script src="scripts/angular-io/filter/ordinal.js"></script>
 <script src="scripts/angular-io/factory/follow.js"></script>
 <script src="scripts/angular-io/factory/filepicker.js"></script>
 <script src="scripts/angular-io/factory/message.js"></script>
@@ -205,6 +201,7 @@
 
 <!-- !App Controllers -->
 <!-- *************************************************** -->
+
 <script src="scripts/controllers/app.js"></script><!-- all controller must be after this. -->
 <script src="scripts/controllers/dashboard.js"></script>
 
@@ -215,6 +212,5 @@
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <!--<script>var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'));</script>-->
 
-<!--<script data-main="scripts/main.js" src="scripts/lib/require.min.js"></script>-->
 </body>
 </html>

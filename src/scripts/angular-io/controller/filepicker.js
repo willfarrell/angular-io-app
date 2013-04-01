@@ -470,13 +470,14 @@ angular.module('io.controller.filepicker', ['io.factory.filepicker']).controller
 		xhr.send(fd);
 		//console.log("POST /filepicker/computer/"+$scope.filepicker.args.action);
 	};
+	$scope.progress = 0;
 	$scope.uploadProgress = function(evt) {
 		//console.log('uploadProgress');
 		$scope.$apply(function() {
 			if (evt.lengthComputable) {
 				$scope.progress = Math.round(evt.loaded * 100 / evt.total);
 			} else {
-				$scope.progress = 'unable to compute';
+				$scope.progress = 0;//'unable to compute';
 			}
 		});
 	};

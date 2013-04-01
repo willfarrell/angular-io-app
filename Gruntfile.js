@@ -137,7 +137,7 @@ module.exports = function(grunt) {
 		},
         clean: {
             dist: ['.tmp', '<%= yeoman.dist %>/*'],
-            deploy: ['<%= yeoman.dist %>/img/user/*', '<%= yeoman.dist %>/img/company/*', '<%= yeoman.web %>', '<%= yeoman.api %>'],
+            deploy: ['<%= yeoman.web %>', '<%= yeoman.api %>'],//'<%= yeoman.dist %>/img/user/*', '<%= yeoman.dist %>/img/company/*', 
             phonegap: ['<%= yeoman.phonegap %>', 'build.phonegap.zip'],
             server: '.tmp'
         },
@@ -209,7 +209,7 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true,
                     cwd: '<%= yeoman.app %>/img',
-                    src: '**/*.{png,jpg,jpeg}',
+                    src: ['**/*.{png,jpg,jpeg}', '!company/*.{png,jpg,jpeg}', '!user/*.{png,jpg,jpeg}'],
                     dest: '<%= yeoman.dist %>/img'
                 }]
             }
@@ -424,7 +424,7 @@ module.exports = function(grunt) {
             },
             minify: {
                 options: {
-                	removeComments: true,
+                	removeComments: false,		// removes <!--<![endif]-->, causes issues in IE
                     removeCommentsFromCDATA: true,
                     removeCDATASectionsFromCDATA: true,
                     //collapseWhitespace: true,			// <span>foo</span> <span>bar</span> fails waiting on fix - remove replace after
@@ -433,7 +433,7 @@ module.exports = function(grunt) {
                     //removeRedundantAttributes: true, // removes type="text" from <input> causes style issues in bootstrap
                     useShortDoctype: true,
                     removeEmptyAttributes: true,
-                    removeOptionalTags: true
+                    removeOptionalTags: false	// removes </head></body></html>
                     //removeEmptyElements:false
                 },
                 files: [{
@@ -490,7 +490,7 @@ module.exports = function(grunt) {
 	        		{
 	        			expand: true,
 	        			cwd:'<%= yeoman.app %>/components/angular-complete',
-	        			src: ['angular.min.js', 'angular-cookies.min.js', 'i18n/*.js'],
+	        			src: ['angular.min.js', 'i18n/*.js'], // 'angular-cookies.min.js', 
 	        			dest: '<%= yeoman.dist %>/js/vendor'
 	        		}
                 ]
@@ -690,7 +690,7 @@ module.exports = function(grunt) {
 			        replacements: [
 			        	// nested recursion not support in js
 			        	{
-				        	pattern: /console.log\(([\s\S]*?)\)[;,\n]+/g,
+				        	pattern: /console.[\w]+\((.*)\n/g,
 				        	replacement: ''
 			        	}
 			        ]
@@ -708,6 +708,29 @@ module.exports = function(grunt) {
 			    ]
 			    
 	        }*/
+	        inline: {
+		        options: {
+			        // grunt-string-replace
+			        replacements: [
+			        	{
+				        	pattern: '<script src="js/async.min.js"></script>',
+				        	replacement: '<script><%= grunt.file.read(yeoman.dist+"/js/async.min.js") %></script>'
+			        	}
+			        ]
+		        },
+		        files: [
+			      	{
+			      		expand: true,
+	                    dot: true,
+	                    cwd: '<%= yeoman.dist %>',
+	                    dest: '<%= yeoman.dist %>',
+	                    src: [
+	                        '*.html'
+	                    ]
+			      	}
+			    ]
+	        },
+	        //'<%= grunt.file.read("includes/content.html") %>'
         },
 	    compress: {
 	        phonegap: {
@@ -751,7 +774,7 @@ module.exports = function(grunt) {
 		      		// load top level html files
 		          	"*.html", "view/*.html", //"view/**/*.html",
 		          	"favicon.ico",
-		          	"js/*.min.js",
+		          	"js/**/*.min.js",
 		          	"css/**/*.css"
 		        ],
 		        dest: "<%= yeoman.dist %>/manifest.appcache"
@@ -902,7 +925,7 @@ module.exports = function(grunt) {
         //'test',
         //'coffee',
         //'compass:dist',
-        'less:dev',
+        //'less:dev',
         'useminPrepare',
         'concat',
         //'replace:jsmin',	// remove console fct calls - prod only 
@@ -910,13 +933,14 @@ module.exports = function(grunt) {
         'imagemin:dist',
         'cssmin',
         'htmlmin:dist',
-        //'uglify',
+        'uglify',
         //'closure-compiler',	// Warning: Object #<Object> has no method 'expandFiles' 2013-02-15
         //'ngmin', 				// make a larger file 2013-02-15
         'copy:dist',
         'replace:dist',
         'rev',
         'usemin',
+        'replace:inline',
         	//'replace:htmlmin',	// causing bugs
         //'cdnify',				// angular error 2013-02-15
         'htmlmin:minify',

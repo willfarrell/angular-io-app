@@ -1,7 +1,7 @@
 (function (angular, marked) {
 angular.module('io.markdown', [])
 .factory('$markdown', ['$rootScope', function($rootScope) {
-	console.log('markdownFactory ('+$rootScope.$id+')');
+	console.log('MarkdownFactory ('+$rootScope.$id+')');
 	
 	/*
 	https://github.com/chjj/marked

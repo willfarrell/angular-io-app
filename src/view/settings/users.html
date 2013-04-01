@@ -1,7 +1,7 @@
 <form name="userForm" class="form-horizontal" data-ng-controller="CompanyCtrl">
 	
 	<div data-ng-hide="toggle.user">
-		<legend>Users</legend>
+		<fieldset><legend>Users</legend></fieldset>
 		<hr>
 		<div class="control-group">
 	      	<div class="controls">
@@ -29,8 +29,8 @@
 	</div>
 	
 	<div data-ng-show="toggle.user">
-		<legend data-ng-show="!user.user_ID">New User</legend>
-		<legend data-ng-show="user.user_ID">Edit User</legend>
+		<fieldset><legend data-ng-show="!user.user_ID">New User</legend>
+		<legend data-ng-show="user.user_ID">Edit User</legend></fieldset>
 		<hr>
 		
 		<div class="control-group" data-ng-class="{error: (errors.user_email)}">
