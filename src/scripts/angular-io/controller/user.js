@@ -5,7 +5,6 @@
 UserCtrl.$inject = ['$scope', '$http', '$routeParams'];
 function UserCtrl($scope, $http, $routeParams) {
 	console.log('UserCtrl ('+$scope.$id+')');
-	
 	$scope.errors = {
 		user:{},
 		email:{}
@@ -20,7 +19,6 @@ function UserCtrl($scope, $http, $routeParams) {
 	$scope.loadUser = function(profile_ID) {
 		console.log('loadUser('+profile_ID+')');
 		profile_ID || (profile_ID = 0);
-		
 		$http.get($scope.settings.server+'/user/'+profile_ID)
 			.success(function(data) {
 				console.log('loadUser.get.success');
@@ -38,7 +36,6 @@ function UserCtrl($scope, $http, $routeParams) {
 	$scope.loadUserName = function(profile_name) {
 		console.log('loadUserName('+profile_name+')');
 		profile_name || (profile_name = '');
-		
 		$http.get($scope.settings.server+'/user/name/'+profile_name)
 			.success(function(data) {
 				console.log('loadUser.get.success');
@@ -96,13 +93,11 @@ function UserCtrl($scope, $http, $routeParams) {
 	$scope.check = {};
 	$scope.check.user_name = function(user_name) {
 		console.log('check.user_name('+user_name+')');
-		
 		if (user_name) {	// update
 			//$scope.user.user_name = user_name.replace(/[^a-z0-9_]/, "");
 			$http.get($scope.settings.server+'/account/unique/'+encodeURIComponent(user_name))
 				.success(function(data) {
 					if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
-						
 					} else {
 						$scope.errors.user 	= (data.errors) ? data.errors : {};
 					}

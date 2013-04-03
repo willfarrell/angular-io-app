@@ -55,8 +55,8 @@ var db = {
 	 *
 	 * call from below
 	 *
-     * @this {Object}
-     */
+	 * @this {Object}
+	 */
 	init: function() {
 		var uid = +new Date(),
 			result;
@@ -70,8 +70,8 @@ var db = {
 	// Main Functions //
 
 	/**
-     * @this {Object}
-     */
+	 * @this {Object}
+	 */
 	get: function(key, default_obj) {
 		//console.log("db.get('"+key+"', "+JSON.stringify(default_obj)+")");
 		if ( default_obj !== 'undefined' && !this.ls.getItem(key)) {
@@ -89,24 +89,24 @@ var db = {
 	},
 
 	/**
-     * @this {Object}
-     */
+	 * @this {Object}
+	 */
 	set: function(key, obj) {
 		//console.log("db.set('"+key+"', "+JSON.stringify(obj)+")");
 		if (key !== null) this.ls.setItem(key, JSON.stringify(obj));
 	},
 
 	/**
-     * @this {Object}
-     */
+	 * @this {Object}
+	 */
 	remove: function(key) {
 		this.ls.removeItem(key);
 	},
 
 	// clears ALL localStorage - only call if you're sure
 	/**
-     * @this {Object}
-     */
+	 * @this {Object}
+	 */
 	clear: function() {
 		this.ls.clear();
 	}

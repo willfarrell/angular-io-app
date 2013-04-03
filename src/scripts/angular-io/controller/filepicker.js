@@ -51,7 +51,6 @@ angular.module('io.controller.filepicker', ['io.factory.filepicker']).controller
 			$scope.setFiles(evt.dataTransfer.files);
 		}
 	}, false);
-	
 	//-- COMPUTER --//
 	$scope.computer = {};
 	// click button
@@ -65,7 +64,6 @@ angular.module('io.controller.filepicker', ['io.factory.filepicker']).controller
 		console.log(element);
 		$scope.setFiles(element.files);
 	};
-	
 	//-- URL --//
 	$scope.url = {};
 	$scope.url.value = '';
@@ -96,7 +94,6 @@ angular.module('io.controller.filepicker', ['io.factory.filepicker']).controller
 			});
 		}
 	};
-	
 	//-- RESIZECROP --//
 	$scope.resizecrop = {
 		img: {}
@@ -247,13 +244,13 @@ angular.module('io.controller.filepicker', ['io.factory.filepicker']).controller
 			function build() {
 				// image offsets
 /*console.log(
-	            	'left: ('+(x-width/2)+')-('+(crop_left)+')'+' = '+
-	            	((x-width/2)-(crop_left))+' = '+
-	            	(((width - dest_width) / 2)-(x-canvas_width/2))+', '+
-	            	'top: ('+(y-height/2)+')-('+(crop_top)+')'+' = '+
-	            	((y-height/2)-(crop_top))+' = '+
-	            	(((height - dest_height) / 2)-(y-canvas_height/2))
-	            );*/
+					'left: ('+(x-width/2)+')-('+(crop_left)+')'+' = '+
+					((x-width/2)-(crop_left))+' = '+
+					(((width - dest_width) / 2)-(x-canvas_width/2))+', '+
+					'top: ('+(y-height/2)+')-('+(crop_top)+')'+' = '+
+					((y-height/2)-(crop_top))+' = '+
+					(((height - dest_height) / 2)-(y-canvas_height/2))
+				);*/
 				var top = Math.round(((height - dest_height) / 2) - (y - canvas_height / 2));
 				var left = Math.round(((width - dest_width) / 2) - (x - canvas_width / 2));
 				var canvas = document.createElement('canvas');
@@ -522,7 +519,6 @@ angular.module('io.controller.filepicker', ['io.factory.filepicker']).controller
 			type: 'image/png'
 		});
 	};
-	
 	//-- Remote Services --//
 	//-- FTP --//
 	$scope.ftp = {};

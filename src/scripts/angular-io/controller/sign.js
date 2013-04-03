@@ -3,15 +3,13 @@
 SignCtrl.$inject = ['$scope', '$http', '$cookies', '$routeParams'];
 function SignCtrl($scope, $http, $cookies, $routeParams) {
 	console.log('SignCtrl ('+$scope.$id+')');
-	
 	$scope.errors = {};		// form errors
 	$scope.action = $routeParams.action ? $routeParams.action : 'in';
 	console.log($scope.action);
-	
 	//-- Sign Up --//
 	$scope.signup = {
 		//email:'',
-		//password:'',
+		//password:''
 		//country_code: $scope.$locale.id.substr(3,2).toUpperCase(),
 	};
 
@@ -19,7 +17,6 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 		value:'',
 		timer:60
 	};
-	
 	$scope.account_signup = function() {
 		console.log('account_signup()');
 		$scope.signup.referral = $cookies.referral;
@@ -30,7 +27,6 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 				if ($rootScope.checkHTTPReturn(data)) {
 					//$scope.signup = {};
 					$scope.signin.email = $scope.signup.email;
-					
 					$scope.action = 'in';
 					$rootScope.alerts = [{'class':'success', 'label':'Account created!', 'message':'Check your email for an activation link.'}];
 				} else { // only if using local alerts and errors
@@ -43,7 +39,6 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 			});
 	};
 	//-- End Sign Up --//
-	
 	//-- Sign In --//
 	$scope.signin = {
 		//email:'',
@@ -65,7 +60,6 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 			.success(function(data) {
 				console.log('account_signin.post.success');
 				if ($rootScope.checkHTTPReturn(data)) {
-					
 					if (data.totp) {
 						$scope.action = 'totp';
 						$scope.user_ID = data.user_ID;
@@ -73,11 +67,9 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 						$rootScope.session = syncVar(data, $rootScope.session);
 						$rootScope.session.save = $scope.signin.remember;
 						$rootScope.offline.run_request();
-						
 						console.log($rootScope.session);
 						$rootScope.saveSession();
 						$scope.signin = {};	// clear form
-	
 						$rootScope.redirect();
 					} else {
 						// catch any server side errors
@@ -93,7 +85,6 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 			});
 	};
 	//-- End Sign In --//
-	
 	$scope.account_totp = function(code) {
 		console.log('account_totp('+code+')');
 		//redirect || (redirect = '#/');
@@ -102,7 +93,6 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 			.success(function(data) {
 				console.log('account_totp.put.success');
 				if ($rootScope.checkHTTPReturn(data) && data) {
-					
 					$rootScope.session = syncVar(data, $rootScope.session);
 					//if ($rootScope.session != {})
 					$rootScope.session.save = $scope.signin.remember;
@@ -123,7 +113,6 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 				$rootScope.http_error();
 			});
 	};
-	
 	//-- Sign Out --//
 	$scope.account_signout = function() {
 		console.log('account_signout()');
@@ -146,7 +135,6 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 		}
 	};
 	//-- End Sign Out --//
-	
 	if ($routeParams.confirm_hash) {
 		$scope.action = 'in';
 	}
@@ -157,7 +145,6 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 		// redirect if already signed in
 		$scope.redirect();
 	}
-	
 
 }
 //}]);

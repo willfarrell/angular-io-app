@@ -21,7 +21,7 @@ JS Loader
 /*function stopBubble(e) {
 	e = e || window.event;
 	e.cancelBubble = true;
-    if (e.stopPropagation) e.stopPropagation();
+	if (e.stopPropagation) e.stopPropagation();
 };*/
 
 // Avoid this functions as much as possible
@@ -69,11 +69,11 @@ function getAllElementsWithAttribute(attribute, value) {
   	var allElements = document.getElementsByTagName('*');
   	for (var i = 0, l = allElements.length; i < l; i++) {
   		var attr = allElements[i].getAttribute(attribute);
-    	if ('string' === typeof attr && (!value || (value && attr == value))) {
-	    	return allElements[i];
-	    	// Element exists with attribute. Add to array.
-	    	matchingElements.push(allElements[i]);
-	    }
+		if ('string' === typeof attr && (!value || (value && attr == value))) {
+			return allElements[i];
+			// Element exists with attribute. Add to array.
+			matchingElements.push(allElements[i]);
+		}
 	}
 	return matchingElements;
 }
@@ -132,30 +132,30 @@ function dom$(str, o) { // id .class html[nth-child] (input[name=aaaa] - not inc
 // http://javascript.crockford.com/memory/leak.html
 // cleans dom element to prevent memory leaks
 function domPurge(d) {
-    var a = d.attributes, i, l, n;
-    if (a) {
-        for (i = a.length - 1; i >= 0; i -= 1) {
-            n = a[i].name;
-            if (typeof d[n] === 'function') {
-                d[n] = null;
-            }
-        }
-    }
-    a = d.childNodes;
-    if (a) {
-        l = a.length;
-        for (i = 0; i < l; i += 1) {
-            domPurge(d.childNodes[i]);
-        }
-    }
+	var a = d.attributes, i, l, n;
+	if (a) {
+		for (i = a.length - 1; i >= 0; i -= 1) {
+			n = a[i].name;
+			if (typeof d[n] === 'function') {
+				d[n] = null;
+			}
+		}
+	}
+	a = d.childNodes;
+	if (a) {
+		l = a.length;
+		for (i = 0; i < l; i += 1) {
+			domPurge(d.childNodes[i]);
+		}
+	}
 }
 
 function checkObj(o) { return typeof(o) === 'object' ? o: dom$(o); }
 
 function domRemove(id) {
-    var elem=document.getElementById(id);
-    domPurge(elem);
-    return (elem).parentNode.removeChild(elem);
+	var elem=document.getElementById(id);
+	domPurge(elem);
+	return (elem).parentNode.removeChild(elem);
 }
 
 //-- jQuery replacements --//
@@ -184,21 +184,21 @@ function domShow(id) {
 
 //-- Object --//
 function objectIsEmpty(obj) {
-    for (var p in obj) return false;
+	for (var p in obj) return false;
 	return true;
 }
 
 function objectLength(obj) {
   	var c = 0;
-    for (var p in obj) if(obj.hasOwnProperty(p))++c;
-    return c;
+	for (var p in obj) if(obj.hasOwnProperty(p))++c;
+	return c;
 }
 
 function objectFindByKey(array, key, value) {
   for (var i = 0; i < array.length; i++) {
-    if (array[i][key] === value) {
-      return array[i];
-    }
+	if (array[i][key] === value) {
+	  return array[i];
+	}
   }
   return null;
 }
@@ -208,10 +208,10 @@ function objectCheck(o) { return typeof(o) === 'object' ? o: dom$(o); }	// used 
 function objectClone(obj) {
   var newObj = (obj instanceof Array) ? [] : {};
   for (i in obj) {
-    if (i == 'clone') continue;
-    if (obj[i] && typeof obj[i] == "object") {
-      newObj[i] = objectClone(obj[i]);
-    } else newObj[i] = obj[i]
+	if (i == 'clone') continue;
+	if (obj[i] && typeof obj[i] == "object") {
+	  newObj[i] = objectClone(obj[i]);
+	} else newObj[i] = obj[i]
   } return newObj;
 }
 
@@ -251,19 +251,19 @@ function arrayUnique(a, id) {
 }
 
 function inArray(needle, haystack) {
-    for(var i = 0, l = haystack.length; i < l; i++) {
-        if (haystack[i] == needle) return true;
-    }
-    return false;
+	for(var i = 0, l = haystack.length; i < l; i++) {
+		if (haystack[i] == needle) return true;
+	}
+	return false;
 }
 
 function arrayIndexOf(a, item) {
 	for(var i = 0, l = a.length; i < l; i++) {
-        if (a[i] === item) {
-            return i;
-        }
-    }
-    return -1;
+		if (a[i] === item) {
+			return i;
+		}
+	}
+	return -1;
 }
 
 function replaceElem(o_new, o_old) {

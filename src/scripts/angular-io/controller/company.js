@@ -7,19 +7,16 @@ function CompanyCtrl($scope, $http, $routeParams) {
 	$scope.errors = {};
 	$scope.toggle = {};
 	$scope.company = {};
-	
 	$scope.user = {};
 	$scope.users = {};
 	$scope.location = {
 		"country_code":$rootScope.country_code,
 	};
 	$scope.locations = {};
-	
 	//-- Company --//
 	$scope.loadCompany = function(profile_ID) {
 		console.log('loadCompany('+profile_ID+')');
 		profile_ID || (profile_ID = 0);
-		
 		$http.get($scope.settings.server+'/company/'+profile_ID)
 			.success(function(data) {
 				if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
@@ -43,7 +40,6 @@ function CompanyCtrl($scope, $http, $routeParams) {
 	$scope.loadCompanyName = function(profile_name) {
 		console.log('loadCompanyName('+profile_name+')');
 		profile_name || (profile_name = '');
-		
 		$http.get($scope.settings.server+'/company/name/'+profile_name)
 			.success(function(data) {
 				console.log('loadCompanyName.get.success');
@@ -51,7 +47,6 @@ function CompanyCtrl($scope, $http, $routeParams) {
 					$scope.company = data;
 					$scope.location = data.location_default_ID ? data.location : $scope.location;
 					$scope.location.primary = true;
-					
 					/*if ($scope.session.company_ID == data.company_ID) {
 						$scope.loadUsers();
 						$scope.loadLocations();
@@ -68,7 +63,6 @@ function CompanyCtrl($scope, $http, $routeParams) {
 
 	$scope.updateCompany = function() {
 		$rootScope.alerts = [];
-		
 		if ($scope.company.company_ID) {	// update
 			$http.put($scope.settings.server+'/company/', $scope.company)
 				.success(function(data) {
@@ -105,7 +99,6 @@ function CompanyCtrl($scope, $http, $routeParams) {
 				});
 		}
 	};
-	
 	//-- Locations --//
 	$scope.loadLocations = function() {
 		console.log('loadLocations');
@@ -116,26 +109,21 @@ function CompanyCtrl($scope, $http, $routeParams) {
 				$rootScope.alerts 	= (data.alerts) ? data.alerts : [];
 				if (!data.alerts && !data.errors) {
 					$scope.locations = data;
-					
 					// load region data
 					var regions = [];
 					for (var i in data) {
 						regions.push(data[i].country_code);
 					}
 					regions = arrayUnique(regions);
-					
 					for (var i in regions) {
 						$rootScope.loadRegions(regions[i]);
 					}
-					
-					
 				}
 			})
 			.error(function() {
 				$rootScope.http_error();
 			});
 	};
-	
 	$scope.editLocation = function(location) {
 		console.log('editLocation(location)');
 		console.log(location);
@@ -145,14 +133,11 @@ function CompanyCtrl($scope, $http, $routeParams) {
 				'country_code':$rootScope.country_code.toUpperCase()
 			}
 		}
-		
 		$scope.location = location;
 	};
-	
 	$scope.updateLocation = function() {
 		console.log('updateLocation');
 		$rootScope.alerts = [];
-		
 		if ($scope.location.location_ID) {	// update
 			$http.put($scope.settings.server+'/location/', $scope.location)
 				.success(function(data) {
@@ -188,15 +173,12 @@ function CompanyCtrl($scope, $http, $routeParams) {
 				});
 		}
 	};
-	
 	$scope.deleteLocation = function(id) {
 		console.log('deleteLocation('+id+')');
-		
 		var http_config = {
 			"method":"delete",
 			"url":$scope.settings.server+'/location/'+id
 		};
-		
 		$http(http_config)
 			.success(function(data) {
 				console.log('deleteLocation.delete.success');
@@ -212,7 +194,6 @@ function CompanyCtrl($scope, $http, $routeParams) {
 				$rootScope.http_error();
 			});
 	};
-	
 	//-- Users --//
 	$scope.loadUsers = function() {
 
@@ -228,24 +209,19 @@ function CompanyCtrl($scope, $http, $routeParams) {
 			$rootScope.http_error();
 		});
 	};
-	
 	$scope.editUser = function(user) {
 		console.log('editUser(user)');
 		console.log(user);
 		if (!user) {
 			user = {
-				'user_level':0	
-			};
+				'user_level':0			};
 		}
-		
 		user.user_level = user.user_level.toString(); // for select option
 		$scope.user = user;
 	};
-	
 	$scope.updateUser = function() {
 		console.log('updateLocation');
 		$rootScope.alerts = [];
-		
 		if ($scope.user.user_ID) {	// update
 			$http.put($scope.settings.server+'/company/user/', $scope.user)
 				.success(function(data) {
@@ -281,7 +257,6 @@ function CompanyCtrl($scope, $http, $routeParams) {
 				});
 		}
 	};
-	
 	//-- About Details --//
 	$scope.compileMarkdown = function(text) {
 		if (!text) return text;
@@ -293,7 +268,6 @@ function CompanyCtrl($scope, $http, $routeParams) {
 	$scope.require_signin(function(){
 		console.log('CompanyCtrl require_signin');
 		console.log($rootScope.session.company);
-		
 		if ($routeParams.profile_name) {
 			$scope.loadCompanyName($routeParams.profile_name);
 		} else if ($routeParams.profile_ID) {
@@ -307,7 +281,6 @@ function CompanyCtrl($scope, $http, $routeParams) {
 			};
 			$scope.loadCompany();
 		}
-		
 		// load on settings page
 		if ($routeParams.page) {
 			$scope.loadUsers();

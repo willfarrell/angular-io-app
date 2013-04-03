@@ -90,4 +90,5 @@ API ready dist.
 - User side encryption (for file upload).  Mega?
 
 
-
+#### grunt
+Use `willfarrell/grunt-usemin` and `willfarrell/html-minifier` -> `grunt/grunt-contrib-htmlmin`. 1 Apr 2013

@@ -3,7 +3,6 @@
 InviteCtrl.$inject = ['$scope'];
 function InviteCtrl($scope) {
 	console.log('InviteCtrl ('+$scope.$id+')');
-	
 	/*$scope.copyAlert = function(site_url) {
 		console.log('copyAlert("'+site_url+'")');
 		$rootScope.modal = {
@@ -25,16 +24,13 @@ function InviteCtrl($scope) {
 		console.log($rootScope.modal);
 		$('#alertModal').modal('show');
 	};*/
-	
 	$scope.mailto = function(subject, message) {
 		console.log(subject+', '+message);
 		$rootScope.href('mailto:?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(message)+'', true);
 	};
-	
 	$scope.twitter = function(text, url) {
 		$rootScope.href('https://twitter.com/intent/tweet?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(url)+'', true);
 	};
-	
 	$scope.require_signin();
 }
 

@@ -1,7 +1,6 @@
 SecurityCtrl.$inject = ['$scope', '$http'];
 function SecurityCtrl($scope, $http) {
 	console.log('SecurityCtrl ('+$scope.$id+')');
-	
 	$scope.services = [
 		{
 			"id"		:"google",
@@ -12,10 +11,8 @@ function SecurityCtrl($scope, $http) {
 			"bb"		:"https://m.google.com/authenticator"
 		}
 	];
-	
 	$scope.security = {}
 	$scope.security.totp = $rootScope.settings.security.totp;
- 	
  	$scope.loadSecurity = function() {
  		console.log('loadSecurity()');
  		$http.get($scope.settings.server+'/user/security')
@@ -32,7 +29,6 @@ function SecurityCtrl($scope, $http) {
 	 			console.log('loadSecurity.get.error');
  			});
  	};
- 	
  	$scope.updateSecurity = function() {
  		console.log('updateSecurity()');
  		console.log($scope.security);
@@ -47,7 +43,6 @@ function SecurityCtrl($scope, $http) {
 	 			console.log('updateSecurity.put.error');
  			});
  	};
- 	
 	$scope.loadTOTPService = function() {
 		console.log('loadTOTPService()');
 		$http.get($rootScope.settings.server+"/totp/"+$scope.security.totp.service)
@@ -63,7 +58,6 @@ function SecurityCtrl($scope, $http) {
 				console.log('loadTOTPService.get.error');
 			});
 	};
-	
 	$scope.checkTOTP = function($code) {
 		console.log('checkTOTP('+$code+')');
 		$scope.test_code_check = true;
@@ -78,22 +72,18 @@ function SecurityCtrl($scope, $http) {
 				console.log('checkTOTP.put.error');
 			});
 	};
-	
 	$scope.testPGP = function(email) {
 		console.log('testPGP()');
-		
 		$http.put($rootScope.settings.server+"/user/pgp/", email)
 			.success(function(data) {
 				console.log('testPGP.put.success');
 				if ($rootScope.checkHTTPReturn(data)) {
-				
 				}
 			})
 			.error(function(){
 				console.log('testPGP.put.error');
 			});
 	};
-	
 	$scope.loadSecurity();
 	$scope.require_signin();
 }

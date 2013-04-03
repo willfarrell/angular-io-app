@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="components/font-awesome/css/font-awesome.css">
     <!--<link rel="stylesheet" href="components/font-awesome/build/fontawesome.css">--><!-- doesn't catch var icons -->
     <link rel="stylesheet" href="styles/angular-io.css">
-    <!--<link href="styles/css/famfamfam-styles.css" rel="stylesheet">--><!-- not needed if font-awesome is included -->
+    <!--<link href="styles/famfamfam-styles.css" rel="stylesheet">--><!-- not needed if font-awesome is included -->
     <!--<link rel="stylesheet" href="styles/famfamfam-flags.css">-->
     
     <!-- endbuild -->
@@ -94,11 +94,16 @@
 <div data-ng-include="'view/partials/alert.html'"></div>
 <!-- !End Plugin Modals & Partials -->
 
+<!--[if lt IE 8]>
+<script src="components/json3/lib/json3.js"></script>
+<![endif]-->
+
 <!-- Boilerplate - added to async -->
 <script src="components/html5-boilerplate/js/plugins.js"></script>
 
 <!-- !Frameworks - Dev - do not build, have special min settings -->
 <script src="components/jquery/jquery.js"></script><!-- CDN -->
+<script src="components/angular-complete/angular-loader.js"></script>
 <script src="components/angular-complete/angular.js"></script><!-- CDN -->
 <script>
 	locale = JSON.parse(localStorage.getItem('locale'));
@@ -186,12 +191,6 @@
 <script src="scripts/angular-io/plugins/browser/class.browser-detect.js"></script>
 -->
 
-<!-- !App Modules -->
-<!-- *************************************************** -->
-
-
-<!-- *************************************************** -->
-<!-- !End App Modules -->
 
 <!-- init -->
 <script src="scripts/angular-io/app.rootScope.js"></script>
@@ -207,7 +206,22 @@
 
 <!-- *************************************************** -->
 <!-- !End App Controllers -->
+
+<!-- !App Modules -->
+<!-- *************************************************** -->
+
+
+<!-- *************************************************** -->
+
+
+<!-- !End App Modules -->
 <!-- endbuild -->
+
+<!-- !Async Modules -->
+<!-- Ensure these are copied over in grunt and declared in async.js -->
+<script src="scripts/angular-io/fallback/placeholder.js"></script>
+
+<!-- !End App Modules -->
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <!--<script>var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'));</script>-->

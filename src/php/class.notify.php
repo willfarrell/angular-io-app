@@ -364,5 +364,11 @@ class Fax {
   	}
 }
 
+class Social {
+	/*
+	facebook, twiter, linkedin
+	*/
+}
+
 
 ?>

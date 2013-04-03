@@ -28,8 +28,9 @@ if (!!window.applicationCache) { // Check from Moderizr - pulled out for speed
 console.group('Async Load');
 
 //-- Error Detection and Tracking --//// http://errorception.com
-var _errs=["5113b3e6bedd207c2b000400"];
+/*var _errs=["XXXXXXX"];
 $script('//d15qhc0lu1ghnk.cloudfront.net/beacon.js');
+*/
 
 // Google Analytics
 /*var _gaq=[
@@ -56,7 +57,7 @@ var cdnHttp = '//cdnjs.cloudflare.com/ajax/libs/',
 		Angular: 	cdnHttp+'angular.js/1.0.5/angular.min.js',
 		Modernizr:	cdnHttp+'modernizr/2.6.2/modernizr.min.js',
 		// HTML5 Polyfills - https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-browser-Polyfills
-		//JSON3:		cdnHttp+'json3/3.2.4/json3.min.js'//, // add for IE 6-7
+		JSON3:		cdnHttp+'json3/3.2.4/json3.min.js'//, // add for IE 6-9 - https://github.com/bestiejs/json3
 		// localStorage IE 6-7
 		// HTML5 Sectioning Elements
 		//html5shiv:	cdnHttp+'html5shiv/3.6.2/html5shiv.js',	// IE 6-9 - https://github.com/aFarkas/html5shiv
@@ -68,7 +69,7 @@ var cdnHttp = '//cdnjs.cloudflare.com/ajax/libs/',
 	,	Bootstrap: 	cdnDir+'bootstrap.min.js'
 	,   Angular: 	cdnDir+'angular.min.js'
 	,   Modernizr:	cdnDir+'modernizr.min.js'
-	//,   JSON3: 		cdnDir+'json3.min.js' // loaded into fallback loop
+	,   JSON3: 		cdnDir+'json3.min.js'
 	//,	html5shiv: 	cdnDir+'html5shiv.min.js'
 	//,	'html5shiv-print': 	cdnDir+'html5shiv-print.min.js',
 	},
@@ -97,6 +98,15 @@ function cdnFallback(depsNotFound) {
 	}
 }
 
+
+// IE Shims
+if (IE < 10) {
+	$script(cdnSrc.JSON3, 'JSON3', function() {
+		console.log('JSON3 Fallback');
+		bootstrap();
+	}, cdnFallback);
+}
+
 // js Frameworks & Libraries
 $script(cdnSrc.Modernizr, 'Modernizr', function() {
 	console.log('Modernizr ready');
@@ -115,7 +125,7 @@ $script(cdnSrc.Angular, 'Angular', function() {
 	console.log('Angular ready');
 	locale = JSON.parse(localStorage.getItem('locale'));
 	if (locale) {
-		$script(cdnDir+'i18n/angular-locale_'+locale+'.js', function() {
+		$script('js/vendor/i18n/angular-locale_'+locale+'.js', function() {
 			console.log('Angular.ngLocale ready');
 			//angular.module('ngLocal.us', [])._invokeQueue.push(angular.module('ngLocale')._invokeQueue[0]);
 			bootstrap();
@@ -129,7 +139,6 @@ $script(cdnSrc.Angular, 'Angular', function() {
 }, cdnFallback);
 
 // Polyfills - detect with Modernizr, lazy load Angular modules
-// Tests: http://modernizr.github.com/Modernizr/test/
 $script.ready(['Modernizr', 'Angular', 'App'], function() {
 	console.group('Modernizr Fallback');
 	//$script('js/fallback/placeholder.min.js');

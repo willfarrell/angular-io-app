@@ -5,7 +5,6 @@ function SettingsCtrl($scope, $http, $routeParams) {
  	console.log('SettingsCtrl '+$routeParams.page);
  	$scope.page_url = 'view/settings/'+encodeURIComponent($routeParams.page)+'.html';
  	//$scope.nav_select($scope.nav_parent_id, $scope.nav_ids, 'legal');
- 	
  	// notifications
  	// defaults as per class.notify.php
  	// email:true
@@ -18,7 +17,6 @@ function SettingsCtrl($scope, $http, $routeParams) {
 		 	$scope.notify = data;
 	 	});
  	}
- 	
  	$scope.loadNotifications = function() {
  		$http.get($scope.settings.server+'/user/notify')
  			.success(function(data) {
@@ -31,10 +29,8 @@ function SettingsCtrl($scope, $http, $routeParams) {
 	 			}
  			})
  			.error(function(){
-	 			
  			});
  	};
- 	
  	$scope.updateNotifications = function() {
  		console.log($scope.notify);
  		$http.put($scope.settings.server+'/user/notify', $scope.notify)
@@ -44,10 +40,8 @@ function SettingsCtrl($scope, $http, $routeParams) {
 	 			}
  			})
  			.error(function(){
-	 			
  			});
  	};
- 	
  	$scope.require_signin(function() {
 	 	$scope.loadNotifications();
  	});

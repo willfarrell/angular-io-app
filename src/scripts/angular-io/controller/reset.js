@@ -3,7 +3,6 @@
 ResetCtrl.$inject = ['$scope', '$http', '$routeParams'];
 function ResetCtrl($scope, $http, $routeParams) {
 	console.log('ResetCtrl ('+$scope.$id+')');
-	
 	$scope.errors = {};
 	$scope.hash = $routeParams.reset_hash;
 	$scope.state = {
@@ -28,7 +27,6 @@ function ResetCtrl($scope, $http, $routeParams) {
 						$scope.state.verify = true;
 						$scope.auth = data;
 					} else {
-						
 					}
 				} else {
 					$scope.errors = (data.errors) ? data.errors : {};

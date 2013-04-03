@@ -4,17 +4,12 @@ angular.module('io.controller.follow', [])
 //function FollowCtrl($scope, $http) {
 	//$scope = $scope;
 	console.log('FollowCtrl ('+$scope.$id+')');
-	
 	// Extends $scope.follow;
-	
 	$scope.type = $scope.follow.type;
-	
 	$scope.follow_suggest = {};
 	$scope.following = {};
-	
 	//$scope.group_name = '';	// form
 	$scope.setFollowType = function(type) { $scope.type = type; };
-	
 	$scope.addFollow = function(id, group_ID) {
 		$scope.follow.addFollow($scope.type, id, group_ID);
 	};
@@ -26,14 +21,12 @@ angular.module('io.controller.follow', [])
 	$scope.loadFollow = function(id) {
 		$scope.follow.loadFollow($scope.type, id);
 	};
-	
 	$scope.loadFollowers = function(id, query) {
 		$scope.follow.loadFollow($scope.type, id, query);
 	};
 
 	$scope.loadFollowing = function(id, query) {
 		//$scope.follow.loadFollowing($scope.type, id, query); // session user
-		
 		id || (id = 0);
 		query || (query = '');
 		$http.get('/follow/ing/'+id+'/'+query)
@@ -48,7 +41,6 @@ angular.module('io.controller.follow', [])
 						delete data[i];
 					}
 				}
-				
 				$scope.following = data; // for profile page
 			})
 			.error(function() {
@@ -56,12 +48,10 @@ angular.module('io.controller.follow', [])
 				$rootScope.http_error();
 			});
 	};
-	
 	$scope.loadSuggestions = function(id) {
 		console.log('loadSuggestions('+id+')');
 		id || (id = 0);
 		var type = $scope.type;
-		
 		$http.get('/follow/suggestions/'+type+'/'+id)
 			.success(function(data) {
 				console.log('loadSuggestions.get.success');
@@ -84,13 +74,10 @@ angular.module('io.controller.follow', [])
 			});
 	};
 
-	
-	
 	// search following and followers
 	$scope.search = function(query) {
 		$scope.search_results = [];
 		// follow = 'ing' or 'ers'
-		
 		$http.get('/follow/search/'+follow+'/'+query+'/'+type)
 			.success(function(data) {
 				data = data.toString();
@@ -104,18 +91,13 @@ angular.module('io.controller.follow', [])
 				console.log($scope.groups);
 				$scope.group_name = ""; // clear form
 			});
-		
 		if (follow == 'ing') {
-			
 		} else if (follow == 'ers') {
-			
 		}
 	};
-	
 	$scope.loadGroups = function() {
 		$scope.follow.loadGroups();
 	};
-	
 	$scope.addGroup = function() {
 		console.log('addGroup()');
 		var color = strToARGB($scope.group_name).substr(0,6);
@@ -157,8 +139,6 @@ angular.module('io.controller.follow', [])
 				$rootScope.http_error();
 			});
 	};
-	
-	
 	$scope.require_signin(function(){
 		$scope.loadGroups();
 	});

@@ -17,35 +17,36 @@ function OnboardCtrl($scope, $cookies, $http, $routeParams) {
 			elements[ i ].className = '';
 			elements[ i ].firstChild.innerHTML = i;	// badge value
 
-		    if (elements[ i ].href.indexOf('#/onboard/'+page) !== -1) {	// current page
-		    	if (action === 'skip') {	// go to next page
-			    	if (i+1 < l) $scope.href(elements[ i+1 ].href);
-			    	else {	// onboard complete - update user_level if not done after subscribe
-			    		$rootScope.session.timestamp_create = 1;
-			    		$http.get($rootScope.settings.server+'/account/onboard_done')
-			    			.success(function(data) {
-			    				console.log('BuildProgressTracker.get.success');
-			    				if ($rootScope.checkHTTPReturn(data)) {
-				    				$rootScope.updateSession(function(){
-				    					var redirect = ($cookies.redirect ? $cookies.redirect : $rootScope.settings.dashboard);
-				    					$cookies.redirect = null;
-				    					$scope.href('/'+redirect);
-				    				});
-			    				}
-			    			})
-							.error(function() {
-								console.log('BuildProgressTracker.get.error');
-								$rootScope.http_error();
-							});
-			    	}
-		    	}
-			    elements[ i ].className = 'current';
-			    after = true;
-		    } else if (after) {
-		    	elements[ i ].href = '';
-		    	elements[ i ].className = 'after';
-		    }
+			if (elements[ i ].href.indexOf('#/onboard/'+page) !== -1) {	// current page
+				if (action === 'skip') {	// go to next page
+					if (i+1 < l) $scope.href(elements[ i+1 ].href);
+					else {	// onboard complete - update user_level if not done after subscribe
+						$scope.done(true);
+					}
+				}
+				elements[ i ].className = 'current';
+				after = true;
+			} else if (after) {
+				elements[ i ].href = '';
+				elements[ i ].className = 'after';
+			}
 		}
+	};
+	$scope.done = function(redirect) {
+		$rootScope.session.timestamp_create = 1;
+		$http.get($rootScope.settings.server+'/account/onboard_done')
+			.success(function(data) {
+				console.log('BuildProgressTracker.get.success');
+				console.log(data);
+				$rootScope.updateSession(function(){
+					if (redirect) $rootScope.href(redirect);
+					else $rootScope.redirect();
+				});
+			})
+			.error(function() {
+				console.log('BuildProgressTracker.get.error');
+				$rootScope.http_error();
+			});
 	}
 
 
