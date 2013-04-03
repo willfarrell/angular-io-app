@@ -3,22 +3,22 @@ angular.module('io.init.rootScope', [])
 	['$rootScope', '$locale', '$cookies', '$http', '$window', '$location',
 	function($rootScope, $locale, $cookies, $http, $window, $location) {
 	console.group('io.init.rootScope ('+$rootScope.$id+')');
- 	// HTML5SHIV
- 	/*$rootScope.ie8 = function(obj) {
-	 	if (obj.attachEvent) {	// <= IE8
-	 		obj.addEventListener = obj.attachEvent; // event = window.attachEvent ? 'onclick' : 'click';
+// HTML5SHIV
+/*$rootScope.ie8 = function(obj) {
+	if (obj.attachEvent) {	// <= IE8
+	obj.addEventListener = obj.attachEvent; // event = window.attachEvent ? 'onclick' : 'click';
 		}
- 	}
- 	$window = $rootScope.ie8($window);*/
- 	if ($window.attachEvent) {	// <= IE8
- 		$window.addEventListener = $window.attachEvent; // event = window.attachEvent ? 'onclick' : 'click';
+}
+$window = $rootScope.ie8($window);*/
+if ($window.attachEvent) {	// <= IE8
+$window.addEventListener = $window.attachEvent; // event = window.attachEvent ? 'onclick' : 'click';
 	}
- 	$rootScope.$watch(function () {
-	  	return $location.path();
-	  }, function(value) {
-	  	// antuo scroll to top of page when ng-view doesn't chenge
-	  	document.querySelectorAll('.page')[0].scrollTop = 0;
-	  	//$rootScope.updateSession();
+$rootScope.$watch(function () {
+	return $location.path();
+	}, function(value) {
+	// antuo scroll to top of page when ng-view doesn't chenge
+	document.querySelectorAll('.page')[0].scrollTop = 0;
+	//$rootScope.updateSession();
 	});
 	$rootScope.default_settings = {
 		'client'			:'',	// https://static.domain.com/
@@ -236,23 +236,23 @@ angular.module('io.init.rootScope', [])
 
 	//!-- Global Vars --//
 	$rootScope.set = function(key, value) { $rootScope[key] = value; };
-	$rootScope.device 	= (typeof device != 'undefined') ? device : false; // cordova active?
-	$rootScope.loading 	= false;	// nav bar loading indicator
-	$rootScope.sliderNav 	= -1;		// slider nav state (-1,+1)
-	$rootScope.alerts 	= [];	// for alert-fixed-top
-	$rootScope.errors 	= {};	// global place holder
-	$rootScope.modal 	= {};	// for alertModal
+	$rootScope.device= (typeof device != 'undefined') ? device : false; // cordova active?
+	$rootScope.loading= false;	// nav bar loading indicator
+	$rootScope.sliderNav= -1;		// slider nav state (-1,+1)
+	$rootScope.alerts= [];	// for alert-fixed-top
+	$rootScope.errors= {};	// global place holder
+	$rootScope.modal= {};	// for alertModal
 	$rootScope.datetime = new Date();
 	$rootScope.timezone_min = new Date().getTimezoneOffset();
- 	$rootScope.i18n = {};
+$rootScope.i18n = {};
 	$rootScope.json = {
 		"regions":{}
 	};
 	// clear alerts on page change
 	$rootScope.$watch(function () {
-	  	return $location.path();
-	  }, function(value) {
-	  	$rootScope.alerts = [];
+	return $location.path();
+	}, function(value) {
+	$rootScope.alerts = [];
 	});
 	//!-- JSON -- //
 	$rootScope.loadJSON = function(key, file, folder, callback) {
@@ -286,11 +286,11 @@ angular.module('io.init.rootScope', [])
 	}
 	//!-- Lang --//
 	$rootScope.init = function() {
-		//$rootScope.locale 	= localStorage.getItem('locale');		//$rootScope.locale || ($rootScope.locale = localStorage.setItem('locale', $locale.id));// en-ca
+		//$rootScope.locale= localStorage.getItem('locale');		//$rootScope.locale || ($rootScope.locale = localStorage.setItem('locale', $locale.id));// en-ca
 		$rootScope.locale = db.get('locale', $locale.id);
-	 	$rootScope.language = db.get('language', $rootScope.locale.substr(0,2)); 	// en
+	$rootScope.language = db.get('language', $rootScope.locale.substr(0,2));// en
 		db.set('language', $rootScope.language);
-	 	if ($rootScope.locale.length > 2) {
+	if ($rootScope.locale.length > 2) {
 			$rootScope.country_code = $rootScope.locale.substr(3,2).toUpperCase();
 			db.set('country_code', $rootScope.country_code);
 		} else {
@@ -481,9 +481,9 @@ angular.module('io.init.rootScope', [])
 		if ($rootScope.offline._state) {	// was offline
 			$rootScope.offline.alertOnline();
 			setTimeout(function() {  // timeout is required to bypass some weird bug in angular **
-			  $rootScope.checkSession(function(){
-				  $rootScope.offline.run_request();
-			  });
+	$rootScope.checkSession(function(){
+	$rootScope.offline.run_request();
+	});
 			}, 1000);
 		}
 		$rootScope.offline._state = false;
@@ -622,10 +622,10 @@ angular.module('io.init.rootScope', [])
 			special:[0,0]
 		};
 		for (i = 0; i < value.length; i++) {
-			if 		("abcdefghijklmnopqrstuvwxyz".indexOf(value.charAt(i)) > -1) 			{params.lower[0] = 1; ++params.lower[1];}
-			else if ("ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(value.charAt(i)) > -1) 			{params.upper[0] = 1; ++params.upper[1];}
-			else if ("0123456789".indexOf(value.charAt(i)) > -1) 							{params.number[0] = 1; ++params.number[1];}
-			else if ("~!@#$%^&*()_+{}|:\"<>? `-=[]\;',./�".indexOf(value.charAt(i)) > -1) 	{params.special[0] = 1; ++params.special[1];}
+			if("abcdefghijklmnopqrstuvwxyz".indexOf(value.charAt(i)) > -1){params.lower[0] = 1; ++params.lower[1];}
+			else if ("ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(value.charAt(i)) > -1){params.upper[0] = 1; ++params.upper[1];}
+			else if ("0123456789".indexOf(value.charAt(i)) > -1){params.number[0] = 1; ++params.number[1];}
+			else if ("~!@#$%^&*()_+{}|:\"<>? `-=[]\;',./�".indexOf(value.charAt(i)) > -1){params.special[0] = 1; ++params.special[1];}
 			// more then two identical chars in a row
 			if (i > 1 && value.charAt(i) == value.charAt(i-1) && value.charAt(i) == value.charAt(i-2)) {
 				scope.$error.identical = true;
@@ -633,10 +633,10 @@ angular.module('io.init.rootScope', [])
 		}
 		// must have n/4 params at min
 		if (params.lower[0]+params.upper[0]+params.number[0]+params.special[0] < settings.min_params) {
-			scope.$error.upper 		= (params.upper[1] < settings.min_upper);
-			scope.$error.lower 		= (params.lower[1] < settings.min_lower);
-			scope.$error.number 	= (params.number[1] < settings.min_number);
-			scope.$error.special 	= (params.special[1] < settings.min_special);
+			scope.$error.upper= (params.upper[1] < settings.min_upper);
+			scope.$error.lower= (params.lower[1] < settings.min_lower);
+			scope.$error.number= (params.number[1] < settings.min_number);
+			scope.$error.special= (params.special[1] < settings.min_special);
 		}
 		if (value === sameas) scope.$error.sameas = true;
 		scope.$valid = objectIsEmpty(scope.$error);
@@ -658,7 +658,7 @@ angular.module('io.init.rootScope', [])
 	};
 
 	$rootScope.objectLength = function(obj) {
-	  	var c = 0;
+	var c = 0;
 		for (var p in obj) if (obj.hasOwnProperty(p)) ++c;
 		return c;
 	};

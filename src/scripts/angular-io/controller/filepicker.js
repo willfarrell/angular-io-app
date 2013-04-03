@@ -7,7 +7,7 @@ angular.module('io.controller.filepicker', ['io.factory.filepicker']).controller
 	//-- dropzone --//
 	var dropbox = document.getElementById("dropbox");
 	if (dropbox.attachEvent) {	// <= IE8
- 		dropbox.addEventListener = dropbox.attachEvent; // event = window.attachEvent ? 'onclick' : 'click';
+dropbox.addEventListener = dropbox.attachEvent; // event = window.attachEvent ? 'onclick' : 'click';
 	}
 	// init event handlers
 
@@ -342,14 +342,14 @@ angular.module('io.controller.filepicker', ['io.factory.filepicker']).controller
 				grab_x = 0, grab_y = 0; // reset pan grab offset
 				canvas.onmousemove = move;
 /*if (pageX < x + width + totalOffsetX &&
-			 		pageX > x - width + totalOffsetX &&
-			 		pageY < y + height + totalOffsetY &&
-			 		pageY > y - height + totalOffsetY){
-				 	x = pageX - totalOffsetX;
-				 	y = pageY - totalOffsetY;
-				 	//console.log('move: '+x+','+y+'');
-				 	//dragok = true;
-				 	canvas.onmousemove = move;
+			pageX > x - width + totalOffsetX &&
+			pageY < y + height + totalOffsetY &&
+			pageY > y - height + totalOffsetY){
+				x = pageX - totalOffsetX;
+				y = pageY - totalOffsetY;
+				//console.log('move: '+x+','+y+'');
+				//dragok = true;
+				canvas.onmousemove = move;
 				}*/
 				document.onselectstart = null;
 			};

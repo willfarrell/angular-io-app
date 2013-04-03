@@ -13,36 +13,36 @@ function SecurityCtrl($scope, $http) {
 	];
 	$scope.security = {}
 	$scope.security.totp = $rootScope.settings.security.totp;
- 	$scope.loadSecurity = function() {
- 		console.log('loadSecurity()');
- 		$http.get($scope.settings.server+'/user/security')
- 			.success(function(data) {
- 				console.log('loadSecurity.get.success');
- 				if ($rootScope.checkHTTPReturn(data)) {
-	 				if (data != "") {
-		 				$scope.security = data;
-	 				}
-	 				console.log($scope.security);
- 				}
- 			})
- 			.error(function(){
-	 			console.log('loadSecurity.get.error');
- 			});
- 	};
- 	$scope.updateSecurity = function() {
- 		console.log('updateSecurity()');
- 		console.log($scope.security);
- 		$http.put($scope.settings.server+'/user/security', $scope.security)
- 			.success(function(data) {
- 				console.log('updateSecurity.put.success');
- 				if ($rootScope.checkHTTPReturn(data)) {
-	 				$rootScope.alerts = [{"class":"success", "label":"Security:", "message":"Saved"}];
-	 			}
- 			})
- 			.error(function(){
-	 			console.log('updateSecurity.put.error');
- 			});
- 	};
+$scope.loadSecurity = function() {
+console.log('loadSecurity()');
+$http.get($scope.settings.server+'/user/security')
+.success(function(data) {
+console.log('loadSecurity.get.success');
+if ($rootScope.checkHTTPReturn(data)) {
+	if (data != "") {
+		$scope.security = data;
+	}
+	console.log($scope.security);
+}
+})
+.error(function(){
+	console.log('loadSecurity.get.error');
+});
+};
+$scope.updateSecurity = function() {
+console.log('updateSecurity()');
+console.log($scope.security);
+$http.put($scope.settings.server+'/user/security', $scope.security)
+.success(function(data) {
+console.log('updateSecurity.put.success');
+if ($rootScope.checkHTTPReturn(data)) {
+	$rootScope.alerts = [{"class":"success", "label":"Security:", "message":"Saved"}];
+	}
+})
+.error(function(){
+	console.log('updateSecurity.put.error');
+});
+};
 	$scope.loadTOTPService = function() {
 		console.log('loadTOTPService()');
 		$http.get($rootScope.settings.server+"/totp/"+$scope.security.totp.service)

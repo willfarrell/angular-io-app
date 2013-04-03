@@ -57,7 +57,7 @@ angular.module('io.factory.message', [])
 			});
 	};
 	$rootScope.$watch('session.user_ID', function(value) {
-	  	if (value) $scope.updateUnreadCount();
+	if (value) $scope.updateUnreadCount();
 	});
 	return $scope;
 }]);

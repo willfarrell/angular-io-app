@@ -250,9 +250,9 @@ angular.module('io.factory.follow', [])
 	};
 	// load on signin
 	$rootScope.$watch('session.user_ID', function(value) {
-	  	if (value) {
-	  		$scope.loadGroups();
-	  		$scope.init();
+	if (value) {
+	$scope.loadGroups();
+	$scope.init();
 	}
 	});
 	return $scope;

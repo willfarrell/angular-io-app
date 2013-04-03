@@ -106,7 +106,7 @@ function CompanyCtrl($scope, $http, $routeParams) {
 			.success(function(data) {
 				console.log(data);
 				$scope.errors.user	= (data.errors) ? data.errors : {};
-				$rootScope.alerts 	= (data.alerts) ? data.alerts : [];
+				$rootScope.alerts= (data.alerts) ? data.alerts : [];
 				if (!data.alerts && !data.errors) {
 					$scope.locations = data;
 					// load region data
@@ -143,8 +143,8 @@ function CompanyCtrl($scope, $http, $routeParams) {
 				.success(function(data) {
 					console.log('updateLocation.put.success');
 					console.log(data);
-					$scope.errors 		= (data.errors) ? data.errors : {};
-					$rootScope.alerts 	= (data.alerts) ? data.alerts : [];
+					$scope.errors= (data.errors) ? data.errors : {};
+					$rootScope.alerts= (data.alerts) ? data.alerts : [];
 					if (!data.alerts && !data.errors) {
 						$scope.locations[$scope.location.location_ID] = $scope.location;
 						$rootScope.alerts = [{'class':'success', 'label':'Location:', 'message':'Saved'}];
@@ -159,8 +159,8 @@ function CompanyCtrl($scope, $http, $routeParams) {
 				.success(function(data) {
 					console.log('updateLocation.post.success');
 					console.log(data);
-					$scope.errors 		= (data.errors) ? data.errors : {};
-					$rootScope.alerts 	= (data.alerts) ? data.alerts : [];
+					$scope.errors= (data.errors) ? data.errors : {};
+					$rootScope.alerts= (data.alerts) ? data.alerts : [];
 					if (!data.alerts && !data.errors) {
 						$scope.location.location_ID = data;
 						$scope.locations[$scope.location.location_ID] = $scope.location;
@@ -184,7 +184,7 @@ function CompanyCtrl($scope, $http, $routeParams) {
 				console.log('deleteLocation.delete.success');
 				console.log(data);
 				$scope.errors.user	= (data.errors) ? data.errors : {};
-				$rootScope.alerts 	= (data.alerts) ? data.alerts : [];
+				$rootScope.alerts= (data.alerts) ? data.alerts : [];
 				if (!data.alerts && !data.errors) {
 					delete $scope.locations[id];
 				}
@@ -200,7 +200,7 @@ function CompanyCtrl($scope, $http, $routeParams) {
 		$http.get($scope.settings.server+'/company/user/').success(function(data) {
 			console.log(data);
 			$scope.errors.user	= (data.errors) ? data.errors : {};
-			$rootScope.alerts 	= (data.alerts) ? data.alerts : [];
+			$rootScope.alerts= (data.alerts) ? data.alerts : [];
 			if (!data.alerts && !data.errors) {
 				$scope.users = data;
 			}
@@ -227,8 +227,8 @@ function CompanyCtrl($scope, $http, $routeParams) {
 				.success(function(data) {
 					console.log('updateUser.put.success');
 					console.log(data);
-					$scope.errors 		= (data.errors) ? data.errors : {};
-					$rootScope.alerts 	= (data.alerts) ? data.alerts : [];
+					$scope.errors= (data.errors) ? data.errors : {};
+					$rootScope.alerts= (data.alerts) ? data.alerts : [];
 					if (!data.alerts && !data.errors) {
 						$scope.users[$scope.user.user_ID] = $scope.user;
 						$rootScope.alerts = [{'class':'success', 'label':'User:', 'message':'Saved'}];
@@ -243,8 +243,8 @@ function CompanyCtrl($scope, $http, $routeParams) {
 				.success(function(data) {
 					console.log('updateUser.post.success');
 					console.log(data);
-					$scope.errors 		= (data.errors) ? data.errors : {};
-					$rootScope.alerts 	= (data.alerts) ? data.alerts : [];
+					$scope.errors= (data.errors) ? data.errors : {};
+					$rootScope.alerts= (data.alerts) ? data.alerts : [];
 					if (!data.alerts && !data.errors) {
 						$scope.user.user_ID = data;
 						$scope.users[$scope.user.user_ID] = $scope.user;

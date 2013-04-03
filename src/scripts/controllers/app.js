@@ -9,18 +9,18 @@ function AppCtrl(rootScope, $scope, $http, $cookies, $location, filepicker, acce
 	// scope fall back for children
 	//$scope.$http = $http;
 	// Factory init - $scope.factory = factory;
- 	$rootScope.filepicker = filepicker;
- 	$rootScope.accessibility = accessibility;
- 	$rootScope.markdown = markdown;
+$rootScope.filepicker = filepicker;
+$rootScope.accessibility = accessibility;
+$rootScope.markdown = markdown;
 	$rootScope.message = message;
 	$rootScope.follow = follow;
 	markdown.setOptions({
-	  	gfm: true,
-	  	tables: true,
-	  	breaks: false,
-	  	pedantic: false,
-	  	sanitize: true,
-	  	smartLists: true
+	gfm: true,
+	tables: true,
+	breaks: false,
+	pedantic: false,
+	sanitize: true,
+	smartLists: true
 	});
 	$rootScope.markdown = markdown;
 	// Events

@@ -99,7 +99,7 @@ function UserCtrl($scope, $http, $routeParams) {
 				.success(function(data) {
 					if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
 					} else {
-						$scope.errors.user 	= (data.errors) ? data.errors : {};
+						$scope.errors.user= (data.errors) ? data.errors : {};
 					}
 				})
 				.error(function() {

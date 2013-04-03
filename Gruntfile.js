@@ -584,14 +584,23 @@ module.exports = function(grunt) {
 							pattern: /[ \t]+[\n\r]{1}/g,
 							replacement: ''
 						},
-						{	// Clean "Mixed spaces and tabs" - <%= jshintrc.indent %>
+						{	// Clean "Mixed spaces and tabs" - All spaces
 							pattern: /[ ]{4}/g,
+							replacement: '\t'
+						},
+						{	// Clean "Mixed spaces and tabs" - Pre Mix
+							pattern: /[ ]{1,3}\t+/g,
+							replacement: ''
+						},
+						{	// Clean "Mixed spaces and tabs" - Post Mix
+							pattern: /\t+[ ]{1,3}/g,
 							replacement: '\t'
 						},
 						{	// Clean "Extra comma" - Has trailing single-line comment check
 							pattern: /,(\s*(\/\/.*)[\n\r]\s*[\]\}]+)/g,
 							replacement: '$1' // requires "
 						}
+						// "A regular expression literal can be confused with '/='" - Use /\=
 					]
 				},
 				files: [

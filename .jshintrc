@@ -1,5 +1,5 @@
 { 
-  "bitwise": true,
+  "bitwise": false,
   "camelcase": false,
   "curly": true,
   "eqeqeq": true,
@@ -9,13 +9,13 @@
   "indent": null,
   
   "latedef": true,
-  "newcap": true,
+  "newcap": false,
   "noarg": true,
   "nonew": true,
   "plusplus": false,
   "quotmark": "single",
   "undef": true,
-  "strict": true,
+  "strict": false,
   "trailing": true,
   
   "maxparams": null,

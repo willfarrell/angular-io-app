@@ -2,8 +2,8 @@
 //.controller('PageCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
 SupportCtrl.$inject = ['$scope', '$http', '$routeParams'];
 function SupportCtrl($scope, $http, $routeParams) {
- 	console.log('SupportCtrl '+$routeParams.page);
- 	$scope.page_url = 'view/support/'+encodeURIComponent($routeParams.page)+'.html';
- 	//$scope.nav_select($scope.nav_parent_id, $scope.nav_ids, 'legal');
+console.log('SupportCtrl '+$routeParams.page);
+$scope.page_url = 'view/support/'+encodeURIComponent($routeParams.page)+'.html';
+//$scope.nav_select($scope.nav_parent_id, $scope.nav_ids, 'legal');
 }
 //}]);

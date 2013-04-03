@@ -29,13 +29,13 @@ function GetElementsByClassName( o, className ) {
 	//document.getElementsByClassName(className); // temp override
 	var elem = null;
 
-	if ( o.className == className ) {
+	if ( o.className === className ) {
 		return o;
 	}
 	for ( var i = 0; i < o.childNodes.length; i++ ) {
-		if ( o.childNodes[i].nodeType == 1 ) {
-			elem = GetElementsByClassName( o.childNodes[i], className );
-			if ( elem != null ) {
+		if ( o.childNodes[i].nodeType === 1 ) {
+			elem = new GetElementsByClassName( o.childNodes[i], className );
+			if ( elem !== null ) {
 				break;
 			}
 		}
@@ -46,33 +46,33 @@ function GetElementsByClassName( o, className ) {
 
 // Avoid this functions as much as possible
 function GetElementById( o, id ) {
-	document.getElementById(id); // temp override
-	var elem = null;
+	return document.getElementById(id); // temp override
+	/*var elem = null;
 
-	if ( o.getAttribute('id') == id ) {
+	if ( o.getAttribute('id') === id ) {
 		return o;
 	}
 	for ( var i = 0; i < o.childNodes.length; i++ ) {
-		if ( o.childNodes[i].nodeType == 1 ) {
-			elem = GetElementById( o.childNodes[i], id );
-			if ( elem != null )
+		if ( o.childNodes[i].nodeType === 1 ) {
+			elem = new GetElementById( o.childNodes[i], id );
+			if ( elem !== null )
 				break;
 		}
 	}
 
-	return elem;
+	return elem;*/
 }
 
 // src: http://stackoverflow.com/questions/9496427/how-to-get-elements-by-attribute-selector-w-native-javascript-w-o-queryselector
 function getAllElementsWithAttribute(attribute, value) {
-  	var matchingElements = [];
-  	var allElements = document.getElementsByTagName('*');
-  	for (var i = 0, l = allElements.length; i < l; i++) {
-  		var attr = allElements[i].getAttribute(attribute);
-		if ('string' === typeof attr && (!value || (value && attr == value))) {
+	var matchingElements = [];
+	var allElements = document.getElementsByTagName('*');
+	for (var i = 0, l = allElements.length; i < l; i++) {
+		var attr = allElements[i].getAttribute(attribute);
+		if ('string' === typeof attr && (!value || (value && attr === value))) {
 			return allElements[i];
 			// Element exists with attribute. Add to array.
-			matchingElements.push(allElements[i]);
+			//matchingElements.push(allElements[i]);
 		}
 	}
 	return matchingElements;
@@ -84,9 +84,9 @@ function getAllElementsWithAttribute(attribute, value) {
  */
 function dom$(str, o) { // id .class html[nth-child] (input[name=aaaa] - not included)
 	var elem, arr, n, c, // n:name, c:child
-			regex_n = /([\w\-]+)/, regex_c = /\[(\d)+\]/, regex_a = /=([\w\-\/'.]+)/,
+			regex_n = /([\w\-]+)/, regex_c = /\[(\d)+\]/, regex_a = /\=([\w\-\/'.]+)/,
 			d = document;
-	o || (o = d); // if(!o) { o = document }
+	o = o || d; // if(!o) { o = document }
 	if (str) {
 		arr = str.split(' ');
 		//console.log(arr);
@@ -95,10 +95,10 @@ function dom$(str, o) { // id .class html[nth-child] (input[name=aaaa] - not inc
 		if (n[1]) {
 			if (arr[0].indexOf('.') === 0) {// Class
 				//elem = o.getElementsByClassName(n[1]);
-				elem = (o == d) ? elem = d.getElementsByClassName(n[1]) // o == document
+				elem = (o === d) ? elem = d.getElementsByClassName(n[1]) // o == document
 								: elem = GetElementsByClassName(o, n[1]);
 			} else if (arr[0].indexOf('#') === 0) { // ID
-				elem = (o == d) ? elem = d.getElementById(n[1]) // o == document
+				elem = (o === d) ? elem = d.getElementById(n[1]) // o == document
 								: elem = GetElementById(o, n[1]);
 			} else if (arr[0].indexOf('@') === 0) { // attr
 				var at = regex_a.exec( arr[0] );
@@ -106,9 +106,9 @@ function dom$(str, o) { // id .class html[nth-child] (input[name=aaaa] - not inc
 				//elem = (o == d) ? elem = d.getElementByAttributed(n[1]) // o == document
 				//				: elem = GetElementById(o, n[1]);
 			} else {
-				elem = (o == d) ? elem = d.getElementById(n[1]) // o == document
+				elem = (o === d) ? elem = d.getElementById(n[1]) // o == document
 								: elem = GetElementById(o, n[1]);
-				elem || ( elem = o.getElementsByTagName(n[1])); // if(!elem) { elem =  o.getElementsByTagName(n[1]); }
+				elem = elem || o.getElementsByTagName(n[1]); // if(!elem) { elem =  o.getElementsByTagName(n[1]); }
 			}
 
 			// get nth child if applicable
@@ -127,6 +127,11 @@ function dom$(str, o) { // id .class html[nth-child] (input[name=aaaa] - not inc
 		}
 
 	}
+}
+
+function setStyle(o, p, v) { // without idiot check
+	o = o.style;
+	o[p] = v;
 }
 
 // http://javascript.crockford.com/memory/leak.html
@@ -184,47 +189,72 @@ function domShow(id) {
 
 //-- Object --//
 function objectIsEmpty(obj) {
-	for (var p in obj) return false;
+	for (var p in obj) {
+		if (obj.hasOwnProperty(p)) {
+			return false;
+		}
+	}
 	return true;
 }
 
 function objectLength(obj) {
-  	var c = 0;
-	for (var p in obj) if(obj.hasOwnProperty(p))++c;
+	var c = 0;
+	for (var p in obj) {
+		if (obj.hasOwnProperty(p)) {
+			++c;
+		}
+	}
 	return c;
 }
 
 function objectFindByKey(array, key, value) {
-  for (var i = 0; i < array.length; i++) {
-	if (array[i][key] === value) {
-	  return array[i];
+	for (var i = 0, l = array.length; i < l; i++) {
+		if (array[i][key] === value) {
+			return array[i];
+		}
 	}
-  }
-  return null;
+	return null;
 }
 
-function objectCheck(o) { return typeof(o) === 'object' ? o: dom$(o); }	// used in datepicker
+function objectCheck(o) {
+	return (typeof(o) === 'object') ? o : dom$(o);
+}
 
 function objectClone(obj) {
-  var newObj = (obj instanceof Array) ? [] : {};
-  for (i in obj) {
-	if (i == 'clone') continue;
-	if (obj[i] && typeof obj[i] == "object") {
-	  newObj[i] = objectClone(obj[i]);
-	} else newObj[i] = obj[i]
-  } return newObj;
+	var newObj = (obj instanceof Array) ? [] : {};
+	for (var i in obj) {
+		if (obj.hasOwnProperty(i)) {
+			if (i === 'clone') { continue; }
+			if (obj[i] && typeof obj[i] === 'object') {
+		newObj[i] = objectClone(obj[i]);
+			} else {
+				newObj[i] = obj[i];
+			}
+		}
+	}
+	return newObj;
+}
+
+/*function serialize(obj) {
+	var str = '';
+	for (var key in obj) {
+		if (str !== '') {
+			str += "&";
+		}
+		str += key + "=" + obj[key];
+	}
 }
 
 function objectURL(obj, prefix) {
-	var str = [];
+	var str = [], k, v;
 	for(var p in obj) {
-		var k = prefix ? prefix + "[" + p + "]" : p, v = obj[p];
-		str.push(typeof v == "object" ?
+		k = prefix ? prefix + '[' + p + ']' : p, v = obj[p];
+		str.push((typeof v === 'object') ?
 			serialize(v, k) :
-			encodeURIComponent(k) + "=" + encodeURIComponent(v));
+			encodeURIComponent(k) + '=' + encodeURIComponent(v));
 	}
 	return str.join("&");
-}
+}*/
 
 //-- Array --//
 function arrayUnique(a, id) {
@@ -240,19 +270,22 @@ function arrayUnique(a, id) {
 		}
 		return r;
 	} else { // regular array ["","","","",""]
-	   for (i = 0; i < l; ++i){
-		  if (a[i] in u)
-			 continue;
-		  r.push(a[i]);
-		  u[a[i]] = 1;
-	   }
-	   return r;
+		for (i = 0; i < l; ++i) {
+			if (a[i] in u) {
+				if (u.hasOwnProperty(a[i])) {
+					continue;
+				}
+			}
+			r.push(a[i]);
+			u[a[i]] = 1;
+		}
+		return r;
 	}
 }
 
 function inArray(needle, haystack) {
 	for(var i = 0, l = haystack.length; i < l; i++) {
-		if (haystack[i] == needle) return true;
+		if (haystack[i] === needle) { return true; }
 	}
 	return false;
 }
@@ -268,7 +301,7 @@ function arrayIndexOf(a, item) {
 
 function replaceElem(o_new, o_old) {
 	o_old.parentNode.replaceChild(o_new, o_old);
-};
+}
 
 // Get
 function getName(o) { return o.name; }
@@ -305,6 +338,8 @@ function getStyle(o, p){
 	}
 }
 */
+
+
 function getStyleDisplay(o) { return getStyle(o, 'display'); }
 //function getStyleDisplay(o) { return o.style.display; }
 
@@ -325,14 +360,11 @@ function replaceInnerHTML(o, v) {
 	/* Since we just removed the old element from the DOM, return a reference
 	to the new element, which can be used to restore variable references. */
 	o = o_new;
-};
+}
 function setClassName(o, v) { o.className = v; }
 
 // Set Display
-function setStyle(o, p, v) { // without idiot check
-	o = o.style;
-	o[p] = v;
-}
+
 /*function setStyle(p, v, oid) { // from datepicker // with idiot check
 	var elm = checkObj(oid);
 	if((elm != null) && (elm.style != null)){
@@ -340,16 +372,17 @@ function setStyle(o, p, v) { // without idiot check
 		elm[p] = v;
 	}
 }*/
-function setStyleDisplay(o, v) { setStyle(o, 'display', v?'':'none'); } // v = 1 (block) or 0 (none)
+function setStyleDisplay(o, v) { setStyle(o, 'display', v ? '' : 'none'); } // v = 1 (block) or 0 (none)
 //function setStyleDisplay(o, v) { o.style.display = v?'block':'none'; } // v = 1 (block) or 0 (none)
 
 // Other
 function toggleStyleDisplay(o) { var z = (getStyleDisplay(o) === 'none') ? setStyleDisplay(o, 1) : setStyleDisplay(o, 0); } // unused var z - appease JSlint
 function toggleValue(o, text1, text2) {
-	getInnerHTML(o) === text1 ?
-		setInnerHTML(o, text2):
-	getInnerHTML(o) === text2 &&
+	if (getInnerHTML(o) === text1) {
+		setInnerHTML(o, text2);
+	} else if (getInnerHTML(o) === text2) {
 		setInnerHTML(o, text1);
+	}
 }
 
 function addInnerHTML(o, t, p) { // object, text, pre/post = 0/1
@@ -363,20 +396,21 @@ function addInnerHTML(o, t, p) { // object, text, pre/post = 0/1
 function onEnter(e) { if (e === 13) { return true; } }
 
 function domRemove(obj) {
-	if(obj != null)
+	if (obj !== null) {
 		obj.parentNode.removeChild(obj);
+	}
 }
 
 function addEvent(obj, evType, fn){
- if (obj.addEventListener){
-   obj.addEventListener(evType, fn, false);
-   return true;
- } else if (obj.attachEvent){
-   var r = obj.attachEvent("on"+evType, fn);
-   return r;
- } else {
-   return false;
- }
+	if (obj.addEventListener) {
+		obj.addEventListener(evType, fn, false);
+		return true;
+	} else if (obj.attachEvent) {
+		var r = obj.attachEvent('on'+evType, fn);
+		return r;
+	} else {
+		return false;
+	}
 }
 
 
@@ -386,15 +420,16 @@ function addEvent(obj, evType, fn){
 
 
 function getFormData(form_ID) {
-	obj = dom$(form_ID);
+	var obj = dom$(form_ID);
 	var data = {};
 	var name, value, name_pattern = /[\[\]]/;
+	var i,l,v;
 	// input
 	var inputs = obj.getElementsByTagName('input');
-	for (var i=0; i<inputs.length; i++) {
+	for (i = 0, l = inputs.length; i<l; i++) {
 		//if (inputs[i].type != 'submit') {
 		value = null;
-		if (inputs[i].type == 'checkbox' || inputs[i].type == 'radio') {
+		if (inputs[i].type === 'checkbox' || inputs[i].type === 'radio') {
 			if (inputs[i].checked) {
 				value = inputs[i].value;
 			}
@@ -403,10 +438,10 @@ function getFormData(form_ID) {
 		}
 		if (value) {
 			name = inputs[i].name.split(name_pattern);
-			if (name.length == 1) {
+			if (name.length === 1) {
 				data[name[0]] = value;
 			} else {
-				if(typeof data[name[0]]==="undefined") { data[name[0]]={}; };
+				if (typeof data[name[0]] === 'undefined') { data[name[0]] = {}; }
 				data[name[0]][name[1]] = value;
 			}
 		}
@@ -415,12 +450,12 @@ function getFormData(form_ID) {
 
 	// select
 	var selects = obj.getElementsByTagName('select');
-	for (var i=0; i<selects.length; i++) {
+	for (i = 0, l = selects.length; i<l; i++) {
 		name = selects[i].name.split(name_pattern);
-		if (name.length == 1) {
+		if (name.length === 1) {
 			data[name[0]] = selects[i].value;
 		} else {
-			if(typeof data[name[0]]==="undefined") { data[name[0]]={}; };
+			if(typeof data[name[0]]==='undefined') { data[name[0]]={}; }
 			data[name[0]][name[1]] = selects[i].value;
 		}
 		//data[selects[i].name] = selects[i].value;
@@ -428,13 +463,13 @@ function getFormData(form_ID) {
 
 	// textarea
 	var fields = obj.getElementsByTagName('textarea');
-	for (var i=0; i<fields.length; i++) {
+	for (i = 0, l = fields.length; i<l; i++) {
 		name = fields[i].name.split(name_pattern);
-		if (name.length == 1) {
+		if (name.length === 1) {
 			data[name[0]] = fields[i].value;
 		} else {
-			if(typeof data[name[0]]==="undefined") { data[name[0]]={}; };
-			data[name[0]][name[1]] = fields[i].value;;
+			if(typeof data[name[0]] === 'undefined') { data[name[0]]={}; }
+			data[name[0]][name[1]] = fields[i].value;
 		}
 		//data[fields[i].name] = fields[i].value;
 	}

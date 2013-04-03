@@ -11,29 +11,29 @@ angular.module('ui.directives', [])
 	terminal: true,
 	restrict: 'A',
 	compile: function (element, attr, transclude) {
-	  return function (scope, element, attr) {
+	return function (scope, element, attr) {
 
 		var childElement;
 		var childScope;
 		scope.$watch(attr['uiIf'], function (newValue) {
-		  if (childElement) {
+	if (childElement) {
 			childElement.remove();
 			childElement = undefined;
-		  }
-		  if (childScope) {
+	}
+	if (childScope) {
 			childScope.$destroy();
 			childScope = undefined;
-		  }
+	}
 
-		  if (newValue) {
+	if (newValue) {
 			childScope = scope.$new();
 			transclude(childScope, function (clone) {
-			  childElement = clone;
-			  element.after(clone);
+	childElement = clone;
+	element.after(clone);
 			});
-		  }
+	}
 		});
-	  };
+	};
 	}
   };
 }]);

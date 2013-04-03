@@ -20,7 +20,7 @@ db.keyDB_name.set('key', {});
 db.keyDB_name.remove('key');
 db.keyDB_name.clear();
 
-var list = db.keyDB_name.keys; 	// get list of keys
+var list = db.keyDB_name.keys;	// get list of keys
 var obj = db.keyDB_name.obj;	// get default obj
 
 //= init Examples =//
@@ -33,7 +33,7 @@ if (storage) {
 
 //= Creating a keyDB =//
 db.name = new keyDB(
-	"name", 				// DB prefix for all keys
+	"name",				// DB prefix for all keys
 	{						// default object (optinal)
 		"key":"",
 		"value":"",
@@ -47,21 +47,21 @@ db.name = new keyDB(
 // localStorage db wrapper
 var db = {
 	on: false,			// bool - if localStorage is enabled in browser
-	ls: localStorage, 	// localStorage short name - obfusification
+	ls: localStorage,	// localStorage short name - obfusification
 
 	/**
-	 * set 'on' bool for those that want to
-	 * test if localStorage is enabled
-	 *
-	 * call from below
-	 *
-	 * @this {Object}
-	 */
+	* set 'on' bool for those that want to
+	* test if localStorage is enabled
+	*
+	* call from below
+	*
+	* @this {Object}
+	*/
 	init: function() {
 		var uid = +new Date(),
 			result;
 		try {
-			result = this.get(uid, uid) == uid;
+			result = this.get(uid, uid) === uid;
 			this.remove(uid);
 			this.on = result;
 		} catch( e ) {}
@@ -70,8 +70,8 @@ var db = {
 	// Main Functions //
 
 	/**
-	 * @this {Object}
-	 */
+	* @this {Object}
+	*/
 	get: function(key, default_obj) {
 		//console.log("db.get('"+key+"', "+JSON.stringify(default_obj)+")");
 		if ( default_obj !== 'undefined' && !this.ls.getItem(key)) {
@@ -89,24 +89,24 @@ var db = {
 	},
 
 	/**
-	 * @this {Object}
-	 */
+	* @this {Object}
+	*/
 	set: function(key, obj) {
 		//console.log("db.set('"+key+"', "+JSON.stringify(obj)+")");
-		if (key !== null) this.ls.setItem(key, JSON.stringify(obj));
+		if (key !== null) { this.ls.setItem(key, JSON.stringify(obj)); }
 	},
 
 	/**
-	 * @this {Object}
-	 */
+	* @this {Object}
+	*/
 	remove: function(key) {
 		this.ls.removeItem(key);
 	},
 
 	// clears ALL localStorage - only call if you're sure
 	/**
-	 * @this {Object}
-	 */
+	* @this {Object}
+	*/
 	clear: function() {
 		this.ls.clear();
 	}
@@ -121,7 +121,7 @@ db.init();
  * @this {Object}
  */
 function keyDB(id, default_obj) {
-	this.id = id ? id+"_" : "_"; // prefix for all keys, end with _
+	this.id = id ? id+'_' : '_'; // prefix for all keys, end with _
 	this.keys = db.get(this.id+'keys', []);
 	this.obj = default_obj || {}; // default object being stored
 }
@@ -133,7 +133,7 @@ keyDB.prototype.get = function(key, default_obj) {
 };
 
 keyDB.prototype.set = function(key, obj) {
-	if (obj == 'undefined' || key == 'undefined') return;	// don't set undefined
+	if (obj === 'undefined' || key === 'undefined') { return; }	// don't set undefined
 	//console.log("keyDB.set("+key+", ");
 	//console.log(obj);
 	//console.log(")");
@@ -162,7 +162,7 @@ keyDB.prototype.remove = function(key) {
  * list = [] - default container
  */
 keyDB.prototype.getAllArray = function(key, list_default) {
-	if (typeof(list_default) == 'function') list_default = list_default();
+	if (typeof(list_default) === 'function') { list_default = list_default(); }
 	var list = [];
 	for (var i = 0, l = this.keys.length; i < l; i++) {
 		list.push(this.get(this.keys[i]));
@@ -178,7 +178,7 @@ keyDB.prototype.getAllArray = function(key, list_default) {
  * list = {} - default container
  */
 keyDB.prototype.getAllObject = function(list_default) {
-	if (typeof(list_default) == 'function') list_default = list_default();
+	if (typeof(list_default) === 'function') { list_default = list_default(); }
 	var list = {};
 	for (var i = 0, l = this.keys.length; i < l; i++) {
 		list[this.keys[i]] = this.get(this.keys[i]);
@@ -195,7 +195,7 @@ keyDB.prototype.getAllObject = function(list_default) {
  * list = [] - default container
  */
 keyDB.prototype.setArray = function(key, list) {
-	if (!key) return;	// return if no key
+	if (!key) { return; }	// return if no key
 
 	for (var i = 0, l = list.length; i < l; i++) {
 		//console.log(list[i]);
@@ -208,7 +208,9 @@ keyDB.prototype.setArray = function(key, list) {
  */
 keyDB.prototype.setObject = function(list) {
 	for (var i in list) {
-		this.set(i, list[i]);
+		if (list.hasOwnProperty(i)) {
+			this.set(i, list[i]);
+		}
 	}
 };
 
@@ -217,7 +219,7 @@ keyDB.prototype.setObject = function(list) {
  * list = [] - default container
  */
 keyDB.prototype.setAllArray = function(key, list) {
-	if (!key) return;	// return if no key
+	if (!key) { return; }	// return if no key
 	this.clear();
 
 	this.setArray(key, list);

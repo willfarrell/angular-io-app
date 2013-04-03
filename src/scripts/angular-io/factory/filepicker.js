@@ -6,10 +6,10 @@ angular.module('io.factory.filepicker', [])
 	$scope.version = '0.2.0';
 	$scope.alerts = [];
 	if (!$rootScope.settings.filepicker) {
-	 	$rootScope.loadJSON(null, 'config.filepicker', 'json', function(data){
-		 	$rootScope.settings.filepicker = data;
-	 	});
- 	}
+	$rootScope.loadJSON(null, 'config.filepicker', 'json', function(data){
+		$rootScope.settings.filepicker = data;
+	});
+}
 	$scope.services = {
 		'':{
 			'name':'Filepicker',
@@ -251,9 +251,9 @@ angular.module('io.factory.filepicker', [])
 		};
 		var success = function(stream) {
 			if (/Chrome/.test(navigator.userAgent)) {
-			  	$scope.camera.video.src = window.URL.createObjectURL(stream);
+			$scope.camera.video.src = window.URL.createObjectURL(stream);
 			} else {
-			  	$scope.camera.video.src = stream;
+			$scope.camera.video.src = stream;
 			}
 			$scope.camera.stream = stream;	// for stopping
 			$scope.camera.video.width = $scope.camera.canvas.width;
@@ -278,7 +278,7 @@ angular.module('io.factory.filepicker', [])
 			$scope.camera.img.onclick = function() {
 				// set filename for downloading picture
 				// https://developer.mozilla.org/en-US/docs/HTML/Element/a#attr-download
-			   // $scope.camera.link.setAttribute('download', 'webcam-'+location.hostname+'-'+Date.now()+'.png');
+	// $scope.camera.link.setAttribute('download', 'webcam-'+location.hostname+'-'+Date.now()+'.png');
 				//$scope.camera.link.href = $scope.camera.canvas.toDataURL('image/png');
 				//$scope.camera.link.click();
 			};

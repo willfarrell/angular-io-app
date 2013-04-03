@@ -13,14 +13,14 @@ angular.module('io.markdown', [])
 	smartLists: Use smarter list behavior than the original markdown. Disabled by default. May eventually be default with the old behavior moved into pedantic.
 	langPrefix: Set the prefix for code block classes. Defaults to lang-.
 	$scope.markdown.setOptions({
-	  	gfm: true,
-	  	tables: true,
-	  	breaks: false,
-	  	pedantic: false,
-	  	sanitize: true,
-	  	smartLists: true,
-	  	langPrefix: 'lang-',
-	  	highlight: function(code, lang) {
+	gfm: true,
+	tables: true,
+	breaks: false,
+	pedantic: false,
+	sanitize: true,
+	smartLists: true,
+	langPrefix: 'lang-',
+	highlight: function(code, lang) {
 			if (lang === 'js') {
 				return highlighter.javascript(code);
 			}
