@@ -1,16 +1,18 @@
+/*global dom$:true */
+
 //angular.module('io.controller.onboard', [])
 //.controller('OnboardCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
-OnboardCtrl.$inject = ['$scope', '$cookies', '$http', '$routeParams'];
+
 function OnboardCtrl($scope, $cookies, $http, $routeParams) {
 	console.log('OnboardCtrl ('+$scope.$id+') page:'+$routeParams.page);
 	$scope.errors = {};
 
-	if (!$routeParams.page || $routeParams.page == 'start') $scope.href('/onboard/'+$rootScope.settings.onboard.start);
+	if (!$routeParams.page || $routeParams.page === 'start') { $scope.href('/onboard/'+$rootScope.settings.onboard.start); }
 	$scope.page_url = 'view/onboard/'+encodeURIComponent($routeParams.page)+'.html';
 
 	$scope.BuildProgressTracker = function(page, action) {
 		console.log('BuildProgressTracker('+page+', '+action+')');
-		var elements = dom$('#progress_tracker').getElementsByTagName("a");
+		var elements = dom$('#progress_tracker').getElementsByTagName('a');
 
 		var after = false;	// apple after class
 		for (var i = 0, l = elements.length; i < l; i++ ) {
@@ -19,7 +21,7 @@ function OnboardCtrl($scope, $cookies, $http, $routeParams) {
 
 			if (elements[ i ].href.indexOf('#/onboard/'+page) !== -1) {	// current page
 				if (action === 'skip') {	// go to next page
-					if (i+1 < l) $scope.href(elements[ i+1 ].href);
+					if (i+1 < l) { $scope.href(elements[ i+1 ].href); }
 					else {	// onboard complete - update user_level if not done after subscribe
 						$scope.done(true);
 					}
@@ -39,15 +41,15 @@ function OnboardCtrl($scope, $cookies, $http, $routeParams) {
 				console.log('BuildProgressTracker.get.success');
 				console.log(data);
 				$rootScope.updateSession(function(){
-					if (redirect) $rootScope.href(redirect);
-					else $rootScope.redirect();
+					if (redirect) { $rootScope.href(redirect); }
+					else { $rootScope.redirect(); }
 				});
 			})
 			.error(function() {
 				console.log('BuildProgressTracker.get.error');
 				$rootScope.http_error();
 			});
-	}
+	};
 
 
 	//-- Buttons --//
@@ -59,4 +61,5 @@ function OnboardCtrl($scope, $cookies, $http, $routeParams) {
 		$scope.BuildProgressTracker($routeParams.page, $routeParams.action);
 	});
 }
+OnboardCtrl.$inject = ['$scope', '$cookies', '$http', '$routeParams'];
 //}]);

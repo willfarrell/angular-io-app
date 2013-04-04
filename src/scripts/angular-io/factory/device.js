@@ -1,4 +1,4 @@
-(function (angular) {
+//(function (angular) {
 angular.module('io.factory.device', [])
 .factory('$device', ['$rootScope', '$http', function($rootScope, $http) {
 	console.log('deviceFactory ('+$rootScope.$id+')');
@@ -8,4 +8,4 @@ angular.module('io.factory.device', [])
 	return $scope;
 }]);
 
-})(angular)
+//})(angular);

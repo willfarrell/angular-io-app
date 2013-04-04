@@ -4,9 +4,9 @@ angular.module('io.fallback')
 		restrict: 'A',
 		link: function(scope, element, attrs, controller) {
 			// Special case for type=password adds password=true attr
-			attrs.$set('password', (attrs.type == 'password'));
+			attrs.$set('password', (attrs.type === 'password'));
 			function focus() {
-				if (element.val() == attrs.placeholder) {
+				if (element.val() === attrs.placeholder) {
 					element.val('');
 					element.removeClass('placeholder');
 					if (attrs.password) {
@@ -15,7 +15,7 @@ angular.module('io.fallback')
 				}
 			}
 			function blur() {
-				if (element.val() == '' || element.val() == attrs.placeholder) {
+				if (element.val() === '' || element.val() === attrs.placeholder) {
 					element.val(attrs.placeholder);
 					element.addClass('placeholder');
 					if (attrs.password) {

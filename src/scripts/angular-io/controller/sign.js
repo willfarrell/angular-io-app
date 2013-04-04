@@ -1,6 +1,8 @@
+/*global objectLength:true, syncVar:true, db:true */
+
 //angular.module('io.controller.sign', [])
 //.controller('SignCtrl', ['$scope', '$http', '$cookies', '$routeParams', function($scope, $http, $cookies, $routeParams) {
-SignCtrl.$inject = ['$scope', '$http', '$cookies', '$routeParams'];
+
 function SignCtrl($scope, $http, $cookies, $routeParams) {
 	console.log('SignCtrl ('+$scope.$id+')');
 	$scope.errors = {};		// form errors
@@ -105,7 +107,7 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 					//$scope.refresh();
 					$rootScope.redirect();
 				} else {
-					$scope.errors.totp = "Verification Failed";
+					$scope.errors.totp = 'Verification Failed';
 				}
 			})
 			.error(function() {
@@ -138,7 +140,7 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 	if ($routeParams.confirm_hash) {
 		$scope.action = 'in';
 	}
-	if ($scope.action == 'out') {
+	if ($scope.action === 'out') {
 		$scope.account_signout();
 		$scope.action = 'in';
 	} else if ($rootScope.session.user_ID) {
@@ -147,4 +149,5 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 	}
 
 }
+SignCtrl.$inject = ['$scope', '$http', '$cookies', '$routeParams'];
 //}]);

@@ -1,10 +1,12 @@
-(function (angular) {
+/*global db:true */
+
+//(function (angular) {
 angular.module('io.factory.accessibility', [])
 .factory('$accessibility', ['$rootScope', '$http', function($rootScope, $http) {
 	console.log('AccessibilityFactory ('+$rootScope.$id+')');
 	var $scope = {};
 	$scope.version = '0.1.0';
-	$scope.css_file = "css/accessibility.min.css";
+	$scope.css_file = 'css/accessibility.min.css';
 	$scope.settings = db.get('accessibility', {
 		'accessibility':false,
 		//'dyslexic':false,
@@ -43,7 +45,7 @@ angular.module('io.factory.accessibility', [])
 	};
 	// settings zoom function
 	$scope.zoom = function(zoom) {
-		zoom || (zoom = 1);
+		zoom = zoom || 1;
 		$scope.settings.zoom = zoom;
 		//document.body.style.zoom = $scope.settings.zoom;
 		//document.body.style.MozTransform = 'scale(' + ($scope.settings.zoom / 100) + ')';
@@ -56,4 +58,4 @@ angular.module('io.factory.accessibility', [])
 	return $scope; // important
 }]);
 
-})(angular);
+//})(angular);

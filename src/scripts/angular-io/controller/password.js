@@ -1,6 +1,6 @@
 //angular.module('io.controller.password', [])
 //.controller('PasswordCtrl', ['$scope', '$http', function($scope, $http) {
-PasswordCtrl.$inject = ['$scope', '$http'];
+
 function PasswordCtrl($scope, $http) {
 	console.log('PasswordCtrl ('+$scope.$id+')');
 	$scope.errors = {};
@@ -37,4 +37,5 @@ function PasswordCtrl($scope, $http) {
 			});
 	};
 }
+PasswordCtrl.$inject = ['$scope', '$http'];
 //}]);

@@ -1,6 +1,8 @@
+/*global format:true */
+
 angular.module('io.directive.inputMask', [])
 // requires format(str,mask)
-// data-input-mask="(999) 999-9999 x999999"
+// data-input-mask='(999) 999-9999 x999999'
 .directive('inputMask', [function() {
 	return {
 		require: 'ngModel',
@@ -14,14 +16,14 @@ angular.module('io.directive.inputMask', [])
 				// see ui-keypressHelper
 				var shiftPressed = event.shiftKey;
 				var keyCode = event.keyCode;
-				var cursorPos = element.prop("selectionStart");
+				var cursorPos = element.prop('selectionStart');
 				// normalize keycodes
 				if (!shiftPressed && keyCode >= 97 && keyCode <= 122) {
 					keyCode = keyCode - 32;
 				}
 				if (keyCode >= 48 && keyCode <= 90) {
 					scope.$apply(function() {
-						value = format(controller.$viewValue, attrs.inputMask);
+						var value = format(controller.$viewValue, attrs.inputMask);
 						element.val(value);
 						controller.$setViewValue(value.replace(/[^a-zA-Z0-9]+/g,'')); // clean modal var
 						// re place caret

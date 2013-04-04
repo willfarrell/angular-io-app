@@ -1,25 +1,28 @@
+/*global syncVar:true, db:true, objectIsEmpty:true, objectLength:true, numberPadding:true, device:true */
+
 angular.module('io.init.rootScope', [])
-.run(
-	['$rootScope', '$locale', '$cookies', '$http', '$window', '$location',
-	function($rootScope, $locale, $cookies, $http, $window, $location) {
+.run(['$rootScope', '$locale', '$cookies', '$http', '$window', '$location',
+function($rootScope, $locale, $cookies, $http, $window, $location) {
 	console.group('io.init.rootScope ('+$rootScope.$id+')');
-// HTML5SHIV
-/*$rootScope.ie8 = function(obj) {
-	if (obj.attachEvent) {	// <= IE8
-	obj.addEventListener = obj.attachEvent; // event = window.attachEvent ? 'onclick' : 'click';
-		}
-}
-$window = $rootScope.ie8($window);*/
-if ($window.attachEvent) {	// <= IE8
-$window.addEventListener = $window.attachEvent; // event = window.attachEvent ? 'onclick' : 'click';
+
+	// HTML5SHIV
+	/*$rootScope.ie8 = function(obj) {
+		if (obj.attachEvent) {	// <= IE8
+		obj.addEventListener = obj.attachEvent; // event = window.attachEvent ? 'onclick' : 'click';
+			}
 	}
-$rootScope.$watch(function () {
-	return $location.path();
-	}, function(value) {
-	// antuo scroll to top of page when ng-view doesn't chenge
-	document.querySelectorAll('.page')[0].scrollTop = 0;
-	//$rootScope.updateSession();
+	$window = $rootScope.ie8($window);*/
+	if ($window.attachEvent) {	// <= IE8
+		$window.addEventListener = $window.attachEvent; // event = window.attachEvent ? 'onclick' : 'click';
+	}
+	$rootScope.$watch(function () {
+			return $location.path();
+		}, function(value) {
+			// antuo scroll to top of page when ng-view doesn't chenge
+			document.querySelectorAll('.page')[0].scrollTop = 0;
+			//$rootScope.updateSession();
 	});
+
 	$rootScope.default_settings = {
 		'client'			:'',	// https://static.domain.com/
 		'server'			:'',	// https://api.domain.com/
@@ -90,13 +93,13 @@ $rootScope.$watch(function () {
 			.success(function(data) {
 				console.log('updateSession.get.success');
 				console.log(data);
-				if (data == []) { // special case no 'if ($rootScope.checkHTTPReturn(data)) {'
+				if (data === []) { // special case no 'if ($rootScope.checkHTTPReturn(data)) {'
 					$rootScope.href('/sign/out');
 				} else {
 					$rootScope.session = syncVar(data, $rootScope.session);
 					//$rootScope.session.timestamp = +new Date();
 					$rootScope.saveSession();
-					if (callback) $rootScope.$eval(callback());
+					if (callback) { $rootScope.$eval(callback()); }
 				}
 			})
 			.error(function() {
@@ -137,15 +140,16 @@ $rootScope.$watch(function () {
 				$rootScope.http_error();
 			});
 	};
-	$rootScope.checkHTTPReturn = function(data, config, headers, config) {
+
+	$rootScope.checkHTTPReturn = function(data, config) {
 		console.log(data);
-		config || (config = {
+		config = config || {
 			alerts:false,	// place alerts in local scope
 			errors:false	// place errors in local scope
-		});
+		};
 		var result = true;
 		// session check ... signout?
-		if (data.session == "signout") {
+		if (data.session === 'signout') {
 			//$rootScope.offline.que_request(http_config, http_callback);
 			if ($rootScope.uri().match(/\/sign\//) === null) { // prevent redirect loop
 				$rootScope.href('/sign/out');
@@ -154,11 +158,11 @@ $rootScope.$watch(function () {
 		}
 		// alert and errors
 		if (result && data.alerts) {
-			if (!config.alerts) $rootScope.alerts = data.alerts;
+			if (!config.alerts) { $rootScope.alerts = data.alerts; }
 			result = false;
 		}
 		if (data.errors) {
-			if (!config.errors) $rootScope.errors = data.errors;
+			if (!config.errors) { $rootScope.errors = data.errors; }
 			result = false;
 		}
 		// if all good return true
@@ -171,22 +175,22 @@ $rootScope.$watch(function () {
 		console.log($rootScope.session);
 		// not signed in -> sign/in
 		if (!$rootScope.session.user_ID) {
-			console.log("not signed in");
+			console.log('not signed in');
 			if ($rootScope.uri().match(/\/sign\//) === null) { // prevent redirect loop
 				$cookies.redirect = $rootScope.uri();
 				$rootScope.href('/sign/in');
 			}
 		// email not confirmed -> onboard
 		} else if ($rootScope.settings.onboard.required && !$rootScope.session.email_confirm && $rootScope.uri().match(/\/onboard\/email/) === null) {
-			console.log("email not confirmed = "+($rootScope.settings.onboard.required)+" && "+!$rootScope.session.email_confirm+" && "+($rootScope.uri().match(/\/onboard/) === null));
+			console.log('email not confirmed = '+($rootScope.settings.onboard.required)+' && '+!$rootScope.session.email_confirm+' && '+($rootScope.uri().match(/\/onboard/) === null));
 			$rootScope.href('/onboard/email');
 		// haven't completed manditory onboard steps -> onboard
 		} else if ($rootScope.settings.onboard.required && !$rootScope.session.timestamp_create && $rootScope.uri().match(/\/onboard/) === null) {
-			console.log("onboard not completed = "+($rootScope.settings.onboard.required)+" && "+!$rootScope.session.timestamp_create+" && "+($rootScope.uri().match(/\/onboard/) === null));
+			console.log('onboard not completed = '+($rootScope.settings.onboard.required)+' && '+!$rootScope.session.timestamp_create+' && '+($rootScope.uri().match(/\/onboard/) === null));
 			$rootScope.href('/onboard/'+$rootScope.settings.onboard.start);
 		// has an old password -> change pass
 		} else if ($rootScope.settings.password.max_age && $rootScope.session.password_age > $rootScope.settings.password.max_age) {
-			console.log(($rootScope.settings.password.max_age)+" && "+($rootScope.session.password_age > $rootScope.settings.password.max_age));
+			console.log(($rootScope.settings.password.max_age)+' && '+($rootScope.session.password_age > $rootScope.settings.password.max_age));
 			$rootScope.href('/onboard/password');
 		// force password change set -> change password
 		} else if ($rootScope.settings.password.min_timestamp && $rootScope.session.password_timestamp < $rootScope.settings.password.min_timestamp) {
@@ -205,12 +209,12 @@ $rootScope.$watch(function () {
 		details:'',
 		count:0,
 		total:(
-			objectLength($rootScope.settings['class'])
-			+$rootScope.settings.i18n['lang'].length
-			+$rootScope.settings.i18n['lang-locale'].length
-			+$rootScope.settings.i18n['json'].length
+			objectLength($rootScope.settings['class'])+
+			$rootScope.settings.i18n['lang'].length+
+			$rootScope.settings.i18n['lang-locale'].length+
+			$rootScope.settings.i18n['json'].length+
 			//+$rootScope.settings['json'].length
-			+objectLength($rootScope.settings.json)
+			objectLength($rootScope.settings.json)
 		)
 	};
 
@@ -236,7 +240,7 @@ $rootScope.$watch(function () {
 
 	//!-- Global Vars --//
 	$rootScope.set = function(key, value) { $rootScope[key] = value; };
-	$rootScope.device= (typeof device != 'undefined') ? device : false; // cordova active?
+	$rootScope.device= (typeof device !== 'undefined') ? device : false; // cordova active?
 	$rootScope.loading= false;	// nav bar loading indicator
 	$rootScope.sliderNav= -1;		// slider nav state (-1,+1)
 	$rootScope.alerts= [];	// for alert-fixed-top
@@ -244,19 +248,21 @@ $rootScope.$watch(function () {
 	$rootScope.modal= {};	// for alertModal
 	$rootScope.datetime = new Date();
 	$rootScope.timezone_min = new Date().getTimezoneOffset();
-$rootScope.i18n = {};
+	$rootScope.i18n = {};
 	$rootScope.json = {
-		"regions":{}
+		'regions':{}
 	};
+
 	// clear alerts on page change
 	$rootScope.$watch(function () {
-	return $location.path();
-	}, function(value) {
-	$rootScope.alerts = [];
+			return $location.path();
+		}, function(value) {
+			$rootScope.alerts = [];
 	});
+
 	//!-- JSON -- //
 	$rootScope.loadJSON = function(key, file, folder, callback) {
-		folder || (folder = 'json');
+		folder = folder || 'json';
 		console.log('loadJSON('+key+', '+file+')');
 		$http.get($rootScope.settings.client+'/'+folder+'/'+file+'.json')
 			.success(function(data){
@@ -282,15 +288,18 @@ $rootScope.i18n = {};
 	};
 
 	for (var key in $rootScope.settings.json) {
-		$rootScope.loadJSON(key, $rootScope.settings.json[key]);
+		if ($rootScope.settings.json.hasOwnProperty(key)) {
+			$rootScope.loadJSON(key, $rootScope.settings.json[key]);
+		}
 	}
+
 	//!-- Lang --//
 	$rootScope.init = function() {
 		//$rootScope.locale= localStorage.getItem('locale');		//$rootScope.locale || ($rootScope.locale = localStorage.setItem('locale', $locale.id));// en-ca
 		$rootScope.locale = db.get('locale', $locale.id);
-	$rootScope.language = db.get('language', $rootScope.locale.substr(0,2));// en
+		$rootScope.language = db.get('language', $rootScope.locale.substr(0,2));// en
 		db.set('language', $rootScope.language);
-	if ($rootScope.locale.length > 2) {
+		if ($rootScope.locale.length > 2) {
 			$rootScope.country_code = $rootScope.locale.substr(3,2).toUpperCase();
 			db.set('country_code', $rootScope.country_code);
 		} else {
@@ -318,27 +327,32 @@ $rootScope.i18n = {};
 			.success(function(data) {
 				console.log('loadLocaleFile.get('+locale+'/'+file+').success');
 				//console.log(data);
-				for (var key in data) { $rootScope.i18n[key] = data[key]; }
+				for (var key in data) {
+					if (data.hasOwnProperty(key)) {
+						$rootScope.i18n[key] = data[key];
+					}
+				}
 				$rootScope.i18n.id = locale;
 				$rootScope.$emit('loaderEvent', locale);
 			})
 			.error(function(data, status, headers, config) {
 				console.log('loadLocaleFile.get('+locale+'/'+file+').error');
-				if (locale.length == 2) $rootScope.loadLocaleFile($rootScope.settings.i18n['default'], file);	// load default if root lang doesn't exist
-				else $rootScope.loadLocaleFile(locale.substr(0,2), file);
+				if (locale.length === 2) { $rootScope.loadLocaleFile($rootScope.settings.i18n['default'], file); }	// load default if root lang doesn't exist
+				else { $rootScope.loadLocaleFile(locale.substr(0,2), file); }
 			});
 	};
 	$rootScope.loadLocale = function() {
 		console.log('loadLocale()');
-		for (var i = 0, l = $rootScope.settings.i18n['lang'].length; i < l; i++) {
+		var i,l;
+		for (i = 0, l = $rootScope.settings.i18n['lang'].length; i < l; i++) {
 			//console.log($rootScope.language+'/'+$rootScope.settings.i18n['lang'][i]);
 			$rootScope.loadLocaleFile($rootScope.language, $rootScope.settings.i18n['lang'][i]);
 		}
-		for (var i = 0, l = $rootScope.settings.i18n['lang-locale'].length; i < l; i++) {
+		for (i = 0, l = $rootScope.settings.i18n['lang-locale'].length; i < l; i++) {
 			//console.log($rootScope.locale+'/'+$rootScope.settings.i18n['lang-locale'][i]);
 			$rootScope.loadLocaleFile($rootScope.locale, $rootScope.settings.i18n['lang-locale'][i]);
 		}
-		for (var i = 0, l = $rootScope.settings.i18n['json'].length; i < l; i++) {
+		for (i = 0, l = $rootScope.settings.i18n['json'].length; i < l; i++) {
 			//console.log($rootScope.language+'/'+$rootScope.settings.i18n['json'][i]);
 			$rootScope.loadJSON($rootScope.settings.i18n['json'][i], $rootScope.language+'/'+$rootScope.settings.i18n['json'][i], 'i18n');
 		}
@@ -347,7 +361,7 @@ $rootScope.i18n = {};
 
 	//!-- JSON Special Cases --//
 	$rootScope.loadRegions = function(country_code) {
-		$rootScope.json.regions || ($rootScope.json.regions = {});
+		$rootScope.json.regions = $rootScope.json.regions || {};
 		if ($rootScope.json.regions[country_code]) { return; }
 		console.log('loadRegions('+country_code+')');
 		$http.get($rootScope.settings.client+'/i18n/'+$rootScope.language+'/geo/'+country_code+'.json')
@@ -359,6 +373,7 @@ $rootScope.i18n = {};
 				console.log('loadRegions.get.error');
 			});
 	};
+
 	$rootScope.init();
 	$rootScope.loadLocale($rootScope.locale); // $locale.id == 'en-us'
 	$rootScope.saveLocale($rootScope.locale); // save locale
@@ -391,19 +406,19 @@ $rootScope.i18n = {};
 	// que requests for when connection re-established
 	// settings.offline = []
 	$rootScope.offline = db.get('offline', {
-		"_state":!$window.navigator.onLine,
-		"_requests":[],
-		"_count":0
+		'_state':!$window.navigator.onLine,
+		'_requests':[],
+		'_count':0
 	});
 	$rootScope.offline.que_request = function(http_config, callback) {
 		console.log('offline.que_request(http_config, callback)');
-		callback || (callback = function(){});
+		callback = callback || function(){};
 		$rootScope.offline._requests.push({http_config:http_config, callback:callback});
 		$rootScope.offline.store();
 	};
 	$rootScope.offline.run_request = function() {
 		console.log('offline.run_request()');
-		if (!$rootScope.offline._requests.length) return;
+		if (!$rootScope.offline._requests.length) { return; }
 		$rootScope.loading = true;
 		//$rootScope.$emit('loaderEvent', 'Processing offline requests.');
 		var request = $rootScope.offline._requests.shift();
@@ -412,7 +427,7 @@ $rootScope.i18n = {};
 			.success(function(data, status, headers, config) {
 				console.log('offline.run_request.http.success');
 				//$rootScope.offline._count--;
-				if (request.callback) request.callback(data, status, headers, config);
+				if (request.callback) { request.callback(data, status, headers, config); }
 				$rootScope.loading = false;
 				$rootScope.offline.store();
 				$rootScope.offline.run_request();
@@ -426,9 +441,9 @@ $rootScope.i18n = {};
 	};
 	$rootScope.offline.store = function() {
 		db.set('offline', {
-			"_state":$rootScope.offline._state,
-			"_requests":$rootScope.offline._requests,
-			"_count":$rootScope.offline._requests.length
+			'_state':$rootScope.offline._state,
+			'_requests':$rootScope.offline._requests,
+			'_count':$rootScope.offline._requests.length
 		});
 	};
 	$rootScope.offline.alertOffline = function() {
@@ -443,8 +458,8 @@ $rootScope.i18n = {};
 			content:$rootScope.i18n.alert_online_offline_message,
 			buttons:[
 				{
-					"class":"btn-primary",
-					value:"Ok",
+					'class':'btn-primary',
+					value:'Ok',
 					callback:function(){}
 				}
 			]
@@ -463,8 +478,8 @@ $rootScope.i18n = {};
 			content:$rootScope.i18n.alert_offline_online_message,
 			buttons:[
 				{
-					"class":"btn-primary",
-					value:"Ok, Thanks!",
+					'class':'btn-primary',
+					value:'Ok, Thanks!',
 					callback:function(){}
 				}
 			]
@@ -476,7 +491,7 @@ $rootScope.i18n = {};
 	$rootScope.http_error = function() {
 		$rootScope.alerts = [{'class':'error', 'label':'Connection Error:', 'message':'We were unable to complete you request at this time.'}];
 	};
-	$window.addEventListener("online", function () {
+	$window.addEventListener('online', function () {
 		console.log('Event online');
 		if ($rootScope.offline._state) {	// was offline
 			$rootScope.offline.alertOnline();
@@ -489,7 +504,7 @@ $rootScope.i18n = {};
 		$rootScope.offline._state = false;
 		$rootScope.$digest();
 	}, true);
-	$window.addEventListener("offline", function () {
+	$window.addEventListener('offline', function () {
 		console.log('Event offline');
 		$rootScope.offline._state = true;
 		$rootScope.offline.alertOffline();
@@ -500,24 +515,25 @@ $rootScope.i18n = {};
 	//!-- Page Functions --//
 	// get current uri with leading #
 	$rootScope.uri = function() {
-		var uri = ($location.$$url.indexOf("?") == -1)
-			? $location.$$url
-			: $location.$$url.substr(0, $location.$$url.indexOf("?"));
+		var uri = ($location.$$url.indexOf('?') === -1) ?
+			$location.$$url :
+			$location.$$url.substr(0, $location.$$url.indexOf('?')
+		);
 		return uri;
 	};
 	// redirect to new page
 	$rootScope.href = function(url, open) {
-		url || (url = '/');
+		url = url || '/';
 		console.log('href -> '+url);
-		if (open) $window.open(url, '_blank', 'location=yes'); // http://docs.phonegap.com/en/edge/cordova_inappbrowser_inappbrowser.md.html#InAppBrowser
+		if (open) { $window.open(url, '_blank', 'location=yes'); } // http://docs.phonegap.com/en/edge/cordova_inappbrowser_inappbrowser.md.html#InAppBrowser
 		// There is a bug where current Ctrla nd next Ctrl loop in loading, only when compressed
-		else if (url.substr(0,1) == '#') $location.url(url.substr(1));
-		else if (url.substr(0,1) == '/') $location.url(url);
+		else if (url.substr(0,1) === '#') { $location.url(url.substr(1)); }
+		else if (url.substr(0,1) === '/') { $location.url(url); }
 		//else if (url.substr(0,1) == '#') $location.path(url.substr(1));
 		//else if (url.substr(0,1) == '/') $location.path(url);
 		//else if (url.substr(0,1) == '#') $window.location.href = url;
 		//else if (url.substr(0,1) == '/') $window.location.href = '#'+url;
-		else $window.location.href = url;
+		else { $window.location.href = url; }
 	};
 	// refreshes current page
 	$rootScope.refresh = function() {
@@ -537,10 +553,12 @@ $rootScope.i18n = {};
 		//	}, 100);
 		//}
 	};
+
 	// usecase: <div ng-bind-html-unsafe="renderIframe(item, 'http://url.com')"></div>
 	$rootScope.renderIframe = function (name, src) {
 		return '<iframe id="' + name + '" src="' + src + '" marginheight="0" marginwidth="0" frameborder="0"></iframe>';
-	}
+	};
+
 	// history tracking - research History API / History.js (22Kb) - migrate?
 	$rootScope.history = history; // IE defaultes to 0, rest default to 1
 	/*$rootScope.back_history = [];
@@ -563,7 +581,7 @@ $rootScope.i18n = {};
 	};*/
 	// load scripts and styles on the fly
 	$rootScope.loadStyle = function(filename) {
-		var headID = document.getElementsByTagName("head")[0];
+		var headID = document.getElementsByTagName('head')[0];
 		var cssNode = document.createElement('link');
 		cssNode.type = 'text/css';
 		cssNode.rel = 'stylesheet';
@@ -574,11 +592,14 @@ $rootScope.i18n = {};
 	$rootScope.unloadStyle = function(filename) {
 		var allCtrl = document.getElementsByTagName('link');
 		for (var i=allCtrl.length; i>=0; i--)  { //search backwards within nodelist for matching elements to remove
-			if (allCtrl[i] && allCtrl[i].getAttribute("href")!=null && allCtrl[i].getAttribute("href").indexOf(filename)!=-1)
+			if (allCtrl[i] && allCtrl[i].getAttribute('href') !== null && allCtrl[i].getAttribute('href').indexOf(filename) !== -1) {
 				allCtrl[i].parentNode.removeChild(allCtrl[i]);
-		}	};
+			}
+		}
+	};
 	$rootScope.loadScript = function(filename, callback) {
-		var headID = document.getElementsByTagName("head")[0];		var newScript = document.createElement('script');
+		var headID = document.getElementsByTagName('head')[0];
+		var newScript = document.createElement('script');
 		newScript.type = 'text/javascript';
 		newScript.src = filename;
 		newScript.onreadystatechange = callback;
@@ -588,13 +609,17 @@ $rootScope.i18n = {};
 	$rootScope.unloadScript = function(filename) {
 		var allCtrl = document.getElementsByTagName('script');
 		for (var i=allCtrl.length; i>=0; i--)  { //search backwards within nodelist for matching elements to remove
-			if (allCtrl[i] && allCtrl[i].getAttribute("src")!=null && allCtrl[i].getAttribute("src").indexOf(filename)!=-1)
+			if (allCtrl[i] && allCtrl[i].getAttribute('src') !== null && allCtrl[i].getAttribute('src').indexOf(filename) !== -1) {
 				allCtrl[i].parentNode.removeChild(allCtrl[i]);
-		}	};
+			}
+
+		}
+	};
+
 	//!-- End Page Functions --//
 	//!-- Validation --//
 	$rootScope.validate = {};
-	// Called via data-ng-change="validate.function(scope, value, value2, value3, settings)"
+	// Called via data-ng-change='validate.function(scope, value, value2, value3, settings)'
 	// return true to show error message
 	// Password
 	//	// Called from:
@@ -602,10 +627,11 @@ $rootScope.i18n = {};
 	// page/sign
 	// user/edit
 	$rootScope.validate.password = function(scope, value, sameas, settings) {
-		console.log('validate.password(scope, "'+value+'", "'+sameas+'", settings)');
+		console.log('validate.password(scope, '+value+', '+sameas+', settings)');
 		console.log(settings);
-		value || (value = '');
-		sameas || (sameas = '');
+		value = value || '';
+		sameas = sameas || '';
+
 		// https://www.owasp.org/index.php/Authentication_Cheat_Sheet#Password_Complexity
 		scope.$error = {};
 		if (!value.length) {	// clear errors is blank
@@ -613,7 +639,8 @@ $rootScope.i18n = {};
 			scope.$invalid = !scope.$valid;
 			return;
 		}
-		if (value.length < settings.min_length) scope.$error.minlength = true;
+
+		if (value.length < settings.min_length) { scope.$error.minlength = true; }
 		// [has,count]
 		var params = {
 			lower:[0,0],
@@ -621,13 +648,13 @@ $rootScope.i18n = {};
 			number:[0,0],
 			special:[0,0]
 		};
-		for (i = 0; i < value.length; i++) {
-			if("abcdefghijklmnopqrstuvwxyz".indexOf(value.charAt(i)) > -1){params.lower[0] = 1; ++params.lower[1];}
-			else if ("ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(value.charAt(i)) > -1){params.upper[0] = 1; ++params.upper[1];}
-			else if ("0123456789".indexOf(value.charAt(i)) > -1){params.number[0] = 1; ++params.number[1];}
-			else if ("~!@#$%^&*()_+{}|:\"<>? `-=[]\;',./�".indexOf(value.charAt(i)) > -1){params.special[0] = 1; ++params.special[1];}
+		for (var i = 0; i < value.length; i++) {
+			if('abcdefghijklmnopqrstuvwxyz'.indexOf(value.charAt(i)) > -1) { params.lower[0] = 1; ++params.lower[1]; }
+			else if ('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.indexOf(value.charAt(i)) > -1) { params.upper[0] = 1; ++params.upper[1]; }
+			else if ('0123456789'.indexOf(value.charAt(i)) > -1) { params.number[0] = 1; ++params.number[1]; }
+			else if ('~!@#$%^&*()_+{}|:\'<>? `-=[];",./'.indexOf(value.charAt(i)) > -1) { params.special[0] = 1; ++params.special[1]; }
 			// more then two identical chars in a row
-			if (i > 1 && value.charAt(i) == value.charAt(i-1) && value.charAt(i) == value.charAt(i-2)) {
+			if (i > 1 && value.charAt(i) === value.charAt(i-1) && value.charAt(i) === value.charAt(i-2)) {
 				scope.$error.identical = true;
 			}
 		}
@@ -638,34 +665,47 @@ $rootScope.i18n = {};
 			scope.$error.number= (params.number[1] < settings.min_number);
 			scope.$error.special= (params.special[1] < settings.min_special);
 		}
-		if (value === sameas) scope.$error.sameas = true;
+		if (value === sameas) { scope.$error.sameas = true; }
 		scope.$valid = objectIsEmpty(scope.$error);
 		scope.$invalid = !scope.$valid;
 		//console.log(scope);
 	};
 	//!-- End Validation --//
 	//!-- JS Functions --//
-	// called from inside HTML templates	$rootScope.inArray = function(needle, haystack) {
-		if (!haystack) return false;
+	// called from inside HTML templates
+	$rootScope.inArray = function(needle, haystack) {
+		if (!haystack) { return false; }
 		for (var i = 0, l = haystack.length; i < l; i++) {
-			if (haystack[i] == needle) return true;
+			if (haystack[i] === needle) { return true; }
 		}
 		return false;
 	};
+
 	$rootScope.objectIsEmpty = function(obj) {
-		for (var p in obj) return false;
+		for (var p in obj) {
+			if (obj.hasOwnProperty(p)) {
+				return false;
+			}
+		}
 		return true;
 	};
 
 	$rootScope.objectLength = function(obj) {
-	var c = 0;
-		for (var p in obj) if (obj.hasOwnProperty(p)) ++c;
+		var c = 0;
+		for (var p in obj) {
+			if (obj.hasOwnProperty(p)) {
+				++c;
+			}
+		}
 		return c;
 	};
+
 	$rootScope.objectArray = function(obj) {
 		var arr = [];
 		for (var i in obj) {
-			arr.push(obj[i]);
+			if (obj.hasOwnProperty(i)) {
+				arr.push(obj[i]);
+			}
 		}
 		return arr;
 	};

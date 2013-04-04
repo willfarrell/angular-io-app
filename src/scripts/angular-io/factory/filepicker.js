@@ -1,3 +1,5 @@
+/*global syncVar:true */
+
 //(function (angular) {
 angular.module('io.factory.filepicker', [])
 .factory('$filepicker', ['$rootScope', '$http', function($rootScope, $http) {
@@ -6,10 +8,10 @@ angular.module('io.factory.filepicker', [])
 	$scope.version = '0.2.0';
 	$scope.alerts = [];
 	if (!$rootScope.settings.filepicker) {
-	$rootScope.loadJSON(null, 'config.filepicker', 'json', function(data){
-		$rootScope.settings.filepicker = data;
-	});
-}
+		$rootScope.loadJSON(null, 'config.filepicker', 'json', function(data){
+			$rootScope.settings.filepicker = data;
+			});
+	}
 	$scope.services = {
 		'':{
 			'name':'Filepicker',
@@ -83,7 +85,7 @@ angular.module('io.factory.filepicker', [])
 	$scope.timestamp = +new Date();
 	$scope.dropzone_name = 'files';
 	$scope.loadFiles = function() {
-		if (!$scope.args.multi) return;
+		if (!$scope.args.multi) { return; }
 		// get files json
 		$http.get($rootScope.settings.server+'/filepicker/list/'+$scope.args.action+'/'+$scope.args.ID)
 			.success(function(data) {
@@ -95,7 +97,7 @@ angular.module('io.factory.filepicker', [])
 			});
 	};
 	$scope.upload = function(args, ID) {
-		ID || (ID = '');
+		ID = ID || '';
 		console.log(args);
 		console.log(ID);
 		$scope.alerts = [];
@@ -110,7 +112,7 @@ angular.module('io.factory.filepicker', [])
 		$('#filepickerModal').modal('show');
 	};
 	$scope.view = function(args, ID) {
-		ID || (ID = '');
+		ID = ID || '';
 		console.log(ID);
 		$scope.alerts = [];
 		$scope.args = syncVar(args, $scope.args_download);
@@ -118,7 +120,7 @@ angular.module('io.factory.filepicker', [])
 		$scope.loadFiles();
 	};
 	$scope.download = function(args, ID) {
-		ID || (ID = '');
+		ID = ID || '';
 		console.log(ID);
 		$scope.alerts = [];
 		$scope.args = syncVar(args, $scope.args_download);
@@ -127,11 +129,11 @@ angular.module('io.factory.filepicker', [])
 		$('#filepickerModal').modal('show');
 	};
 	$scope.downloadFile = function(file) {
-		$http.post($rootScope.settings.server+'/filepicker/download/'+$scope.args.action+'/'+$scope.args.ID, {"file":file})
+		$http.post($rootScope.settings.server+'/filepicker/download/'+$scope.args.action+'/'+$scope.args.ID, {'file':file})
 			.success(function(data) {
 				console.log('downloadFile.post.success');
 				if ($rootScope.checkHTTPReturn(data, {'alerts':true,'errors':true})) {
-					$rootScope.alerts = [{"class":"success", "label":"File deleted"}];
+					$rootScope.alerts = [{'class':'success', 'label':'File deleted'}];
 				} else {
 					$scope.alerts = (data.alerts) ? data.alerts : [];
 					$scope.errors = (data.errors) ? data.errors : {};
@@ -140,7 +142,7 @@ angular.module('io.factory.filepicker', [])
 			.error(function() {
 				console.log('downloadFile.post.error');
 			});
-	}
+	};
 	$scope.confirmDelete = function(file, callback) {
 		console.log('filepicker.confirmDelete()');
 		$rootScope.modal = {
@@ -149,19 +151,19 @@ angular.module('io.factory.filepicker', [])
 				close:false,
 				footer:false
 			},
-			header:"Confirm File Delete",
-			content:"Are you sure you want to delete '"+file+"'?",
+			header:'Confirm File Delete',
+			content:'Are you sure you want to delete \''+file+'\'?',
 			buttons:[
 				{
-					"class":"btn-primary",
-					value:"Delete",
+					'class':'btn-primary',
+					value:'Delete',
 					callback:function(){
 						callback(file);
 					}
 				},
 				{
-					"class":"",
-					value:"Cancel",
+					'class':'',
+					value:'Cancel',
 					callback:function(){}
 				}
 			]
@@ -176,7 +178,7 @@ angular.module('io.factory.filepicker', [])
 		$http(http_config)
 			.success(function(data) {
 				if ($rootScope.checkHTTPReturn(data, {'alerts':true,'errors':true})) {
-					$rootScope.alerts = [{"class":"success", "label":"File deleted"}];
+					$rootScope.alerts = [{'class':'success', 'label':'File deleted'}];
 					$scope.view($scope.args, $scope.args.ID); // reload list
 				} else {
 					$scope.alerts = (data.alerts) ? data.alerts : [];
@@ -191,7 +193,7 @@ angular.module('io.factory.filepicker', [])
 		this.timestamp = +new Date(); // used to force image to be reloaded
 	};
 	$scope.location = function(service) {
-		if (service == 'CAMERA') {
+		if (service === 'CAMERA') {
 			$scope.cameraInit();
 		}
 		$scope.args.service = service;
@@ -222,7 +224,7 @@ angular.module('io.factory.filepicker', [])
 				window.URL = window.webkitURL || window.mozURL;
 			}
 			return !!(navigator.getUserMedia);
-		}
+		};
 		if (!hasUserMedia()) {
 			console.log('!hasUserMedia');
 			$scope.removeService('CAMERA');
@@ -232,12 +234,12 @@ angular.module('io.factory.filepicker', [])
 		if (!navigator.getUserMedia) {
 				navigator.getUserMedia = navigator.webkitGetUserMedia ||
 					navigator.mozGetUserMedia || navigator.msGetUserMedia;
-			}
-			if (!window.URL) {
-				window.URL = window.webkitURL || window.mozURL;
-			}
+		}
+		if (!window.URL) {
+			window.URL = window.webkitURL || window.mozURL;
+		}
 		// load in
-		var dom = document.getElementById("camera");
+		var dom = document.getElementById('camera');
 		$scope.camera.video = dom.querySelector('video');
 		$scope.camera.canvas = dom.querySelector('canvas');
 		$scope.camera.canvas.width = $scope.args.width * 2;
@@ -246,14 +248,14 @@ angular.module('io.factory.filepicker', [])
 		//$scope.camera.img = dom.querySelector('img');
 		//$scope.camera.link = document.createElement('a');
 		var failure = function(e) {
-			console.log("camera Fail", e);
+			console.log('camera Fail', e);
 			$scope.cameraRemove();
 		};
 		var success = function(stream) {
 			if (/Chrome/.test(navigator.userAgent)) {
-			$scope.camera.video.src = window.URL.createObjectURL(stream);
+				$scope.camera.video.src = window.URL.createObjectURL(stream);
 			} else {
-			$scope.camera.video.src = stream;
+				$scope.camera.video.src = stream;
 			}
 			$scope.camera.stream = stream;	// for stopping
 			$scope.camera.video.width = $scope.camera.canvas.width;
@@ -261,9 +263,9 @@ angular.module('io.factory.filepicker', [])
 			// Note: onloadedmetadata doesn't fire in Chrome when using it with getUserMedia.
 			// See crbug.com/110938.
 			$scope.camera.video.onloadedmetadata = function(e) {
-				console.log("metadata loaded");
-			}
-		}
+				console.log('metadata loaded');
+			};
+		};
 		navigator.getUserMedia({video:true}, success, failure);
 		/*$scope.camera.video.addEventListener('click', function() {
 			//var width = this.videoWidth;
@@ -294,8 +296,8 @@ angular.module('io.factory.filepicker', [])
 		//For Firefox Nightly 18.0
 		$scope.camera.video.mozSrcObject=null;
 		//For Chrome 22
-		$scope.camera.video.src="";
-	}
+		$scope.camera.video.src='';
+	};
 	return $scope;
 }]);
 

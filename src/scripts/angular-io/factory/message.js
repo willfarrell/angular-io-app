@@ -1,4 +1,4 @@
-(function (angular) {
+//(function (angular) {
 angular.module('io.factory.message', [])
 .factory('$message', ['$rootScope', '$http', '$routeParams', function($rootScope, $http, $routeParams) {
 	console.log('MessageFactory ('+$rootScope.$id+')');
@@ -8,7 +8,7 @@ angular.module('io.factory.message', [])
 	$scope.init = function() {
 		$scope.alerts = [];
 		// modal params
-		$scope.to_name = "";
+		$scope.to_name = '';
 		$scope.compose = {};
 	};
 	$scope.open = function(user_ID, to_name, message) {
@@ -57,9 +57,9 @@ angular.module('io.factory.message', [])
 			});
 	};
 	$rootScope.$watch('session.user_ID', function(value) {
-	if (value) $scope.updateUnreadCount();
+		if (value) { $scope.updateUnreadCount(); }
 	});
 	return $scope;
 }]);
 
-})(angular);
+//})(angular);

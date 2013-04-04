@@ -9,8 +9,8 @@ angular.module('io.filter.range', [])
 		if (isNaN(step)) {
 			step = 1;
 		}
-		start = parseInt(start);
-		end = parseInt(end);
+		start = parseInt(start, 10);
+		end = parseInt(end, 10);
 		// flip start/end
 		if (start > end) {
 			var tmp = start;

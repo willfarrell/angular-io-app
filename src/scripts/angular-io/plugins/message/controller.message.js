@@ -2,11 +2,11 @@
 //.controller('AppCtrl',
 //['$rootScope', '$scope', '$http', '$follow', '$filepicker',
 //function(rootScope, $scope, $http, follow, filepicker) {
-MessageCtrl.$inject = ['$scope', '$http', '$routeParams'];
+
 function MessageCtrl($scope, $http, $routeParams) {
 	console.log('MessageCtrl ('+$scope.$id+')');
 
-	$scope.to_name = "";
+	$scope.to_name = '';
 	$scope.compose = {};
 	$scope.list = [];	// inbox
 	$scope.thread = [];	// messages in conversation
@@ -29,7 +29,7 @@ function MessageCtrl($scope, $http, $routeParams) {
 	// conversation
 	$scope.loadThread = function(user_ID, to_name) {
 		console.log('loadThread('+user_ID+')');
-		user_ID || (user_ID = 0);
+		user_ID = user_ID || 0;
 		$rootScope.message.compose = {
 			user_ID:user_ID
 		};
@@ -57,7 +57,7 @@ function MessageCtrl($scope, $http, $routeParams) {
 		$scope.thread.push({
 			user_from_ID:$rootScope.session.user_ID,
 			message:$rootScope.message.compose.message,
-			timestamp:(+new Date)/1000
+			timestamp:(+new Date())/1000
 		});
 		$rootScope.message.send();
 		setTimeout(function() {
@@ -75,3 +75,5 @@ function MessageCtrl($scope, $http, $routeParams) {
 		}
 	});
 }
+MessageCtrl.$inject = ['$scope', '$http', '$routeParams'];
+//}]);

@@ -1,8 +1,9 @@
-angular.module('io.controller.follow', [])
-.controller('FollowCtrl', ['$scope', '$http', function($scope, $http) {
-//FollowCtrl.$inject = ['$scope', '$http'];
-//function FollowCtrl($scope, $http) {
-	//$scope = $scope;
+/*global objectLength:true */
+
+//angular.module('io.controller.follow', [])
+//.controller('FollowCtrl', ['$scope', '$http', function($scope, $http) {
+
+function FollowCtrl($scope, $http) {
 	console.log('FollowCtrl ('+$scope.$id+')');
 	// Extends $scope.follow;
 	$scope.type = $scope.follow.type;
@@ -27,9 +28,9 @@ angular.module('io.controller.follow', [])
 	};*/
 	$scope.loadFollowers = function(company_ID, user_ID, query) {
 		//$scope.follow.loadFollowing($scope.type, id, query); // session user
-		company_ID || (company_ID = 0);
-		user_ID || (user_ID = 0);
-		query || (query = '');
+		company_ID = company_ID || 0;
+		user_ID = user_ID || 0;
+		query = query || '';
 		$http.get($rootScope.settings.server+'/follow/ers/'+company_ID+'/'+user_ID+'/'+query)
 			.success(function(data) {
 				console.log('loadFollowing.get.success');
@@ -48,9 +49,9 @@ angular.module('io.controller.follow', [])
 	};
 	$scope.loadFollowing = function(company_ID, user_ID, query) {
 		//$scope.follow.loadFollowing($scope.type, id, query); // session user
-		company_ID || (company_ID = 0);
-		user_ID || (user_ID = 0);
-		query || (query = '');
+		company_ID = company_ID || 0;
+		user_ID = user_ID || 0;
+		query = query || '';
 		$http.get($rootScope.settings.server+'/follow/ing/'+company_ID+'/'+user_ID+'/'+query)
 			.success(function(data) {
 				console.log('loadFollowing.get.success');
@@ -69,17 +70,17 @@ angular.module('io.controller.follow', [])
 	};
 	$scope.loadSuggestions = function(ref_bool, query) {
 		console.log('loadSuggestions()');
-		query || (query = '');
+		query = query || '';
 		$http.get($rootScope.settings.server+'/follow/suggestions/'+(ref_bool ? true : false)+'/'+query)
 			.success(function(data) {
 				console.log('loadSuggestions.get.success');
 				if ($rootScope.checkHTTPReturn(data)) {
 					for (var i = 0, l = data.length; i < l; i++) {
 						data[i].following = (data[i].following) ? true : false;
-						if (data[i]['company_ID']) $scope.follow.db.company[data[i]['company_ID']] = data[i];
-						else if (data[i]['user_ID']) $scope.follow.db.user[data[i]['user_ID']] = data[i];
+						if (data[i]['company_ID']) { $scope.follow.db.company[data[i]['company_ID']] = data[i]; }
+						else if (data[i]['user_ID']) { $scope.follow.db.user[data[i]['user_ID']] = data[i]; }
 					}
-					if (objectLength(data)) $scope.follow_suggest = data;
+					if (objectLength(data)) { $scope.follow_suggest = data; }
 					console.log($rootScope.objectLength($scope.follow_suggest));
 				}
 			})
@@ -90,17 +91,17 @@ angular.module('io.controller.follow', [])
 	};
 	$scope.loadSearch = function(query) {
 		console.log('loadSearch()');
-		query || (query = '');
+		query = query || '';
 		$http.get($rootScope.settings.server+'/follow/search/'+query)
 			.success(function(data) {
 				console.log('loadSearch.get.success');
 				if ($rootScope.checkHTTPReturn(data)) {
 					for (var i = 0, l = data.length; i < l; i++) {
 						data[i].following = (data[i].following) ? true : false;
-						if (data[i]['company_ID']) $scope.follow.db.company[data[i]['company_ID']] = data[i];
-						else if (data[i]['user_ID']) $scope.follow.db.user[data[i]['user_ID']] = data[i];
+						if (data[i]['company_ID']) { $scope.follow.db.company[data[i]['company_ID']] = data[i]; }
+						else if (data[i]['user_ID']) { $scope.follow.db.user[data[i]['user_ID']] = data[i]; }
 					}
-					if (objectLength(data)) $scope.follow_suggest = data;
+					if (objectLength(data)) { $scope.follow_suggest = data; }
 					console.log($rootScope.objectLength($scope.follow_suggest));
 				}
 			})
@@ -137,5 +138,6 @@ angular.module('io.controller.follow', [])
 	//$scope.require_signin(function(){
 		$scope.loadGroups();
 	//});
-//}
-}]);
+}
+FollowCtrl.$inject = ['$scope', '$http'];
+//}]);

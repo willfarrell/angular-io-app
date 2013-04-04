@@ -1,8 +1,10 @@
+/*global objectClone:true */
+
 //angular.module('io.controller.user', [])
 //.controller('UserCtrl',
 //['$scope', '$http', '$routeParams',
 //function($scope, $http, $routeParams) {
-UserCtrl.$inject = ['$scope', '$http', '$routeParams'];
+
 function UserCtrl($scope, $http, $routeParams) {
 	console.log('UserCtrl ('+$scope.$id+')');
 	$scope.errors = {
@@ -18,7 +20,7 @@ function UserCtrl($scope, $http, $routeParams) {
 
 	$scope.loadUser = function(profile_ID) {
 		console.log('loadUser('+profile_ID+')');
-		profile_ID || (profile_ID = 0);
+		profile_ID = profile_ID || 0;
 		$http.get($scope.settings.server+'/user/'+profile_ID)
 			.success(function(data) {
 				console.log('loadUser.get.success');
@@ -35,7 +37,7 @@ function UserCtrl($scope, $http, $routeParams) {
 	};
 	$scope.loadUserName = function(profile_name) {
 		console.log('loadUserName('+profile_name+')');
-		profile_name || (profile_name = '');
+		profile_name = profile_name || '';
 		$http.get($scope.settings.server+'/user/name/'+profile_name)
 			.success(function(data) {
 				console.log('loadUser.get.success');
@@ -79,7 +81,7 @@ function UserCtrl($scope, $http, $routeParams) {
 	$scope.deleteUser = function() {
 		if (confirm('Are you sure you want to delete your account?')) {
 			$http.get($scope.settings.server+'/user/delete')
-				.success(function(){
+				.success(function(data){
 					if ($rootScope.checkHTTPReturn(data)) {
 						$scope.href('/sign/out');
 					}
@@ -129,21 +131,13 @@ function UserCtrl($scope, $http, $routeParams) {
 			});
 	};
 
-	$scope.compileMarkdown = function(text) {
-		if (!text) return text;
-		//var converter = new Markdown.Converter();
-		var converter = new Markdown.getSanitizingConverter();
-		return converter.makeHtml(text);
-	};
-
-
 	$scope.require_signin(function(){
 		console.log('UserCtrl require_signin');
 		//$scope.user = $rootScope.session.user ? $rootScope.session.user : {};
 		if ($routeParams.profile_name) {
 			$scope.loadUserName($routeParams.profile_name);
 		} else if ($routeParams.profile_ID) {
-			$routeParams.profile_ID || ($routeParams.profile_ID = 0);
+			$routeParams.profile_ID = $routeParams.profile_ID || 0;
 			$scope.user = {
 				'user_ID':$routeParams.profile_ID
 			};
@@ -157,4 +151,5 @@ function UserCtrl($scope, $http, $routeParams) {
 		console.log($scope.user);
 	});
 }
+UserCtrl.$inject = ['$scope', '$http', '$routeParams'];
 //}]);

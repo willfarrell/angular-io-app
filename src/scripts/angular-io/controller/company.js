@@ -1,6 +1,8 @@
+/*global arrayUnique:true */
+
 //angular.module('io.controller.company', [])
 //.controller('CompanyCtrl', ['$scope', '$http', function($scope, $http) {
-CompanyCtrl.$inject = ['$scope', '$http', '$routeParams'];
+
 function CompanyCtrl($scope, $http, $routeParams) {
 	console.log('CompanyCtrl ('+$scope.$id+')');
 
@@ -10,13 +12,14 @@ function CompanyCtrl($scope, $http, $routeParams) {
 	$scope.user = {};
 	$scope.users = {};
 	$scope.location = {
-		"country_code":$rootScope.country_code,
+		'country_code':$rootScope.country_code
 	};
 	$scope.locations = {};
+
 	//-- Company --//
 	$scope.loadCompany = function(profile_ID) {
 		console.log('loadCompany('+profile_ID+')');
-		profile_ID || (profile_ID = 0);
+		profile_ID = profile_ID || 0;
 		$http.get($scope.settings.server+'/company/'+profile_ID)
 			.success(function(data) {
 				if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
@@ -37,9 +40,10 @@ function CompanyCtrl($scope, $http, $routeParams) {
 			});
 
 	};
+
 	$scope.loadCompanyName = function(profile_name) {
 		console.log('loadCompanyName('+profile_name+')');
-		profile_name || (profile_name = '');
+		profile_name = profile_name || '';
 		$http.get($scope.settings.server+'/company/name/'+profile_name)
 			.success(function(data) {
 				console.log('loadCompanyName.get.success');
@@ -99,6 +103,7 @@ function CompanyCtrl($scope, $http, $routeParams) {
 				});
 		}
 	};
+
 	//-- Locations --//
 	$scope.loadLocations = function() {
 		console.log('loadLocations');
@@ -110,13 +115,17 @@ function CompanyCtrl($scope, $http, $routeParams) {
 				if (!data.alerts && !data.errors) {
 					$scope.locations = data;
 					// load region data
-					var regions = [];
-					for (var i in data) {
-						regions.push(data[i].country_code);
+					var regions = [], i;
+					for (i in data) {
+						if (data.hasOwnProperty(i)) {
+							regions.push(data[i].country_code);
+						}
 					}
 					regions = arrayUnique(regions);
-					for (var i in regions) {
-						$rootScope.loadRegions(regions[i]);
+					for (i in regions) {
+						if (regions.hasOwnProperty(i)) {
+							$rootScope.loadRegions(regions[i]);
+						}
 					}
 				}
 			})
@@ -124,17 +133,19 @@ function CompanyCtrl($scope, $http, $routeParams) {
 				$rootScope.http_error();
 			});
 	};
+
 	$scope.editLocation = function(location) {
 		console.log('editLocation(location)');
 		console.log(location);
 		if (!location) {
 			location = {
-				'primary':($scope.locations == {}),
+				'primary':($scope.locations === {}),
 				'country_code':$rootScope.country_code.toUpperCase()
-			}
+			};
 		}
 		$scope.location = location;
 	};
+
 	$scope.updateLocation = function() {
 		console.log('updateLocation');
 		$rootScope.alerts = [];
@@ -176,8 +187,8 @@ function CompanyCtrl($scope, $http, $routeParams) {
 	$scope.deleteLocation = function(id) {
 		console.log('deleteLocation('+id+')');
 		var http_config = {
-			"method":"delete",
-			"url":$scope.settings.server+'/location/'+id
+			'method':'delete',
+			'url':$scope.settings.server+'/location/'+id
 		};
 		$http(http_config)
 			.success(function(data) {
@@ -257,13 +268,6 @@ function CompanyCtrl($scope, $http, $routeParams) {
 				});
 		}
 	};
-	//-- About Details --//
-	$scope.compileMarkdown = function(text) {
-		if (!text) return text;
-		//var converter = new Markdown.Converter();
-		var converter = new Markdown.getSanitizingConverter();
-		return converter.makeHtml(text);
-	};
 
 	$scope.require_signin(function(){
 		console.log('CompanyCtrl require_signin');
@@ -288,4 +292,5 @@ function CompanyCtrl($scope, $http, $routeParams) {
 		}
 	});
 }
+CompanyCtrl.$inject = ['$scope', '$http', '$routeParams'];
 //}]);

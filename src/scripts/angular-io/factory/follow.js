@@ -1,4 +1,6 @@
-(function (angular) {
+/*global strToARGB:true */
+
+//(function (angular) {
 angular.module('io.factory.follow', [])
 .factory('$follow', ['$rootScope', '$http', function($rootScope, $http) {
 	console.log('FollowFactory ('+$rootScope.$id+')');
@@ -7,35 +9,35 @@ angular.module('io.factory.follow', [])
 	// init root follow obj - list of all profiles viewed
 	$scope.init = function(company_ID, user_ID, following) {
 		console.log('init('+company_ID+','+user_ID+')');
-		company_ID || (company_ID = 0);
-		user_ID || (user_ID = 0);
-		following || (following = false);
-		$scope.db || ($scope.db = {});
-		$scope.db.groups || ($scope.db.groups = {});
-		$scope.db.company || ($scope.db.company = {});
-		$scope.db.user || ($scope.db.user = {});
+		company_ID = company_ID || 0;
+		user_ID = user_ID || 0;
+		following = following || false;
+		$scope.db = $scope.db || {};
+		$scope.db.groups = $scope.db.groups|| {};
+		$scope.db.company = $scope.db.company || {};
+		$scope.db.user = $scope.db.user || {};
 		if (company_ID) {
-			$scope.db.company[company_ID] || ($scope.db.company[company_ID] = {});
+			$scope.db.company[company_ID] = $scope.db.company[company_ID] || {};
 			$scope.db.company[company_ID].company_ID = company_ID;
 			$scope.db.company[company_ID].following = following;
-			$scope.db.company[company_ID].groups || ($scope.db.company[company_ID].groups = []);
+			$scope.db.company[company_ID].groups = $scope.db.company[company_ID].groups || [];
 		} else if (user_ID) {
-			$scope.db.user[user_ID] || ($scope.db.user[user_ID] = {});
+			$scope.db.user[user_ID] = $scope.db.user[user_ID]|| {};
 			$scope.db.user[user_ID].user_ID = user_ID;
 			$scope.db.user[user_ID].following = following;
-			$scope.db.user[user_ID].groups || ($scope.db.user[user_ID].groups = []);
+			$scope.db.user[user_ID].groups = $scope.db.user[user_ID].groups || [];
 		}
 	};
 	$scope.addFollow = function(company_ID, user_ID, group_ID) {
-		console.log('addFollow("'+company_ID+'", "'+user_ID+'", "'+group_ID+'")');
-		if (!company_ID && !user_ID) return;
-		company_ID || (company_ID = 0);
-		user_ID || (user_ID = 0);
-		group_ID || (group_ID = 0);
+		console.log('addFollow('+company_ID+', '+user_ID+', '+group_ID+')');
+		if (!company_ID && !user_ID) { return; }
+		company_ID = company_ID || 0;
+		user_ID = user_ID || 0;
+		group_ID = group_ID || 0;
 		$scope.init(company_ID, user_ID, true);
 		if (group_ID) {
-			if (company_ID) $scope.db.company[company_ID].groups.push(group_ID);
-			else if (user_ID) $scope.db.user[user_ID].groups.push(group_ID);
+			if (company_ID) { $scope.db.company[company_ID].groups.push(group_ID); }
+			else if (user_ID) { $scope.db.user[user_ID].groups.push(group_ID); }
 		}
 		//console.log($scope.db[type][id]);
 		$http.put($rootScope.settings.server+'/follow/'+company_ID+'/'+user_ID+'/'+group_ID)
@@ -52,18 +54,19 @@ angular.module('io.factory.follow', [])
 
 	$scope.deleteFollow = function(company_ID, user_ID, group_ID) {
 		console.log($rootScope.settings.server+'deleteFollow('+company_ID+', '+user_ID+', '+group_ID+')');
-		company_ID || (company_ID = 0);
-		user_ID || (user_ID = 0);
-		group_ID || (group_ID = 0);
+		company_ID = company_ID || 0;
+		user_ID = user_ID || 0;
+		group_ID = group_ID || 0;
 		//$scope.init(type, id);
 		if (group_ID) {
+			var index;
 			if (user_ID) {
-				var index = $scope.db.user[user_ID].groups.indexOf(group_ID);
-				if (index != -1) delete $scope.db.user[user_ID].groups.splice(index,1);
+				index = $scope.db.user[user_ID].groups.indexOf(group_ID);
+				if (index !== -1) { $scope.db.user[user_ID].groups.splice(index,1); }
 				$scope.db.groups[group_ID.toString()].group_count--;
 			} else if (company_ID) {
-				var index = $scope.db.company[company_ID].groups.indexOf(group_ID);
-				if (index != -1) delete $scope.db.company[company_ID].groups.splice(index,1);
+				index = $scope.db.company[company_ID].groups.indexOf(group_ID);
+				if (index !== -1) { $scope.db.company[company_ID].groups.splice(index,1); }
 				$scope.db.groups[group_ID.toString()].group_count--;
 			}
 		} else {
@@ -88,8 +91,8 @@ angular.module('io.factory.follow', [])
 	// load follow details of a user - use on profile page
 	$scope.loadFollow = function(company_ID, user_ID) {
 		console.log('loadFollow('+company_ID+', '+user_ID+')');
-		company_ID || (company_ID = 0);
-		user_ID || (user_ID = 0);
+		company_ID = company_ID || 0;
+		user_ID = user_ID || 0;
 		$http.get($rootScope.settings.server+'/follow/'+company_ID+'/'+user_ID)
 			.success(function(data) {
 				console.log('loadFollow.get.success');
@@ -107,23 +110,24 @@ angular.module('io.factory.follow', [])
 	};
 	$scope.loadFollowType = function(type, company_ID, user_ID, query) {
 		var api = 'friends';
-		if (type == 'followers') {
+		if (type === 'followers') {
 			api = 'ers';
-		} else if (type == 'following') {
+		} else if (type === 'following') {
 			api = 'ing';
 		}
-		company_ID || (company_ID = 0);
-		user_ID || (user_ID = 0);
-		query || (query = '');
+		company_ID = company_ID || 0;
+		user_ID = user_ID || 0;
+		query = query || '';
 		$http.get($rootScope.settings.server+'/follow/'+api+'/'+company_ID+'/'+user_ID+'/'+query)
 			.success(function(data) {
 				console.log('loadFollowers.get.success');
 				console.log(data);
 				if ($rootScope.checkHTTPReturn(data)) {
 					for (var i in data) {
-						if (data[i]['company_ID']) $scope.db.company[data[i]['company_ID']] = data[i];
-						else if (data[i]['user_ID']) $scope.db.user[data[i]['user_ID']] = data[i]
-						else delete data[i];
+						if (data.hasOwnProperty(i)) {
+							if (data[i]['company_ID']) { $scope.db.company[data[i]['company_ID']] = data[i]; }
+							else if (data[i]['user_ID']) { $scope.db.user[data[i]['user_ID']] = data[i]; }
+						}
 					}
 				}
 			})
@@ -133,21 +137,20 @@ angular.module('io.factory.follow', [])
 			});
 	};
 	$scope.loadFollowers = function(company_ID, user_ID, query) {
-		company_ID || (company_ID = 0);
-		user_ID || (user_ID = 0);
-		query || (query = '');
+		company_ID = company_ID || 0;
+		user_ID = user_ID || 0;
+		query = query || '';
 		$http.get($rootScope.settings.server+'/follow/ers/'+company_ID+'/'+user_ID+'/'+query)
 			.success(function(data) {
 				console.log('loadFollowers.get.success');
 				console.log(data);
 				if ($rootScope.checkHTTPReturn(data)) {
 					for (var i in data) {
-						if (i) {
+						if (data.hasOwnProperty(i)) {
 							data[i].following = (data[i].following) ? true : false;
 							data[i].follower = true;
-							$scope.db[type][i] = data[i];
-						} else {
-							delete data[i];
+							if (data[i]['company_ID']) { $scope.db.company[data[i]['company_ID']] = data[i]; }
+							else if (data[i]['user_ID']) { $scope.db.user[data[i]['user_ID']] = data[i]; }
 						}
 					}
 				}
@@ -159,9 +162,9 @@ angular.module('io.factory.follow', [])
 	};
 
 	$scope.loadFollowing = function(company_ID, user_ID, query) {
-		company_ID || (company_ID = 0);
-		user_ID || (user_ID = 0);
-		query || (query = '');
+		company_ID = company_ID || 0;
+		user_ID = user_ID || 0;
+		query = query || '';
 		$http.get($rootScope.settings.server+'/follow/ing/'+company_ID+'/'+user_ID+'/'+query)
 			.success(function(data) {
 				console.log('loadFollowing.get.success');
@@ -170,8 +173,8 @@ angular.module('io.factory.follow', [])
 					console.log(typeof data);
 					for (var i = 0, l = data.length; i < l; i++) {
 						data[i].following = (data[i].following) ? true : false;
-						if (data[i]['company_ID']) $scope.db.company[data[i]['company_ID']] = data[i];
-						else if (data[i]['user_ID']) $scope.db.user[data[i]['user_ID']] = data[i];
+						if (data[i]['company_ID']) { $scope.db.company[data[i]['company_ID']] = data[i]; }
+						else if (data[i]['user_ID']) { $scope.db.user[data[i]['user_ID']] = data[i]; }
 					}
 				}
 			})
@@ -188,7 +191,9 @@ angular.module('io.factory.follow', [])
 				console.log(data);
 				if ($rootScope.checkHTTPReturn(data)) {
 					for (var i in data) {
-						$scope.db.groups[i] = data[i];
+						if (data.hasOwnProperty(i)) {
+							$scope.db.groups[i] = data[i];
+						}
 					}
 				}
 			})
@@ -212,7 +217,7 @@ angular.module('io.factory.follow', [])
 						color:color
 					};
 					console.log($scope.db.groups);
-					$scope.group_name = ""; // clear form
+					$scope.group_name = ''; // clear form
 				}
 			})
 			.error(function() {
@@ -227,18 +232,19 @@ angular.module('io.factory.follow', [])
 			.success(function(data) {
 				console.log('removeGroup.delete.success');
 				console.log(data);
+				var id,index;
 				if ($rootScope.checkHTTPReturn(data)) {
 					delete $scope.db.groups[group_ID];
-					for (var id in $scope.db.company) {
+					for (id in $scope.db.company) {
 						if ($scope.db.company[id].groups) {
-							var index = $scope.db.company[id].groups.indexOf(group_ID);
-							if (index != -1) delete $scope.db.company[id].groups.splice(index,1);
+							index = $scope.db.company[id].groups.indexOf(group_ID);
+							if (index !== -1) { $scope.db.company[id].groups.splice(index,1); }
 						}
 					}
-					for (var id in $scope.db.user) {
+					for (id in $scope.db.user) {
 						if ($scope.db.user[id].groups) {
-							var index = $scope.db.user[id].groups.indexOf(group_ID);
-							if (index != -1) delete $scope.db.user[id].groups.splice(index,1);
+							index = $scope.db.user[id].groups.indexOf(group_ID);
+							if (index !== -1) { $scope.db.user[id].groups.splice(index,1); }
 						}
 					}
 				}
@@ -250,12 +256,12 @@ angular.module('io.factory.follow', [])
 	};
 	// load on signin
 	$rootScope.$watch('session.user_ID', function(value) {
-	if (value) {
-	$scope.loadGroups();
-	$scope.init();
-	}
+		if (value) {
+			$scope.loadGroups();
+			$scope.init();
+		}
 	});
 	return $scope;
 }]);
 
-})(angular);
+//})(angular);

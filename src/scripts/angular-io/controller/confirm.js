@@ -1,6 +1,6 @@
 //angular.module('io.controller.confirm', [])
 //.controller('ConfirmCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
-ConfirmCtrl.$inject = ['$scope', '$http', '$routeParams'];
+
 function ConfirmCtrl($scope, $http, $routeParams) {
 	console.log('ConfirmCtrl ('+$scope.$id+')');
 	$scope.errors = {};
@@ -8,7 +8,7 @@ function ConfirmCtrl($scope, $http, $routeParams) {
 	$scope.status = false; // used on confirm page
 	$scope.check = function(hash) {
 		$scope.errors = {};
-		hash || (hash = $scope.hash);
+		hash = hash || $scope.hash;
 		$http.get($scope.settings.server+'/account/confirm_email/'+encodeURIComponent(hash))
 			.success(function(data) {
 				if ($rootScope.checkHTTPReturn(data)) {
@@ -32,6 +32,7 @@ function ConfirmCtrl($scope, $http, $routeParams) {
 				}
 			});
 	};
-	if ($scope.hash) $scope.check();
+	if ($scope.hash) { $scope.check(); }
 }
+ConfirmCtrl.$inject = ['$scope', '$http', '$routeParams'];
 //}]);

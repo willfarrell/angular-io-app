@@ -144,8 +144,10 @@ module.exports = function(grunt) {
 			},
 			all: [
 				'Gruntfile.js',
-				'<%= yeoman.app %>/scripts/*.js',
-				'!<%= yeoman.app %>/scripts/script.js',
+				'<%= yeoman.app %>/scripts/**/*.js',
+					'!<%= yeoman.app %>/scripts/script.js',
+					'!<%= yeoman.app %>/scripts/angular-io/plugins/browser/*.js',
+					'!<%= yeoman.app %>/scripts/angular-io/directive/_accessibility.js',
 				'test/spec/*.js'
 			]
 		},
@@ -169,7 +171,7 @@ module.exports = function(grunt) {
 		},*/
 		uglify: {
 			options: {
-				preserveComments: 'some' // preserve !, @cc_on
+				preserveComments: 'some' // preserve !, @cc_on for IE var in scripts/async.js
 			},
 			// fallback scripts
 			'<%= yeoman.dist %>/js/fallback/json.min.js':		'<%= yeoman.app %>/components/json3/lib/json3.min.js',
@@ -415,15 +417,15 @@ module.exports = function(grunt) {
 					removeComments: true,
 					removeCommentsFromCDATA: true,
 					removeCDATASectionsFromCDATA: true,
-					collapseWhitespace: true,			// <span>foo</span> <span>bar</span> fails waiting on fix - remove replace after
+					collapseWhitespace: true,
 					collapseWhitespaceToOne: true,
 					collapseBooleanAttributes: true,
 					removeAttributeQuotes: true,
 					//removeRedundantAttributes: false, // removes type='text' from <input> causes style issues in bootstrap
 					useShortDoctype: true,
 					removeEmptyAttributes: true,
-					removeOptionalTags: false	// XHTML Requires All Closing Tags (IE 8)
-					//removeEmptyElements:false
+					removeOptionalTags: false,	// XHTML Requires All Closing Tags (IE 8)
+					removeEmptyElements:false	// Doesn't really work for angular apps
 				},
 				files: [{
 					expand: true,
@@ -479,7 +481,8 @@ module.exports = function(grunt) {
 					{
 						expand: true,
 						cwd:'<%= yeoman.app %>/components/angular-complete',
-						src: ['angular.min.js', 'i18n/*.js'] // 'angular-cookies.min.js',						dest: '<%= yeoman.dist %>/js/vendor'
+						src: ['angular.min.js', 'i18n/*.js'],
+						dest: '<%= yeoman.dist %>/js/vendor'
 					}
 				]
 			},
@@ -582,7 +585,7 @@ module.exports = function(grunt) {
 					replacements: [
 						{	// Clean "Trailing whitespace"
 							pattern: /[ \t]+[\n\r]{1}/g,
-							replacement: ''
+							replacement: '\n'
 						},
 						{	// Clean "Mixed spaces and tabs" - All spaces
 							pattern: /[ ]{4}/g,
@@ -674,40 +677,6 @@ module.exports = function(grunt) {
 					}
 				]
 			},
-			// collapseWhitespace replacement - make sure you have no comments in your inline <script>
-			htmlmin: {
-				options: {
-					replacements: [
-						// multi spaces
-						{
-							pattern: /\s+/g,
-							replacement: ' '
-						}//,
-						// whitespace
-						//{
-						//	pattern: /\s*\n\s*/g,
-						//	replacement: ''
-						//},
-						// spaces between tags
-						//{
-						//	pattern: /\s*\>\s*\<\s*/g,
-						//	replacement: '><'
-						//}
-					]
-				},
-				files: [
-					{
-						expand: true,
-						dot: true,
-						cwd: '<%= yeoman.dist %>',
-						dest: '<%= yeoman.dist %>',
-						src: [
-							'*.html',
-							'view/**/*.html'
-						]
-					}
-				]
-			},
 			// remove all console function calls - production only (call before uglify)
 			jsmin: {
 				options: {
@@ -767,7 +736,7 @@ module.exports = function(grunt) {
 				]
 			}
 		},
-		'closure-compiler': {
+		/*'closure-compiler': {
 			dist: {
 			closurePath: '/usr/local/opt/closure-compiler/libexec', // brew --prefix closure-compiler # + /libexec
 			js: '<%= yeoman.dist %>/js/app.min.js',
@@ -777,7 +746,7 @@ module.exports = function(grunt) {
 				language_in: 'ECMASCRIPT5_STRICT'
 			}
 			}
-		},
+		},*/
 		manifest: {
 			generate: {
 				options: {
@@ -801,21 +770,6 @@ module.exports = function(grunt) {
 				],
 				dest: '<%= yeoman.dist %>/manifest.appcache'
 			}
-		},
-		cdnify: {
-			dist: {
-				html: ['<%= yeoman.dist %>/index.web.html']
-			}
-		}/*,
-		ngmin: {
-		dist: {
-			files: [{
-			expand: true,
-			cwd: '<%= yeoman.dist %>/js',
-			src: '*.js',
-			dest: '<%= yeoman.dist %>/js'
-			}]
-		}
 		}/*,
 		bower: {
 			dir: '<%= yeoman.app %>/components',
@@ -824,8 +778,6 @@ module.exports = function(grunt) {
 		}*/
 	});
 	grunt.renameTask('regarde', 'watch');
-	// remove when mincss task is renamed
-	grunt.renameTask('mincss', 'cssmin');
 
 	grunt.renameTask('string-replace', 'replace');
 	grunt.registerTask('server', function (target) {
@@ -939,21 +891,20 @@ module.exports = function(grunt) {
 		'cssmin',
 		'htmlmin:dist',
 		'copy:dist',
-		'replace:jsmin',	// remove console fct calls - prod only		'uglify',
+		'replace:jsmin',	// remove console fct calls - prod only
+		'uglify',
 			//'closure-compiler',	// Warning: Object #<Object> has no method 'expandFiles' 2013-02-15
 			//'ngmin',				// make a larger file 2013-02-15
 		'replace:dist',
 		'rev',
 		'usemin',
 		'replace:inline',
-			//'replace:htmlmin',	// causing bugs
-		//'cdnify',				// angular error 2013-02-15
 		'htmlmin:minify',
 		'manifest',
 		'clean:deploy'
 	]);
 	grunt.registerTask('lint', [
-		'htmllint',
+		//'htmllint',	// not the best for angular
 		'replace:jslint',
 		'jshint'
 	]);

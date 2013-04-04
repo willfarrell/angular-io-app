@@ -1,16 +1,21 @@
-angular.module('io.controller.filepicker', ['io.factory.filepicker']).controller('FilepickerCtrl', ['$scope', '$http', '$filepicker', function($scope, $http, filepicker) {
-	//FilepickerCtrl.$inject = ['$scope', '$http', '$filepicker'];
-	//function FilepickerCtrl($scope, $http, filepicker) {
+//angular.module('io.controller.filepicker', ['io.factory.filepicker'])
+//.controller('FilepickerCtrl', ['$scope', '$http', '$filepicker', function($scope, $http, filepicker) {
+
+function FilepickerCtrl($scope, $http, filepicker) {
 	console.log('FilepickerCtrl (' + $scope.$id + ')');
 	//$scope.errors = {};
 	$scope.filepicker = filepicker;
-	//-- dropzone --//
-	var dropbox = document.getElementById("dropbox");
-	if (dropbox.attachEvent) {	// <= IE8
-dropbox.addEventListener = dropbox.attachEvent; // event = window.attachEvent ? 'onclick' : 'click';
-	}
-	// init event handlers
 
+
+
+
+	//-- dropzone --//
+	var dropbox = document.getElementById('dropbox');
+	if (dropbox.attachEvent) {	// <= IE8
+		dropbox.addEventListener = dropbox.attachEvent; // event = window.attachEvent ? 'onclick' : 'click';
+	}
+
+	// init event handlers
 	$scope.dragEnterLeave = function(evt) {
 		evt.stopPropagation();
 		evt.preventDefault();
@@ -19,22 +24,23 @@ dropbox.addEventListener = dropbox.attachEvent; // event = window.attachEvent ? 
 			$scope.dropClass = '';
 		});
 	};
-	dropbox.addEventListener("dragenter", $scope.dragEnterLeave, false);
-	dropbox.addEventListener("dragleave", $scope.dragEnterLeave, false);
-	dropbox.addEventListener("dragover", function(evt) {
+
+	dropbox.addEventListener('dragenter', $scope.dragEnterLeave, false);
+	dropbox.addEventListener('dragleave', $scope.dragEnterLeave, false);
+	dropbox.addEventListener('dragover', function(evt) {
 		evt.stopPropagation();
 		evt.preventDefault();
 		//console.log(objectClone(evt.dataTransfer));
 		var ok = evt.dataTransfer && evt.dataTransfer.types && (
-		evt.dataTransfer.types.indexOf('Files') >= 0 // file from computer
-		|| evt.dataTransfer.types.indexOf('text/uri-list') >= 0 // url from other window
+			evt.dataTransfer.types.indexOf('Files') >= 0 || // file from computer
+			evt.dataTransfer.types.indexOf('text/uri-list') >= 0 // url from other window
 		);
 		$scope.$apply(function() {
 			$scope.filepicker.setDropzoneName(ok);
 			$scope.dropClass = ok ? 'alert-success' : 'alert-error';
 		});
 	}, false);
-	dropbox.addEventListener("drop", function(evt) {
+	dropbox.addEventListener('drop', function(evt) {
 		//console.log('drop evt:', JSON.parse(JSON.stringify(evt.dataTransfer)));
 		//console.log(evt.dataTransfer.getData('TEXT'));
 		//console.log(evt.dataTransfer.getData('URL'));
@@ -51,12 +57,14 @@ dropbox.addEventListener = dropbox.attachEvent; // event = window.attachEvent ? 
 			$scope.setFiles(evt.dataTransfer.files);
 		}
 	}, false);
+
+
 	//-- COMPUTER --//
 	$scope.computer = {};
 	// click button
 	$scope.computer.buttonClick = function() {
-		if ($scope.filepicker.args.multi) document.getElementById('file_multi_upload').click();
-		else document.getElementById('file_upload').click();
+		if ($scope.filepicker.args.multi) { document.getElementById('file_multi_upload').click(); }
+		else { document.getElementById('file_upload').click(); }
 	};
 	// select file after button click
 	$scope.computer.buttonSelect = function(element) {
@@ -64,6 +72,7 @@ dropbox.addEventListener = dropbox.attachEvent; // event = window.attachEvent ? 
 		console.log(element);
 		$scope.setFiles(element.files);
 	};
+
 	//-- URL --//
 	$scope.url = {};
 	$scope.url.value = '';
@@ -86,14 +95,15 @@ dropbox.addEventListener = dropbox.attachEvent; // event = window.attachEvent ? 
 							responseText: data
 						}
 					};
-					uploadComplete(JSON.stringify(data));
+					$scope.uploadComplete(JSON.stringify(data));
 				}
 			}).error(function() {
 				console.log('url.load.post.error');
-				uploadFailed();
+				$scope.uploadFailed();
 			});
 		}
 	};
+
 	//-- RESIZECROP --//
 	$scope.resizecrop = {
 		img: {}
@@ -107,33 +117,39 @@ dropbox.addEventListener = dropbox.attachEvent; // event = window.attachEvent ? 
 		img.data = ''; // DataURL
 		$scope.resizecrop.img = img; // gen img
 	};
-	$scope.resizecrop.loadFile = function() {
+
+	$scope.resizecrop.loadFiles = function() {
 		for (var i in $scope.files) {
 			if ($scope.files[i].type.match(/image.*/)) {
-				//fd.append("file", $scope.resizeImg($scope.files[i]), $scope.files[i].name);
-				//fd.append("file", $scope.files[i]);
+				//fd.append('file', $scope.resizeImg($scope.files[i]), $scope.files[i].name);
+				//fd.append('file', $scope.files[i]);
 				console.log($scope.files[i]);
-				var file = $scope.files[i];
-				var reader = new FileReader();
-				reader.onload = function(evt) {
-					console.log('loadFile.reader.onload');
-					$scope.resizecrop.initParams(evt.target.result, file.type);
-					$scope.$apply(function() {
-						$scope.resizecrop.generate();
-						if ($scope.filepicker.args.multi === false) {
-							$scope.filepicker.args.service = 'RESIZECROP';
-						}
-					});
-				};
-				reader.readAsDataURL(file);
+
+				$scope.resizecrop.loadFile($scope.files[i]);
 			}
 		}
 	};
+
+	$scope.resizecrop.loadFile = function(file) {
+		var reader = new FileReader();
+		reader.onload = function(evt) {
+			console.log('loadFile.reader.onload');
+			$scope.resizecrop.initParams(evt.target.result, file.type);
+			$scope.$apply(function() {
+				$scope.resizecrop.generate();
+				if ($scope.filepicker.args.multi === false) {
+					$scope.filepicker.args.service = 'RESIZECROP';
+				}
+			});
+		};
+		reader.readAsDataURL(file);
+	};
+
 	$scope.resizecrop.loadURL = function(src, type) {
-		src || (src = $scope.files[0].name); //.replace(/\./g, '%2E'),
-		type || (type = $scope.files[0].type);
+		src = src || $scope.files[0].name; //.replace(/\./g, '%2E'),
+		type = type || $scope.files[0].type;
 		var proxy = $scope.settings.server + '/filepicker/url/?url=' + src;
-		$http.get(proxy + "&callback=JSON_CALLBACK").success(function(data) {
+		$http.get(proxy + '&callback=JSON_CALLBACK').success(function(data) {
 			//console.log(data);
 			console.log('loadURL.get.success');
 			if ($rootScope.checkHTTPReturn(data)) {
@@ -147,12 +163,13 @@ dropbox.addEventListener = dropbox.attachEvent; // event = window.attachEvent ? 
 			}
 		}).error(function() {
 			$scope.filepicker.alerts = [{
-				"class": "error",
-				"label": "Failed",
-				"message": "There was an error attempting to obtain the image."
+				'class': 'error',
+				'label': 'Failed',
+				'message': 'There was an error attempting to obtain the image.'
 			}];
 		});
 	};
+
 	$scope.resizecrop.generate = function() {
 		var image = new Image();
 		image.onload = function(evt) {
@@ -204,10 +221,10 @@ dropbox.addEventListener = dropbox.attachEvent; // event = window.attachEvent ? 
 					y = crop_top + dest_height - height / 2;
 				}
 				// scaled image canvas
-				var canvas = document.createElement("canvas");
+				var canvas = document.createElement('canvas');
 				canvas.width = width;
 				canvas.height = height;
-				canvas.getContext("2d").drawImage(image, 0, 0, width, height);
+				canvas.getContext('2d').drawImage(image, 0, 0, width, height);
 				$scope.resizecrop.img.canvas = canvas;
 			}
 
@@ -216,7 +233,7 @@ dropbox.addEventListener = dropbox.attachEvent; // event = window.attachEvent ? 
 				canvas.height = canvas_height;
 				//canvas.style.cursor = 'move'; // see css rules
 				//canvas.onselectstart = function(){ return false; }; // browser bug work around - http://stackoverflow.com/questions/2745028/chrome-sets-cursor-to-text-while-dragging-why
-				var ctx = canvas.getContext("2d");
+				var ctx = canvas.getContext('2d');
 				//ctx.clearRect(0, 0, canvas_width, canvas_height);
 				//ctx.drawImage(copy, image_left, image_top)
 				ctx.drawImage($scope.resizecrop.img.canvas, (x - width / 2), (y - height / 2));
@@ -236,7 +253,7 @@ dropbox.addEventListener = dropbox.attachEvent; // event = window.attachEvent ? 
 				ctx.lineWidth = 1;
 				ctx.strokeStyle = 'grey';
 				ctx.stroke();
-				document.getElementById("resizecrop").innerHTML = '';
+				document.getElementById('resizecrop').innerHTML = '';
 				document.getElementById('resizecrop').appendChild(canvas);
 				build();
 			}
@@ -265,14 +282,14 @@ dropbox.addEventListener = dropbox.attachEvent; // event = window.attachEvent ? 
 				//document.getElementById('resizecrop').appendChild(img);
 			}
 			scaleImage();
-			var canvas = document.createElement("canvas");
+			var canvas = document.createElement('canvas');
 			draw();
 			// if resizing multiple images for say a gallery, auto save
 			if ($scope.filepicker.args.multi === true) {
 				$scope.resizecrop.save();
 			}
 			// zoom
-			document.getElementById("resizecrop-zoom").onchange = function(evt) {
+			document.getElementById('resizecrop-zoom').onchange = function(evt) {
 				scaleImage();
 				draw();
 			};
@@ -359,7 +376,7 @@ dropbox.addEventListener = dropbox.attachEvent; // event = window.attachEvent ? 
 			};
 		};
 		image.onerror = function() {
-			//message("+= " + file.name + " does not look like a valid image");
+			//message('+= ' + file.name + ' does not look like a valid image');
 		};
 		image.src = $scope.resizecrop.img.src;
 	};
@@ -369,11 +386,12 @@ dropbox.addEventListener = dropbox.attachEvent; // event = window.attachEvent ? 
 		$scope.files[0] = blob;
 		$scope.uploadFiles();
 	};
+
 	$scope.camera = {};
 	$scope.camera.save = function() {
 		console.log('camera.save');
 		console.log(filepicker.camera);
-		if (!$scope.filepicker.camera.video.videoWidth && !$scope.filepicker.camera.video.videoHeight) return; // camera not loaded yet
+		if (!$scope.filepicker.camera.video.videoWidth && !$scope.filepicker.camera.video.videoHeight) { return; } // camera not loaded yet
 		// reset canvas to camera size
 		$scope.filepicker.camera.canvas.width = $scope.filepicker.camera.video.videoWidth;
 		$scope.filepicker.camera.canvas.height = $scope.filepicker.camera.video.videoHeight;
@@ -395,6 +413,7 @@ dropbox.addEventListener = dropbox.attachEvent; // event = window.attachEvent ? 
 			$scope.filepicker.cameraStop();
 		}
 	};
+
 	$scope.files = [];
 	// Turn the FileList object into an Array - *** move to computer service
 	$scope.setFiles = function(files) {
@@ -434,7 +453,7 @@ dropbox.addEventListener = dropbox.attachEvent; // event = window.attachEvent ? 
 					if ($scope.files[0].name.match(/^http/)) { // url
 						$scope.resizecrop.loadURL();
 					} else {
-						$scope.resizecrop.loadFile();
+						$scope.resizecrop.loadFiles();
 					}
 				} else {
 					$scope.uploadFiles();
@@ -443,30 +462,19 @@ dropbox.addEventListener = dropbox.attachEvent; // event = window.attachEvent ? 
 			//});
 		}
 	};
+
 	// move to computer service
 	$scope.uploadFiles = function() {
 		for (var i in $scope.files) {
-			console.log($scope.files[i]);
-			//if ($scope.files[i].type.match(/image.*/)) {
-			$scope.uploadFile($scope.files[i]);
+			if ($scope.files.hasOwnProperty(i)) {
+				console.log($scope.files[i]);
+				//if ($scope.files[i].type.match(/image.*/)) {
+				$scope.uploadFile($scope.files[i]);
+			}
 		}
 	};
-	$scope.uploadFile = function(file) {
-		console.log('uploadFile()');
-		file || (file = $scope.files[0]);
-		$scope.progressVisible = false;
-		var fd = new FormData();
-		fd.append("file", file);
-		var xhr = new XMLHttpRequest();
-		xhr.upload.addEventListener("progress", $scope.uploadProgress, false);
-		xhr.addEventListener("load", $scope.uploadComplete, false);
-		xhr.addEventListener("error", $scope.uploadFailed, false);
-		xhr.addEventListener("abort", $scope.uploadCanceled, false);
-		xhr.open("POST", $rootScope.settings.server + '/filepicker/computer/' + $scope.filepicker.args.action + '/' + $scope.filepicker.args.ID);
-		$scope.progressVisible = true;
-		xhr.send(fd);
-		//console.log("POST /filepicker/computer/"+$scope.filepicker.args.action);
-	};
+
+	// Events
 	$scope.progress = 0;
 	$scope.uploadProgress = function(evt) {
 		//console.log('uploadProgress');
@@ -478,6 +486,7 @@ dropbox.addEventListener = dropbox.attachEvent; // event = window.attachEvent ? 
 			}
 		});
 	};
+
 	$scope.uploadComplete = function(evt) {
 		console.log('uploadComplete');
 		$scope.$apply(function() {
@@ -487,27 +496,48 @@ dropbox.addEventListener = dropbox.attachEvent; // event = window.attachEvent ? 
 			$scope.filepicker.loadFiles();
 		});
 	};
+
 	$scope.uploadFailed = function(evt) {
 		console.log('uploadFailed');
 		$scope.$apply(function() {
 			$scope.filepicker.alerts = [{
-				"class": "error",
-				"label": "Failed",
-				"message": "There was an error attempting to upload the file."
+				'class': 'error',
+				'label': 'Failed',
+				'message': 'There was an error attempting to upload the file.'
 			}];
 		});
 	};
+
 	$scope.uploadCanceled = function(evt) {
 		console.log('uploadCanceled');
 		$scope.$apply(function() {
 			$scope.progressVisible = false;
 			$scope.filepicker.alerts = [{
-				"class": "error",
-				"label": "Canceled",
-				"message": "The upload has been canceled by the user or the browser dropped the connection."
+				'class': 'error',
+				'label': 'Canceled',
+				'message': 'The upload has been canceled by the user or the browser dropped the connection.'
 			}];
 		});
 	};
+
+
+	$scope.uploadFile = function(file) {
+		console.log('uploadFile()');
+		file = file || $scope.files[0];
+		$scope.progressVisible = false;
+		var fd = new FormData();
+		fd.append('file', file);
+		var xhr = new XMLHttpRequest();
+		xhr.upload.addEventListener('progress', $scope.uploadProgress, false);
+		xhr.addEventListener('load', $scope.uploadComplete, false);
+		xhr.addEventListener('error', $scope.uploadFailed, false);
+		xhr.addEventListener('abort', $scope.uploadCanceled, false);
+		xhr.open('POST', $rootScope.settings.server + '/filepicker/computer/' + $scope.filepicker.args.action + '/' + $scope.filepicker.args.ID);
+		$scope.progressVisible = true;
+		xhr.send(fd);
+		//console.log('POST /filepicker/computer/'+$scope.filepicker.args.action);
+	};
+
 	// used to create blob from resized and cropped image
 	$scope.dataURItoBlob = function(dataURI) {
 		var binary = atob(dataURI.split(',')[1]);
@@ -519,6 +549,7 @@ dropbox.addEventListener = dropbox.attachEvent; // event = window.attachEvent ? 
 			type: 'image/png'
 		});
 	};
+
 	//-- Remote Services --//
 	//-- FTP --//
 	$scope.ftp = {};
@@ -536,12 +567,13 @@ dropbox.addEventListener = dropbox.attachEvent; // event = window.attachEvent ? 
 						responseText: data
 					}
 				};
-				uploadComplete(JSON.stringify(data));
+				$scope.uploadComplete(JSON.stringify(data));
 			}
 		}).error(function() {
 			console.log('url.load.post.error');
-			uploadFailed();
+			$scope.uploadFailed();
 		});
 	};
-	//}
-}]);
+}
+FilepickerCtrl.$inject = ['$scope', '$http', '$filepicker'];
+//}]);

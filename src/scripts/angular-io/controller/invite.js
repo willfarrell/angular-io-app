@@ -1,6 +1,6 @@
 //angular.module('io.controller.page', [])
 //.controller('PageCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
-InviteCtrl.$inject = ['$scope'];
+
 function InviteCtrl($scope) {
 	console.log('InviteCtrl ('+$scope.$id+')');
 	/*$scope.copyAlert = function(site_url) {
@@ -33,5 +33,6 @@ function InviteCtrl($scope) {
 	};
 	$scope.require_signin();
 }
+InviteCtrl.$inject = ['$scope'];
 
 //}]);

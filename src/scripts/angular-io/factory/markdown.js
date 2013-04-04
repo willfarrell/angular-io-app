@@ -1,4 +1,6 @@
-(function (angular, marked) {
+/*global marked:true */
+
+//(function (angular, marked) {
 angular.module('io.markdown', [])
 .factory('$markdown', ['$rootScope', function($rootScope) {
 	console.log('MarkdownFactory ('+$rootScope.$id+')');
@@ -30,4 +32,4 @@ angular.module('io.markdown', [])
 	return marked;
 }]);
 
-})(angular, marked)
+//})(angular, marked)
