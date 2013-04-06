@@ -23,7 +23,7 @@ function OnboardCtrl($scope, $cookies, $http, $routeParams) {
 				if (action === 'skip') {	// go to next page
 					if (i+1 < l) { $scope.href(elements[ i+1 ].href); }
 					else {	// onboard complete - update user_level if not done after subscribe
-						$scope.done(true);
+						$scope.done();
 					}
 				}
 				elements[ i ].className = 'current';

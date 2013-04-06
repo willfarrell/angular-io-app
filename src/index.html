@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en" data-ng-app="app"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en" data-ng-app="app"> <![endif]-->
 <!--[if IE 8]>    <html class="no-js lt-ie9" lang="en" data-ng-app="app"> <![endif]-->
@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="styles/bootstrap.css"><!-- generated from styles/less/bootstrap.less -->
     <link rel="stylesheet" href="components/font-awesome/css/font-awesome.css">
     <!--<link rel="stylesheet" href="components/font-awesome/build/fontawesome.css">--><!-- doesn't catch var icons -->
+    <link rel="stylesheet" href="styles/accessibility.css">
     <link rel="stylesheet" href="styles/angular-io.css">
     <!--<link href="styles/famfamfam-styles.css" rel="stylesheet">--><!-- not needed if font-awesome is included -->
     <!--<link rel="stylesheet" href="styles/famfamfam-flags.css">-->
@@ -67,6 +68,21 @@
 		</div>
 	</div>
 	<![endif]-->
+	<div class="alert-fixed-top appCache" data-ng-show="appCache.status > 2">
+		<div class="container">
+			<div class="alert alert-info">
+			  	<table width="100%"><tr><td>
+			  		<strong>New Version</strong>
+			  	</td><td class="auto-span">
+				  	<div class="progress" data-ng-class="{false: 'progress-striped active'}[appCache.percent == 100]">
+				  		<div class="bar" data-ng-style="{width: appCache.percent+'%'}"><!--{{appCache.loaded}} / {{appCache.total}}--></div>
+					</div>
+			  	</td><td>
+			  		<button class="btn btn-mini btn-primary pull-right" onclick="window.location.reload()" data-ng-disabled="appCache.percent != 100"><i class="icon-refresh"></i> Reload</button>
+			  	</td></tr></table>
+			</div>
+		</div>
+	</div>
 	<div class="alert-fixed-top">
 		<div class="container">
 			<div class="alert alert-{{alert.class}}" data-ng-repeat="alert in alerts">
@@ -83,7 +99,6 @@
 		<div class="footer-push"></div><!-- footer-push used for sticky footer -->
 	</div>
 	<!-- !End View -->
-	
 	<div class="footer" data-ng-include="'view/footer.html'"></div>
 </div>
 
@@ -93,6 +108,8 @@
 <div data-ng-include="'view/partials/message.html'"></div>
 <div data-ng-include="'view/partials/alert.html'"></div>
 <!-- !End Plugin Modals & Partials -->
+
+<div class="accessibility-ruler"></div>
 
 <!--[if lt IE 8]>
 <script src="components/json3/lib/json3.js"></script>
@@ -163,7 +180,6 @@
 <script src="scripts/angular-io/factory/follow.js"></script>
 <script src="scripts/angular-io/factory/filepicker.js"></script>
 <script src="scripts/angular-io/factory/message.js"></script>
-<script src="scripts/angular-io/factory/accessibility.js"></script>
 
 <!-- !Angular.io Controllers -->
 <script src="scripts/angular-io/controller/sign.js"></script>
@@ -212,13 +228,13 @@
 
 
 <!-- *************************************************** -->
-
+<script src="scripts/angular-io/module/accessibility.js"></script>
 
 <!-- !End App Modules -->
 <!-- endbuild -->
 
 <!-- !Async Modules -->
-<!-- Ensure these are copied over in grunt and declared in async.js -->
+<!-- Ensure these are copied over in grunt -->
 <script src="scripts/angular-io/fallback/placeholder.js"></script>
 
 <!-- !End App Modules -->

@@ -83,6 +83,21 @@ class Timers {
 		}
 		return $results;
 	}
+	
+	function print_results($id = NULL) {
+		if ($id) $results = $this->results($id);
+		else $results = $this->results_all();
+		
+		echo "\n=== Timings ===\n";
+		echo "API\t\tavg\tmin\tmax\n";
+		
+		foreach($results as $key => $value) {
+			echo "$key\t\t"
+				.number_format($value['avg'], 3)."s\t"
+				.number_format($value['min'], 3)."s\t"
+				.number_format($value['max'], 3)."s\n";
+		}
+	}
 
 	function clear($id=NULL) {
 		if ($id==NULL) $id = $this->id;

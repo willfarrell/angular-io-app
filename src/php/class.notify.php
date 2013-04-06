@@ -65,6 +65,8 @@ class Notify {
 		if ($from) {
 			$from = $this->db->fetch_assoc($from);
 			$this->vars['from'] = $from;
+		} else {
+			$from = array();
 		}
 		
 		// to user details
@@ -101,9 +103,9 @@ class Notify {
 		//print_r($notify);
 		
 		// compile message
-		print_r($args);
+		//print_r($args);
 		list($message, $subject) = $this->compile($message_ID, $args); // support legacy
-		echo $message;
+		//echo $message;
 		
 		// send via types
 		$sent = true;
@@ -150,7 +152,7 @@ class Notify {
 	private function replace_tags($str, $group = '', $tags = array()) {
 	    foreach ($tags as $key => $value) {
 	    	if ($group) $key = $group.":".$key;
-	    	echo $key."\n";
+	    	//echo $key."\n";
 	    	if (is_array($value)) continue;
 	      	$str = preg_replace("/{{".$key."}}/i", $value, $str);
 	    }

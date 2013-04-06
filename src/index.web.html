@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
 <!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
@@ -37,6 +37,10 @@
     <style>.ng-cloak{display:none;}</style>
     <link rel="stylesheet" href="css/app.min.css">
     
+    <!-- build:js js/appCache.min.js -->
+    <script src="scripts/appCache.js"></script>
+    <!-- endbuild -->
+    
     <!--[if lt IE 9]>
       <script>
         document.createElement('section');
@@ -66,7 +70,7 @@
 	<!-- !Top Nav -->
 	<div class="header" data-ng-include="'view/nav.top.html'"></div>
 	<!--[if lte IE 9]>
-	<div class="alert-fixed-top">
+	<div class="alert-fixed-top alert-no-close">
 		<div class="container">
 			<div class="alert alert-error">
 			  	<button class="close" data-dismiss="alert">&times;</button>
@@ -75,6 +79,21 @@
 		</div>
 	</div>
 	<![endif]-->
+	<div class="alert-fixed-top appCache alert-no-close" data-ng-show="appCache.percent">
+		<div class="container">
+			<div class="alert alert-info">
+			  	<table width="100%"><tr><td>
+			  		<strong>New Version</strong>
+			  	</td><td class="auto-span">
+				  	<div class="progress" data-ng-class="{false: 'progress-striped active'}[appCache.percent == 100]">
+				  		<div class="bar" data-ng-style="{width: appCache.percent+'%'}"><!--{{appCache.loaded}} / {{appCache.total}}--></div>
+					</div>
+			  	</td><td>
+			  		<button class="btn btn-mini btn-primary pull-right" onclick="window.location.reload()" data-ng-disabled="appCache.percent != 100"><i class="icon-refresh"></i> Reload</button>
+			  	</td></tr></table>
+			</div>
+		</div>
+	</div>
 	<div class="alert-fixed-top">
 		<div class="container">
 			<div class="alert alert-{{alert.class}}" data-ng-repeat="alert in alerts">

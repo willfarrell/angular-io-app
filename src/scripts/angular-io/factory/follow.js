@@ -8,7 +8,7 @@ angular.module('io.factory.follow', [])
 	$scope.version = '0.2.0';
 	// init root follow obj - list of all profiles viewed
 	$scope.init = function(company_ID, user_ID, following) {
-		console.log('init('+company_ID+','+user_ID+')');
+		//console.log('init('+company_ID+','+user_ID+')');
 		company_ID = company_ID || 0;
 		user_ID = user_ID || 0;
 		following = following || false;
@@ -21,7 +21,8 @@ angular.module('io.factory.follow', [])
 			$scope.db.company[company_ID].company_ID = company_ID;
 			$scope.db.company[company_ID].following = following;
 			$scope.db.company[company_ID].groups = $scope.db.company[company_ID].groups || [];
-		} else if (user_ID) {
+		}
+		if (user_ID) {
 			$scope.db.user[user_ID] = $scope.db.user[user_ID]|| {};
 			$scope.db.user[user_ID].user_ID = user_ID;
 			$scope.db.user[user_ID].following = following;

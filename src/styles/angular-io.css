@@ -86,43 +86,6 @@ form { margin:0; }
 	-moz-box-shadow: inset 0 0 3px rgba(0,0,0,.15);
 	box-shadow: inset 0 0 3px rgba(0,0,0,.15);
 }
-input[type='range']::-webkit-slider-thumb {  
-    /*-webkit-appearance: none;  
-    /*width: 68px;  
-    height: 44px;  
-    -webkit-border-radius: 10px;  
-    border-radius: 10px;  
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAYCAYAAAB0kZQKAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAASJJREFUeNpi7OnpYaAC0AXiF0D8mhzNTAzUASBHnAdim4F0BAhIA/EBIC4aSEeAADMQ9wLxRiDmHyhHwIAfNHqMiXZEcXExGJMCiNCjCMTHgDiTkFmM////p4rXe3t78Rm0DIjTgfgLNkkWoGZQij7MQFsQBY2aICC+Rq80gQ2oA/EZIE4YSEeAACcQzwfimVD2gDgCBtKgiVZlIB0BAgbQbBwykI5A5I4BtPsaNLfcHKiQWADEJiAHDERIfAfiLKgjBiQ67kCD/zK2NAFqjMyi0AJQVnPCI78GiBNxFttQF6ZToVjG5ohfoLoOiKcMVO54BA3+swPVntgKxIbEOIAWjvgLxJVA7APE7waisHoKxBFAfGSgSszL0MLnBTmaAQIMAKg/OsrT7JG8AAAAAElFTkSuQmCC'),  
-    -webkit-gradient(  
-        linear,  
-        left top,  
-        left bottombottom,  
-        color-stop(0, #fefefe),  
-        color-stop(0.49, #dddddd),  
-        color-stop(0.51, #d1d1d1),  
-        color-stop(1, #a1a1a1)  
-    );  
-    background-repeat: no-repeat;  
-    background-position: 50%; 
-    //
-	width: 16px;
-	height: 16px;
-	background-color: #fff;
-	-webkit-border-radius: 32px;
-	-moz-border-radius: 32px;
-	border-radius: 32px;
-	background: #fff;
-	background: -moz-linear-gradient(top,#fff 0,#e0e0e0 100%);
-	background: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#fff),color-stop(100%,#e0e0e0));
-	background: -webkit-linear-gradient(top,#fff 0,#e0e0e0 100%);
-	background: -o-linear-gradient(top,#fff 0,#e0e0e0 100%);
-	background: -ms-linear-gradient(top,#fff 0,#e0e0e0 100%);
-	background: linear-gradient(to bottom,#fff 0,#e0e0e0 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff',endColorstr='#e0e0e0',GradientType=0);
-	-webkit-box-shadow: 0 0 3px rgba(0,0,0,.1);
-	-moz-box-shadow: 0 0 3px rgba(0,0,0,.1);
-	box-shadow: 0 0 3px rgba(0,0,0,.1);*/
-}
 
 /*************** AngularJS Add-ons ***************/
 
@@ -191,13 +154,31 @@ img { -ms-interpolation-mode: bicubic; }
 	z-index: 1025;
 }
 
+.alert-no-close .alert {
+	padding: 8px 14px;
+}
+/* appCache Loader */
+.appCache td {
+	white-space: nowrap;
+	padding: 0 5px;
+}
+.appCache .auto-span {
+	width: 100%;
+	vertical-align: middle;
+}
+.appCache .progress {
+	margin-bottom: 0;
+}
+
+
+
 /* Nav Bar Hover
 -------------------------------------------------- */
 
 @media (min-width: 768px) {
-ul.nav li.dropdown:hover ul.dropdown-menu{
-    display: block;
-}
+	ul.nav li.dropdown:hover ul.dropdown-menu{
+	    display: block;
+	}
 }
 
 /* Nav Slider
@@ -211,13 +192,25 @@ body {
 	overflow-y: scroll;
 }
 @media (max-width:767px) {
+	/* bootstrap override */
+	.navbar-fixed-top, .navbar-fixed-bottom {
+		position: absolute; /* override fixed */
+	}
+	
+	.navbar-fixed-top, .navbar-fixed-bottom, .navbar-static-top {
+		margin-left: 0;
+		margin-right: 0;
+	}
+
+	.navbar .container {
+		width: auto;
+	}
+	/* end bootstrap override */
+	
 	.page {
 		border-left: solid 1px #DDD;
 	}
 	
-	.navbar-fixed-top, .navbar-fixed-bottom {
-		position: absolute; /* override */
-	}
 	.nav-slider {
 		width:200px;
 		height: 100%;

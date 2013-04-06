@@ -2,15 +2,17 @@
 //.controller('AppCtrl',
 //['$rootScope', '$scope', '$http', '$follow', '$filepicker',
 //function(rootScope, $scope, $http, follow, filepicker) {
-function AppCtrl(rootScope, $scope, $http, $cookies, $location, filepicker, accessibility, markdown, message, follow) {
+function AppCtrl(rootScope, $scope, $window, $http, $cookies, $location, filepicker, accessibility, markdown, message, follow) {
 	console.log('AppCtrl ('+$scope.$id+')');
+
 	$rootScope = rootScope; // important
+
 	// scope fall back for children
 	//$scope.$http = $http;
+
 	// Factory init - $scope.factory = factory;
 	$rootScope.filepicker = filepicker;
 	$rootScope.accessibility = accessibility;
-	$rootScope.markdown = markdown;
 	$rootScope.message = message;
 	$rootScope.follow = follow;
 	markdown.setOptions({
@@ -22,6 +24,20 @@ function AppCtrl(rootScope, $scope, $http, $cookies, $location, filepicker, acce
 		smartLists: true
 	});
 	$rootScope.markdown = markdown;
+
+	// appCache
+	$scope.appCache = $window.appCache;
+	console.log($window.appCache);
+
+	$scope.$on('appCache', function(name, state) {
+		$scope.$apply(function(){
+			console.log('on');
+			console.log(state);
+			$scope.appCache = state;
+		});
+
+	});
+
 	// Events
 	$scope.$on('$viewContentLoaded', function(event) {
 		// ga - add $window and $location to $inject if adding in
@@ -30,9 +46,11 @@ function AppCtrl(rootScope, $scope, $http, $cookies, $location, filepicker, acce
 	});
 	$scope.$on('$includeContentLoaded', function(event) {
 	});
+
 	// referral param
 	// requires $location & $cookies
 	if ($location.search().ref) { $cookies.referral = $location.search().ref; }
+
 	$scope.slideNavBool = -1;
 	$scope.slideNav = function(value) {
 		console.log(value);
@@ -67,5 +85,5 @@ function AppCtrl(rootScope, $scope, $http, $cookies, $location, filepicker, acce
 	};
 	*/
 }
-AppCtrl.$inject = ['$rootScope', '$scope', '$http', '$cookies', '$location', '$filepicker', '$accessibility', '$markdown', '$message', '$follow'];
+AppCtrl.$inject = ['$rootScope', '$scope', '$window', '$http', '$cookies', '$location', '$filepicker', '$accessibility', '$markdown', '$message', '$follow'];
 //}]);

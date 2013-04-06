@@ -1,6 +1,5 @@
 angular.module('io.init.settings', [])
 .run(['$rootScope', function($rootScope) {
-	'use strict';
 	console.log('io.init.settings ('+$rootScope.$id+')');
 	//$rootScope.version = "β.7.5";
 	$rootScope.settings = {

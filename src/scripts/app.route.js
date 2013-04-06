@@ -2,7 +2,6 @@ angular.module('app.route', [])
 .config(
 ['$routeProvider',
 function($routeProvider) {
-	'use strict';
 	var _view_ = 'view/', _app_ = 'app/';
 	$routeProvider
 		// Angular.io Routes //

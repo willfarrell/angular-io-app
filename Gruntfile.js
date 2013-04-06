@@ -147,7 +147,6 @@ module.exports = function(grunt) {
 				'<%= yeoman.app %>/scripts/**/*.js',
 					'!<%= yeoman.app %>/scripts/script.js',
 					'!<%= yeoman.app %>/scripts/angular-io/plugins/browser/*.js',
-					'!<%= yeoman.app %>/scripts/angular-io/directive/_accessibility.js',
 				'test/spec/*.js'
 			]
 		},
@@ -175,6 +174,7 @@ module.exports = function(grunt) {
 			},
 			// fallback scripts
 			'<%= yeoman.dist %>/js/fallback/json.min.js':		'<%= yeoman.app %>/components/json3/lib/json3.min.js',
+			//'<%= yeoman.dist %>/js/fallback/_.js':'<%= yeoman.app %>/scripts/angular-io/fallback/_.js', // .htaccess catch
 			'<%= yeoman.dist %>/js/fallback/placeholder.min.js':'<%= yeoman.app %>/scripts/angular-io/fallback/placeholder.js'
 		},
 		useminPrepare: {
@@ -200,7 +200,7 @@ module.exports = function(grunt) {
 					src: [
 						//'<%= yeoman.dist %>/img/**/*.{jpg,jpeg,gif,png,webp}',
 						//'<%= yeoman.dist %>/js/**/*.js', '!<%= yeoman.dist %>/js/vendor/**/*.js'
-						'<%= yeoman.dist %>/css/**/*.css', '!<%= yeoman.dist %>/css/**/accessibility.min.css'//
+						'<%= yeoman.dist %>/css/**/*.css'
 						//'**/*.{eot,svg,ttf,woff}'
 					]
 				}]
@@ -383,11 +383,7 @@ module.exports = function(grunt) {
 		},*/
 		cssmin: {
 			dist: {
-				files: {
-					'<%= yeoman.dist %>/css/accessibility.min.css': [
-						'<%= yeoman.app %>/styles/accessibility.css'
-					]
-				}
+				files: {}
 			}
 		},
 		htmlmin: {
@@ -706,6 +702,10 @@ module.exports = function(grunt) {
 						{
 							pattern: '<script src="js/async.min.js"></script>',
 							replacement: '<script><%= grunt.file.read(yeoman.dist+\'/js/async.min.js\') %></script>'
+						},
+						{
+							pattern: '<script src="js/appCache.min.js"></script>',
+							replacement: '<script><%= grunt.file.read(yeoman.dist+\'/js/appCache.min.js\') %></script>'
 						}
 					]
 				},
@@ -751,24 +751,48 @@ module.exports = function(grunt) {
 			generate: {
 				options: {
 					basePath: '<%= yeoman.dist %>/',
-					//cache: ['js/app.js', 'css/style.css']
+					cache: [
+						'//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+						'//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js',
+						'//cdnjs.cloudflare.com/ajax/libs/angular.js/1.0.6/angular.min.js',
+						'//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js'
+					],
 					//network: ['http://*', 'https://*'],
-					//fallback: ['/ /offline.html'],
-					exclude: ['js/vendor/*', 'js/device.min.js'],
+					//fallback: ['/js/fallback/ /js/fallback/_js'],
+					exclude: [
+						'index.web.html',
+						'index.device.html',
+
+						'js/async.min.js',
+						'js/appCache.min.js',
+						'js/vendor/*',
+						'js/device.min.js'
+					],
 					preferOnline: true,
 					verbose: true,
 					timestamp: true
 				},
 				src: [
 					// load top level html files
-					'*.html', 'view/*.html', //'view/**/*.html',
+					'*.html',
+					'view/*.html', //'view/**/*.html',
 					//'favicon.ico',
-					'js/**/*.js', '!js/vendor/i18n/*.js',
+					'js/**/*.js',
+					'!js/fallback/*.js',	// covered by CDNs
+					'!js/vendor/**/*.js',
 					'css/**/*.css',
-					'font/*.{eot,ttf,woff,otf}',
+					//'font/*.{eot,ttf,woff,otf}', // fonts are too big
 					'{i18n,json}/**/*.json', '!i18n/en/geo/*.json'
 				],
 				dest: '<%= yeoman.dist %>/manifest.appcache'
+			}
+		},
+		sitemap: {
+			dist: {
+				siteRoot: '<%= yeoman.dist %>/'//,
+				//homepage: ''//
+				//changefreq: 'daily'
+				//priority: '0.5'
 			}
 		}/*,
 		bower: {
@@ -891,7 +915,7 @@ module.exports = function(grunt) {
 		'cssmin',
 		'htmlmin:dist',
 		'copy:dist',
-		'replace:jsmin',	// remove console fct calls - prod only
+		//'replace:jsmin',	// remove console fct calls - prod only
 		'uglify',
 			//'closure-compiler',	// Warning: Object #<Object> has no method 'expandFiles' 2013-02-15
 			//'ngmin',				// make a larger file 2013-02-15

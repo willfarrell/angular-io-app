@@ -1,4 +1,10 @@
 
+
+angular.module('$strap.config', []).value('$strap.config', {});
+angular.module('$strap.filters', ['$strap.config']);
+angular.module('$strap.directives', ['$strap.config']);
+angular.module('$strap', ['$strap.filters', '$strap.directives', '$strap.config']);
+
 // AngularIO (io) - ** redo
 angular.module('io.config', []).value('io.config', {});
 
@@ -12,9 +18,9 @@ angular.module('io.controllers', [
 	'io.controller.user',
 	'io.controller.password'
 ]);
-angular.module('io.directives', ['io.config', 'io.directive.inputMask']); // 'io.directive.htmlExtend',angular.module('io.filters', ['io.config', 'io.filter.format', 'io.filter.range']);
+angular.module('io.directives', ['io.config', 'io.directive.inputMask']); // 'io.directive.htmlExtend'
 angular.module('io.factories', ['io.config']);
-angular.module('io.filters', ['io.config']);
+angular.module('io.filters', ['io.config', 'io.filter.format', 'io.filter.range']);
 angular.module('io.fallback', ['io.config']);	// Polyfills for browser fallback
 angular.module('io.init', ['io.config', 'io.init.settings', 'io.init.rootScope']); // move to app.?
 
@@ -23,7 +29,7 @@ angular.module('io.init', ['io.config', 'io.init.settings', 'io.init.rootScope']
 angular.module('io.follow',			['io.config', 'io.factory.follow']);
 angular.module('io.message',		['io.config', 'io.filter.truncate', 'io.factory.message']);
 angular.module('io.filepicker',		['io.config', 'io.factory.filepicker']);
-angular.module('io.accessibility',	['io.config', 'io.factory.accessibility']);
+angular.module('io.accessibility',	['io.config']);
 
 angular.module('io.plugins',		['io.follow', 'io.message', 'io.filepicker', 'io.accessibility', 'io.markdown']);
 

@@ -3,7 +3,7 @@
 //angular.module('io.controller.follow', [])
 //.controller('FollowCtrl', ['$scope', '$http', function($scope, $http) {
 
-function FollowCtrl($scope, $http) {
+function FollowCtrl($scope, $http, $follow) {
 	console.log('FollowCtrl ('+$scope.$id+')');
 	// Extends $scope.follow;
 	$scope.type = $scope.follow.type;
@@ -77,8 +77,9 @@ function FollowCtrl($scope, $http) {
 				if ($rootScope.checkHTTPReturn(data)) {
 					for (var i = 0, l = data.length; i < l; i++) {
 						data[i].following = (data[i].following) ? true : false;
-						if (data[i]['company_ID']) { $scope.follow.db.company[data[i]['company_ID']] = data[i]; }
-						else if (data[i]['user_ID']) { $scope.follow.db.user[data[i]['user_ID']] = data[i]; }
+						$follow.init(data[i]['company_ID'], data[i]['user_ID']);
+						if (data[i]['company_ID']) { $follow.db.company[data[i]['company_ID']] = data[i]; }
+						else if (data[i]['user_ID']) { $follow.db.user[data[i]['user_ID']] = data[i]; }
 					}
 					if (objectLength(data)) { $scope.follow_suggest = data; }
 					console.log($rootScope.objectLength($scope.follow_suggest));
@@ -98,8 +99,9 @@ function FollowCtrl($scope, $http) {
 				if ($rootScope.checkHTTPReturn(data)) {
 					for (var i = 0, l = data.length; i < l; i++) {
 						data[i].following = (data[i].following) ? true : false;
-						if (data[i]['company_ID']) { $scope.follow.db.company[data[i]['company_ID']] = data[i]; }
-						else if (data[i]['user_ID']) { $scope.follow.db.user[data[i]['user_ID']] = data[i]; }
+						$follow.init(data[i]['company_ID'], data[i]['user_ID']);
+						if (data[i]['company_ID']) { $follow.db.company[data[i]['company_ID']] = data[i]; }
+						else if (data[i]['user_ID']) { $follow.db.user[data[i]['user_ID']] = data[i]; }
 					}
 					if (objectLength(data)) { $scope.follow_suggest = data; }
 					console.log($rootScope.objectLength($scope.follow_suggest));
@@ -139,5 +141,5 @@ function FollowCtrl($scope, $http) {
 		$scope.loadGroups();
 	//});
 }
-FollowCtrl.$inject = ['$scope', '$http'];
+FollowCtrl.$inject = ['$scope', '$http', '$follow'];
 //}]);

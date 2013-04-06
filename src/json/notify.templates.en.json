@@ -21,12 +21,12 @@
 	},
 	"email_changed_notification": {
 		"subject": "Account Email Changed",
-		"message": "Your {{global:site_name}} account email was just changed.\n\nTo confirm your email, please proceed to\n {{global:site_url}}#/confirm/{{args:hash}}{{global:signature}}{{global:footer}}"
+		"message": "Your {{global:site_name}} account email was just changed.\n\nTo confirm your email, please proceed to\n {{global:site_url}}#/confirm/{{args:hash}}{{global:footer}}"
 	},
 	
 	"pgp_test": {
 		"subject": "PGP Test",
-		"message": "This message is to test your PGP/GPG Public Key.  If this message was not encrypted then there was an issue with your key.{{global:signature}}{{global:footer}}"
+		"message": "This message is to test your PGP/GPG Public Key.  If this message was not encrypted then there was an issue with your key.{{global:footer}}"
 	},
 	
 	

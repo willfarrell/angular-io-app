@@ -21,6 +21,9 @@ function($rootScope, $locale, $cookies, $http, $window, $location) {
 			// antuo scroll to top of page when ng-view doesn't chenge
 			document.querySelectorAll('.page')[0].scrollTop = 0;
 			//$rootScope.updateSession();
+
+			// clear alerts on page change
+			$rootScope.alerts = [];
 	});
 
 	$rootScope.default_settings = {
@@ -172,7 +175,7 @@ function($rootScope, $locale, $cookies, $http, $window, $location) {
 		console.log('require_signin(callback)');
 		console.log(callback);
 		//console.log($rootScope.settings);
-		console.log($rootScope.session);
+		//console.log(JSON.stringify($rootScope.session));
 		// not signed in -> sign/in
 		if (!$rootScope.session.user_ID) {
 			console.log('not signed in');
@@ -253,12 +256,6 @@ function($rootScope, $locale, $cookies, $http, $window, $location) {
 		'regions':{}
 	};
 
-	// clear alerts on page change
-	$rootScope.$watch(function () {
-			return $location.path();
-		}, function(value) {
-			$rootScope.alerts = [];
-	});
 
 	//!-- JSON -- //
 	$rootScope.loadJSON = function(key, file, folder, callback) {
@@ -580,7 +577,7 @@ function($rootScope, $locale, $cookies, $http, $window, $location) {
 		$rootScope.add_history();
 	};*/
 	// load scripts and styles on the fly
-	$rootScope.loadStyle = function(filename) {
+	/*$rootScope.loadStyle = function(filename) {
 		var headID = document.getElementsByTagName('head')[0];
 		var cssNode = document.createElement('link');
 		cssNode.type = 'text/css';
@@ -614,7 +611,7 @@ function($rootScope, $locale, $cookies, $http, $window, $location) {
 			}
 
 		}
-	};
+	};*/
 
 	//!-- End Page Functions --//
 	//!-- Validation --//

@@ -34,12 +34,12 @@
     font-style: italic;
 }
 
-* {
+.accessibility * {
    font-family: opendyslexic;
 }
 
 /* Reload FontAwesome for icons */
-[class^="icon-"],[class*=" icon-"] {
+.accessibility [class^="icon-"],[class*=" icon-"] {
 	font-family: FontAwesome;
  }
 
@@ -51,7 +51,7 @@
    The text is colored dark blue to assist with "glare"
    issues, but also to make the black symbols subtly stand
    out.                                                  */
-body {
+.accessibility body {
 	font-size: 14px;
 	line-height: 200%;
 	margin: auto 0;
@@ -63,11 +63,15 @@ body {
    with a script that results in symbols being colored 
    differently. This helps comprehension by making them
    subtly more visable.                                 */
-/*h1, h2, h3, h4, .highlight {
+/*.accessibility h1, 
+.accessibility h2, 
+.accessibility h3, 
+.accessibility h4, 
+.accessibility .highlight {
 	font-style: bold;
 	color: black;
 }*/
-.highlight {
+.accessibility .highlight {
 	font-size: 125%;
 }
 
@@ -75,7 +79,8 @@ body {
    on track while reading. This shading is very 
    subtle so it is not annoying, but it still 
    helps.                                       */
-p:nth-child(even), li:nth-child(even) {
+.accessibility p:nth-child(even),
+.accessibility li:nth-child(even) {
 	background-color: rgba(0,0,0, 0.03);
 }
 
@@ -83,7 +88,19 @@ p:nth-child(even), li:nth-child(even) {
 /* highlight text under cursor helps users focus
    on what they are currently reading. This shading
    is darker than the alt-paragraph shading.        */
-/*p:hover, li:hover {
+/*.accessibility p:hover, .accessibility li:hover {
    background-color: rgba(0,0,0, 0.5) !important;
 
 }*/
+
+.accessibility .accessibility-ruler {
+	height: 1.5em;
+	background-color: rgba(0,0,0,.1);
+	width: 100%;
+	position: absolute;
+	top:-100px;
+	z-index: 0;
+	
+	/* allow click through*/
+	pointer-events:none;
+}

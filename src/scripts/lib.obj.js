@@ -188,6 +188,16 @@ function domShow(id) {
 
 
 //-- Object --//
+function objectArray(obj) {
+	var arr = [];
+	for (var i in obj) {
+		if (obj.hasOwnProperty(i)) {
+			arr.push(obj[i]);
+		}
+	}
+	return arr;
+}
+
 function objectIsEmpty(obj) {
 	for (var p in obj) {
 		if (obj.hasOwnProperty(p)) {

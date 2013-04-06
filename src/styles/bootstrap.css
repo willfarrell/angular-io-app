@@ -73,7 +73,7 @@ img {
   -ms-interpolation-mode: bicubic;
 }
 img[width] {
-	min-width: 0;
+  min-width: 0; /* Overwrite min-width: auto when img width set */
 }
 #map_canvas img,
 .google-maps img {

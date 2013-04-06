@@ -85,6 +85,6 @@ function SecurityCtrl($scope, $http) {
 			});
 	};
 	$scope.loadSecurity();
-	$scope.require_signin();
+	//$scope.require_signin();
 }
 SecurityCtrl.$inject = ['$scope', '$http'];

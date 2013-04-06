@@ -689,3 +689,22 @@ ServerSignature Off
 	RewriteRule ^img/(.*)/ img/$1.png
 </IfModule>
 
+# ----------------------------------------------------------------------
+# AngularJS locale fallback (en-us)
+# ----------------------------------------------------------------------
+
+<IfModule mod_rewrite.c>
+	RewriteCond %{REQUEST_URI} \.(js)$
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule ^js/vendor/i18n/.* js/vendor/i18n/angular-locale_en-us.js
+</IfModule>
+
+# ----------------------------------------------------------------------
+# Modernizr fallback catch to prevent 404 errors in console
+# ----------------------------------------------------------------------
+
+<IfModule mod_rewrite.c>
+	#RewriteCond %{REQUEST_URI} \.(js)$
+	#RewriteCond %{REQUEST_FILENAME} !-f
+	#RewriteRule ^js/fallback/.* js/fallback/_.js
+</IfModule>

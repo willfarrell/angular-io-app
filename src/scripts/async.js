@@ -2,34 +2,16 @@
 
 // IE version, undefined if not IE. Used for HTML5 polyfills.
 var IE; //@cc_on IE = parseFloat((/MSIE[\s]*([\d\.]+)/).exec(navigator.appVersion)[1]);
-
-//-- applicationCache --//
-if (!!window.applicationCache) { // Check from Moderizr - pulled out for speed
-	// Fired when the manifest resources have been newly redownloaded.
-	window.applicationCache.addEventListener('updateready', function() {
-		if (window.applicationCache.status === 4) { // window.applicationCache.UPDATEREADY == 4
-	// Browser downloaded a new app cache.
-	// Swap it in and reload the page to get the new version.
-	window.applicationCache.swapCache();
-	// force new version
-	alert('A new version of this site is available. Load it?');
-	window.location.reload();
-	// give option - for large appcache, allow user to complete current task before reload
-	//if(confirm('A new version of this site is available. Load it?')) {
-	//	window.location.reload();
-	//}
-		}// else {
-	// Manifest didn't changed. Nothing new yet.
-		//}
-	}, false);
-} //else {
-	// Add in appCache fallback - https://code.google.com/p/html5-gears/source/browse/trunk/src/html5_offline.js
-//}
+if (IE && IE < 10) {
+	// Check if chromeframe, reset IE var if so
+	if((/chromeframe/).test(navigator.appVersion)) { IE = 0; }
+}
 
 //(function() {
 console.group('Async Load');
 
-//-- Error Detection and Tracking --//// http://errorception.com
+//-- Error Detection and Tracking --//
+// http://errorception.com
 var _errs=['5113b3e6bedd207c2b000400'];
 $script('//d15qhc0lu1ghnk.cloudfront.net/beacon.js');
 
@@ -55,7 +37,7 @@ var cdnHttp = '//cdnjs.cloudflare.com/ajax/libs/',
 		// ajax.googleapis.com is a slower CDN
 		jQuery:cdnHttp+'jquery/1.9.1/jquery.min.js', // remove when possible
 		Bootstrap:cdnHttp+'twitter-bootstrap/2.3.1/js/bootstrap.min.js', // remove when possible
-		Angular:cdnHttp+'angular.js/1.0.5/angular.min.js',
+		Angular:cdnHttp+'angular.js/1.0.6/angular.min.js',
 		Modernizr:	cdnHttp+'modernizr/2.6.2/modernizr.min.js'//,
 		// HTML5 Polyfills - https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-browser-Polyfills
 		//JSON3:		cdnHttp+'json3/3.2.4/json3.min.js'//, // add for IE 6-7
@@ -89,7 +71,12 @@ function checkTypeOf(obj_list) {
 		obj = win;
 		for (j = 0, l = obj_parts.length; j !== l; j++) {
 			obj = obj[obj_parts[j]];
-			if (typeof obj === 'undefined') { return 0; }
+			//console.log('Check '+obj_parts[j]);
+			//console.log(obj);
+			if (typeof obj === 'undefined') {
+				//console.log('FAILED '+obj_parts[j]);
+				return 0;
+			} //else { console.log('PASSED '+obj_parts[j]); }
 		}
 	}
 	return 1;
@@ -107,15 +94,19 @@ function hasModule(moduleName) {
 function bootstrap() {
 	//console.log('bootstrap');
 	if (checkTypeOf([
-		'JSON',				// JSON3 for IE 6-7
-		//'html',			// html5shiv
-		'Modernizr',
-		'$.fn.dropdown',	// jQuery ($) Then Bootstrap (fn.dropdown)
-		'angular'			// Angular
-		]) && hasModule('app')	// Angular 'app' Ready&& fallbackBool			// Fallback Bool
+			'JSON',				// JSON3 for IE 6-7
+			//'html',			// html5shiv
+			'Modernizr',
+			'$.fn.dropdown',	// Bootstrap (fn.dropdown)
+			'jQuery',			// jQuery
+			'angular'			// Angular
+		]) &&
+		hasModule('app') &&		// Angular 'app' Ready
+		fallbackBool			// Fallback Bool
 		) {
-		console.groupEnd();
-		angular.bootstrap(document, ['app']);
+			console.log('Angular Bootstrapping Now');
+			console.groupEnd();
+			angular.bootstrap(document, ['app']);
 	}
 }
 
@@ -150,7 +141,7 @@ $script(cdnSrc.Modernizr, 'Modernizr', function() {
 $script(cdnSrc.jQuery, 'jQuery', function() {
 	console.log('jQuery ready');
 	$script(cdnSrc.Bootstrap, 'Bootstrap', function() {
-		console.log('Bootstrap ready');
+		console.log('Twitter Bootstrap ready');
 		bootstrap();
 	}, cdnFallback);
 }, cdnFallback);
@@ -180,11 +171,18 @@ $script.ready(['Modernizr', 'Angular', 'App'], function() {
 	modernizrFallback(Modernizr);
 	// Ensure all fallback have had a chance to load before bootstrapping
 	$script.ready(fallbackArray, function() {
-		fallbackBool = 1;
-		bootstrap();
-	}, function() {
-		fallbackBool = 1;
-		bootstrap();
+		console.log('Fallback Success');
+		if (!fallbackBool) {
+			fallbackBool = 1;
+			bootstrap();
+		}
+	}, function(depsNotFound) { // causes issues in IE8
+		console.log('Fallback Failed');
+		console.log(depsNotFound);
+		if (depsNotFound.length === fallbackArray.length) {
+			fallbackBool = 1;
+			bootstrap();
+		}
 	});
 });
 
