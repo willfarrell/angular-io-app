@@ -1,5 +1,6 @@
 /*global $script:true, Modernizr:true */
 
+// alternative - http://www.pinlady.net/PluginDetect/IE/
 // IE version, undefined if not IE. Used for HTML5 polyfills.
 var IE; //@cc_on IE = parseFloat((/MSIE[\s]*([\d\.]+)/).exec(navigator.appVersion)[1]);
 if (IE && IE < 10) {
@@ -37,7 +38,7 @@ var cdnHttp = '//cdnjs.cloudflare.com/ajax/libs/',
 		// ajax.googleapis.com is a slower CDN
 		jQuery:cdnHttp+'jquery/1.9.1/jquery.min.js', // remove when possible
 		Bootstrap:cdnHttp+'twitter-bootstrap/2.3.1/js/bootstrap.min.js', // remove when possible
-		Angular:cdnHttp+'angular.js/1.0.6/angular.min.js',
+		Angular:cdnHttp+'angular.js/1.0.5/angular.min.js',
 		Modernizr:	cdnHttp+'modernizr/2.6.2/modernizr.min.js'//,
 		// HTML5 Polyfills - https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-browser-Polyfills
 		//JSON3:		cdnHttp+'json3/3.2.4/json3.min.js'//, // add for IE 6-7

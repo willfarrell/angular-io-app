@@ -25,19 +25,6 @@ function AppCtrl(rootScope, $scope, $window, $http, $cookies, $location, filepic
 	});
 	$rootScope.markdown = markdown;
 
-	// appCache
-	$scope.appCache = $window.appCache;
-	console.log($window.appCache);
-
-	$scope.$on('appCache', function(name, state) {
-		$scope.$apply(function(){
-			console.log('on');
-			console.log(state);
-			$scope.appCache = state;
-		});
-
-	});
-
 	// Events
 	$scope.$on('$viewContentLoaded', function(event) {
 		// ga - add $window and $location to $inject if adding in

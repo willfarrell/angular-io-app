@@ -3,10 +3,9 @@
 //angular.module('io.controller.page', [])
 //.controller('PageCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
 
-function SettingsCtrl($scope, $http, $routeParams) {
-	console.log('SettingsCtrl '+$routeParams.page);
-	$scope.page_url = 'view/settings/'+encodeURIComponent($routeParams.page)+'.html';
-	//$scope.nav_select($scope.nav_parent_id, $scope.nav_ids, 'legal');
+function NotificationsCtrl($scope, $http) {
+	console.log('NotificationsCtrl ('+$scope.$id+')');
+
 	// notifications
 	// defaults as per class.notify.php
 	// email:true
@@ -48,5 +47,5 @@ function SettingsCtrl($scope, $http, $routeParams) {
 		$scope.loadNotifications();
 	});
 }
-SettingsCtrl.$inject = ['$scope', '$http', '$routeParams'];
+NotificationsCtrl.$inject = ['$scope', '$http'];
 //}]);

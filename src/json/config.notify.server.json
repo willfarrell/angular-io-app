@@ -19,12 +19,5 @@
 	},
 	"pgp_test": {
 		"email":true
-	},
-	
-	"new_follow": {
-		"email":false
-	},
-	"new_message": {
-		"email":false
 	}
 }

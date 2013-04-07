@@ -37,8 +37,11 @@ class Notify {
 		$this->templates = json_decode($templates, true);
 		
 		// default notification types
-		$defaults = file_get_contents('json/config.notify.json');
+		$defaults = file_get_contents('json/config.notify.client.json');
 		$this->defaults = json_decode($defaults, true);
+		
+		$defaults = file_get_contents('json/config.notify.server.json');
+		$this->defaults = array_merge($this->defaults, json_decode($defaults, true));
 		
 		$this->email = new Email;
 		$this->sms = new SMS;

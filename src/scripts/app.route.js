@@ -22,17 +22,15 @@ function($routeProvider) {
 		.when('/company/profile/:profile_ID',	{templateUrl:_view_+'user/profile.company.html'})
 
 		// onboard
-		.when('/onboard/password',			{templateUrl:_view_+'onboard/password.html'})	// special case - force password change
-		.when('/onboard/:page',			{templateUrl:_view_+'onboard.html'})
-		.when('/onboard/:page/:action', {templateUrl:_view_+'onboard.html'})
-		// hub pages
-		.when('/settings/:page',		{templateUrl:_view_+'settings.html'})
-		.when('/support/:page',			{templateUrl:_view_+'support.html'})
+		.when('/onboard/password',			{templateUrl:_view_+'onboard/password.html'})	// special case - force password change ** move to page/?
 		// application
 		.when('/app',					{templateUrl:_view_+_app_+'index.html'})
+
 		// fallback
 		.when('/',						{templateUrl:_view_+_app_+'index.html'})
-		.when('/:page',					{templateUrl:_view_+'page.html'})
+		.when('/:page',					{templateUrl:_view_+'templateUrl.html', controller: 'TemplateUrlCtrl'}) // ie 404
+		.when('/:folder/:page',			{templateUrl:_view_+'templateUrl.html', controller: 'TemplateUrlCtrl'}) // ie settings, support
+		.when('/:folder/:page/:action',	{templateUrl:_view_+'templateUrl.html', controller: 'TemplateUrlCtrl'}) // ie onboard
 		.otherwise({redirectTo:'/'});
 	// configure html5 to get links working
 	// If you don't do this, you URLs will be base.com/#/home rather than base.com/home

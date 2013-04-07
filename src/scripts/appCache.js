@@ -6,14 +6,12 @@ var appCache = {
 };
 
 function handleCacheEvent(e) {
-	console.log('JS');
 	if (e.type && (e.type==='progress' || e.type==='ProgressEvent')){
 		//console.log('percent:', Math.round(e.loaded/e.total*100)+'%', 'total:', e.total, 'loaded:',e.loaded);
 		appCache.percent = Math.round(e.loaded/e.total*100);
 		appCache.loaded = e.loaded;
 		appCache.total = e.total;
 
-		console.log(appCache);
 		try {
 			angular.element('body').scope().$emit('appCache', appCache);
 		} catch(e) { }
@@ -56,9 +54,9 @@ function handleCacheEvent(e) {
 	}*/
 }
 
-function handleCacheError(e) {
+/*function handleCacheError(e) {
 	console.log('appCache Error');
-}
+}*/
 
 if (!!applicationCache) {
 	// ** refactor to function loop??
@@ -74,7 +72,7 @@ if (!!applicationCache) {
 
 	// The manifest returns 404 or 410, the download failed,
 	// or the manifest changed while the download was in progress.
-	applicationCache.addEventListener('error', handleCacheError, false);
+	//applicationCache.addEventListener('error', handleCacheError, false);
 
 	// Fired after the first download of the manifest.
 	//applicationCache.addEventListener('noupdate', handleCacheEvent, false);

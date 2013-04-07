@@ -43,7 +43,6 @@ angular.module('io.init.settings', [])
 			'start'			:'user'		// ** make smart so not needed
 		},
 		'follow':'user'
-		// browser plugin - view/page/sign		//'browser': BrowserDetect	// option
 	};
 	//$rootScope.sliderNav = 1;
 }]);

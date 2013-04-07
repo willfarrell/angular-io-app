@@ -5,6 +5,16 @@ angular.module('io.init.rootScope', [])
 function($rootScope, $locale, $cookies, $http, $window, $location) {
 	console.group('io.init.rootScope ('+$rootScope.$id+')');
 
+	// appCache
+	$rootScope.appCache = $window.appCache;
+
+	$rootScope.$on('appCache', function(name, state) {
+		$rootScope.$apply(function(){
+			$rootScope.appCache = state;
+		});
+
+	});
+
 	// HTML5SHIV
 	/*$rootScope.ie8 = function(obj) {
 		if (obj.attachEvent) {	// <= IE8

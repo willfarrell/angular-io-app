@@ -126,7 +126,6 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 					console.log('account_signout.get.success');
 					console.log(data);
 					$rootScope.alerts = [{'class':'info', 'label':'Signed Out'}];
-					$scope.action = 'in';
 					//$rootScope.href('/sign/in');
 					console.log(objectLength($rootScope.session));
 				})
@@ -142,7 +141,6 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 	}
 	if ($scope.action === 'out') {
 		$scope.account_signout();
-		$scope.action = 'in';
 	} else if ($rootScope.session.user_ID) {
 		// redirect if already signed in
 		$scope.redirect();

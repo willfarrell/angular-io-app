@@ -754,7 +754,7 @@ module.exports = function(grunt) {
 					cache: [
 						'//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js',
 						'//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js',
-						'//cdnjs.cloudflare.com/ajax/libs/angular.js/1.0.6/angular.min.js',
+						'//cdnjs.cloudflare.com/ajax/libs/angular.js/1.0.5/angular.min.js',
 						'//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js'
 					],
 					//network: ['http://*', 'https://*'],
