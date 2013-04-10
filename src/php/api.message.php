@@ -117,7 +117,6 @@ class Message extends Core {
 		// mark as read
 		$where['user_to_ID'] = USER_ID;
 		$this->db->update($this->table, array('read' => 1), $where);
-		//$this->__log($this->db->last_query);
 		
 		return $return;
 	}

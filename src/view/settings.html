@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
       	<div class="span1"></div>
-      	<div class="span3">
+      	<div class="span3" data-bs-navbar>
 	        <ul class="nav nav-tabs nav-stacked">
 	        	<li><a href="#/user/profile">
 		        	<img data-ng-src="img/user/{{session.user_ID}}.png?{{filepicker.timestamp}}" class="img-rounded" width="50" height="50"/>
@@ -9,12 +9,12 @@
 	        	</a></li>
 	        </ul>
 	        <ul class="nav nav-tabs nav-stacked">
-	          	<li><a href="#/settings/account">Account</a></li>
-	          	<li><a href="#/settings/password">Password</a></li>
+	          	<li data-match-route="/settings/account"><a href="#/settings/account">Account</a></li>
+	          	<li data-match-route="/settings/password"><a href="#/settings/password">Password</a></li>
 	          	<!--<li><a href=""><i class="icon-chevron-right"></i> Mobile</a></li>-->
-	          	<li><a href="#/settings/notifications">Notifications</a></li>
-	          	<li><a href="#/settings/profile">Profile</a></li>
-	          	<li><a href="#/settings/security">Security</a></li>
+	          	<li data-match-route="/settings/notifications"><a href="#/settings/notifications">Notifications</a></li>
+	          	<li data-match-route="/settings/profile"><a href="#/settings/profile">Profile</a></li>
+	          	<li data-match-route="/settings/security"><a href="#/settings/security">Security</a></li>
 	        </ul>
 	        <!--<ul class="nav nav-tabs nav-stacked">
 	        	<li><a href="#/user/profile">
@@ -23,9 +23,9 @@
 	        	</a></li>
 	        </ul>-->
 	        <ul class="nav nav-tabs nav-stacked" data-ui-if="settings.account.company && session.user_level >= 5">
-	          	<li><a href="#/settings/company">Company</a></li>
-	          	<li><a href="#/settings/users">Users</a></li>
-	          	<li><a href="#/settings/locations">Locations</a></li>
+	          	<li data-match-route="/settings/company"><a href="#/settings/company">Company</a></li>
+	          	<li data-match-route="/settings/users"><a href="#/settings/users">Users</a></li>
+	          	<li data-match-route="/settings/locations"><a href="#/settings/locations">Locations</a></li>
 	        </ul>
 	        
 	        <ul class="nav nav-tabs nav-stacked" data-ui-if="session.user_level >= 5">

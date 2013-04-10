@@ -175,7 +175,8 @@ module.exports = function(grunt) {
 			// fallback scripts
 			'<%= yeoman.dist %>/js/fallback/json.min.js':		'<%= yeoman.app %>/components/json3/lib/json3.min.js',
 			//'<%= yeoman.dist %>/js/fallback/_.js':'<%= yeoman.app %>/scripts/angular-io/fallback/_.js', // .htaccess catch
-			'<%= yeoman.dist %>/js/fallback/placeholder.min.js':'<%= yeoman.app %>/scripts/angular-io/fallback/placeholder.js'
+			'<%= yeoman.dist %>/js/fallback/placeholder.min.js':'<%= yeoman.app %>/scripts/angular-io/fallback/placeholder.js',
+			'<%= yeoman.dist %>/js/fallback/reveal.min.js':'<%= yeoman.app %>/scripts/angular-io/fallback/reveal.js'
 		},
 		useminPrepare: {
 			html: ['<%= yeoman.app %>/index.html', '<%= yeoman.app %>/index.web.html', '<%= yeoman.app %>/index.device.html'],
@@ -580,7 +581,7 @@ module.exports = function(grunt) {
 				options: {
 					replacements: [
 						{	// Clean "Trailing whitespace"
-							pattern: /[ \t]+[\n\r]{1}/g,
+							pattern: /[ \t]+[\n\r]/g,
 							replacement: '\n'
 						},
 						{	// Clean "Mixed spaces and tabs" - All spaces
@@ -594,11 +595,11 @@ module.exports = function(grunt) {
 						{	// Clean "Mixed spaces and tabs" - Post Mix
 							pattern: /\t+[ ]{1,3}/g,
 							replacement: '\t'
-						},
+						}/*,
 						{	// Clean "Extra comma" - Has trailing single-line comment check
 							pattern: /,(\s*(\/\/.*)[\n\r]\s*[\]\}]+)/g,
 							replacement: '$1' // requires "
-						}
+						}*/
 						// "A regular expression literal can be confused with '/='" - Use /\=
 					]
 				},
@@ -774,7 +775,7 @@ module.exports = function(grunt) {
 				},
 				src: [
 					// load top level html files
-					'*.html',
+					//'*.html', // don't cache index.html ever (Best Practice) - can prevet offline reload
 					'view/*.html', //'view/**/*.html',
 					//'favicon.ico',
 					'js/**/*.js',
@@ -899,15 +900,17 @@ module.exports = function(grunt) {
 	]);
 
 	grunt.registerTask('build', [
-		'clean:dist',
+		
 		// Dev
-		'replace:jslint',
+		//'replace:jslint',
 		'jshint',
 		//'test',
 		//'coffee',
 		//'compass:dist',
 		//'less:dev',
+		
 		// Setup
+		'clean:dist',
 		'useminPrepare',
 		'concat',
 		'replace:cssmin',	// remove banners

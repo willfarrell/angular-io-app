@@ -18,6 +18,8 @@
     <!--<link rel="stylesheet" href="components/font-awesome/build/fontawesome.css">--><!-- doesn't catch var icons -->
     <link rel="stylesheet" href="styles/accessibility.css">
     <link rel="stylesheet" href="styles/angular-io.css">
+    <link rel="stylesheet" href="styles/fallback-forms-revel.css">
+    
     <!--<link href="styles/famfamfam-styles.css" rel="stylesheet">--><!-- not needed if font-awesome is included -->
     <!--<link rel="stylesheet" href="styles/famfamfam-flags.css">-->
     
@@ -59,16 +61,15 @@
 	<!-- !Top Nav -->
 	<div class="header" data-ng-include="'view/nav.top.html'"></div>
 	<!--[if lte IE 9]>
-	<div class="alert-fixed-top">
+	<div class="alert-fixed-top alert-no-close">
 		<div class="container">
 			<div class="alert alert-error">
-			  	<button class="close" data-dismiss="alert">&times;</button>
 			  	<strong>You are using an outdated browser.</strong> <a href="http://browsehappy.com/" target="_blank">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true" target="_blank">install Google Chrome Frame</a> to better experience this site.
 			</div>
 		</div>
 	</div>
 	<![endif]-->
-	<div class="alert-fixed-top appCache" data-ng-show="appCache.status > 2">
+	<div class="alert-fixed-top appCache alert-no-close" data-ng-show="appCache.status > 2">
 		<div class="container">
 			<div class="alert alert-info">
 			  	<table width="100%"><tr><td>
@@ -111,9 +112,16 @@
 
 <div class="accessibility-ruler"></div>
 
-<!--[if lt IE 8]>
-<script src="components/json3/lib/json3.js"></script>
-<![endif]-->
+<script>
+// included in async.js
+var IE = /*@cc_on!@*/!1;
+if (IE) {
+	IE = parseFloat((/MSIE[\s]*([\d\.]+)/).exec(navigator.appVersion)[1]);
+	// Check if chromeframe, reset IE var if so
+	if(IE < 10 && (/chromeframe/).test(navigator.appVersion)) { IE = 0; }
+}
+
+</script>
 
 <!-- Boilerplate - added to async -->
 <script src="components/html5-boilerplate/js/plugins.js"></script>
@@ -131,7 +139,11 @@
 <!-- build:js js/vendor/modernizr.min.js -->
 <!-- http://modernizr.com/download/# -->
 
-<script src="components/modernizr/modernizr.js"></script><!-- CDN -->
+
+<script src="scripts/modernizr.js"></script>
+<script src="components/modernizr/feature-detects/json.js"></script>
+<script src="components/modernizr/feature-detects/forms-placeholder.js"></script>
+<script src="scripts/modernizr/forms-reveal.js"></script>
 <!-- endbuild -->
 
 <!-- build:js js/vendor/bootstrap.min.js -->
@@ -229,6 +241,9 @@
 <!-- *************************************************** -->
 <script src="scripts/angular-io/module/http.include.js"></script>
 <script src="scripts/angular-io/module/accessibility.js"></script>
+<script src="components/angular-strap/src/directives/navbar.js"></script><!-- hilite secondary nav -->
+<script src="scripts/angular-io/directive/selectSize.js"></script>
+<!--<script src="scripts/angular-io/directive/fieldRequired.js"></script>-->
 
 <!-- !End App Modules -->
 <!-- endbuild -->
@@ -237,6 +252,7 @@
 <!-- Ensure these are copied over in grunt -->
 <script src="scripts/angular-io/fallback/placeholder.js"></script>
 
+<script src="scripts/angular-io/fallback/reveal.js"></script>
 <!-- !End App Modules -->
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->

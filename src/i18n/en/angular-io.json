@@ -1,4 +1,6 @@
 {
+	"required":"❋",
+	
 	"button_":"",
 	"button_new":"New",
 	"button_save":"Save",
@@ -26,7 +28,7 @@
 	
 	
 	"sign_":"",
-	"sign_placeholder_email":"Email",
+	"sign_placeholder_email":" Email",
 	"sign_placeholder_password":"Password",
 
 	"sign_up_legend":"Sign Up",
@@ -71,10 +73,10 @@
 	"user_label_phone":"Phone",
 	
 	"password_":"",
-	"password_placeholder_old_password":"Old Password",
-	"password_placeholder_new_password":"New Password",
-	"password_placeholder_email":"Email",
-	"password_placeholder_password":"Password",
+	"password_placeholder_old_password":"❋ Old Password",
+	"password_placeholder_new_password":"❋ New Password",
+	"password_placeholder_email":"❋ Email",
+	"password_placeholder_password":"❋ Password",
 	"password_error_min_length":"Password too short, must be {{min_length}} or more.",
 	"password_error_min_lower":"Password needs at least {{min_lower}} lower case letter(s)",
 	"password_error_min_upper":"Password needs at least {{min_lower}} upper case letter(s)",

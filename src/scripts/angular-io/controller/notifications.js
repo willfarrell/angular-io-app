@@ -13,25 +13,27 @@ function NotificationsCtrl($scope, $http) {
 	if ($rootScope.settings.notify) {
 		$scope.notify = $rootScope.settings.notify;
 	} else {
-		$rootScope.loadJSON(null, 'config.notify', 'json', function(data){
+		$rootScope.loadJSON(null, 'config.notify.client', 'json', function(data){
 			$rootScope.settings.notify = data;
 			$scope.notify = data;
 		});
 	}
+
 	$scope.loadNotifications = function() {
 		$http.get($scope.settings.server+'/user/notify')
 			.success(function(data) {
 				if ($rootScope.checkHTTPReturn(data)) {
 					if (data !== '') {
-					// sync with defaults, allows for new defaults to be added
-					$scope.notify = syncVar(data, $scope.notify); // will add system defaults
-					//$scope.notify = data;
+						// sync with defaults, allows for new defaults to be added
+						$scope.notify = syncVar(data, $scope.notify); // will add system defaults
+						//$scope.notify = data;
 					}
 				}
 			})
 			.error(function(){
 			});
 	};
+
 	$scope.updateNotifications = function() {
 		console.log($scope.notify);
 		$http.put($scope.settings.server+'/user/notify', $scope.notify)
@@ -43,6 +45,7 @@ function NotificationsCtrl($scope, $http) {
 			.error(function(){
 			});
 	};
+
 	$scope.require_signin(function() {
 		$scope.loadNotifications();
 	});

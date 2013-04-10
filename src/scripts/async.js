@@ -2,10 +2,11 @@
 
 // alternative - http://www.pinlady.net/PluginDetect/IE/
 // IE version, undefined if not IE. Used for HTML5 polyfills.
-var IE; //@cc_on IE = parseFloat((/MSIE[\s]*([\d\.]+)/).exec(navigator.appVersion)[1]);
-if (IE && IE < 10) {
+var IE = /*@cc_on!@*/!1;
+if (IE) {
+	IE = parseFloat((/MSIE[\s]*([\d\.]+)/).exec(navigator.appVersion)[1]);
 	// Check if chromeframe, reset IE var if so
-	if((/chromeframe/).test(navigator.appVersion)) { IE = 0; }
+	if(IE < 10 && (/chromeframe/).test(navigator.appVersion)) { IE = 0; }
 }
 
 //(function() {
@@ -58,6 +59,7 @@ var cdnHttp = '//cdnjs.cloudflare.com/ajax/libs/',
 	//,	'html5shiv-print':cdnDir+'html5shiv-print.min.js',
 	},
 	fallbackBool = 0,
+	fallbackCount = 0,
 	fallbackArray = [];
 
 // Dependency of bootstrap()
@@ -103,7 +105,7 @@ function bootstrap() {
 			'angular'			// Angular
 		]) &&
 		hasModule('app') &&		// Angular 'app' Ready
-		fallbackBool			// Fallback Bool
+		!fallbackCount			// Fallback Bool
 		) {
 			console.log('Angular Bootstrapping Now');
 			console.groupEnd();
@@ -111,15 +113,28 @@ function bootstrap() {
 	}
 }
 
-function modernizrFallback(id) {
+function countFallback() {
+	console.log('countFallback '+fallbackCount);
+	fallbackCount--;
+	if (!fallbackCount) {
+		bootstrap();
+	
+	}
+}
+
+function modernizrFallback(id) {//, parent) {
 	for (var i in id) {
 		if (typeof id[i] === 'object') {
 			console.group(i);
-			modernizrFallback(id[i]);
+			modernizrFallback(id[i]);//, i);
 		} else if (typeof id[i] === 'boolean' && !id[i]) {
-			console.log('loadFallback('+i+')');
-			fallbackArray.push(i);
-			$script('js/fallback/'+i+'.min.js', i);
+			console.log(''+i+'.fallback');
+			//i = (parent) ? parent+'-'+i : i;
+			//fallbackArray.push(i);
+			fallbackCount++;
+			$script('js/fallback/'+i+'.min.js', i, countFallback, countFallback);
+		} else {
+			console.log(''+i+'.included');
 		}
 	}
 	console.groupEnd();
@@ -169,22 +184,30 @@ $script(cdnSrc.Angular, 'Angular', function() {
 $script.ready(['Modernizr', 'Angular', 'App'], function() {
 	console.group('Modernizr Fallback');
 	//$script('js/fallback/placeholder.min.js');
+	console.log(Modernizr);
 	modernizrFallback(Modernizr);
 	// Ensure all fallback have had a chance to load before bootstrapping
-	$script.ready(fallbackArray, function() {
-		console.log('Fallback Success');
-		if (!fallbackBool) {
-			fallbackBool = 1;
-			bootstrap();
-		}
-	}, function(depsNotFound) { // causes issues in IE8
-		console.log('Fallback Failed');
-		console.log(depsNotFound);
-		if (depsNotFound.length === fallbackArray.length) {
-			fallbackBool = 1;
-			bootstrap();
-		}
-	});
+	/*fallbackCount = fallbackArray.length;
+	var i = fallbackCount;
+	while(i--) {
+		$script.ready(fallbackArray[i], function() {
+			console.log('Fallback Success');
+			console.log();
+			fallbackCount--;
+			if (!fallbackCount) {
+				bootstrap();
+			}
+		}, function(depsNotFound) { // causes issues in IE8
+			console.log('Fallback Failed');
+			console.log(depsNotFound);
+			fallbackCount--;
+			if (!fallbackCount) {
+				bootstrap();
+			}
+		});
+	}*/
+	
+	
 });
 
 

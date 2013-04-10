@@ -1,11 +1,5 @@
 
-
-angular.module('$strap.config', []).value('$strap.config', {});
-angular.module('$strap.filters', ['$strap.config']);
-angular.module('$strap.directives', ['$strap.config']);
-angular.module('$strap', ['$strap.filters', '$strap.directives', '$strap.config']);
-
-// AngularIO (io) - ** redo
+// AngularIO (io) - ** redo like io and strap (strip out into side project?
 angular.module('io.config', []).value('io.config', {});
 
 angular.module('io.controllers', [
@@ -41,6 +35,12 @@ angular.module('ui.directives', ['ui.config']);
 angular.module('ui.filters', ['ui.config']);
 angular.module('ui', ['ui.directives', 'ui.filters', 'ui.config']);
 
+// AngularStrap ($strap)
+angular.module('$strap.config', []).value('$strap.config', {});
+angular.module('$strap.filters', ['$strap.config']);
+angular.module('$strap.directives', ['$strap.config']);
+angular.module('$strap', ['$strap.filters', '$strap.directives', '$strap.config']);
+
 // App (app)
 angular.module('app.config', []).value('app.config', {});
 
@@ -51,4 +51,4 @@ angular.module('app.filters', ['app.config']);
 
 angular.module('app.init', ['app.config', 'app.route']);
 
-var app = angular.module('app', ['ngCookies', 'ui', 'io', 'app.directives', 'app.filters', 'app.factories', 'app.init', 'app.config']);
+var app = angular.module('app', ['ngCookies', 'io', 'ui', '$strap', 'app.directives', 'app.filters', 'app.factories', 'app.init', 'app.config']);

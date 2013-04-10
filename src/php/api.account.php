@@ -133,8 +133,6 @@ class Account extends Core {
 
 		$this->notify->send($user_ID, 'signup_confirm_email', array("hash" => $hash), "email");
 		
-		$this->__log($email);
-		
 		return $return;
 	}
 	
@@ -349,7 +347,6 @@ class Account extends Core {
 		$expire_timestamp = $result['expire_timestamp'];
 		
 		// validate password
-		$this->__log($request_data['new_password']);
 		if ($this->password->validate($request_data['new_password'])) {
 			$return["errors"]["new_password"] = $this->password->get_errors();
 			return $return;

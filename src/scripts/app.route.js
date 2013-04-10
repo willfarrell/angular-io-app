@@ -28,9 +28,21 @@ function($routeProvider) {
 
 		// fallback
 		.when('/',						{templateUrl:_view_+_app_+'index.html'})
-		.when('/:page',					{templateUrl:_view_+'templateUrl.html', controller: 'TemplateUrlCtrl'}) // ie 404
-		.when('/:folder/:page',			{templateUrl:_view_+'templateUrl.html', controller: 'TemplateUrlCtrl'}) // ie settings, support
-		.when('/:folder/:page/:action',	{templateUrl:_view_+'templateUrl.html', controller: 'TemplateUrlCtrl'}) // ie onboard
+		.when('/:page',					{
+			template:'<div ng-include src="templateUrl"></div>',
+			controller: 'TemplateUrlCtrl'
+			//resolve: { resolveData: function(){ return 'test'; } }
+		}) // ie 404
+		.when('/:folder/:page',			{
+			template:'<div ng-include src="templateUrl"></div>',
+			controller: 'TemplateUrlCtrl'
+			//resolve: { resolveData: function(){ return 'test'; } }
+		}) // ie settings, support
+		.when('/:folder/:page/:action',	{
+			template:'<div ng-include src="templateUrl"></div>',
+			controller: 'TemplateUrlCtrl'
+			//resolve: { resolveData: function(){ return 'test'; } }
+		}) // ie onboard
 		.otherwise({redirectTo:'/'});
 	// configure html5 to get links working
 	// If you don't do this, you URLs will be base.com/#/home rather than base.com/home

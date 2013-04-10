@@ -47,7 +47,7 @@ angular.module('io.accessibility')
 		}
 	};
 }])
-.directive('accessibilityRuler', ['io.config', function() {
+.directive('accessibilityRuler', [function() {
 	return {
 		restrict: 'C',	// class only
 		link: function(scope, element, attrs, controller) {

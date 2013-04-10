@@ -12,9 +12,7 @@
 	<legend>Change Password<button class="btn btn-primary pull-right" data-ng-click="reset()" data-ng-disabled="changePasswordForm.$invalid">Save</button></legend>
 
     <div class="control-group" data-ng-class="{error: (errors.password)}">
-        <input type="password" name="password" class="input-block-level" placeholder="New Password" data-ng-model="password.new_password" data-ng-change="validate.password(changePasswordForm.password, password.new_password, '', settings.password)"
-        onfocus="this.type = 'text'" onblur="this.type = 'password'"
-        	required>
+        <input type="password" name="password" class="input-block-level" placeholder="New Password" data-ng-model="password.new_password" data-ng-change="validate.password(changePasswordForm.password, password.new_password, '', settings.password)" required>
         <!--<span class="help-block error" data-ng-show="signinForm.password.$error.required">Password is required</span>-->
         <span class="help-block">Password will be visible while entering</span>
         <span class="help-block error" data-ng-show="changePasswordForm.password.$error.minlength">Password too short, must be {{settings.password.min_length}} or more</span>

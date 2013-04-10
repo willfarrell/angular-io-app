@@ -40,6 +40,7 @@ class Notify {
 		$defaults = file_get_contents('json/config.notify.client.json');
 		$this->defaults = json_decode($defaults, true);
 		
+		// these defaults should overwrite any user set ones. (todo)**
 		$defaults = file_get_contents('json/config.notify.server.json');
 		$this->defaults = array_merge($this->defaults, json_decode($defaults, true));
 		

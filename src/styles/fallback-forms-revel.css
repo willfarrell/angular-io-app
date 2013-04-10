@@ -1,0 +1,24 @@
+
+/*
+Note :after are not alllowed in <input>
+*/
+
+/* Clear existing on IE 10 */
+/*::-ms-clear {
+	display: none;
+}*/
+
+.forms-reveal {
+	margin: 0 0 0 -0.8em;
+	color: #666;
+	cursor: pointer;
+	font-style: normal;
+	font-size: 2.0em;
+}
+
+.forms-reveal:after {
+	position: relative;
+	top:.5em;
+	content: "\0900"; /* Devanagari sign inverted candrabindu */
+}
+

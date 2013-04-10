@@ -5,14 +5,12 @@ angular.module('io.init.rootScope', [])
 function($rootScope, $locale, $cookies, $http, $window, $location) {
 	console.group('io.init.rootScope ('+$rootScope.$id+')');
 
-	// appCache
+	// appCache - from outside of angular (appCache.js)
 	$rootScope.appCache = $window.appCache;
-
-	$rootScope.$on('appCache', function(name, state) {
+	$rootScope.$on('appCache', function(e, value) {
 		$rootScope.$apply(function(){
-			$rootScope.appCache = state;
+			$rootScope.appCache = value;
 		});
-
 	});
 
 	// HTML5SHIV
@@ -32,8 +30,9 @@ function($rootScope, $locale, $cookies, $http, $window, $location) {
 			document.querySelectorAll('.page')[0].scrollTop = 0;
 			//$rootScope.updateSession();
 
-			// clear alerts on page change
+			// clear global alerts and errors on page change
 			$rootScope.alerts = [];
+			$rootScope.errors = {};
 	});
 
 	$rootScope.default_settings = {
@@ -217,7 +216,7 @@ function($rootScope, $locale, $cookies, $http, $window, $location) {
 	//!-- End Session --//
 
 	//!-- Loading Screen --//
-	$rootScope.loader = {
+	var loader = {
 		width:0,
 		details:'',
 		count:0,
@@ -233,12 +232,12 @@ function($rootScope, $locale, $cookies, $http, $window, $location) {
 
 	$rootScope.$on('loaderEvent', function(e, name) {
 		name = name ? name.replace(/[^0-9a-zA-Z]/g, ' ') : '';
-		++$rootScope.loader.count;
-		console.log($rootScope.loader.count+' / '+$rootScope.loader.total+' '+name);
+		++loader.count;
+		console.log(loader.count+' / '+loader.total+' '+name);
 
-		if ($rootScope.loader.count < $rootScope.loader.total) {	// progress bar
-			$rootScope.loader.width = (($rootScope.loader.count / $rootScope.loader.total)*100);
-			$rootScope.loader.details = name;
+		if (loader.count < loader.total) {	// progress bar
+			loader.width = ((loader.count / loader.total)*100);
+			loader.details = name;
 		} else {
 			console.groupEnd();
 		}
@@ -261,7 +260,7 @@ function($rootScope, $locale, $cookies, $http, $window, $location) {
 	$rootScope.modal= {};	// for alertModal
 	$rootScope.datetime = new Date();
 	$rootScope.timezone_min = new Date().getTimezoneOffset();
-	$rootScope.i18n = {};
+	$rootScope.i18n = {}; // will be changign to support loading subset of lang files based on needs - lazy loading
 	$rootScope.json = {
 		'regions':{}
 	};
@@ -301,7 +300,7 @@ function($rootScope, $locale, $cookies, $http, $window, $location) {
 	}
 
 	//!-- Lang --//
-	$rootScope.init = function() {
+	$rootScope.initLocale = function() {
 		//$rootScope.locale= localStorage.getItem('locale');		//$rootScope.locale || ($rootScope.locale = localStorage.setItem('locale', $locale.id));// en-ca
 		$rootScope.locale = db.get('locale', $locale.id);
 		$rootScope.language = db.get('language', $rootScope.locale.substr(0,2));// en
@@ -381,7 +380,7 @@ function($rootScope, $locale, $cookies, $http, $window, $location) {
 			});
 	};
 
-	$rootScope.init();
+	$rootScope.initLocale();
 	$rootScope.loadLocale($rootScope.locale); // $locale.id == 'en-us'
 	$rootScope.saveLocale($rootScope.locale); // save locale
 	$rootScope.json.month = $locale.DATETIME_FORMATS.SHORTMONTH;

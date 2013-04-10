@@ -10,6 +10,7 @@ function OnboardCtrl($scope, $cookies, $http, $routeParams) {
 	if (!$routeParams.page || $routeParams.page === 'start') { $scope.href('/onboard/'+$rootScope.settings.onboard.start); }
 	$scope.page_url = 'view/onboard/'+encodeURIComponent($routeParams.page)+'.html';
 
+
 	$scope.BuildProgressTracker = function(page, action) {
 		console.log('BuildProgressTracker('+page+', '+action+')');
 		var elements = dom$('#progress_tracker').getElementsByTagName('a');
@@ -34,6 +35,7 @@ function OnboardCtrl($scope, $cookies, $http, $routeParams) {
 			}
 		}
 	};
+
 	$scope.done = function(redirect) {
 		$rootScope.session.timestamp_create = 1;
 		$http.get($rootScope.settings.server+'/account/onboard_done')

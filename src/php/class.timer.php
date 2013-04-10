@@ -70,9 +70,11 @@ class Timers {
 		}
 
 		$return = array();
+		$return['total'] = array_sum($results);
 		$return['min'] = min($results);
 		$return['max'] = max($results);
-		$return['avg'] = array_sum($results) / $array_size;
+		$return['avg'] = $return['total'] / $array_size;
+		
 		return $return;
 	}
 
@@ -89,13 +91,14 @@ class Timers {
 		else $results = $this->results_all();
 		
 		echo "\n=== Timings ===\n";
-		echo "API\t\tavg\tmin\tmax\n";
+		echo "API\t\tavg\tmin\tmax\ttotal\n";
 		
 		foreach($results as $key => $value) {
 			echo "$key\t\t"
 				.number_format($value['avg'], 3)."s\t"
 				.number_format($value['min'], 3)."s\t"
-				.number_format($value['max'], 3)."s\n";
+				.number_format($value['max'], 3)."s\t"
+				.number_format($value['total'], 3)."s\n";
 		}
 	}
 
