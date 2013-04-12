@@ -71,13 +71,13 @@
     <div class="control-group">
       	<label class="control-label" for="user_name">PGP/GPG Public Key</label>
       	<div class="controls">
-	      	<textarea name="message" class="input-block-level" data-ng-model="security.email.key" rows="6" data-ng-minlength="1"></textarea>
+	      	<textarea name="message" class="input-block-level" data-ng-model="security.email.key" rows="6" data-ng-minlength="1" disabled></textarea>
       	</div>
 	</div>
 	
 	<div class="control-group">
 		<div class="controls">
-			<button class="btn input-block-level" data-ng-click="testPGP(security.email)">Test</button>
+			<button class="btn input-block-level" data-ng-click="testPGP(security.email)" disabled>Test</button>
 		</div>
 	</div>
     <!--<hr>

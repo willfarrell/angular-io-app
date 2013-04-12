@@ -11,7 +11,7 @@ angular.module('io.fallback')
 		link: function(scope, element, attrs, controller) {
 
 			// Special case for type=password adds password=true attr
-			attrs.$set('password', (attrs.type === 'password'));
+			if (attrs.type === 'password') { attrs.$set('password', true); }
 			function focus() {
 				if (element.val() === attrs.placeholder) {
 					element.val('');

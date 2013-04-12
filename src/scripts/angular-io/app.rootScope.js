@@ -1,8 +1,8 @@
 /*global syncVar:true, db:true, objectIsEmpty:true, objectLength:true, numberPadding:true, device:true */
 
 angular.module('io.init.rootScope', [])
-.run(['$rootScope', '$locale', '$cookies', '$http', '$window', '$location',
-function($rootScope, $locale, $cookies, $http, $window, $location) {
+.run(['$rootScope', '$timeout', '$locale', '$cookies', '$http', '$window', '$location',
+function($rootScope, $timeout, $locale, $cookies, $http, $window, $location) {
 	console.group('io.init.rootScope ('+$rootScope.$id+')');
 
 	// appCache - from outside of angular (appCache.js)
@@ -188,10 +188,12 @@ function($rootScope, $locale, $cookies, $http, $window, $location) {
 		// not signed in -> sign/in
 		if (!$rootScope.session.user_ID) {
 			console.log('not signed in');
-			if ($rootScope.uri().match(/\/sign\//) === null) { // prevent redirect loop
-				$cookies.redirect = $rootScope.uri();
-				$rootScope.href('/sign/in');
-			}
+			$timeout(function(){
+				if ($rootScope.uri().match(/\/sign\//) === null) { // prevent redirect loop
+					$cookies.redirect = $rootScope.uri();
+					$rootScope.href('/sign/in');
+				}
+			},50); // compiled code runs too fast and can cause loops in IE <= 9
 		// email not confirmed -> onboard
 		} else if ($rootScope.settings.onboard.required && !$rootScope.session.email_confirm && $rootScope.uri().match(/\/onboard\/email/) === null) {
 			console.log('email not confirmed = '+($rootScope.settings.onboard.required)+' && '+!$rootScope.session.email_confirm+' && '+($rootScope.uri().match(/\/onboard/) === null));

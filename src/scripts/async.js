@@ -42,7 +42,7 @@ var cdnHttp = '//cdnjs.cloudflare.com/ajax/libs/',
 		Angular:cdnHttp+'angular.js/1.0.5/angular.min.js',
 		Modernizr:	cdnHttp+'modernizr/2.6.2/modernizr.min.js'//,
 		// HTML5 Polyfills - https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-browser-Polyfills
-		//JSON3:		cdnHttp+'json3/3.2.4/json3.min.js'//, // add for IE 6-7
+		//JSON3:		cdnHttp+'json3/3.2.4/json3.min.js'//, // add for IE 6-7 (place in html)
 		// localStorage IE 6-7
 		// HTML5 Sectioning Elements
 		//html5shiv:	cdnHttp+'html5shiv/3.6.2/html5shiv.js',	// IE 6-9 - https://github.com/aFarkas/html5shiv

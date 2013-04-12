@@ -58,7 +58,7 @@ function handleCacheEvent(e) {
 	console.log('appCache Error');
 }*/
 
-if (!!applicationCache) {
+if (!!window.applicationCache) {
 	// ** refactor to function loop??
 
 	// Fired after the first cache of the manifest.

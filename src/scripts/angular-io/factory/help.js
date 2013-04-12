@@ -19,8 +19,8 @@ angular.module('io.factory')
 			.error(function() {
 				// load in request to have made
 				$scope.db[id] = 'We haven\'t written any help for this yet. Would you like us too? [yes]';
-			})
-	}
+			});
+	};
 	
 	
 	return $scope;

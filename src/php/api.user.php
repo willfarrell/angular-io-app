@@ -36,7 +36,7 @@ class User extends Core {
 		while ($users && $user = $this->db->fetch_assoc($users)) {
 			$return[] = $user;
 		}
-ChromePHP::log($return);
+
 		return $return;
 	}
 	
@@ -146,7 +146,7 @@ ChromePHP::log($return);
 		if (isset($request_data['totp']) && $request_data['totp']['service'] == "0") {
 			unset($request_data['totp']);
 		}
-		//ChromePhp::log($request_data);
+		
 		$this->db->update("users", array("security_json" => json_encode($request_data)), array("user_ID"=>USER_ID));
 	}
 	
@@ -245,7 +245,6 @@ ChromePHP::log($return);
 			'user_details' => $request_data['user_details'],
 			'timestamp_update' => $_SERVER['REQUEST_TIME'],
 		);
-		ChromePhp::log($user);
 		
 		$this->db->insert_update('users', $user, $user);
 		

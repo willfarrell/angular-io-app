@@ -18,7 +18,7 @@
     <!--<link rel="stylesheet" href="components/font-awesome/build/fontawesome.css">--><!-- doesn't catch var icons -->
     <link rel="stylesheet" href="styles/accessibility.css">
     <link rel="stylesheet" href="styles/angular-io.css">
-    <link rel="stylesheet" href="styles/fallback-forms-revel.css">
+    <link rel="stylesheet" href="styles/fallback-forms-reveal.css">
     
     <!--<link href="styles/famfamfam-styles.css" rel="stylesheet">--><!-- not needed if font-awesome is included -->
     <!--<link rel="stylesheet" href="styles/famfamfam-flags.css">-->
@@ -34,6 +34,7 @@
     -->
     <!--[if lt IE 9]>
       <script>
+      	document.createElement('button');
         document.createElement('section');
         document.createElement('canvas');
       </script>
@@ -122,6 +123,10 @@ if (IE) {
 }
 
 </script>
+
+<!--[if lt IE 8]>
+<script src="components/json3/lib/json3.js"></script>
+<![endif]-->
 
 <!-- Boilerplate - added to async -->
 <script src="components/html5-boilerplate/js/plugins.js"></script>
@@ -250,9 +255,8 @@ if (IE) {
 
 <!-- !Async Modules -->
 <!-- Ensure these are copied over in grunt -->
-<script src="scripts/angular-io/fallback/placeholder.js"></script>
-
 <script src="scripts/angular-io/fallback/reveal.js"></script>
+<script src="scripts/angular-io/fallback/placeholder.js"></script>
 <!-- !End App Modules -->
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->

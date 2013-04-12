@@ -147,6 +147,7 @@ module.exports = function(grunt) {
 				'<%= yeoman.app %>/scripts/**/*.js',
 					'!<%= yeoman.app %>/scripts/script.js',
 					'!<%= yeoman.app %>/scripts/angular-io/plugins/browser/*.js',
+					'!<%= yeoman.app %>/scripts/modernizr.js',
 				'test/spec/*.js'
 			]
 		},

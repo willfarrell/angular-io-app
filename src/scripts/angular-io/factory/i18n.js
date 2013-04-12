@@ -9,7 +9,7 @@ angular.module('io.factory')
 	$scope.version = '0.1.0';
 	$scope.db = {};
 	
-	$scope.locale = "";
+	$scope.locale = '';
 	
 	// load configs
 	if (!$rootScope.settings.i18n) {

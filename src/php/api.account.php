@@ -325,10 +325,6 @@ class Account extends Core {
 	function put_reset_password($request_data=NULL) {
 		$return = array();
 		
-		// reconfirm hash is still valid
-		$return = $this->reset_check_hash($request_data['hash']);
-		if (isset($return["alerts"])) return $return;
-		
 		$this->filter->set_request_data($request_data);
 		$this->filter->set_group_rules('password');
 		$this->filter->set_key_rules(array('hash', 'new_password'), 'required');
@@ -337,7 +333,11 @@ class Account extends Core {
 			return $return;
 		}
 		$request_data = $this->filter->get_request_data();
-
+		
+		// reconfirm hash is still valid
+		$return = $this->reset_check_hash($request_data['hash']);
+		if (isset($return["alerts"])) return $return;
+		
 		// check hash
 		$query = "SELECT * FROM user_reset WHERE hash = '{{hash}}' LIMIT 0,1";
 		$result = $this->db->query($query, array('hash' => $request_data['hash']));

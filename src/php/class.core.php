@@ -7,7 +7,7 @@ require_once 'class.notify.php';
 
 require_once 'class.timer.php';
 //require_once 'php/FirePHPCore/FirePHP.class.php';	// FirePHP debugging tool
-include 'ChromePhp/ChromePhp.php';	// ChromeLogger Extension Required
+//require_once 'ChromePhp/ChromePhp.php';	// ChromeLogger Extension Required
 
 class Core {
 
