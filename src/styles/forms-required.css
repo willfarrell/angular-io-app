@@ -1,0 +1,13 @@
+
+/*
+Adds * after field indicating required
+*/
+
+.forms-required:after {
+	font-style: normal;
+	color: #b94a48;
+	position: relative;
+	top: -0.3em;
+	content: "\274b"; /* Heavy eight teardrop-spoked propeller asterisk */
+}
+

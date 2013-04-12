@@ -18,11 +18,13 @@
     <!--<link rel="stylesheet" href="components/font-awesome/build/fontawesome.css">--><!-- doesn't catch var icons -->
     <link rel="stylesheet" href="styles/accessibility.css">
     <link rel="stylesheet" href="styles/angular-io.css">
-    <link rel="stylesheet" href="styles/fallback-forms-reveal.css">
     
     <!--<link href="styles/famfamfam-styles.css" rel="stylesheet">--><!-- not needed if font-awesome is included -->
     <!--<link rel="stylesheet" href="styles/famfamfam-flags.css">-->
     
+    <link rel="stylesheet" href="styles/modernizr/forms-reveal.css">
+    <link rel="stylesheet" href="styles/modernizr/forms-placeholder.css">
+    <!--<link rel="stylesheet" href="styles/forms-required.css">-->
     <!-- endbuild -->
 
     <!--
@@ -143,8 +145,6 @@ if (IE) {
 
 <!-- build:js js/vendor/modernizr.min.js -->
 <!-- http://modernizr.com/download/# -->
-
-
 <script src="scripts/modernizr.js"></script>
 <script src="components/modernizr/feature-detects/json.js"></script>
 <script src="components/modernizr/feature-detects/forms-placeholder.js"></script>
@@ -182,40 +182,53 @@ if (IE) {
 <script src="scripts/lib.global.js"></script>
 <script src="scripts/lib.keydb.js"></script>
 
-<!-- !Modules -->
-<!--<script src="components/angular-bootstrap/src/tabs/tabs.js"></script><!-- from angular-js-bootstrap -->
-<!--<script src="components/angular-ui/modules/directives/if/if.js"></script><!-- from angular-ui -->
-<script src="scripts/angular-io/directive/if.js"></script><!-- from angular-ui -->
+<!-- init -->
+<script src="scripts/app.js"></script><!-- this is where you pick your angular.io modules -->
+<script src="scripts/app.route.js"></script><!-- this is where you put your routing -->
 
-<!--<script src="scripts/angular-io/directive/htmlExtend.js"></script>--><!-- IE8 bug -->
-<script src="scripts/angular-io/directive/inputMask.js"></script>
-<script src="scripts/angular-io/factory/markdown.js"></script><!-- Requires components/marked/lib/marked.js -->
-<script src="scripts/angular-io/filter/range.js"></script>
-<script src="scripts/angular-io/filter/truncate.js"></script>
-<script src="scripts/angular-io/filter/format.js"></script>
-<script src="scripts/angular-io/filter/ordinal.js"></script>
-<script src="scripts/angular-io/factory/follow.js"></script>
-<script src="scripts/angular-io/factory/filepicker.js"></script>
-<script src="scripts/angular-io/factory/message.js"></script>
+<!-- !App Components -->
+<!-- *************************************************** -->
+
+<script src="scripts/controllers/app.js"></script>
+<script src="scripts/controllers/dashboard.js"></script>
+
+
+<!-- *************************************************** -->
+<!-- !End App Components -->
+
+<script src="scripts/angular-io/app.rootScope.js"></script>
+<script src="scripts/angular-io/modules/http.include.js"></script>
+<script src="scripts/angular-io/modules/accessibility.js"></script>
+
+<!-- !AngularIO -->
+<script src="scripts/angular-io/directives/tabs.js"></script><!-- from angular-js-bootstrap -->
+
+<!--<script src="scripts/angular-io/directives/htmlExtend.js"></script>--><!-- IE8 bug -->
+<script src="scripts/angular-io/directives/inputMask.js"></script>
+<script src="scripts/angular-io/factories/markdown.js"></script><!-- Requires components/marked/lib/marked.js -->
+<script src="scripts/angular-io/filters/range.js"></script>
+<script src="scripts/angular-io/filters/truncate.js"></script>
+<script src="scripts/angular-io/filters/format.js"></script>
+<script src="scripts/angular-io/filters/ordinal.js"></script>
 
 <!-- !Angular.io Controllers -->
-<script src="scripts/angular-io/controller/sign.js"></script>
-<script src="scripts/angular-io/controller/templateurl.js"></script>
-<script src="scripts/angular-io/controller/notifications.js"></script>
-<script src="scripts/angular-io/controller/onboard.js"></script>
-<script src="scripts/angular-io/controller/confirm.js"></script>
-<script src="scripts/angular-io/controller/invite.js"></script>
-<script src="scripts/angular-io/controller/reset.js"></script>
-<script src="scripts/angular-io/controller/security.js"></script>
-<script src="scripts/angular-io/controller/user.js"></script>
-<script src="scripts/angular-io/controller/password.js"></script>
-<script src="scripts/angular-io/controller/company.js"></script>
-<script src="scripts/angular-io/controller/filepicker.js"></script>
+<script src="scripts/angular-io/controllers/sign.js"></script>
+<script src="scripts/angular-io/controllers/templateurl.js"></script>
+<script src="scripts/angular-io/controllers/notifications.js"></script>
+<script src="scripts/angular-io/controllers/onboard.js"></script>
+<script src="scripts/angular-io/controllers/confirm.js"></script>
+<script src="scripts/angular-io/controllers/invite.js"></script>
+<script src="scripts/angular-io/controllers/reset.js"></script>
+<script src="scripts/angular-io/controllers/security.js"></script>
+<script src="scripts/angular-io/controllers/user.js"></script>
+<script src="scripts/angular-io/controllers/password.js"></script>
+<!--<script src="scripts/angular-io/controllers/company.js"></script>-->
 
 <!-- Angular.io Plugin Controllers -->
-<script src="scripts/angular-io/plugins/contact/controller.contact.js"></script>
-<script src="scripts/angular-io/plugins/follow/controller.follow.js"></script>
-<script src="scripts/angular-io/plugins/message/controller.message.js"></script>
+<script src="scripts/angular-io/modules/contact.js"></script>
+<script src="scripts/angular-io/modules/follow.js"></script>
+<script src="scripts/angular-io/modules/message.js"></script>
+<script src="scripts/angular-io/modules/filepicker.js"></script>
 <!-- Browser (page/sign)-->
 <!--
 <script src="scripts/angular-io/plugins/browser/inc.detect.js"></script>
@@ -223,40 +236,20 @@ if (IE) {
 <script src="scripts/angular-io/plugins/browser/class.browser-detect.js"></script>
 -->
 
+<!-- !AngularUI -->
+<script src="components/angular-ui/modules/directives/if/if.js"></script>
 
-<!-- init -->
-<script src="scripts/angular-io/app.rootScope.js"></script>
-<script src="scripts/app.settings.js"></script><!-- this is where you put your angular.io settings -->
-<script src="scripts/app.route.js"></script><!-- this is where you put your routing -->
-<script src="scripts/app.js"></script><!-- this is where you pick your angular.io modules -->
+<!-- !AngularStrap -->
 
-<!-- !App Controllers -->
-<!-- *************************************************** -->
-
-<script src="scripts/controllers/app.js"></script><!-- all controller must be after this. -->
-<script src="scripts/controllers/dashboard.js"></script>
-
-<!-- *************************************************** -->
-<!-- !End App Controllers -->
-
-<!-- !App Modules -->
-<!-- *************************************************** -->
+<!-- !AngularBS -->
 
 
-<!-- *************************************************** -->
-<script src="scripts/angular-io/module/http.include.js"></script>
-<script src="scripts/angular-io/module/accessibility.js"></script>
-<script src="components/angular-strap/src/directives/navbar.js"></script><!-- hilite secondary nav -->
-<script src="scripts/angular-io/directive/selectSize.js"></script>
-<!--<script src="scripts/angular-io/directive/fieldRequired.js"></script>-->
-
-<!-- !End App Modules -->
 <!-- endbuild -->
 
 <!-- !Async Modules -->
 <!-- Ensure these are copied over in grunt -->
-<script src="scripts/angular-io/fallback/reveal.js"></script>
-<script src="scripts/angular-io/fallback/placeholder.js"></script>
+<script src="scripts/angular-io/modernizr/reveal.js"></script>
+<script src="scripts/angular-io/modernizr/placeholder.js"></script>
 <!-- !End App Modules -->
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->

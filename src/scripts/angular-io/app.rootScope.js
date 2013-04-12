@@ -1,9 +1,9 @@
 /*global syncVar:true, db:true, objectIsEmpty:true, objectLength:true, numberPadding:true, device:true */
 
-angular.module('io.init.rootScope', [])
-.run(['$rootScope', '$timeout', '$locale', '$cookies', '$http', '$window', '$location',
-function($rootScope, $timeout, $locale, $cookies, $http, $window, $location) {
-	console.group('io.init.rootScope ('+$rootScope.$id+')');
+angular.module('io')
+.run(['io.config', '$rootScope', '$timeout', '$locale', '$cookies', '$http', '$window', '$location',
+function(config, $rootScope, $timeout, $locale, $cookies, $http, $window, $location) {
+	console.group('io.rootScope ('+$rootScope.$id+')');
 
 	// appCache - from outside of angular (appCache.js)
 	$rootScope.appCache = $window.appCache;
@@ -80,7 +80,7 @@ function($rootScope, $timeout, $locale, $cookies, $http, $window, $location) {
 		}
 	};
 	//-- add in default settings if not set --//
-	$rootScope.settings = syncVar($rootScope.settings, $rootScope.default_settings);
+	$rootScope.settings = syncVar(config, $rootScope.default_settings);
 	delete $rootScope.default_settings;
 	console.log('$rootScope.settings:');
 	console.log($rootScope.settings);
