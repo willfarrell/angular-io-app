@@ -62,7 +62,7 @@ img {
   max-width: 100%;
   /* Part 1: Set a maxium relative to the parent */
 
-  min-width: auto\9;
+  width: auto\9;
   /* IE7-8 need help adjusting responsive images */
 
   height: auto;
@@ -71,9 +71,6 @@ img {
   vertical-align: middle;
   border: 0;
   -ms-interpolation-mode: bicubic;
-}
-img[width] {
-  min-width: 0; /* Overwrite min-width: auto when img width set */
 }
 #map_canvas img,
 .google-maps img {

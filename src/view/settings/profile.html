@@ -7,7 +7,7 @@
 
 		<div class="controls">
     		<img data-ng-src="img/user/{{user.user_ID}}.png?{{filepicker.timestamp}}" class="img-rounded" width="50" height="50"/>
-			<button class="btn" data-ng-click="filepicker.upload(settings.filepicker.user_single_image, user.user_ID);" data-ng-disabled="!user.user_ID">Change photo</button>
+			<a href="#filepickerModal" class="btn" data-toggle="modal" data-ng-click="filepicker.upload(settings.filepicker.user_single_image, user.user_ID);" data-ng-disabled="!user.user_ID">Change photo</a>
 			<!--<span class="help-block">This photo is your identity and appears with your content.</span>-->
     	</div>
     </div>

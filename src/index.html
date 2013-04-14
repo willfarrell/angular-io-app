@@ -19,9 +19,6 @@
     <link rel="stylesheet" href="styles/accessibility.css">
     <link rel="stylesheet" href="styles/angular-io.css">
     
-    <!--<link href="styles/famfamfam-styles.css" rel="stylesheet">--><!-- not needed if font-awesome is included -->
-    <!--<link rel="stylesheet" href="styles/famfamfam-flags.css">-->
-    
     <link rel="stylesheet" href="styles/modernizr/forms-reveal.css">
     <link rel="stylesheet" href="styles/modernizr/forms-placeholder.css">
     <!--<link rel="stylesheet" href="styles/forms-required.css">-->
@@ -134,8 +131,7 @@ if (IE) {
 <script src="components/html5-boilerplate/js/plugins.js"></script>
 
 <!-- !Frameworks - Dev - do not build, have special min settings -->
-<script src="components/jquery/jquery.js"></script><!-- CDN -->
-<script src="components/angular-complete/angular-loader.js"></script>
+<!--<script src="components/angular-complete/angular-loader.js"></script>-->
 <script src="components/angular-complete/angular.js"></script><!-- CDN -->
 <script>
 	locale = JSON.parse(localStorage.getItem('locale'));
@@ -151,27 +147,9 @@ if (IE) {
 <script src="scripts/modernizr/forms-reveal.js"></script>
 <!-- endbuild -->
 
-<!-- build:js js/vendor/bootstrap.min.js -->
-<!--<script src="components/bootstrap/js/bootstrap-affix.js"></script>-->
-<script src="components/bootstrap/js/bootstrap-alert.js"></script>
-<script src="components/bootstrap/js/bootstrap-button.js"></script>
-<!--<script src="components/bootstrap/js/bootstrap-carousel.js"></script>
-<script src="components/bootstrap/js/bootstrap-collapse.js"></script>-->
-<script src="components/bootstrap/js/bootstrap-dropdown.js"></script>
-<script src="components/bootstrap/js/bootstrap-modal.js"></script>
-<!--<script src="components/bootstrap/js/bootstrap-scrollspy.js"></script>
-<script src="components/bootstrap/js/bootstrap-tab.js"></script>
-<script src="components/bootstrap/js/bootstrap-tooltip.js"></script>
-<script src="components/bootstrap/js/bootstrap-popover.js"></script>--><!-- requires tooltip -->
-<!--<script src="components/bootstrap/js/bootstrap-transition.js"></script>
-<script src="components/bootstrap/js/bootstrap-typeahead.js"></script>-->
-<!-- endbuild -->
-
 <!-- build:js js/app.min.js -->
 <!-- !Non-CDN Components -->
 <script src="components/angular-complete/angular-cookies.js"></script>
-
-
 
 <!-- !Liabraries -->
 <!-- Markdown (user/edit, user/profile, company/edit, company/profile -->
@@ -183,7 +161,7 @@ if (IE) {
 <script src="scripts/lib.keydb.js"></script>
 
 <!-- init -->
-<script src="scripts/app.js"></script><!-- this is where you pick your angular.io modules -->
+<script src="scripts/app.js"></script><!-- this is where you pick your modules -->
 <script src="scripts/app.route.js"></script><!-- this is where you put your routing -->
 
 <!-- !App Components -->
@@ -197,14 +175,17 @@ if (IE) {
 <!-- !End App Components -->
 
 <script src="scripts/angular-io/app.rootScope.js"></script>
-<script src="scripts/angular-io/modules/http.include.js"></script>
+<script src="scripts/angular-io/modules/404.js"></script>
 <script src="scripts/angular-io/modules/accessibility.js"></script>
 
 <!-- !AngularIO -->
 <script src="scripts/angular-io/directives/tabs.js"></script><!-- from angular-js-bootstrap -->
-
+<script src="scripts/angular-io/directives/alert.js"></script><!-- bootstrap replacement -->
+<script src="scripts/angular-io/directives/modal.js"></script><!-- bootstrap replacement -->
+<script src="scripts/angular-io/directives/selectSize.js"></script>
 <!--<script src="scripts/angular-io/directives/htmlExtend.js"></script>--><!-- IE8 bug -->
 <script src="scripts/angular-io/directives/inputMask.js"></script>
+
 <script src="scripts/angular-io/factories/markdown.js"></script><!-- Requires components/marked/lib/marked.js -->
 <script src="scripts/angular-io/filters/range.js"></script>
 <script src="scripts/angular-io/filters/truncate.js"></script>
@@ -212,37 +193,32 @@ if (IE) {
 <script src="scripts/angular-io/filters/ordinal.js"></script>
 
 <!-- !Angular.io Controllers -->
-<script src="scripts/angular-io/controllers/sign.js"></script>
 <script src="scripts/angular-io/controllers/templateurl.js"></script>
+<script src="scripts/angular-io/controllers/sign.js"></script>
+<script src="scripts/angular-io/controllers/confirm.js"></script>
+<script src="scripts/angular-io/controllers/reset.js"></script>
+<script src="scripts/angular-io/controllers/password.js"></script>
 <script src="scripts/angular-io/controllers/notifications.js"></script>
 <script src="scripts/angular-io/controllers/onboard.js"></script>
-<script src="scripts/angular-io/controllers/confirm.js"></script>
 <script src="scripts/angular-io/controllers/invite.js"></script>
-<script src="scripts/angular-io/controllers/reset.js"></script>
 <script src="scripts/angular-io/controllers/security.js"></script>
 <script src="scripts/angular-io/controllers/user.js"></script>
-<script src="scripts/angular-io/controllers/password.js"></script>
 <!--<script src="scripts/angular-io/controllers/company.js"></script>-->
 
-<!-- Angular.io Plugin Controllers -->
+<!-- Angular.io Plugins -->
 <script src="scripts/angular-io/modules/contact.js"></script>
 <script src="scripts/angular-io/modules/follow.js"></script>
 <script src="scripts/angular-io/modules/message.js"></script>
 <script src="scripts/angular-io/modules/filepicker.js"></script>
-<!-- Browser (page/sign)-->
-<!--
-<script src="scripts/angular-io/plugins/browser/inc.detect.js"></script>
-<script src="scripts/angular-io/plugins/browser/class.plugin-detect.js"></script>
-<script src="scripts/angular-io/plugins/browser/class.browser-detect.js"></script>
--->
 
 <!-- !AngularUI -->
 <script src="components/angular-ui/modules/directives/if/if.js"></script>
 
 <!-- !AngularStrap -->
+<!--<script src="components/angular-strap/src/directives/navbar.js"></script><!-- requires $ -->
 
 <!-- !AngularBS -->
-
+<script src="components/angular-ui-bootstrap/src/dropdownToggle/dropdownToggle.js"></script><!-- bootstrap replacement -->
 
 <!-- endbuild -->
 

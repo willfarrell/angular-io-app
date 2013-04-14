@@ -472,7 +472,7 @@ function(config, $rootScope, $timeout, $locale, $cookies, $http, $window, $locat
 				}
 			]
 		};
-		$('#alertModal').modal('show');
+		//$('#alertModal').modal('show');
 	};
 	$rootScope.offline.alertOnline = function() {
 		console.log('offline.alertOnline()');
@@ -492,7 +492,7 @@ function(config, $rootScope, $timeout, $locale, $cookies, $http, $window, $locat
 				}
 			]
 		};
-		$('#alertModal').modal('show');
+		//$('#alertModal').modal('show');
 	};
 	//$rootScope.offline.run_request();
 	// $http.get().error()

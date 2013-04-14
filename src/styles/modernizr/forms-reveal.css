@@ -8,7 +8,7 @@ Note :after are not alllowed in <input>
 	display: none;
 }*/
 
-.reveal {
+/*.reveal {
 	margin: 0 0 0 -0.8em;
 	color: #666;
 	cursor: pointer;
@@ -19,6 +19,16 @@ Note :after are not alllowed in <input>
 .reveal:after {
 	position: relative;
 	top:.5em;
-	content: "\0900"; /* Devanagari sign inverted candrabindu */
-}
+	content: "\0900"; /* Devanagari sign inverted candrabindu - Not supported in some fonts *
+}*/
 
+/* using icon-eye-open */
+.reveal {
+	margin: 0 0 0 -1.8em;
+	color: #666;
+	cursor: pointer;
+	font-style: normal;
+	font-size: 1.0em;
+	position: relative;
+	top:.1em;
+}

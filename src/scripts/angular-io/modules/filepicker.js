@@ -168,7 +168,9 @@ angular.module('io.modules')
 				}
 			]
 		};
-		$('#alertModal').modal('show');
+		//$('#alertModal').modal('show');
+		
+		callback(file);
 	};
 	$scope.deleteFile = function(file) {
 		var http_config = {

@@ -19,10 +19,10 @@ angular.module('io.modules')
 			message:message||''
 		};
 		$scope.to_name = to_name;
-		$('#messageModal').modal('show');
+		//angular.element(document.querySelector('#messageModal')).modal('show');
 	};
 	$scope.close = function() {
-		$('#messageModal').modal('hide');
+		//angular.element(document.querySelector('#messageModal')).modal('hide');
 	};
 	$scope.updateUnreadCount = function() {
 		console.log('updateUnreadCount()');

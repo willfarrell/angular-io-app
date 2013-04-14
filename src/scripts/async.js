@@ -18,7 +18,8 @@ var _errs=['5113b3e6bedd207c2b000400'];
 $script('//d15qhc0lu1ghnk.cloudfront.net/beacon.js');
 
 // Google Analytics
-/*var _gaq=[
+/*
+var _gaq=[
   ['_setAccount','UA-XXXXXX-X'],
   //['_setDomainName', '.angulario.com'],
   ['_trackPageview'],['_trackPageLoadTime']
@@ -27,18 +28,19 @@ $script('//google-analytics.com/ga.js');
 */
 
 // KISSmetrics
-/*var _kmq = _kmq || [];
+/*
+var _kmq = _kmq || [];
 var _kmk = _kmk || 'foo';
 $script('//i.kissmetrics.com/i.js');
 $script('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
 */
 
 // CDN
-var cdnHttp = '//cdnjs.cloudflare.com/ajax/libs/',
+var cdnHttp = '//cdnjs.cloudflare.com/ajax/libs/', // only use one cdn to minimize DNS latency
 	cdnSrc = {
 		// ajax.googleapis.com is a slower CDN
-		jQuery:cdnHttp+'jquery/1.9.1/jquery.min.js', // remove when possible
-		Bootstrap:cdnHttp+'twitter-bootstrap/2.3.1/js/bootstrap.min.js', // remove when possible
+		//jQuery:cdnHttp+'jquery/1.9.1/jquery.min.js', // remove when possible
+		//Bootstrap:cdnHttp+'twitter-bootstrap/2.3.1/js/bootstrap.min.js', // remove when possible
 		Angular:cdnHttp+'angular.js/1.0.5/angular.min.js',
 		Modernizr:	cdnHttp+'modernizr/2.6.2/modernizr.min.js'//,
 		// HTML5 Polyfills - https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-browser-Polyfills
@@ -50,15 +52,14 @@ var cdnHttp = '//cdnjs.cloudflare.com/ajax/libs/',
 	},
 	cdnDir = 'js/vendor/',
 	cdnFallbackSrc = {
-		jQuery:cdnDir+'jquery.min.js',
-		Bootstrap:cdnDir+'bootstrap.min.js',
+		//jQuery:cdnDir+'jquery.min.js',
+		//Bootstrap:cdnDir+'bootstrap.min.js',
 		Angular:cdnDir+'angular.min.js',
 		Modernizr:	cdnDir+'modernizr.min.js'
 	//,   JSON3:cdnDir+'json3.min.js' // loaded into fallback loop
 	//,	html5shiv:cdnDir+'html5shiv.min.js'
 	//,	'html5shiv-print':cdnDir+'html5shiv-print.min.js',
 	},
-	fallbackBool = 0,
 	fallbackCount = 0,
 	fallbackArray = [];
 
@@ -100,8 +101,8 @@ function bootstrap() {
 			'JSON',				// JSON3 for IE 6-7
 			//'html',			// html5shiv
 			'Modernizr',
-			'$.fn.dropdown',	// Bootstrap (fn.dropdown)
-			'jQuery',			// jQuery
+			//'$.fn.dropdown',	// Bootstrap (fn.dropdown)
+			//'jQuery',			// jQuery
 			'angular'			// Angular
 		]) &&
 		hasModule('app') &&		// Angular 'app' Ready
@@ -154,6 +155,7 @@ $script(cdnSrc.Modernizr, 'Modernizr', function() {
 	bootstrap();
 }, cdnFallback);
 
+/*
 $script(cdnSrc.jQuery, 'jQuery', function() {
 	console.log('jQuery ready');
 	$script(cdnSrc.Bootstrap, 'Bootstrap', function() {
@@ -161,6 +163,7 @@ $script(cdnSrc.jQuery, 'jQuery', function() {
 		bootstrap();
 	}, cdnFallback);
 }, cdnFallback);
+*/
 
 $script(cdnSrc.Angular, 'Angular', function() {
 	console.log('Angular ready');

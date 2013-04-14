@@ -32,7 +32,7 @@ angular.module('io.modernizr')
 
 			// Check if password type
 			if (attrs.type === 'password' && (!IE || (IE >= 9 && IE < 10)) ) {
-				var button = $compile('<i class="reveal">&nbsp;&nbsp;</i>')(scope);
+				var button = $compile('<i class="reveal icon-eye-open"></i>')(scope); // &nbsp;&nbsp;
 
 				// show on click / mousedown / ontouch
 				button.bind('mousedown', showPassword);

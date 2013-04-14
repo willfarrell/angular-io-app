@@ -1,4 +1,4 @@
-<div class="span12" data-ng-controller="DashboardCtrl" data-ng-init="loadSearch()">
+<div class="" data-ng-controller="DashboardCtrl" data-ng-init="loadSearch()">
 	<form class="form-search">
 		<input data-ng-model="search.query" type="text" class="input-medium" placeholder="Search directory" data-ng-change="loadSearch()">
 		<!--<div class="btn-group">
@@ -32,7 +32,7 @@
 				<p><a href="#/user/profile/{{r.user_ID}}"><b>{{r.user_name_first}} {{r.user_name_last}}</b></a></p>
 	            <p data-ng-show="r.user_function">{{r.user_function}}</p>
 	            <div class="btn-group" data-ng-hide="session.user_ID == r.user_ID">
-	            	<button class="btn" data-ng-click="message.open(r.user_ID, r.user_name_first+' '+r.user_name_last)"><i class="icon-envelope"></i></button>
+	            	<a href="#messageModal" class="btn" data-ng-click="message.open(r.user_ID, r.user_name_first+' '+r.user_name_last)" data-toggle="modal"><i class="icon-envelope"></i></a>
 	            	<!--<a class="btn" rel="tooltip" title="+{{json.calling_codes[company.location.country_code]}} {{r.user_phone | phone}}" href="tel:+{{json.calling_codes[company.location.country_code]}} {{r.user_phone}}" data-ng-disabled="!(r.user_phone)"><i class="icon-phone"></i></a>-->
 	            </div>
 			</td>

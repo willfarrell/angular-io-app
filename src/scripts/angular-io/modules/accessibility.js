@@ -51,7 +51,7 @@ angular.module('io.modules')
 	return {
 		restrict: 'C',	// class only
 		link: function(scope, element, attrs, controller) {
-			angular.element('body').bind('mousemove', function(event) {
+			angular.element(document.querySelector('body')).bind('mousemove', function(event) {
 				element.css('top', event.pageY - 20);
 			});
 		}
@@ -89,7 +89,7 @@ angular.module('io.modules')
 	};
 	$scope.load = function() {
 		console.log('$accessibility.load()');
-		var elem = angular.element('body');
+		var elem = angular.element(document.querySelector('body'));
 		if ($scope.settings.accessibility) {
 			//$rootScope.loadStyle($scope.css_file);
 			elem.addClass('accessibility');

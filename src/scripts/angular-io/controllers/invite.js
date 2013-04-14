@@ -22,7 +22,6 @@ function InviteCtrl($scope) {
 			]
 		};
 		console.log($rootScope.modal);
-		$('#alertModal').modal('show');
 	};*/
 	$scope.mailto = function(subject, message) {
 		console.log(subject+', '+message);

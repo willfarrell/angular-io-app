@@ -133,6 +133,21 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+		csscss: {
+			options: {
+				colorize: false,
+				verbose: true,
+				outputJson: false,
+				minMatch: 2,
+				compass: true,
+				ignoreProperties: 'padding',
+				ignoreSelectors: '.rule-a'
+			},
+			dist: {
+				//src: ['<%= yeoman.app %>/styles/**/*.css']
+				src: ['<%= yeoman.app %>/styles/styles.css']
+			}
+		},
 		clean: {
 			dist: ['.tmp', '<%= yeoman.dist %>/*'],
 			deploy: ['<%= yeoman.web %>', '<%= yeoman.api %>'],//'<%= yeoman.dist %>/img/user/*', '<%= yeoman.dist %>/img/company/*',			phonegap: ['<%= yeoman.phonegap %>', 'build.phonegap.zip'],
@@ -176,8 +191,8 @@ module.exports = function(grunt) {
 			// fallback scripts
 			'<%= yeoman.dist %>/js/fallback/json.min.js':		'<%= yeoman.app %>/components/json3/lib/json3.min.js',
 			//'<%= yeoman.dist %>/js/fallback/_.js':'<%= yeoman.app %>/scripts/angular-io/fallback/_.js', // .htaccess catch
-			'<%= yeoman.dist %>/js/fallback/placeholder.min.js':'<%= yeoman.app %>/scripts/angular-io/fallback/placeholder.js',
-			'<%= yeoman.dist %>/js/fallback/reveal.min.js':'<%= yeoman.app %>/scripts/angular-io/fallback/reveal.js'
+			'<%= yeoman.dist %>/js/fallback/placeholder.min.js':'<%= yeoman.app %>/scripts/angular-io/modernizr/placeholder.js',
+			'<%= yeoman.dist %>/js/fallback/reveal.min.js':'<%= yeoman.app %>/scripts/angular-io/modernizr/reveal.js'
 		},
 		useminPrepare: {
 			html: ['<%= yeoman.app %>/index.html', '<%= yeoman.app %>/index.web.html', '<%= yeoman.app %>/index.device.html'],
@@ -464,12 +479,12 @@ module.exports = function(grunt) {
 						],
 						dest: '<%= yeoman.dist %>/css'
 					},
-					{
+					/*{
 						expand: true,
 						cwd:'<%= yeoman.app %>/components/jquery',
 						src: ['jquery.min.js'],
 						dest: '<%= yeoman.dist %>/js/vendor'
-					},
+					},*/
 					{
 						expand: true,
 						cwd:'<%= yeoman.app %>/components/json3/libs',
@@ -754,8 +769,8 @@ module.exports = function(grunt) {
 				options: {
 					basePath: '<%= yeoman.dist %>/',
 					cache: [
-						'//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js',
-						'//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js',
+						//'//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+						//'//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js',
 						'//cdnjs.cloudflare.com/ajax/libs/angular.js/1.0.5/angular.min.js',
 						'//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js'
 					],
@@ -908,7 +923,7 @@ module.exports = function(grunt) {
 		//'test',
 		//'coffee',
 		//'compass:dist',
-		//'less:dev',
+		'less:dev',
 		
 		// Setup
 		'clean:dist',

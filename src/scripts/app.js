@@ -63,10 +63,12 @@ angular.module('$strap.filters', ['$strap.config']);
 angular.module('$strap', ['$strap.directives', '$strap.filters', '$strap.config']);
 
 // App (app)
-angular.module('app.config', []).value('app.config', {});
+angular.module('app.config', []).value('app.config', {
+	'datepicker':{}
+});
 angular.module('app.controllers', ['app.config']);
 angular.module('app.directives', ['app.config']);
 angular.module('app.factories', ['app.config']);
 angular.module('app.filters', ['app.config']);
 
-var app = angular.module('app', ['ngCookies', 'io', 'ui', 'app.controllers', 'app.directives', 'app.factories', 'app.filters', 'app.config']);
+var app = angular.module('app', ['ngCookies', 'io', 'ui', '$strap', 'app.controllers', 'app.directives', 'app.factories', 'app.filters', 'app.config']);

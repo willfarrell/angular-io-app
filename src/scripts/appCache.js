@@ -13,7 +13,7 @@ function handleCacheEvent(e) {
 		appCache.total = e.total;
 
 		try {
-			angular.element('body').scope().$emit('appCache', appCache);
+			angular.element(document.querySelector('body')).scope().$emit('appCache', appCache);
 		} catch(e) { }
 	}
 

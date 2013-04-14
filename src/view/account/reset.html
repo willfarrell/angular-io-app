@@ -14,7 +14,6 @@
     <div class="control-group" data-ng-class="{error: (errors.password)}">
         <input type="password" name="password" class="input-block-level" placeholder="New Password" data-ng-model="password.new_password" data-ng-change="validate.password(changePasswordForm.password, password.new_password, '', settings.password)" required>
         <!--<span class="help-block error" data-ng-show="signinForm.password.$error.required">Password is required</span>-->
-        <span class="help-block">Password will be visible while entering</span>
         <span class="help-block error" data-ng-show="changePasswordForm.password.$error.minlength">Password too short, must be {{settings.password.min_length}} or more</span>
         <span class="help-block error" data-ng-show="changePasswordForm.password.$error.upper">Password needs at least one lower case letter</span>
         <span class="help-block error" data-ng-show="changePasswordForm.password.$error.lower">Password needs at least one upper case letter</span>
