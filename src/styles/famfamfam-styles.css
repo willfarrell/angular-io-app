@@ -3,8 +3,7 @@
 
 /*  Font Awesome styles
     ------------------------------------------------------- */
-[class^="icon-"],
-[class*=" icon-"] {
+.flag {
   font-family: FontAwesome;
   font-weight: normal;
   font-style: normal;
@@ -12,98 +11,69 @@
   -webkit-font-smoothing: antialiased;
 
   /* sprites.less reset */
-  display: inline;
+  /*display: inline;*/
   width: auto;
   height: auto;
   line-height: normal;
   vertical-align: baseline;
   background-image: none;
-  background-position: 0% 0%;
+  background-position: 0 0;
   background-repeat: repeat;
   margin-top: 0;
 }
 /* more sprites.less reset */
-.icon-white,
-.nav-pills > .active > a > [class^="icon-"],
-.nav-pills > .active > a > [class*=" icon-"],
-.nav-list > .active > a > [class^="icon-"],
-.nav-list > .active > a > [class*=" icon-"],
-.navbar-inverse .nav > .active > a > [class^="icon-"],
-.navbar-inverse .nav > .active > a > [class*=" icon-"],
-.dropdown-menu > li > a:hover > [class^="icon-"],
-.dropdown-menu > li > a:hover > [class*=" icon-"],
-.dropdown-menu > .active > a > [class^="icon-"],
-.dropdown-menu > .active > a > [class*=" icon-"],
-.dropdown-submenu:hover > a > [class^="icon-"],
-.dropdown-submenu:hover > a > [class*=" icon-"] {
+.flag-white,
+.nav-pills > .active > a > .flag,
+.nav-list > .active > a > .flag,
+.navbar-inverse .nav > .active > a > .flag,
+.dropdown-menu > li > a:hover > .flag,
+.dropdown-menu > .active > a > .flag,
+.dropdown-submenu:hover > a > .flag {
   background-image: none;
 }
-[class^="icon-"]:before,
-[class*=" icon-"]:before {
+.flag:before {
   text-decoration: inherit;
   display: inline-block;
   speak: none;
 }
 /* makes sure icons active on rollover in links */
-a [class^="icon-"],
-a [class*=" icon-"] {
+a .flag {
   display: inline-block;
 }
 /* makes the font 33% larger relative to the icon container */
-.icon-large:before {
+.flag-large:before {
   vertical-align: -10%;
   font-size: 1.3333333333333333em;
 }
-.btn [class^="icon-"],
-.nav [class^="icon-"],
-.btn [class*=" icon-"],
-.nav [class*=" icon-"] {
+.btn .flag,
+.nav .flag {
   display: inline;
   /* keeps button heights with and without icons the same */
 
 }
-.btn [class^="icon-"].icon-large,
-.nav [class^="icon-"].icon-large,
-.btn [class*=" icon-"].icon-large,
-.nav [class*=" icon-"].icon-large {
+.btn .flag.flag-large,
+.nav .flag.flag-large {
   line-height: .9em;
 }
-.btn [class^="icon-"].icon-spin,
-.nav [class^="icon-"].icon-spin,
-.btn [class*=" icon-"].icon-spin,
-.nav [class*=" icon-"].icon-spin {
+.btn .flag.flag-spin,
+.nav .flag.flag-spin {
   display: inline-block;
 }
-.nav-tabs [class^="icon-"],
-.nav-pills [class^="icon-"],
-.nav-tabs [class*=" icon-"],
-.nav-pills [class*=" icon-"] {
-  /* keeps button heights with and without icons the same */
-
-}
-.nav-tabs [class^="icon-"],
-.nav-pills [class^="icon-"],
-.nav-tabs [class*=" icon-"],
-.nav-pills [class*=" icon-"],
-.nav-tabs [class^="icon-"].icon-large,
-.nav-pills [class^="icon-"].icon-large,
-.nav-tabs [class*=" icon-"].icon-large,
-.nav-pills [class*=" icon-"].icon-large {
+.nav-tabs .flag,
+.nav-pills .flag,
+.nav-tabs .flag.flag-large,
+.nav-pills .flag.flag-large {
   line-height: .9em;
 }
-li [class^="icon-"],
-.nav li [class^="icon-"],
-li [class*=" icon-"],
-.nav li [class*=" icon-"] {
+li .flag,
+.nav li .flag {
   display: inline-block;
   width: 1.25em;
   text-align: center;
 }
-li [class^="icon-"].icon-large,
-.nav li [class^="icon-"].icon-large,
-li [class*=" icon-"].icon-large,
-.nav li [class*=" icon-"].icon-large {
-  /* increased font size for icon-large */
+li .flag.flag-large,
+.nav li .flag.flag-large {
+  /* increased font size for flag-large */
 
   width: 1.5625em;
 }
@@ -111,42 +81,41 @@ ul.icons {
   list-style-type: none;
   text-indent: -0.75em;
 }
-ul.icons li [class^="icon-"],
-ul.icons li [class*=" icon-"] {
+ul.icons li .flag {
   width: .75em;
 }
-.icon-muted {
+.flag-muted {
   color: #eeeeee;
 }
-.icon-border {
+.flag-border {
   border: solid 1px #eeeeee;
   padding: .2em .25em .15em;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
 }
-.icon-2x {
+.flag-2x {
   font-size: 2em;
 }
-.icon-2x.icon-border {
+.flag-2x.flag-border {
   border-width: 2px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
 }
-.icon-3x {
+.flag-3x {
   font-size: 3em;
 }
-.icon-3x.icon-border {
+.flag-3x.flag-border {
   border-width: 3px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
 }
-.icon-4x {
+.flag-4x {
   font-size: 4em;
 }
-.icon-4x.icon-border {
+.flag-4x.flag-border {
   border-width: 4px;
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
@@ -158,86 +127,33 @@ ul.icons li [class*=" icon-"] {
 .pull-left {
   float: left;
 }
-[class^="icon-"].pull-left,
-[class*=" icon-"].pull-left {
+.flag.pull-left {
   margin-right: .3em;
 }
-[class^="icon-"].pull-right,
-[class*=" icon-"].pull-right {
+.flag.pull-right {
   margin-left: .3em;
 }
-.btn [class^="icon-"].pull-left.icon-2x,
-.btn [class*=" icon-"].pull-left.icon-2x,
-.btn [class^="icon-"].pull-right.icon-2x,
-.btn [class*=" icon-"].pull-right.icon-2x {
+.btn .flag.pull-left.flag-2x,
+.btn .flag.pull-right.flag-2x {
   margin-top: .18em;
 }
-.btn [class^="icon-"].icon-spin.icon-large,
-.btn [class*=" icon-"].icon-spin.icon-large {
+.btn .flag.flag-spin.flag-large {
   line-height: .8em;
 }
-.btn.btn-small [class^="icon-"].pull-left.icon-2x,
-.btn.btn-small [class*=" icon-"].pull-left.icon-2x,
-.btn.btn-small [class^="icon-"].pull-right.icon-2x,
-.btn.btn-small [class*=" icon-"].pull-right.icon-2x {
+.btn.btn-small .flag.pull-left.flag-2x,
+.btn.btn-small .flag.pull-right.flag-2x {
   margin-top: .25em;
 }
-.btn.btn-large [class^="icon-"],
-.btn.btn-large [class*=" icon-"] {
+.btn.btn-large .flag {
   margin-top: 0;
 }
-.btn.btn-large [class^="icon-"].pull-left.icon-2x,
-.btn.btn-large [class*=" icon-"].pull-left.icon-2x,
-.btn.btn-large [class^="icon-"].pull-right.icon-2x,
-.btn.btn-large [class*=" icon-"].pull-right.icon-2x {
+.btn.btn-large .flag.pull-left.flag-2x,
+.btn.btn-large .flag.pull-right.flag-2x {
   margin-top: .05em;
 }
-.btn.btn-large [class^="icon-"].pull-left.icon-2x,
-.btn.btn-large [class*=" icon-"].pull-left.icon-2x {
+.btn.btn-large .flag.pull-left.flag-2x {
   margin-right: .2em;
 }
-.btn.btn-large [class^="icon-"].pull-right.icon-2x,
-.btn.btn-large [class*=" icon-"].pull-right.icon-2x {
+.btn.btn-large .flag.pull-right.flag-2x {
   margin-left: .2em;
-}
-.icon-spin {
-  display: inline-block;
-  -moz-animation: spin 2s infinite linear;
-  -o-animation: spin 2s infinite linear;
-  -webkit-animation: spin 2s infinite linear;
-  animation: spin 2s infinite linear;
-}
-@-moz-keyframes spin {
-  0% { -moz-transform: rotate(0deg); }
-  100% { -moz-transform: rotate(359deg); }
-}
-@-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(359deg); }
-}
-@-o-keyframes spin {
-  0% { -o-transform: rotate(0deg); }
-  100% { -o-transform: rotate(359deg); }
-}
-@-ms-keyframes spin {
-  0% { -ms-transform: rotate(0deg); }
-  100% { -ms-transform: rotate(359deg); }
-}
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(359deg); }
-}
-@-moz-document url-prefix() {
-  .icon-spin {
-    height: .9em;
-  }
-  .btn .icon-spin {
-    height: auto;
-  }
-  .icon-spin.icon-large {
-    height: 1.25em;
-  }
-  .btn .icon-spin.icon-large {
-    height: .75em;
-  }
 }

@@ -1,11 +1,11 @@
 {
 	"signup_confirm_email": {
 		"subject": "Action - Confirm Your Email",
-		"message": "You (or someone else) entered this email address when creating an account at {{global:site_name}}.\n\nIf you did not create an account, you can ignore this message.\n\nTo confirm your email, please proceed to\n {{global:site_url}}#/confirm/{{args:hash}}\n\nor enter {{args:hash}} when requested after login.{{global:signature}}{{global:footer}}"
+		"message": "You (or someone else) entered this email address when creating an account at {{global:site_name}}.\n\nIf you did not create an account, you can ignore this message.\n\nTo confirm your email, please proceed to\n {{global:site_url}}#/sign/confirm/{{args:hash}}\n\nor enter {{args:hash}} when requested after login.{{global:signature}}{{global:footer}}"
 	},
 	"password_reset_request": {
 		"subject": "Account Access Attempted",
-		"message": "You (or someone else) entered this email address when trying to change the password of your {{global:site_name}} account.\n\nIf you did not request this, someone else may have access to your email account. We recommend you change your {{global:site_name}} account password to be safe.\n\nTo continue the password reset process, please proceed to\n {{global:site_url}}#/reset/{{args:hash}}\n within 60 minutes of receiving this email.{{global:signature}}{{global:footer}}"
+		"message": "You (or someone else) entered this email address when trying to change the password of your {{global:site_name}} account.\n\nIf you did not request this, someone else may have access to your email account. We recommend you change your {{global:site_name}} account password to be safe.\n\nTo continue the password reset process, please proceed to\n {{global:site_url}}#/sign/password/{{args:hash}}\n within 60 minutes of receiving this email.{{global:signature}}{{global:footer}}"
 	},
 	"password_reset_request_fail": {
 		"subject": "Reset Password",
@@ -13,7 +13,7 @@
 	},
 	"password_reset_request_new": {
 		"subject": "Account Created",
-		"message": "Hopefully this email doesn't come as a surprise.  An account has just been created for you by {{from:user_name_first}} at {{global:site_name}}.\n\nTo complete your account, proceed to\n {{global:site_url}}#/reset/{{args:hash}}{{global:signature}}{{global:footer}}"
+		"message": "Hopefully this email doesn't come as a surprise.  An account has just been created for you by {{from:user_name_first}} at {{global:site_name}}.\n\nTo complete your account, proceed to\n {{global:site_url}}#/sign/password/{{args:hash}}{{global:signature}}{{global:footer}}"
 	},
 	"password_changed_notification": {
 		"subject": "Account Password Changed",
@@ -21,7 +21,7 @@
 	},
 	"email_changed_notification": {
 		"subject": "Account Email Changed",
-		"message": "Your {{global:site_name}} account email was just changed.\n\nTo confirm your email, please proceed to\n {{global:site_url}}#/confirm/{{args:hash}}{{global:footer}}"
+		"message": "Your {{global:site_name}} account email was just changed.\n\nTo confirm your email, please proceed to\n {{global:site_url}}#/sign/confirm/{{args:hash}}{{global:footer}}"
 	},
 	
 	"pgp_test": {

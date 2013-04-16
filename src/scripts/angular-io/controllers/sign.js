@@ -6,7 +6,7 @@
 function SignCtrl($scope, $http, $cookies, $routeParams) {
 	console.log('SignCtrl ('+$scope.$id+')');
 	$scope.errors = {};		// form errors
-	$scope.action = $routeParams.action ? $routeParams.action : 'in';
+	$scope.page = $routeParams.page ? $routeParams.page : 'in';
 	console.log($scope.action);
 	//-- Sign Up --//
 	$scope.signup = {
@@ -115,35 +115,37 @@ function SignCtrl($scope, $http, $cookies, $routeParams) {
 				$rootScope.http_error();
 			});
 	};
+
 	//-- Sign Out --//
 	$scope.account_signout = function() {
 		console.log('account_signout()');
 		db.clear(); // clear localstorage
-		if (objectLength($rootScope.session)) {	// prevent multiple calls
-			$rootScope.resetSession();
+		$rootScope.resetSession();
+		if ($rootScope.session.user_ID) {	// prevent multiple calls
 			$http.get($scope.settings.server+'/account/signout')
 				.success(function(data) {
 					console.log('account_signout.get.success');
 					console.log(data);
 					$rootScope.alerts = [{'class':'info', 'label':'Signed Out'}];
-					//$rootScope.href('/sign/in');
-					console.log(objectLength($rootScope.session));
+					$rootScope.href('/sign/in');
 				})
 				.error(function() {
 					console.log('account_signout.get.error');
 					$rootScope.http_error();
 				});
+		} else {
+			$rootScope.href('/sign/in');
 		}
 	};
 	//-- End Sign Out --//
-	if ($routeParams.confirm_hash) {
-		$scope.action = 'in';
-	}
-	if ($scope.action === 'out') {
+	/*if ($routeParams.confirm_hash) {
+		$scope.page = 'in';
+	}*/
+	if ($scope.page === 'out') {
 		$scope.account_signout();
 	} else if ($rootScope.session.user_ID) {
 		// redirect if already signed in
-		$scope.redirect();
+		$rootScope.redirect();
 	}
 
 }

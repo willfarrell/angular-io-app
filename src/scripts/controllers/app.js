@@ -40,7 +40,6 @@ function AppCtrl(rootScope, $scope, $window, $http, $cookies, $location, filepic
 
 	$scope.slideNavBool = -1;
 	$scope.slideNav = function(value) {
-		console.log(value);
 		if (value === 1 || value === -1) { $scope.slideNavBool = value; }
 		else { $scope.slideNavBool *= -1; }
 	};

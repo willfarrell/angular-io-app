@@ -18,9 +18,10 @@
     <!--<link rel="stylesheet" href="components/font-awesome/build/fontawesome.css">--><!-- doesn't catch var icons -->
     <link rel="stylesheet" href="styles/accessibility.css">
     <link rel="stylesheet" href="styles/angular-io.css">
+    <link rel="stylesheet" href="styles/angular-io-onboard.css">
     
-    <link rel="stylesheet" href="styles/modernizr/forms-reveal.css">
-    <link rel="stylesheet" href="styles/modernizr/forms-placeholder.css">
+    <link rel="stylesheet" href="components/angular-modernizr/src/styles/forms-reveal.css">
+    <link rel="stylesheet" href="components/angular-modernizr/src/styles/forms-placeholder.css">
     <!--<link rel="stylesheet" href="styles/forms-required.css">-->
     <!-- endbuild -->
 
@@ -139,12 +140,12 @@ if (IE) {
 </script>
 <!-- end - do not build -->
 
-<!-- build:js js/vendor/modernizr.min.js -->
+<!-- build:js js/modernizr.min.js -->
 <!-- http://modernizr.com/download/# -->
-<script src="scripts/modernizr.js"></script>
+<script src="components/modernizr/modernizr.js"></script>
 <script src="components/modernizr/feature-detects/json.js"></script>
 <script src="components/modernizr/feature-detects/forms-placeholder.js"></script>
-<script src="scripts/modernizr/forms-reveal.js"></script>
+<script src="components/angular-modernizr/src/feature-detects/forms-reveal.js"></script>
 <!-- endbuild -->
 
 <!-- build:js js/app.min.js -->
@@ -178,19 +179,8 @@ if (IE) {
 <script src="scripts/angular-io/modules/404.js"></script>
 <script src="scripts/angular-io/modules/accessibility.js"></script>
 
-<!-- !AngularIO -->
-<script src="scripts/angular-io/directives/tabs.js"></script><!-- from angular-js-bootstrap -->
-<script src="scripts/angular-io/directives/alert.js"></script><!-- bootstrap replacement -->
-<script src="scripts/angular-io/directives/modal.js"></script><!-- bootstrap replacement -->
-<script src="scripts/angular-io/directives/selectSize.js"></script>
-<!--<script src="scripts/angular-io/directives/htmlExtend.js"></script>--><!-- IE8 bug -->
-<script src="scripts/angular-io/directives/inputMask.js"></script>
-
 <script src="scripts/angular-io/factories/markdown.js"></script><!-- Requires components/marked/lib/marked.js -->
-<script src="scripts/angular-io/filters/range.js"></script>
-<script src="scripts/angular-io/filters/truncate.js"></script>
-<script src="scripts/angular-io/filters/format.js"></script>
-<script src="scripts/angular-io/filters/ordinal.js"></script>
+
 
 <!-- !Angular.io Controllers -->
 <script src="scripts/angular-io/controllers/templateurl.js"></script>
@@ -211,11 +201,25 @@ if (IE) {
 <script src="scripts/angular-io/modules/message.js"></script>
 <script src="scripts/angular-io/modules/filepicker.js"></script>
 
+<!-- !AngularIO -->
+<script src="components/angular-io/src/scripts/directives/navbar.js"></script>
+<script src="components/angular-io/src/scripts/directives/tabs.js"></script><!-- from angular-js-bootstrap -->
+<script src="components/angular-io/src/scripts/directives/alert.js"></script><!-- bootstrap replacement -->
+<script src="components/angular-io/src/scripts/directives/modal.js"></script><!-- bootstrap replacement -->
+<!--<script src="components/angular-io/src/scripts/directives/selectSize.js"></script>-->
+<!--<script src="components/angular-io/src/scripts/directives/htmlExtend.js"></script>--><!-- IE8 bug -->
+<script src="components/angular-io/src/scripts/directives/inputMask.js"></script>
+
+<script src="components/angular-io/src/scripts/filters/range.js"></script>
+<script src="components/angular-io/src/scripts/filters/truncate.js"></script>
+<script src="components/angular-io/src/scripts/filters/format.js"></script>
+<script src="components/angular-io/src/scripts/filters/ordinal.js"></script>
+
 <!-- !AngularUI -->
 <script src="components/angular-ui/modules/directives/if/if.js"></script>
 
 <!-- !AngularStrap -->
-<!--<script src="components/angular-strap/src/directives/navbar.js"></script><!-- requires $ -->
+<!--<script src="components/angular-strap/src/directives/navbar.js"></script><!-- waiting on commit pull -->
 
 <!-- !AngularBS -->
 <script src="components/angular-ui-bootstrap/src/dropdownToggle/dropdownToggle.js"></script><!-- bootstrap replacement -->
@@ -224,8 +228,8 @@ if (IE) {
 
 <!-- !Async Modules -->
 <!-- Ensure these are copied over in grunt -->
-<script src="scripts/angular-io/modernizr/reveal.js"></script>
-<script src="scripts/angular-io/modernizr/placeholder.js"></script>
+<script src="components/angular-modernizr/src/scripts/reveal.js"></script>
+<script src="components/angular-modernizr/src/scripts/placeholder.js"></script>
 <!-- !End App Modules -->
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->

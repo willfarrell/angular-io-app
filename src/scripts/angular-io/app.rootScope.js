@@ -88,7 +88,6 @@ function(config, $rootScope, $timeout, $locale, $cookies, $http, $window, $locat
 	$rootScope.session = db.get('session', {});
 	$rootScope.resetSession = function() {
 		console.log('resetSession()');
-		console.log($rootScope.$id);
 		$rootScope.session = {};
 		db.set('session', $rootScope.session);
 	};
@@ -144,6 +143,7 @@ function(config, $rootScope, $timeout, $locale, $cookies, $http, $window, $locat
 						$rootScope.$eval(callback());
 					}
 				} else if ($rootScope.session.user_ID) {
+					$cookies.redirect = $rootScope.uri();
 					$rootScope.href('/sign/out');
 				}
 			})
@@ -164,6 +164,7 @@ function(config, $rootScope, $timeout, $locale, $cookies, $http, $window, $locat
 		if (data.session === 'signout') {
 			//$rootScope.offline.que_request(http_config, http_callback);
 			if ($rootScope.uri().match(/\/sign\//) === null) { // prevent redirect loop
+				$cookies.redirect = $rootScope.uri();
 				$rootScope.href('/sign/out');
 			}
 			result = false;
@@ -186,14 +187,14 @@ function(config, $rootScope, $timeout, $locale, $cookies, $http, $window, $locat
 		//console.log($rootScope.settings);
 		//console.log(JSON.stringify($rootScope.session));
 		// not signed in -> sign/in
+
 		if (!$rootScope.session.user_ID) {
 			console.log('not signed in');
-			$timeout(function(){
-				if ($rootScope.uri().match(/\/sign\//) === null) { // prevent redirect loop
-					$cookies.redirect = $rootScope.uri();
-					$rootScope.href('/sign/in');
-				}
-			},50); // compiled code runs too fast and can cause loops in IE <= 9
+
+			if ($rootScope.uri().match(/\/sign\//) === null) { // prevent redirect loop
+				$cookies.redirect = $rootScope.uri();
+				$rootScope.href('/sign/in');
+			}
 		// email not confirmed -> onboard
 		} else if ($rootScope.settings.onboard.required && !$rootScope.session.email_confirm && $rootScope.uri().match(/\/onboard\/email/) === null) {
 			console.log('email not confirmed = '+($rootScope.settings.onboard.required)+' && '+!$rootScope.session.email_confirm+' && '+($rootScope.uri().match(/\/onboard/) === null));
@@ -551,9 +552,8 @@ function(config, $rootScope, $timeout, $locale, $cookies, $http, $window, $locat
 	$rootScope.redirect = function() {
 		console.log('redirect('+$rootScope.session.user_ID+')');
 		//if ($rootScope.session.user_ID) {
-			var redirect = ($cookies.redirect ? $cookies.redirect : $rootScope.settings.dashboard);
-			delete $cookies.redirect;
-			$rootScope.href(redirect);
+			$rootScope.href($cookies.redirect || $rootScope.settings.dashboard);
+			$cookies.redirect = null;
 		//} else {
 		//	window.setTimeout(function() {
 				//alert(JSON.stringify($rootScope.session));

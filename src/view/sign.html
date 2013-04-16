@@ -1,0 +1,24 @@
+<div class="span4"></div>
+<div class="span4" data-ng-show="!session.user_ID" data-ng-controller="SignCtrl">
+
+	<div data-ng-include src="page_url"></div>
+<!-- Feature Check - Future --
+<div class="alert alert-warning" data-ng-show="settings.browser.html5.localStorage">
+  <strong>Warning!</strong> This app requires localStorage to be supported by your browser. Parts of the app may not work as expected.
+</div>
+<!-- End Feature Check -->
+
+<!-- Security Check --
+<div class="alert alert-warning" data-ng-hide="settings.browser.latest">
+  <strong>Warning!</strong> We've detected that you are using {{settings.browser.name}} {{settings.browser.version}}. You may be susceptible to security vulnerabilities. We recommend that you upgrade to the latest version before signing in.
+</div>
+
+<div class="alert alert-warning" data-ng-show="settings.browser.plugins.flash">
+  <strong>Warning!</strong> Flash is known to have vulnerabilities. We recommend that you disable it before signing in.
+</div>
+
+<div class="alert alert-warning" data-ng-show="settings.browser.plugins.java">
+  <strong>Warning!</strong> Java is known to have vulnerabilities. We recommend that you disable it before signing in.
+</div>
+<!-- End Security Check -->
+</div>

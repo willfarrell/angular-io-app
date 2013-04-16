@@ -52,7 +52,7 @@ angular.module('io.modules')
 		restrict: 'C',	// class only
 		link: function(scope, element, attrs, controller) {
 			angular.element(document.querySelector('body')).bind('mousemove', function(event) {
-				element.css('top', event.pageY - 20);
+				element.css('top', (event.pageY - 20)+'px');
 			});
 		}
 	};

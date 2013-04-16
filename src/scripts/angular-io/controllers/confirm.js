@@ -4,8 +4,9 @@
 function ConfirmCtrl($scope, $http, $routeParams) {
 	console.log('ConfirmCtrl ('+$scope.$id+')');
 	$scope.errors = {};
-	$scope.hash = ($routeParams && $routeParams.confirm_hash) ? $routeParams.confirm_hash : '';
+	$scope.hash = ($routeParams && $routeParams.action) ? $routeParams.action : ''; // /:folder/:page/:action
 	$scope.status = false; // used on confirm page
+
 	$scope.check = function(hash) {
 		$scope.errors = {};
 		hash = hash || $scope.hash;
@@ -21,6 +22,7 @@ function ConfirmCtrl($scope, $http, $routeParams) {
 				}
 			});
 	};
+
 	$scope.resend = function() {
 		$scope.errors = {};
 		$http.get($scope.settings.server+'/account/resend_confirm_email/')
@@ -32,6 +34,7 @@ function ConfirmCtrl($scope, $http, $routeParams) {
 				}
 			});
 	};
+
 	if ($scope.hash) { $scope.check(); }
 }
 ConfirmCtrl.$inject = ['$scope', '$http', '$routeParams'];

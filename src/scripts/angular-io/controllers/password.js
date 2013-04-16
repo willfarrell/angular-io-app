@@ -4,6 +4,7 @@
 function PasswordCtrl($scope, $http) {
 	console.log('PasswordCtrl ('+$scope.$id+')');
 	$scope.errors = {};
+
 	$scope.updatePassword = function() {
 		$http.put($scope.settings.server+'/account/password_change/', $scope.password)
 			.success(function(data) {
@@ -20,6 +21,7 @@ function PasswordCtrl($scope, $http) {
 				$rootScope.http_error();
 			});
 	};
+
 	$scope.resetPassword = function(email) {
 		console.log('reset_password()');
 		$http.get($scope.settings.server+'/account/reset_send/'+encodeURIComponent(email))
@@ -36,6 +38,7 @@ function PasswordCtrl($scope, $http) {
 				$rootScope.http_error();
 			});
 	};
+
 }
 PasswordCtrl.$inject = ['$scope', '$http'];
 //}]);

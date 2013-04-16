@@ -346,8 +346,7 @@ angular.module('io.modules')
 						if (data[i]['company_ID']) { $follow.db.company[data[i]['company_ID']] = data[i]; }
 						else if (data[i]['user_ID']) { $follow.db.user[data[i]['user_ID']] = data[i]; }
 					}
-					if (objectLength(data)) { $scope.follow_suggest = data; }
-					console.log($rootScope.objectLength($scope.follow_suggest));
+					if (data.length) { $scope.follow_suggest = data; }
 				}
 			})
 			.error(function() {
@@ -368,8 +367,7 @@ angular.module('io.modules')
 						if (data[i]['company_ID']) { $follow.db.company[data[i]['company_ID']] = data[i]; }
 						else if (data[i]['user_ID']) { $follow.db.user[data[i]['user_ID']] = data[i]; }
 					}
-					if (objectLength(data)) { $scope.follow_suggest = data; }
-					console.log($rootScope.objectLength($scope.follow_suggest));
+					if (data.length) { $scope.follow_suggest = data; }
 				}
 			})
 			.error(function() {
@@ -403,7 +401,7 @@ angular.module('io.modules')
 		$scope.follow.loadGroups();
 	};
 	//$scope.require_signin(function(){
-		$scope.loadGroups();
+		//$scope.loadGroups();
 	//});
 }]);
 

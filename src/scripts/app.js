@@ -56,6 +56,8 @@ angular.module('ui.directives', ['ui.config']);
 angular.module('ui.filters', ['ui.config']);
 angular.module('ui', ['ui.directives', 'ui.filters', 'ui.config']);
 
+angular.module('bs', ['ui.bootstrap.dropdownToggle']);
+
 // AngularStrap ($strap)
 angular.module('$strap.config', []).value('$strap.config', {});
 angular.module('$strap.directives', ['$strap.config']);
@@ -71,4 +73,4 @@ angular.module('app.directives', ['app.config']);
 angular.module('app.factories', ['app.config']);
 angular.module('app.filters', ['app.config']);
 
-var app = angular.module('app', ['ngCookies', 'io', 'ui', '$strap', 'app.controllers', 'app.directives', 'app.factories', 'app.filters', 'app.config']);
+var app = angular.module('app', ['ngCookies', 'io', 'ui', 'bs', '$strap', 'app.controllers', 'app.directives', 'app.factories', 'app.filters', 'app.config']);

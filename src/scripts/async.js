@@ -35,32 +35,35 @@ $script('//i.kissmetrics.com/i.js');
 $script('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
 */
 
+var min_js = '.min.js',
+	srcDir = 'js/',
+	cdnDir = 'js/vendor/',
+	cdnHttp = '//cdnjs.cloudflare.com/ajax/libs/', // only use one cdn to minimize DNS latency // ajax.googleapis.com is a slower CDN
+	localSrc = {
+		Angular:	cdnDir+'angular'+min_js,
+		App:		srcDir+'app'+min_js,
+		Modernizr:	srcDir+'modernizr'+min_js
+	},
 // CDN
-var cdnHttp = '//cdnjs.cloudflare.com/ajax/libs/', // only use one cdn to minimize DNS latency
 	cdnSrc = {
-		// ajax.googleapis.com is a slower CDN
-		//jQuery:cdnHttp+'jquery/1.9.1/jquery.min.js', // remove when possible
-		//Bootstrap:cdnHttp+'twitter-bootstrap/2.3.1/js/bootstrap.min.js', // remove when possible
-		Angular:cdnHttp+'angular.js/1.0.5/angular.min.js',
-		Modernizr:	cdnHttp+'modernizr/2.6.2/modernizr.min.js'//,
+		//jQuery:cdnHttp+'jquery/1.9.1/jquery'+min_js,
+		//Bootstrap:cdnHttp+'twitter-bootstrap/2.3.1/js/bootstrap'+min_js,
+		Angular:	cdnHttp+'angular.js/1.0.5/angular'+min_js
+		//Modernizr:	cdnHttp+'modernizr/2.6.2/modernizr'+min_js//,
 		// HTML5 Polyfills - https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-browser-Polyfills
-		//JSON3:		cdnHttp+'json3/3.2.4/json3.min.js'//, // add for IE 6-7 (place in html)
+		//JSON3:		cdnHttp+'json3/3.2.4/json3'+min_js//, // add for IE 6-7 (place in html)
 		// localStorage IE 6-7
 		// HTML5 Sectioning Elements
 		//html5shiv:	cdnHttp+'html5shiv/3.6.2/html5shiv.js',	// IE 6-9 - https://github.com/aFarkas/html5shiv
 		//'html5shiv-print':	cdnHttp+'html5shiv/3.6.2/html5shiv-printshiv.js' // IE 6-8
 	},
-	cdnDir = 'js/vendor/',
 	cdnFallbackSrc = {
 		//jQuery:cdnDir+'jquery.min.js',
 		//Bootstrap:cdnDir+'bootstrap.min.js',
-		Angular:cdnDir+'angular.min.js',
-		Modernizr:	cdnDir+'modernizr.min.js'
-	//,   JSON3:cdnDir+'json3.min.js' // loaded into fallback loop
-	//,	html5shiv:cdnDir+'html5shiv.min.js'
-	//,	'html5shiv-print':cdnDir+'html5shiv-print.min.js',
+		Angular:	cdnDir+'angular'+min_js
+		//Modernizr:	cdnDir+'modernizr'+min_js
 	},
-	fallbackCount = 0,
+	fallbackCount = 1,
 	fallbackArray = [];
 
 // Dependency of bootstrap()
@@ -119,7 +122,7 @@ function countFallback() {
 	fallbackCount--;
 	if (!fallbackCount) {
 		bootstrap();
-	
+
 	}
 }
 
@@ -129,13 +132,13 @@ function modernizrFallback(id) {//, parent) {
 			console.group(i);
 			modernizrFallback(id[i]);//, i);
 		} else if (typeof id[i] === 'boolean' && !id[i]) {
-			console.log(''+i+'.fallback');
+			//console.log(''+i+'.fallback');
 			//i = (parent) ? parent+'-'+i : i;
 			//fallbackArray.push(i);
 			fallbackCount++;
 			$script('js/fallback/'+i+'.min.js', i, countFallback, countFallback);
 		} else {
-			console.log(''+i+'.included');
+			//console.log(''+i+'.included');
 		}
 	}
 	console.groupEnd();
@@ -144,13 +147,13 @@ function modernizrFallback(id) {//, parent) {
 function cdnFallback(depsNotFound) {
 	var i = depsNotFound.length;
 	while (i--) {
-		console.log('cdnFallback '+depsNotFound[i]);
+		//console.log('cdnFallback '+depsNotFound[i]);
 		$script(cdnFallbackSrc[depsNotFound[i]], depsNotFound[i]);
 	}
 }
 
 // js Frameworks & Libraries
-$script(cdnSrc.Modernizr, 'Modernizr', function() {
+$script(localSrc.Modernizr, 'Modernizr', function() {
 	console.log('Modernizr ready');
 	bootstrap();
 }, cdnFallback);
@@ -176,7 +179,7 @@ $script(cdnSrc.Angular, 'Angular', function() {
 		});
 	}
 	// App Files
-	$script('js/app.min.js', 'App', function(){
+	$script(localSrc.App, 'App', function(){
 		console.log('App ready');
 		bootstrap();
 	});
@@ -189,6 +192,7 @@ $script.ready(['Modernizr', 'Angular', 'App'], function() {
 	//$script('js/fallback/placeholder.min.js');
 	console.log(Modernizr);
 	modernizrFallback(Modernizr);
+	countFallback();
 	// Ensure all fallback have had a chance to load before bootstrapping
 	/*fallbackCount = fallbackArray.length;
 	var i = fallbackCount;
@@ -209,8 +213,8 @@ $script.ready(['Modernizr', 'Angular', 'App'], function() {
 			}
 		});
 	}*/
-	
-	
+
+
 });
 
 

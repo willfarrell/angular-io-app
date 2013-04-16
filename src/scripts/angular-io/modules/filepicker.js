@@ -169,7 +169,7 @@ angular.module('io.modules')
 			]
 		};
 		//$('#alertModal').modal('show');
-		
+
 		callback(file);
 	};
 	$scope.deleteFile = function(file) {

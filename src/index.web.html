@@ -35,7 +35,7 @@
 
     <!-- CSS -->
     <style>.ng-cloak{display:none;}</style>
-    <!-- never server froma subdomain -->
+    <!-- never serve from a subdomain -->
     <link rel="stylesheet" href="css/app.min.css">
     
     <!--<link rel="dns-prefetch" href="//widget.foo.com">-->
@@ -126,6 +126,11 @@
 <div data-ng-include="'view/partials/message.html'"></div>
 <div data-ng-include="'view/partials/alert.html'"></div>
 <!-- !End Plugin Modals & Partials -->
+
+<!-- required for IE 7 -->
+<!--[if lt IE 8]>
+<script src="js/fallback/json.min.js"></script>
+<![endif]-->
 
 <!-- build:js js/async.min.js -->
 <!-- replace:inline -->

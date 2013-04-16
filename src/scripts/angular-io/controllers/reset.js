@@ -4,7 +4,7 @@
 function ResetCtrl($scope, $http, $routeParams) {
 	console.log('ResetCtrl ('+$scope.$id+')');
 	$scope.errors = {};
-	$scope.hash = $routeParams.reset_hash;
+	$scope.hash = ($routeParams && $routeParams.action) ? $routeParams.action : ''; // /:folder/:page/:action
 	$scope.state = {
 		verify:true,
 		reset:false,
@@ -74,7 +74,7 @@ function ResetCtrl($scope, $http, $routeParams) {
 			});
 	};
 
-	$scope.check();
+	if ($scope.hash) { $scope.check(); }
 }
 ResetCtrl.$inject = ['$scope', '$http', '$routeParams'];
 //}]);

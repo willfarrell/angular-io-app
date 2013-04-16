@@ -133,21 +133,6 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		csscss: {
-			options: {
-				colorize: false,
-				verbose: true,
-				outputJson: false,
-				minMatch: 2,
-				compass: true,
-				ignoreProperties: 'padding',
-				ignoreSelectors: '.rule-a'
-			},
-			dist: {
-				//src: ['<%= yeoman.app %>/styles/**/*.css']
-				src: ['<%= yeoman.app %>/styles/styles.css']
-			}
-		},
 		clean: {
 			dist: ['.tmp', '<%= yeoman.dist %>/*'],
 			deploy: ['<%= yeoman.web %>', '<%= yeoman.api %>'],//'<%= yeoman.dist %>/img/user/*', '<%= yeoman.dist %>/img/company/*',			phonegap: ['<%= yeoman.phonegap %>', 'build.phonegap.zip'],
@@ -169,8 +154,41 @@ module.exports = function(grunt) {
 		htmllint: {
 			dist: [
 				'<%= yeoman.app %>/**/*.html',
-				'!<%= yeoman.app %>/components/'
+				'!<%= yeoman.app %>/components/**/*/html'
 			]
+		},
+		csslint: {
+			options: {
+				csslintrc: '.csslintrc'
+			},
+			dist: {
+				src: ['<%= yeoman.app %>/styles/*.css', '!<%= yeoman.app %>/styles/bootstrap.css']
+			}
+		},
+		csscss: {
+			options: {
+				colorize: false,
+				verbose: true,
+				outputJson: false,
+				minMatch: 2,
+				compass: true,
+				ignoreProperties: 'padding',
+				ignoreSelectors: '.rule-a'
+			},
+			dist: {
+				//src: ['<%= yeoman.app %>/styles/**/*.css']
+				src: ['<%= yeoman.app %>/styles/styles.css']
+			}
+		},
+		phpcs: {
+			application: {
+				dir: '<%= yeoman.app %>/php'
+			},
+			options: {
+				//bin: 'vendor/bin/phpcs',
+				ignore: '<%= yeoman.app %>/php/**/',
+				standard: 'Zend'
+			}
 		},
 		// not used since Uglify task does concat,
 		// but still available if needed
@@ -189,10 +207,8 @@ module.exports = function(grunt) {
 				preserveComments: 'some' // preserve !, @cc_on for IE var in scripts/async.js
 			},
 			// fallback scripts
-			'<%= yeoman.dist %>/js/fallback/json.min.js':		'<%= yeoman.app %>/components/json3/lib/json3.min.js',
-			//'<%= yeoman.dist %>/js/fallback/_.js':'<%= yeoman.app %>/scripts/angular-io/fallback/_.js', // .htaccess catch
-			'<%= yeoman.dist %>/js/fallback/placeholder.min.js':'<%= yeoman.app %>/scripts/angular-io/modernizr/placeholder.js',
-			'<%= yeoman.dist %>/js/fallback/reveal.min.js':'<%= yeoman.app %>/scripts/angular-io/modernizr/reveal.js'
+			'<%= yeoman.dist %>/js/fallback/placeholder.min.js':'<%= yeoman.app %>/components/angular-modernizr/src/scripts/placeholder.js',
+			'<%= yeoman.dist %>/js/fallback/reveal.min.js':'<%= yeoman.app %>/components/angular-modernizr/src/scripts/reveal.js'
 		},
 		useminPrepare: {
 			html: ['<%= yeoman.app %>/index.html', '<%= yeoman.app %>/index.web.html', '<%= yeoman.app %>/index.device.html'],
@@ -489,7 +505,7 @@ module.exports = function(grunt) {
 						expand: true,
 						cwd:'<%= yeoman.app %>/components/json3/libs',
 						src: ['json3.min.js'],
-						dest: '<%= yeoman.dist %>/js/vendor'
+						dest: '<%= yeoman.dist %>/js/fallback/json.min.js'
 					},
 					{
 						expand: true,
@@ -739,6 +755,58 @@ module.exports = function(grunt) {
 				]
 			}
 		},
+		modernizr: { // **fails waiting on reply
+			// [REQUIRED] Path to the build you're using for development.
+			'devFile' : '<%= yeoman.app %>/components/modernizr/modernizr.js',
+
+			// [REQUIRED] Path to save out the built file.
+			'outputFile' : '<%= yeoman.dist %>/js/modernizr.min.js',
+
+			// Based on default settings on http://modernizr.com/download/
+			'extra' : {
+				'shiv' : true,
+				'printshiv' : false,
+				'load' : true,
+				'mq' : false,
+				'cssclasses' : true
+			},
+
+			// Based on default settings on http://modernizr.com/download/
+			'extensibility' : {
+				'addtest' : true,
+				'prefixed' : false,
+				'teststyles' : false,
+				'testprops' : false,
+				'testallprops' : false,
+				'hasevents' : false,
+				'prefixes' : false,
+				'domprefixes' : false
+			},
+
+			// By default, source is uglified before saving
+			'uglify' : true,
+
+			// Define any tests you want to impliticly include.
+			'tests' : ['json', 'placeholder'],
+
+			// By default, this task will crawl your project for references to Modernizr tests.
+			// Set to false to disable.
+			'parseFiles' : true,
+
+			// When parseFiles = true, this task will crawl all *.js, *.css, *.scss files.
+			// You can override this by defining a 'files' array below.
+			// 'files' : [],
+
+			// When parseFiles = true, matchCommunityTests = true will attempt to
+			// match user-contributed tests.
+			'matchCommunityTests' : false,
+
+			// Have custom Modernizr tests? Add paths to their location here.
+			'customTests' : [],
+
+			// Files added here will be excluded when looking for Modernizr refs.
+			'excludeFiles' : ['**/components/**/*']
+		},
 		compress: {
 			phonegap: {
 				options: {
@@ -753,17 +821,6 @@ module.exports = function(grunt) {
 				]
 			}
 		},
-		/*'closure-compiler': {
-			dist: {
-			closurePath: '/usr/local/opt/closure-compiler/libexec', // brew --prefix closure-compiler # + /libexec
-			js: '<%= yeoman.dist %>/js/app.min.js',
-			jsOutputFile: '<%= yeoman.dist %>/js/app.min.cc.js',
-			options: {
-				compilation_level: 'SIMPLE_OPTIMIZATIONS',
-				language_in: 'ECMASCRIPT5_STRICT'
-			}
-			}
-		},*/
 		manifest: {
 			generate: {
 				options: {
@@ -804,9 +861,9 @@ module.exports = function(grunt) {
 				dest: '<%= yeoman.dist %>/manifest.appcache'
 			}
 		},
-		sitemap: {
+		sitemap: { // ** to test
 			dist: {
-				siteRoot: '<%= yeoman.dist %>/'//,
+				siteRoot: '<%= yeoman.dist %>'//,
 				//homepage: ''//
 				//changefreq: 'daily'
 				//priority: '0.5'
@@ -916,7 +973,7 @@ module.exports = function(grunt) {
 	]);
 
 	grunt.registerTask('build', [
-		
+
 		// Dev
 		//'replace:jslint',
 		'jshint',
@@ -924,7 +981,7 @@ module.exports = function(grunt) {
 		//'coffee',
 		//'compass:dist',
 		'less:dev',
-		
+
 		// Setup
 		'clean:dist',
 		'useminPrepare',
@@ -948,8 +1005,11 @@ module.exports = function(grunt) {
 	]);
 	grunt.registerTask('lint', [
 		//'htmllint',	// not the best for angular
+		'csslint',
 		'replace:jslint',
 		'jshint'
+		// PHP
+		//'phpcs'
 	]);
 
 	grunt.registerTask('default', ['build']); // , 'deploy', 'phonegap'

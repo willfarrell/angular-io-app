@@ -5,9 +5,8 @@ angular.module('app')
 
 		// Angular.io Routes //
 		// sign up/in/reset
-		.when('/sign/:action',			{templateUrl:_view_+'account/sign.html'})
-		.when('/confirm/:confirm_hash', {templateUrl:_view_+'account/sign.html'})
-		.when('/reset/:reset_hash',		{templateUrl:_view_+'account/reset.html'})
+		//.when('/confirm/:confirm_hash', {templateUrl:_view_+'sign/confirm.html'}) // move to sign/confirm/:hash ???
+		//.when('/reset/:reset_hash',		{templateUrl:_view_+'sign/password.html'}) // add to sign/reset/:hash ???s
 
 		// user
 		//when('/user/follow',			{templateUrl:_view_+'user/follow.html'})
@@ -22,11 +21,13 @@ angular.module('app')
 		.when('/company/profile',		{templateUrl:_view_+'user/profile.company.html'})
 		.when('/company/profile/:profile_ID',	{templateUrl:_view_+'user/profile.company.html'})
 
-		// onboard
-		.when('/onboard/password',			{templateUrl:_view_+'onboard/password.html'})	// special case - force password change ** move to page/?
-		
+
+
 		// application
 		.when('/app',					{templateUrl:_view_+_app_+'index.html'})
+
+		// onboard
+		.when('/onboard/password',			{templateUrl:_view_+'onboard/password.html'})	// special case - force password change ** move to page/? merge with reset/:hash ????
 
 		// fallback
 		.when('/',						{templateUrl:_view_+_app_+'index.html'})

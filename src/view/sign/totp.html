@@ -1,0 +1,23 @@
+<div class="pull-center">
+	<form class="well" name="totpForm">
+	    <fieldset><legend>{{i18n.sign_totp_legend}}</legend></fieldset>
+	
+	    <!--<div class="control-group center"><img data-ng-src="img/user/{{session.user_ID}}.png" class="img-polaroid pull-center" width="100" height="100" /></div>-->
+	    <div class="control-group center"><img data-ng-src="/img/user/{{user_ID}}.png" class="img-rounded" width="100" height="100" /></div>
+	    
+	    <div class="control-group" data-ng-class="{error: (errors.signin)}">
+	        <input type="text" name="email" class="input-block-level" placeholder="{{i18n.sign_totp_placeholder}}" data-ng-model="code" required>
+	    	<span class="help-block error" data-ng-show="errors.totp">{{errors.totp}}</span>
+	    </div>
+  		
+	    <!--<div class="btn-group">
+	    	<button class="btn">{{totp.timer}}s</button>
+	    	<button class="btn"><i class="icon-refresh"></i></button>
+	    </div>-->
+	    <button class="btn btn-success pull-right" data-ng-click="account_totp(code)" data-ng-disabled="totpForm.$invalid">{{i18n.sign_totp_button}}</button>
+	    <br>
+	</form>
+	
+	<a href="#/sign/out">{{i18n.sign_out_nav_button}}</a>
+
+</div>

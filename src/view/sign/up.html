@@ -1,0 +1,27 @@
+<div class="pull-center">
+	<form class="well" name="signupForm">
+	    <fieldset><legend>{{i18n.sign_up_legend}}</legend></fieldset>
+	    <div class="control-group" data-ng-class="{error: (errors.email)}">
+	    	<input type="email" name="email" class="input-block-level" placeholder="{{i18n.sign_placeholder_email}}" data-ng-model="signup.email" required>
+	    	<!--<span class="error" data-ng-show="signinForm.email.$error.required">Email is required</span>-->
+	    	<span class="help-block error" data-ng-show="signupForm.email.$error.email">Not valid email</span>
+	    	<span class="help-block error" data-ng-show="errors.email">{{errors.email}}</span>
+	    </div>
+	    
+	    <div class="control-group" data-ng-class="{error: (errors.password)}">
+	        <input type="text" name="password" class="input-block-level" placeholder="{{i18n.sign_placeholder_password}}" data-ng-model="signup.password" data-ng-change="validate.password(signupForm.password, signup.password, '', settings.password)" required>
+	        <!--<span class="help-block error" data-ng-show="signinForm.password.$error.required">Password is required</span>-->
+	        <span class="help-block error" data-ng-show="signupForm.password.$error.minlength">Password too short, must be {{settings.password.min_length}} or more</span>
+	        <span class="help-block error" data-ng-show="signupForm.password.$error.lower">Password needs at least one lower case letter</span>
+	        <span class="help-block error" data-ng-show="signupForm.password.$error.upper">Password needs at least one upper case letter</span>
+	        <span class="help-block error" data-ng-show="signupForm.password.$error.number">Password needs at least one number</span>
+	        <span class="help-block error" data-ng-show="signupForm.password.$error.special">Password needs at least one special character (!"£$%&...)</span>
+	        <span class="help-block error" data-ng-show="signupForm.password.$error.identical">Password cannot have more than two identical characters</span>
+	        <span class="help-block error" data-ng-show="errors.password">{{errors.password}}</span>
+	        <span class="help-block" data-ng-show="objectLength(signupForm.password.$error) > 1">Our intern could crack that password, best to be safe and make it stronger.</span>
+	    </div>
+	    
+	    <button class="btn btn-primary" data-ng-click="account_signup()" data-ng-disabled="signupForm.$invalid || signupForm.password.$invalid">{{i18n.sign_up_button}}</button>
+	</form>
+	<a href="#/sign/in">{{i18n.sign_in_nav_button}}</a>
+</div>

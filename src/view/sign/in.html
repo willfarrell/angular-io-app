@@ -1,0 +1,26 @@
+<div class="pull-center">
+	<form class="well" name="signinForm">
+	    <fieldset><legend>{{i18n.sign_in_legend}}</legend></fieldset>
+	
+	    <!--<div class="control-group center"><img data-ng-src="img/user/{{session.user_ID}}.png" class="img-polaroid pull-center" width="100" height="100" /></div>-->
+	    
+	    <div class="control-group" data-ng-class="{error: (errors.signin)}">
+	        <input type="text" name="email" class="input-block-level" placeholder="{{i18n.sign_in_placeholder}}" data-ng-model="signin.email" required>
+	    </div>
+	    <div class="control-group" data-ng-class="{error: (errors.signin)}">
+	        <input type="password" name="password" class="input-block-level" placeholder="{{i18n.sign_placeholder_password}}" data-ng-model="signin.password" required>
+	    	<span class="help-block error" data-ng-show="errors.signin">{{errors.signin}}</span>
+	    </div>
+	    <div class="control-group">
+		    <label class="checkbox">
+		        <input type="checkbox" data-ng-model="signin.remember"> {{i18n.sign_in_label_remember}}
+		    </label>
+	    </div>
+	    <button class="btn btn-success" data-ng-click="account_signin()" data-ng-disabled="signinForm.$invalid">{{i18n.sign_in_button}}</button>
+	
+	</form>
+	
+	<a href="#/sign/up">{{i18n.sign_up_nav_button}}</a>
+	<a href="#/sign/reset" class="pull-right">{{i18n.sign_reset_nav_button}}</a>
+
+</div>

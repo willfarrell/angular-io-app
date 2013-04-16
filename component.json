@@ -1,6 +1,6 @@
 {
 	"name":"Angular.io App",
-	"version":"1.0.0",
+	"version":"0.1.0",
 	"dependencies":{
 		"modernizr":null,
 		"html5-boilerplate":null,
@@ -10,9 +10,10 @@
 		"angular-ui-bootstrap":null,
 		"angular-ui":null,
 		"angular-strap":null,
+		"angular-modernizr":null,
+		"angular-io":null,
 		"marked":null,
 		"font-awesome":null,
-		"bootstrap":"~2.3.1",
-		"jquery":null
+		"bootstrap":"~2.3.1"
 	}
 }
