@@ -9,7 +9,7 @@
     "compatible-vendor-prefixes": true,
     "display-property-grouping": true,
     "qualified-headings": true,
-    "fallback-colors": true,
+    "fallback-colors": false,
     "duplicate-properties": true,
     "empty-rules": true,
     "errors": true,

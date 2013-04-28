@@ -1,6 +1,6 @@
 {
   "name": "angular.io",
-  "version": "0.9.4",
+  "version": "0.1.5",
   "description": "Yeoman generator for Angular-io",
   "keywords": [
     "yeoman-generator",
@@ -17,7 +17,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "grunt": "~0.4.0",
+    "grunt": "~0.4.1",
     "grunt-bower-hooks": "~0.2.0",
     "grunt-open": "~0.1.0",
     
@@ -27,10 +27,10 @@
     "grunt-contrib-coffee": "~0.4.0",
     "grunt-contrib-compass": "~0.1.1",
     "grunt-contrib-less": "~0.5.0",
-    	"grunt-csscss": "~0.1.1",
+    	"grunt-csscss": "~0.3.1",
     "gruntacular": "~0.1.1",
     
-    "grunt-contrib-csslint": "~0.4.0",
+    "grunt-contrib-csslint": "~0.1.2",
     "grunt-contrib-jshint": "~0.1.1",
     "grunt-jsonlint": "~1.0.0",
     "grunt-html": "~0.3.3",
@@ -42,7 +42,7 @@
     "grunt-contrib-uglify": "~0.1.1",
     
     "grunt-contrib-cssmin": "~0.5.0",
-    "grunt-contrib-htmlmin": "~0.1.2",
+    "grunt-contrib-htmlmin": "~0.1.3",
     "grunt-contrib-imagemin": "~0.1.1",
     "grunt-contrib-compress": "~0.4.1",
     	"grunt-modernizr": "~0.2.2",
@@ -60,6 +60,6 @@
     "matchdep": "~0.1.1"
   },
   "engines": {
-    "node": ">=0.8.0"
+    "node": ">=0.10.0"
   }
 }

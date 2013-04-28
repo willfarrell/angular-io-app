@@ -1,5 +1,4 @@
-# Angular.io - AngularJS + Bootstrap
-
+# Angular.io - AngularJS + Bootstrap [![Build Status](https://travis-ci.org/willfarrell/angular-io-app.png?branch=master)](https://travis-ci.org/willfarrell/angular-io-app)
 ## Usage
 As few brew requirements if not installed:
 ```
@@ -8,7 +7,7 @@ brew install git git-flow closure-compiler openssl scrypt gpgme
 
 If you don't have Yeoman 1.0 Beta install:
 ```
-npm install -g yo grunt-cli bower testacular ngmin
+npm install -g yo grunt-cli bower karma
 ```
 
 First make a new directory, and `cd` into it:
@@ -16,12 +15,12 @@ First make a new directory, and `cd` into it:
 mkdir my-new-project && cd $_
 ```
 
-Then fetch `angular-io`:
+Then fetch `angular-io-app`:
 ```
-curl -OLk https://github.com/willfarrell/angular-io/tarball/master
+curl -OLk https://github.com/willfarrell/angular-io-app/tarball/master
 ```
 
-Then extract `angular-io`:
+Then extract `angular-io-app`:
 ```
 tar -zxvf master && rm master
 cp -rf willfarrell-angular-io-.../* ./ && rm -rf willfarrell-angular-io-...

@@ -20,7 +20,7 @@ module.exports = function(grunt) {
 		yeoman: yeomanConfig,
 		pkg: grunt.file.readJSON('package.json'),
 		jshintrc: grunt.file.readJSON('.jshintrc'),
-		/*watch: {
+		watch: {
 			coffee: {
 				files: ['<%= yeoman.app %>/scripts/*.coffee'],
 				tasks: ['coffee:dist']
@@ -41,9 +41,13 @@ module.exports = function(grunt) {
 					'<%= yeoman.app %>/images/*.{png,jpg,jpeg}'
 				],
 				tasks: ['livereload']
+			},
+			karma: {
+				files: ['<%= yeoman.app %>/scripts/*.js', 'test/**/*.js'],
+				tasks: ['karma:unit:run']
 			}
 		},
-		connect: {
+		/*connect: {
 			options: {
 				port: 9000
 			},
@@ -131,6 +135,21 @@ module.exports = function(grunt) {
 				files: {
 					'<%= yeoman.app %>/styles/bootstrap.css': '<%= yeoman.app %>/styles/less/bootstrap.less'
 				}
+			}
+		},
+		karma: {
+			options: {
+				configFile: 'test/karma.conf.js',
+				browsers: ['PhantomJS']
+			},
+			test: {
+				options: {
+					reporters: ['dots'],
+					singleRun: true
+				}
+			},
+			server: {
+				singleRun: false
 			}
 		},
 		clean: {
@@ -450,16 +469,16 @@ module.exports = function(grunt) {
 					collapseWhitespaceToOne: true,
 					collapseBooleanAttributes: true,
 					removeAttributeQuotes: true,
-					//removeRedundantAttributes: false, // removes type='text' from <input> causes style issues in bootstrap
+					//removeRedundantAttributes: true, // removes type='text' from <input> causes style issues in bootstrap
 					useShortDoctype: true,
-					removeEmptyAttributes: true,
-					removeOptionalTags: false,	// XHTML Requires All Closing Tags (IE 8)
-					removeEmptyElements:false	// Doesn't really work for angular apps
+					removeEmptyAttributes: true//,
+					//removeOptionalTags: true,	// XHTML Requires All Closing Tags (IE 8)
+					//removeEmptyElements: true	// Doesn't really work for angular apps - removes scripts tags
 				},
 				files: [{
 					expand: true,
 					cwd: '<%= yeoman.dist %>',
-					src: ['*.html'],//, 'view/**/*.html'
+					src: ['*.html', 'view/**/*.html'],
 					dest: '<%= yeoman.dist %>'
 				}]
 			}
@@ -653,15 +672,15 @@ module.exports = function(grunt) {
 					// grunt-string-replace
 					replacements: [
 						{
-							pattern: '{{version}}',
+							pattern: /[{{version}}]/g,
 							replacement: '<%= pkg.version %>'
 						},
 						{
-							pattern: '{{date}}',
+							pattern: /[{{date}}]/g,
 							replacement: '<%= new Date().toString() %>'
 						},
 						{
-							pattern: '{{timestamp}}',
+							pattern: /[{{timestamp}}]/g,
 							replacement: '<%= new Date().getTime() %>'
 						}
 					]
@@ -733,11 +752,11 @@ module.exports = function(grunt) {
 				options: {
 					replacements: [
 						{
-							pattern: '<script src="js/async.min.js"></script>',
+							pattern: '<script async src="js/async.min.js"></script>',
 							replacement: '<script><%= grunt.file.read(yeoman.dist+\'/js/async.min.js\') %></script>'
 						},
 						{
-							pattern: '<script src="js/appCache.min.js"></script>',
+							pattern: '<script async src="js/appCache.min.js"></script>',
 							replacement: '<script><%= grunt.file.read(yeoman.dist+\'/js/appCache.min.js\') %></script>'
 						}
 					]
@@ -828,8 +847,8 @@ module.exports = function(grunt) {
 					cache: [
 						//'//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js',
 						//'//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js',
-						'//cdnjs.cloudflare.com/ajax/libs/angular.js/1.0.5/angular.min.js',
-						'//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js'
+						//'//cdnjs.cloudflare.com/ajax/libs/angular.js/1.0.5/angular.min.js',
+						//'//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js'
 					],
 					//network: ['http://*', 'https://*'],
 					//fallback: ['/js/fallback/ /js/fallback/_js'],
@@ -839,7 +858,8 @@ module.exports = function(grunt) {
 
 						'js/async.min.js',
 						'js/appCache.min.js',
-						'js/vendor/*',
+						'js/fallback/**/*.js',
+						'js/vendor/**/*.js',
 						'js/device.min.js'
 					],
 					preferOnline: true,
@@ -849,14 +869,12 @@ module.exports = function(grunt) {
 				src: [
 					// load top level html files
 					//'*.html', // don't cache index.html ever (Best Practice) - can prevet offline reload
-					'view/*.html', //'view/**/*.html',
+					'view/*.html', 'view/**/*.html',
 					//'favicon.ico',
 					'js/**/*.js',
-					'!js/fallback/*.js',	// covered by CDNs
-					'!js/vendor/**/*.js',
 					'css/**/*.css',
 					//'font/*.{eot,ttf,woff,otf}', // fonts are too big
-					'{i18n,json}/**/*.json', '!i18n/en/geo/*.json'
+					'json/config.*.json' // these should be stored in localstorage
 				],
 				dest: '<%= yeoman.dist %>/manifest.appcache'
 			}
@@ -975,8 +993,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('build', [
 
 		// Dev
-		//'replace:jslint',
-		'jshint',
+		'lint',
 		//'test',
 		//'coffee',
 		//'compass:dist',
