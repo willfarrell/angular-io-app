@@ -1,7 +1,12 @@
 /*global device:true */
 
 
-
+/*
+// not needed, no device uses IE8 engine
+if ($window.attachEvent) {	// <= IE8
+	$window.addEventListener = $window.attachEvent; // event = window.attachEvent ? 'onclick' : 'click';
+}
+*/
 
 //** Deveice Events - Cordova **//
 // http://docs.phonegap.com/en/edge/cordova_events_events.md.html#Events
@@ -15,7 +20,7 @@ function onPause() {	// don't use only called on return
 function onResume() {
 	// Handle the resume event
 	console.log('device.onResume');
-	angular.element(0).scope().checkSession();
+	angular.element(0).scope().session.check();
 }
 
 function onOnline() {

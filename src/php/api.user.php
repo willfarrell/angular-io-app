@@ -99,6 +99,17 @@ class User extends Core {
 			return $this->permission->errorMessage();
 		};
 		
+		// strip out serverside only vars
+		$ignore = file_get_contents('json/notify.templates.en.json');
+		$ignore = json_decode($ignore, true);
+		
+		foreach($ignore as $key => $value) {
+			if (isset($request_data[$key])) {
+				unset($request_data[$key]);
+			}
+		}
+		
+		// save
 		$this->db->update("users", array("notify_json" => json_encode($request_data)), array("user_ID"=>USER_ID));
 		//echo $this->db->last_query;
 	}

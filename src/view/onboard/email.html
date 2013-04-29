@@ -1,14 +1,14 @@
 <div class="row-fluid" data-ng-controller="ConfirmCtrl">
-	<div class="span6 offset3 well" data-ng-show="session.email_confirm">
+	<div class="span6 offset3 well" data-ng-show="session.account.email_confirm">
 		<fieldset><legend>
     		Email Confirmed
     		<div class="btn-group pull-right">
-				<button class="btn" data-ng-disabled="!session.email_confirm" data-ng-click="button.skip()">Next &raquo;</button>
+				<button class="btn" data-ng-disabled="!session.account.email_confirm" data-ng-click="button.skip()">Next &raquo;</button>
 			</div>
     	</legend></fieldset>
 	</div>
 	
-	<div class="span6 offset3 well" data-ng-hide="session.email_confirm">
+	<div class="span6 offset3 well" data-ng-hide="session.account.email_confirm">
 		<fieldset><legend>
     		Confirm Email
     		<div class="btn-group pull-right">

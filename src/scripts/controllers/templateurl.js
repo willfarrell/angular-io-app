@@ -1,8 +1,8 @@
 //angular.module('io.controller.page', [])
-//.controller('PageCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
+//.controller('PageCtrl', ['$scope', '$routeParams', function($scope, $http, $routeParams) {
 
-function TemplateUrlCtrl($scope, $http, $routeParams) { // , resolveData
-	console.log('TemplateUrlCtrl ('+$scope.$id+', '+$routeParams.folder+'/'+$routeParams.page+')');//, '+resolveData+')');
+function TemplateUrlCtrl($scope, $routeParams) { // , resolveData
+	console.log('TemplateUrlCtrl (', $scope.$id, $routeParams.folder+'/'+$routeParams.page, ')');//, '+resolveData+')');
 	var _view_ = 'view/';
 
 	$routeParams.folder = $routeParams.folder || 'page';
@@ -13,5 +13,5 @@ function TemplateUrlCtrl($scope, $http, $routeParams) { // , resolveData
 	$scope.page_url = _view_+encodeURIComponent($routeParams.folder)+'/'+encodeURIComponent($routeParams.page)+'.html';
 	//$scope.nav_select($scope.nav_parent_id, $scope.nav_ids, 'legal');
 }
-TemplateUrlCtrl.$inject = ['$scope', '$http', '$routeParams']; //, 'resolveData'
+TemplateUrlCtrl.$inject = ['$scope', '$routeParams']; //, 'resolveData'
 //}]);

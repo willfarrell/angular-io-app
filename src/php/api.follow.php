@@ -193,6 +193,7 @@ class Follow extends Core {
 				." AND (user_name LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%@')"
 				." GROUP BY FU.user_ID, FU.follow_user_ID";
 		$followers = $this->db->query($query, array('follow_user_ID' => $user_ID, 'keyword' => $keyword));
+		//echo $this->db->last_query;
 		if ($followers) {
 			while ($follower = $this->db->fetch_assoc($followers)) {
 				if ($user_ID == USER_ID) $follower['groups'] = explode(',', $follower['groups']);

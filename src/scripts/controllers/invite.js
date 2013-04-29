@@ -1,8 +1,8 @@
 //angular.module('io.controller.page', [])
-//.controller('PageCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
+//.controller('PageCtrl', ['$scope', '$rest', '$routeParams', function($scope, $http, $routeParams) {
 
-function InviteCtrl($scope) {
-	console.log('InviteCtrl ('+$scope.$id+')');
+function InviteCtrl($rootScope, $scope) {
+	console.log('InviteCtrl (', $scope.$id, ')');
 	/*$scope.copyAlert = function(site_url) {
 		console.log('copyAlert("'+site_url+'")');
 		$rootScope.modal = {
@@ -24,14 +24,14 @@ function InviteCtrl($scope) {
 		console.log($rootScope.modal);
 	};*/
 	$scope.mailto = function(subject, message) {
-		console.log(subject+', '+message);
+		console.log(subject, message);
 		$rootScope.href('mailto:?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(message)+'', true);
 	};
 	$scope.twitter = function(text, url) {
 		$rootScope.href('https://twitter.com/intent/tweet?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(url)+'', true);
 	};
-	$scope.require_signin();
+	$rootScope.session.require_signin();
 }
-InviteCtrl.$inject = ['$scope'];
+InviteCtrl.$inject = ['$rootScope', '$scope'];
 
 //}]);

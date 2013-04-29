@@ -1,36 +1,25 @@
 <div data-ng-controller="UserCtrl">
 <div class="row-fluid">
-    <div class="span2">
-    	<img data-ng-src="/img/user/{{user.user_ID}}.png?{{filepicker.timestamp}}" class="img-rounded" alt="Avatar" />
-    </div>
-    <div class="span10">
-    	<!-- Follow Button -->
-    	<div class="pull-right" data-ng-show="session.user_ID != user.user_ID">
-    		<div class="btn-group" data-ng-hide="session.user_ID == user.user_ID">
-    			<a href="#messageModal" class="btn" data-ng-click="message.open(user.user_ID, user.user_name_first+' '+user.user_name_last)" data-toggle="modal"><i class="icon-envelope"></i></a>
-    		</div>
-    		<div class="btn-group" data-ng-init="follow.loadFollow(user.company_ID, user.user_ID)">
-				<div data-ng-include="'follow-global-button'"></div>
-    		</div>
+	<div class="span2">
+		<img data-ng-src="/img/user/{{user.user_ID}}.png?{{filepicker.timestamp}}" class="img-rounded" alt="Avatar" />
+	</div>
+	<div class="span10">
+		<div class="pull-right" data-ng-hide="session.user.user_ID == user.user_ID">
+			<div class="btn-group">
+				<a href="#messageModal" class="btn" data-ng-click="message.open(user.user_ID, user.user_name_first+' '+user.user_name_last)" data-toggle="modal"><i class="icon-envelope"></i></a>
+			</div>
+			<div class="btn-group">
+				<div data-follow-button data-user-id="{{user.user_ID}}" data-company-id="{{user.company_ID}}"></div>
+			</div>
 		</div>
 		
-    	<h2 data-ng-show="user.user_name">{{user.user_name}}</h2>
-    	<h2 data-ng-hide="user.user_name">{{user.user_name_first}} {{user.user_name_last}}</h2>
-    	<div data-ng-bind-html-unsafe="markdown(user.user_details)"></div>
-    	
-    	<div data-ng-controller="FollowCtrl">
-		    <ul class="thumbnails well" data-ng-init="follow.loadFollowing(user.company_ID, user.user_ID)">
-		    	<li class="img-polaroid" data-ng-repeat="f in objectArray(follow.db.user) | filter:{following:true}">
-		    		<a href="#/user/profile/{{f.user_ID}}" rel="tooltip" title="{{f.name}}">
-		    			<img data-ng-src="/img/user/{{f.user_ID}}.png?{{filepicker.timestamp}}" width="50" height="50" />
-		    		</a>
-		    	</li>
-		    </ul>
-	    </div>
-    </div>
-    
+		<h2 data-ng-show="user.user_name">{{user.user_name}}</h2>
+		<h2 data-ng-hide="user.user_name">{{user.user_name_first}} {{user.user_name_last}}</h2>
+		<!--<div data-ng-bind-html-unsafe="user.user_details | markdown"></div>-->
+		
+		<div data-follow="ing" data-user-id="{{user.user_ID}}" data-company-id="{{user.company_ID}}"></div>
+		<div data-follow="ers" data-user-id="{{user.user_ID}}" data-company-id="{{user.company_ID}}"></div>
+	</div>
+	
 </div>
-
-
-
 </div>

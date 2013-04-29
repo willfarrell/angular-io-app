@@ -465,15 +465,14 @@ module.exports = function(grunt) {
 					removeComments: true,
 					removeCommentsFromCDATA: true,
 					removeCDATASectionsFromCDATA: true,
-					collapseWhitespace: true,
-					collapseWhitespaceToOne: true,
+					//collapseWhitespace: true,			// still not working ... hmmm ****
 					collapseBooleanAttributes: true,
 					removeAttributeQuotes: true,
 					//removeRedundantAttributes: true, // removes type='text' from <input> causes style issues in bootstrap
 					useShortDoctype: true,
 					removeEmptyAttributes: true//,
 					//removeOptionalTags: true,	// XHTML Requires All Closing Tags (IE 8)
-					//removeEmptyElements: true	// Doesn't really work for angular apps - removes scripts tags
+					//removeEmptyElements: true	// Doesn't really work for angular apps
 				},
 				files: [{
 					expand: true,
@@ -672,15 +671,15 @@ module.exports = function(grunt) {
 					// grunt-string-replace
 					replacements: [
 						{
-							pattern: /[{{version}}]/g,
+							pattern: /{{version}}/g,
 							replacement: '<%= pkg.version %>'
 						},
 						{
-							pattern: /[{{date}}]/g,
+							pattern: /{{date}}/g,
 							replacement: '<%= new Date().toString() %>'
 						},
 						{
-							pattern: /[{{timestamp}}]/g,
+							pattern: /{{timestamp}}/g,
 							replacement: '<%= new Date().getTime() %>'
 						}
 					]
@@ -858,8 +857,7 @@ module.exports = function(grunt) {
 
 						'js/async.min.js',
 						'js/appCache.min.js',
-						'js/fallback/**/*.js',
-						'js/vendor/**/*.js',
+						
 						'js/device.min.js'
 					],
 					preferOnline: true,
@@ -871,7 +869,7 @@ module.exports = function(grunt) {
 					//'*.html', // don't cache index.html ever (Best Practice) - can prevet offline reload
 					'view/*.html', 'view/**/*.html',
 					//'favicon.ico',
-					'js/**/*.js',
+					'js/**/*.js', '!js/vendor/**/*.js', '!js/fallback/**/*.js',
 					'css/**/*.css',
 					//'font/*.{eot,ttf,woff,otf}', // fonts are too big
 					'json/config.*.json' // these should be stored in localstorage
@@ -1023,7 +1021,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('lint', [
 		//'htmllint',	// not the best for angular
 		'csslint',
-		'replace:jslint',
+		//'replace:jslint',
 		'jshint'
 		// PHP
 		//'phpcs'

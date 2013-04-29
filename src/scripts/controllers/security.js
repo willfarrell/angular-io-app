@@ -1,6 +1,6 @@
 
-function SecurityCtrl($scope, $http) {
-	console.log('SecurityCtrl ('+$scope.$id+')');
+function SecurityCtrl($rootScope, $scope, $rest) {
+	console.log('SecurityCtrl (', $scope.$id, ')');
 	$scope.services = [
 		{
 			'id'		:'google',
@@ -12,10 +12,21 @@ function SecurityCtrl($scope, $http) {
 		}
 	];
 	$scope.security = {};
-	$scope.security.totp = $rootScope.settings.security.totp;
+	//$scope.security.totp = config.security.totp;
+
 	$scope.loadSecurity = function() {
 		console.log('loadSecurity()');
-		$http.get($scope.settings.server+'/user/security')
+
+		$rest.http({
+				method:'get',
+				url: '/user/security'
+			}, function(data){
+				if (data !== '') {
+					$scope.security = data;
+				}
+			});
+
+		/*$http.get('/user/security')
 			.success(function(data) {
 				console.log('loadSecurity.get.success');
 				if ($rootScope.checkHTTPReturn(data)) {
@@ -27,12 +38,22 @@ function SecurityCtrl($scope, $http) {
 			})
 			.error(function(){
 				console.log('loadSecurity.get.error');
-			});
+			});*/
 	};
+
 	$scope.updateSecurity = function() {
 		console.log('updateSecurity()');
 		console.log($scope.security);
-		$http.put($scope.settings.server+'/user/security', $scope.security)
+
+		$rest.http({
+				method:'put',
+				url: '/user/security',
+				data: $scope.security
+			}, function(data){
+				$rootScope.alerts = [{'class':'success', 'label':'Security:', 'message':'Saved'}];
+			});
+
+		/*$http.put('/user/security', $scope.security)
 			.success(function(data) {
 				console.log('updateSecurity.put.success');
 				if ($rootScope.checkHTTPReturn(data)) {
@@ -41,11 +62,20 @@ function SecurityCtrl($scope, $http) {
 				})
 				.error(function(){
 					console.log('updateSecurity.put.error');
-				});
+				});*/
 	};
+
 	$scope.loadTOTPService = function() {
 		console.log('loadTOTPService()');
-		$http.get($rootScope.settings.server+'/totp/'+$scope.security.totp.service)
+
+		$rest.http({
+				method:'get',
+				url: '/totp/'+$scope.security.totp.service
+			}, function(data){
+				$scope.security.totp.secret = JSON.parse(data);
+			});
+
+		/*$http.get('/totp/'+$scope.security.totp.service)
 			.success(function(data) {
 				console.log('loadTOTPService.get.success');
 				if ($rootScope.checkHTTPReturn(data)) {
@@ -56,12 +86,21 @@ function SecurityCtrl($scope, $http) {
 			})
 			.error(function(){
 				console.log('loadTOTPService.get.error');
-			});
+			});*/
 	};
-	$scope.checkTOTP = function($code) {
-		console.log('checkTOTP('+$code+')');
+
+	$scope.checkTOTP = function(code) {
+		console.log('checkTOTP(', code, ')');
 		$scope.test_code_check = true;
-		$http.put($rootScope.settings.server+'/totp/'+$scope.security.totp.secret+'/'+$code)
+
+		$rest.http({
+				method:'put',
+				url: '/totp/'+$scope.security.totp.secret+'/'+code
+			}, function(data){
+				$scope.test_code_return = data;
+			});
+
+		/*$http.put('/totp/'+$scope.security.totp.secret+'/'+code)
 			.success(function(data) {
 				console.log('checkTOTP.put.success');
 				if ($rootScope.checkHTTPReturn(data)) {
@@ -70,11 +109,19 @@ function SecurityCtrl($scope, $http) {
 			})
 			.error(function(){
 				console.log('checkTOTP.put.error');
-			});
+			});*/
 	};
+
 	$scope.testPGP = function(email) {
-		console.log('testPGP()');
-		$http.put($rootScope.settings.server+'/user/pgp/', email)
+		console.log('testPGP(', email, ')');
+
+		$rest.http({
+				method:'put',
+				url: '/user/pgp/',
+				data: email
+			});
+
+		/*$http.put('/user/pgp/', email)
 			.success(function(data) {
 				console.log('testPGP.put.success');
 				if ($rootScope.checkHTTPReturn(data)) {
@@ -82,9 +129,10 @@ function SecurityCtrl($scope, $http) {
 			})
 			.error(function(){
 				console.log('testPGP.put.error');
-			});
+			});*/
 	};
+
 	$scope.loadSecurity();
-	//$scope.require_signin();
+	//$rootScope.session.require_signin();
 }
-SecurityCtrl.$inject = ['$scope', '$http'];
+SecurityCtrl.$inject = ['$rootScope', '$scope', '$rest'];

@@ -1,0 +1,29 @@
+
+<ul class="thumbnails well" data-ng-show="api == 'ers'">
+	<li class="img-polaroid" data-ng-repeat="f in follow[type] | objectArray | filter:{follower:true}">
+		<a href="#/user/profile/{{f.user_ID}}" rel="tooltip" title="{{f.name}}">
+			<img data-ng-src="/img/user/{{f.user_ID}}.png?{{filepicker.timestamp}}" width="50" height="50" />
+		</a>
+	</li>
+</ul>
+<ul class="thumbnails well" data-ng-show="api == 'ing'">
+	<li class="img-polaroid" data-ng-repeat="f in follow[type] | objectArray | filter:{following:true}">
+		<a href="#/user/profile/{{f.user_ID}}" rel="tooltip" title="{{f.name}}">
+			<img data-ng-src="/img/user/{{f.user_ID}}.png?{{filepicker.timestamp}}" width="50" height="50" />
+		</a>
+	</li>
+</ul>
+<ul class="thumbnails well" data-ng-show="api == 'freinds'">
+	<li class="img-polaroid" data-ng-repeat="f in follow[type] | objectArray | filter:{following:true, follower:true}">
+		<a href="#/user/profile/{{f.user_ID}}" rel="tooltip" title="{{f.name}}">
+			<img data-ng-src="/img/user/{{f.user_ID}}.png?{{filepicker.timestamp}}" width="50" height="50" />
+		</a>
+	</li>
+</ul>
+<!--<ul class="thumbnails well" data-ng-show="follow == 'suggest'">
+	<li class="img-polaroid" data-ng-repeat="f in follow[type] | filter:{following:true}">
+		<a href="#/user/profile/{{f.user_ID}}" rel="tooltip" title="{{f.name}}">
+			<img data-ng-src="/img/user/{{f.user_ID}}.png?{{filepicker.timestamp}}" width="50" height="50" />
+		</a>
+	</li>
+</ul>-->

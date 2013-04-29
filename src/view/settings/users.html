@@ -86,7 +86,7 @@
 	    <div class="control-group" data-ng-class="{error: (errors.user_level)}">
 	      	<label class="control-label" for="user_level">Permissions</label>
 	      	<div class="controls">
-	            <select class="input-block-level" data-ng-model="user.user_level" data-ng-options="key as value for (key, value) in json.user_levels" data-ng-disabled="user.user_ID == session.user_ID" required></select>
+	            <select class="input-block-level" data-ng-model="user.user_level" data-ng-options="key as value for (key, value) in json.user_levels" data-ng-disabled="user.user_ID == session.user.user_ID" required></select>
 	        </div>
 	    </div>
 	    

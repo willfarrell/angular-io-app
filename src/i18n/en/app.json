@@ -4,23 +4,13 @@
 	"title": "Angular.io",
 	"meta_description": "Angular.io - AngularJS Web App Framework",
 	
-	"__angular_io_replacements__":"",
-	
-	"__nav__":"",
-	"nav_sign_in":"Sign In",
-	"nav_sign_up":"Sign Up",
-	
-	"nav_user":"",
-	"nav_user_profile":"Profile",
-	"nav_user_invite":"Invite",
-	"nav_user_settings":"Settings",
-	
-	"nav_account":"Account",
-	"nav_account_profile":"Account Profile",
-	"nav_account_edit":"Edit Account",
-	"nav_account_sign_out":"Sign Out",
-	"nav_account_faq":"FAQ",
-	"nav_account_contact":"Contact",
-	"nav_account_support":"Support"
+	"invite_":"",
+	"invite_title":"Spread the Word...",
+	"invite_blurb":"Share this link with friends and coworkers.",
+	"invite_button_email":"Share via Email",
+	"invite_button_twitter":"Share via Twitter",
+	"invite_mail_subject":"",
+	"invite_mail_body":"",
+	"invite_twitter_tweet":""
 	
 }

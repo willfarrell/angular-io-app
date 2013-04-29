@@ -1,16 +1,16 @@
 /*global syncVar:true */
+// version 0.2.0
 
 //(function (angular) {
-angular.module('io.modules')
-.factory('$filepicker', ['$rootScope', '$http', function($rootScope, $http) {
-	console.log('FilepickerFactory ('+$rootScope.$id+')');
+angular.module('app.modules')
+.factory('$filepicker', ['app.config', '$rootScope', '$rest', function(config, $rootScope, $rest) {
+	console.log('FilepickerFactory (', $rootScope.$id, ')');
 	var $scope = {};
-	$scope.version = '0.2.0';
 	$scope.alerts = [];
-	if (!$rootScope.settings.filepicker) {
+	if (!config.filepicker) {
 		$rootScope.loadJSON(null, 'config.filepicker', 'json', function(data){
-			$rootScope.settings.filepicker = data;
-			});
+			config.filepicker = data;
+		});
 	}
 	$scope.services = {
 		'':{
@@ -87,14 +87,22 @@ angular.module('io.modules')
 	$scope.loadFiles = function() {
 		if (!$scope.args.multi) { return; }
 		// get files json
-		$http.get($rootScope.settings.server+'/filepicker/list/'+$scope.args.action+'/'+$scope.args.ID)
+
+		$rest.http({
+				method:'get',
+				url: '/filepicker/list/'+$scope.args.action+'/'+$scope.args.ID
+			}, function(data){
+				$scope.args.files = data;
+			});
+
+		/*$http.get('/filepicker/list/'+$scope.args.action+'/'+$scope.args.ID)
 			.success(function(data) {
 				if ($rootScope.checkHTTPReturn(data)) {
 					$scope.args.files = data;
 				}
 			})
 			.error(function() {
-			});
+			});*/
 	};
 	$scope.upload = function(args, ID) {
 		ID = ID || '';
@@ -109,7 +117,7 @@ angular.module('io.modules')
 		// input accept tag
 		$scope.accept = $scope.args.extensions.length ? $scope.args.extensions.join(',') : $scope.args.types.join(',');
 		$scope.setDropzoneName();
-		$('#filepickerModal').modal('show');
+		//$('#filepickerModal').modal('show');
 	};
 	$scope.view = function(args, ID) {
 		ID = ID || '';
@@ -126,10 +134,18 @@ angular.module('io.modules')
 		$scope.args = syncVar(args, $scope.args_download);
 		$scope.args.ID = ID;
 		$scope.loadFiles();
-		$('#filepickerModal').modal('show');
+		//$('#filepickerModal').modal('show');
 	};
 	$scope.downloadFile = function(file) {
-		$http.post($rootScope.settings.server+'/filepicker/download/'+$scope.args.action+'/'+$scope.args.ID, {'file':file})
+		$rest.http({
+				method:'post',
+				url: '/filepicker/list/'+$scope.args.action+'/'+$scope.args.ID,
+				data: {'file':file}
+			}, function(data){
+				$rootScope.alerts = [{'class':'success', 'label':'File deleted'}];
+			});
+
+		/*$http.post('/filepicker/download/'+$scope.args.action+'/'+$scope.args.ID, {'file':file})
 			.success(function(data) {
 				console.log('downloadFile.post.success');
 				if ($rootScope.checkHTTPReturn(data, {'alerts':true,'errors':true})) {
@@ -141,7 +157,7 @@ angular.module('io.modules')
 			})
 			.error(function() {
 				console.log('downloadFile.post.error');
-			});
+			});*/
 	};
 	$scope.confirmDelete = function(file, callback) {
 		console.log('filepicker.confirmDelete()');
@@ -173,11 +189,16 @@ angular.module('io.modules')
 		callback(file);
 	};
 	$scope.deleteFile = function(file) {
-		var http_config = {
-			'method':'delete', // get,head,post,put,delete,jsonp
-			'url':$rootScope.settings.server+'/filepicker/'+$scope.args.action+'/'+$scope.args.ID+'/'+encodeURIComponent(file)
-		};
-		$http(http_config)
+
+		$rest.http({
+				method:'delete',
+				url: '/filepicker/'+$scope.args.action+'/'+$scope.args.ID+'/'+encodeURIComponent(file)
+			}, function(data){
+				$rootScope.alerts = [{'class':'success', 'label':'File deleted'}];
+				$scope.view($scope.args, $scope.args.ID); // reload list
+			});
+
+		/*$http(http_config)
 			.success(function(data) {
 				if ($rootScope.checkHTTPReturn(data, {'alerts':true,'errors':true})) {
 					$rootScope.alerts = [{'class':'success', 'label':'File deleted'}];
@@ -188,7 +209,7 @@ angular.module('io.modules')
 				}
 			})
 			.error(function() {
-			});
+			});*/
 	};
 
 	$scope.close = function() {
@@ -303,9 +324,9 @@ angular.module('io.modules')
 	return $scope;
 }])
 //angular.module('io.controller.filepicker', ['io.factory.filepicker'])
-.controller('FilepickerCtrl', ['$scope', '$http', '$filepicker', function($scope, $http, filepicker) {
+.controller('FilepickerCtrl', ['$rootScope', '$scope', '$http', '$rest', '$filepicker', function($rootScope, $scope, $http, $rest, filepicker) {
 //function FilepickerCtrl($scope, $http, filepicker) {
-	console.log('FilepickerCtrl (' + $scope.$id + ')');
+	console.log('FilepickerCtrl (', $scope.$id, ')');
 	//$scope.errors = {};
 	$scope.filepicker = filepicker;
 
@@ -387,8 +408,22 @@ angular.module('io.modules')
 				type: 'image/' + url.substr(url.lastIndexOf('.'))
 			}]);
 		} else {
-			//$scope.settings.server+'/filepicker/url/'+url.replace(/\./g, '%2E');
-			$http.post($scope.settings.server + '/filepicker/url/' + $scope.filepicker.args.action + '/' + $scope.filepicker.args.ID, {
+			//'/filepicker/url/'+url.replace(/\./g, '%2E');
+			$rest.http({
+					method:'post',
+					url: '/filepicker/url/' + $scope.filepicker.args.action + '/' + $scope.filepicker.args.ID+'/'+url,
+					data: {url: url}
+				}, function(data){
+					data = {
+						target: {
+							responseText: data
+						}
+					};
+					$scope.uploadComplete(JSON.stringify(data));
+				}, function(data){
+					$scope.uploadFailed();
+				});
+			/*$http.post('/filepicker/url/' + $scope.filepicker.args.action + '/' + $scope.filepicker.args.ID, {
 				url: url
 			}).success(function(data) {
 				console.log('url.load.post.success');
@@ -403,7 +438,7 @@ angular.module('io.modules')
 			}).error(function() {
 				console.log('url.load.post.error');
 				$scope.uploadFailed();
-			});
+			});*/
 		}
 	};
 
@@ -451,26 +486,27 @@ angular.module('io.modules')
 	$scope.resizecrop.loadURL = function(src, type) {
 		src = src || $scope.files[0].name; //.replace(/\./g, '%2E'),
 		type = type || $scope.files[0].type;
-		var proxy = $scope.settings.server + '/filepicker/url/?url=' + src;
-		$http.get(proxy + '&callback=JSON_CALLBACK').success(function(data) {
-			//console.log(data);
-			console.log('loadURL.get.success');
-			if ($rootScope.checkHTTPReturn(data)) {
-				$scope.resizecrop.initParams(proxy, type);
-				//$scope.$apply(function(){
-				$scope.resizecrop.generate();
-				if ($scope.filepicker.args.multi === false) {
-					$scope.filepicker.args.service = 'RESIZECROP';
+		var proxy = '/filepicker/url/?url=' + src;
+		$http.get(proxy + '&callback=JSON_CALLBACK')
+			.success(function(data) {
+				//console.log(data);
+				console.log('loadURL.get.success');
+				if ($rootScope.checkHTTPReturn(data)) {
+					$scope.resizecrop.initParams(proxy, type);
+					//$scope.$apply(function(){
+					$scope.resizecrop.generate();
+					if ($scope.filepicker.args.multi === false) {
+						$scope.filepicker.args.service = 'RESIZECROP';
+					}
+					//});
 				}
-				//});
-			}
-		}).error(function() {
-			$scope.filepicker.alerts = [{
-				'class': 'error',
-				'label': 'Failed',
-				'message': 'There was an error attempting to obtain the image.'
-			}];
-		});
+			}).error(function() {
+				$scope.filepicker.alerts = [{
+					'class': 'error',
+					'label': 'Failed',
+					'message': 'There was an error attempting to obtain the image.'
+				}];
+			});
 	};
 
 	$scope.resizecrop.generate = function() {
@@ -720,8 +756,7 @@ angular.module('io.modules')
 	$scope.files = [];
 	// Turn the FileList object into an Array - *** move to computer service
 	$scope.setFiles = function(files) {
-		console.log('setFiles(files)');
-		console.log('files:', files);
+		console.log('setFiles(', files, ')');
 		if (files.length > 0) {
 			//$scope.$apply(function(){
 			$scope.files = [];
@@ -858,8 +893,23 @@ angular.module('io.modules')
 	$scope.ftp = {};
 	$scope.ftp.connect = function(url, username, password) {
 		url = encodeURIComponent(url);
-		//$scope.settings.server+'/filepicker/url/'+url.replace(/\./g, '%2E');
-		$http.post($scope.settings.server + '/filepicker/url/' + $scope.filepicker.args.action + '/' + $scope.filepicker.args.ID, {
+		//'/filepicker/url/'+url.replace(/\./g, '%2E');
+		$rest.http({
+				method:'post',
+				url: '/filepicker/url/' + $scope.filepicker.args.action + '/' + $scope.filepicker.args.ID,
+				data: {url: url}
+			}, function(data){
+				data = {
+					target: {
+						responseText: data
+					}
+				};
+				$scope.uploadComplete(JSON.stringify(data));
+			}, function(data){
+				$scope.uploadFailed();
+			});
+
+		/*$http.post('/filepicker/url/' + $scope.filepicker.args.action + '/' + $scope.filepicker.args.ID, {
 			url: url
 		}).success(function(data) {
 			console.log('url.load.post.success');
@@ -875,7 +925,7 @@ angular.module('io.modules')
 		}).error(function() {
 			console.log('url.load.post.error');
 			$scope.uploadFailed();
-		});
+		});*/
 	};
 }]);
 

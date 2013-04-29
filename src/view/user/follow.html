@@ -1,9 +1,9 @@
 <!-- Profile Page Button Example -->
 <!--
-<div class="pull-right" data-ng-show="session.user_ID != user.user_ID" data-ng-controller="FollowCtrl" data-ng-init="loadFollow(user.user_ID, 'user')">
+<div class="pull-right" data-ng-show="session.user.user_ID != user.user_ID" data-ng-controller="FollowCtrl" data-ng-init="loadFollow(user.user_ID, 'user')">
 	<div data-ng-include="'follow-button-user'"></div>
 </div>
-<div data-ng-controller="FollowCtrl" data-ng-init="loadFollow(root.profile_ID, 'company')" data-ng-show="session.company_ID != profile_ID">
+<div data-ng-controller="FollowCtrl" data-ng-init="loadFollow(root.profile_ID, 'company')" data-ng-show="session.company.company_ID != profile_ID">
 	<div data-ng-include="'follow-button-company'"></div>
 </div>
 -->

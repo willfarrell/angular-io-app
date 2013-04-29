@@ -1,9 +1,10 @@
+// version 0.1.0
 
 angular.module('io.modules')
-.factory('$message', ['$rootScope', '$http', '$routeParams', function($rootScope, $http, $routeParams) {
-	console.log('MessageFactory ('+$rootScope.$id+')');
+.factory('$message', ['$rootScope', '$rest', '$routeParams', function($rootScope, $rest, $routeParams) {
+	console.log('MessageFactory (', $rootScope.$id, ')');
 	var $scope = {};
-	$scope.version = '0.1.0';
+
 	$scope.unread = 0;
 	$scope.init = function() {
 		$scope.alerts = [];
@@ -26,7 +27,15 @@ angular.module('io.modules')
 	};
 	$scope.updateUnreadCount = function() {
 		console.log('updateUnreadCount()');
-		$http.get($rootScope.settings.server+'/message/unread')
+
+		$rest.http({
+				method:'get',
+				url: '/message/unread'
+			}, function(data){
+				$scope.unread = data;
+			});
+
+		/*$http.get('/message/unread')
 			.success(function(data) {
 				console.log('updateUnreadCount.get.success');
 				//$scope.dbing[id].name = data.name;
@@ -37,11 +46,21 @@ angular.module('io.modules')
 			.error(function() {
 				console.log('updateUnreadCount.get.error');
 				//$rootScope.http_error();
-			});
+			});*/
 	};
 	$scope.send = function() {
 		console.log('send()');
-		$http.post($rootScope.settings.server+'/message', $scope.compose)
+
+		$rest.http({
+				method:'post',
+				url: '/message',
+				data: $scope.compose
+			}, function(data){
+				$scope.compose.message = '';
+				$scope.alerts = [{'class':'success', 'label':'Message sent:', 'message':'Click to go to conversation.'}];
+			});
+
+		/*$http.post('/message', $scope.compose)
 			.success(function(data) {
 				console.log('send.get.success');
 				console.log(data);
@@ -54,16 +73,16 @@ angular.module('io.modules')
 			.error(function() {
 				console.log('send.get.error');
 				//$rootScope.http_error();
-			});
+			});*/
 	};
-	$rootScope.$watch('session.user_ID', function(value) {
+	$rootScope.$on('session', function(value) {
 		if (value) { $scope.updateUnreadCount(); }
 	});
 	return $scope;
 }])
 
-.controller('MessageCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
-	console.log('MessageCtrl ('+$scope.$id+')');
+.controller('MessageCtrl', ['$rootScope', '$scope', '$rest', '$routeParams', '$session', function($rootScope, $scope, $rest, $routeParams, $session) {
+	console.log('MessageCtrl (', $scope.$id, ')');
 
 	$scope.to_name = '';
 	$scope.compose = {};
@@ -72,7 +91,15 @@ angular.module('io.modules')
 	// inbox
 	$scope.loadMessages = function() {
 		console.log('loadMessages()');
-		$http.get($rootScope.settings.server+'/message/list')
+
+		$rest.http({
+				method:'get',
+				url: '/message/list'
+			}, function(data){
+				$scope.list = data;
+			});
+
+		/*$http.get('/message/list')
 			.success(function(data) {
 				console.log('loadMessages.get.success');
 				if ($rootScope.checkHTTPReturn(data)) {
@@ -83,17 +110,30 @@ angular.module('io.modules')
 			.error(function() {
 				console.log('loadMessages.get.error');
 				//$rootScope.http_error();
-			});
+			});*/
 	};
 	// conversation
 	$scope.loadThread = function(user_ID, to_name) {
-		console.log('loadThread('+user_ID+')');
+		console.log('loadThread(', user_ID, to_name, ')');
 		user_ID = user_ID || 0;
 		$rootScope.message.compose = {
 			user_ID:user_ID
 		};
 		$rootScope.message.to_name = to_name;
-		$http.get($rootScope.settings.server+'/message/'+user_ID)
+
+		$rest.http({
+				method:'get',
+				url: '/message/'+user_ID
+			}, function(data){
+				$rootScope.message.to_name = data.user.user_name_first+' '+data.user.user_name_last;
+				$scope.thread = data.thread;
+				setTimeout(function() {
+					$scope.scrollBottom();
+				}, 100);
+				// update unread count
+				$scope.updateUnreadCount();
+			});
+		/*$http.get('/message/'+user_ID)
 			.success(function(data) {
 				console.log('loadThread.get.success');
 				//$scope.dbing[id].name = data.name;
@@ -110,11 +150,11 @@ angular.module('io.modules')
 			.error(function() {
 				console.log('loadThread.get.error');
 				//$rootScope.http_error();
-			});
+			});*/
 	};
 	$scope.send = function() {
 		$scope.thread.push({
-			user_from_ID:$rootScope.session.user_ID,
+			user_from_ID:$session.user.user_ID,
 			message:$rootScope.message.compose.message,
 			timestamp:(+new Date())/1000
 		});
@@ -127,7 +167,7 @@ angular.module('io.modules')
 		var t = document.getElementById('thread');
 		t.scrollTop = t.scrollHeight;
 	};
-	$scope.require_signin(function() {
+	$rootScope.session.require_signin(function() {
 		$scope.loadMessages();
 		if ($routeParams.user_ID) {
 			$scope.loadThread($routeParams.user_ID);

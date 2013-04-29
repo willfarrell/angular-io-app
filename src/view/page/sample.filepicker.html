@@ -4,8 +4,8 @@
 	<label class="control-label" for="user_img">Photo</label>
 
 	<div class="controls">
-		<img data-ng-src="img/user/{{session.user_ID}}.png?{{filepicker.timestamp}}" class="img-rounded" width="50" height="50"/>
-		<button class="btn" data-ng-click="filepicker.upload(json.filepicker.user_single_image, session.user_ID);">Change photo</button>
+		<img data-ng-src="img/user/{{session.user.user_ID}}.png?{{filepicker.timestamp}}" class="img-rounded" width="50" height="50"/>
+		<button class="btn" data-ng-click="filepicker.upload(json.filepicker.user_single_image, session.user.user_ID);">Change photo</button>
 		<!--<span class="help-block">This photo is your identity and appears with your content.</span>-->
 	</div>
 </div>
@@ -15,7 +15,7 @@
 	<label class="control-label" for="user_img">Files</label>
 
 	<div class="controls">
-		<button class="btn" data-ng-click="filepicker.upload({action:'user_multi_files',multi:true}, session.user_ID);">Upload</button><button class="btn" data-ng-click="filepicker.download({action:'user_multi_files',multi:true}, session.user_ID);">Download</button>
+		<button class="btn" data-ng-click="filepicker.upload({action:'user_multi_files',multi:true}, session.user.user_ID);">Upload</button><button class="btn" data-ng-click="filepicker.download({action:'user_multi_files',multi:true}, session.user.user_ID);">Download</button>
 		<!--<span class="help-block">This photo is your identity and appears with your content.</span>-->
 		<div data-ng-include src="'filepicker-edit-list'"></div>
 	</div>

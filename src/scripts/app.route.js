@@ -32,19 +32,32 @@ angular.module('app')
 		// fallback
 		.when('/',						{templateUrl:_view_+_app_+'index.html'})
 		.when('/:page',					{
-			template:'<div ng-include src="templateUrl"></div>',
+			template:'<div data-ng-include src="templateUrl"></div>',
 			controller: 'TemplateUrlCtrl'
 			//resolve: { resolveData: function(){ return 'test'; } }
 		}) // ex 404
 		.when('/:folder/:page',			{
-			template:'<div ng-include src="templateUrl"></div>',
+			template:'<div data-ng-include src="templateUrl"></div>',
 			controller: 'TemplateUrlCtrl'
 			//resolve: { resolveData: function(){ return 'test'; } }
 		}) // ex settings, support
 		.when('/:folder/:page/:action',	{
-			template:'<div ng-include src="templateUrl"></div>',
+			template:'<div data-ng-include src="templateUrl"></div>',
 			controller: 'TemplateUrlCtrl'
-			//resolve: { resolveData: function(){ return 'test'; } }
+			/*
+			resolve: {
+				resolveData: function($q, $timesout){
+					var defer = $q.defer();
+
+					$timeout(function() {
+						defer.resolve();
+						//defer.reject('reject message');
+					}, 0);
+
+					return defer.promise;
+				}
+			}
+			*/
 		}) // ex onboard
 		.otherwise({redirectTo:'/'});
 	// configure html5 to get links working

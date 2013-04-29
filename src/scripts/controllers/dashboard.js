@@ -1,27 +1,26 @@
 //angular.module('app.controller.dashboard', [])
-//.controller('DashboardCtrl', ['$scope', '$http', function($scope, $http) {
-function DashboardCtrl($scope, $http, $routeParams) {
-	console.log('DashboardCtrl (' + $scope.$id + ')');
+//.controller('DashboardCtrl', ['$scope', '$rest', function($scope, $http) {
+function DashboardCtrl(config, $rootScope, $scope, $rest, $routeParams) {
+	console.log('DashboardCtrl (', $scope.$id, config,')');
 	//-- App Functions Here --//
 
 	//-- Directory Search --//
-	$scope.search = {query:'',type:($rootScope.settings.account.company) ? 'company' : 'user'};
+	$scope.search = {query:'',type:(config.account.company) ? 'company' : 'user'};
 
 	$scope.loadSearch = function() {
-		$http.get($scope.settings.server+'/'+$scope.search.type+'/search/'+$scope.search.query)
-			.success(function(data){
-				if ($rootScope.checkHTTPReturn(data)) {
-					$scope.results = data;
-				}
-			})
-			.error(function(){
-
+		$rest.http({
+				method:'get',
+				url: '/'+$scope.search.type+'/search/'+$scope.search.query
+			}, function(data){
+				$scope.results = data;
 			});
 	};
+
+
 	//-- End App Functions Here --//
-	$scope.require_signin(function() {
+	$rootScope.session.require_signin(function() {
 		//$scope.loadSearch();
 	});
 }
-DashboardCtrl.$inject = ['$scope', '$http', '$routeParams'];
+DashboardCtrl.$inject = ['app.config', '$rootScope', '$scope', '$rest', '$routeParams'];
 //}]);

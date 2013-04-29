@@ -1,12 +1,20 @@
 //angular.module('io.controller.password', [])
-//.controller('PasswordCtrl', ['$scope', '$http', function($scope, $http) {
+//.controller('PasswordCtrl', ['$scope', '$rest', function($scope, $http) {
 
-function PasswordCtrl($scope, $http) {
-	console.log('PasswordCtrl ('+$scope.$id+')');
-	$scope.errors = {};
+function PasswordCtrl($rootScope, $scope, $rest) {
+	console.log('PasswordCtrl (', $scope.$id, ')');
 
 	$scope.updatePassword = function() {
-		$http.put($scope.settings.server+'/account/password_change/', $scope.password)
+		$rest.http({
+				method:'put',
+				url: '/account/password_change/',
+				data: $scope.password
+			}, function(data){
+				$scope.password = {};
+				$rootScope.alerts = [{'class':'success', 'label':'Change Password:', 'message':'Saved'}];
+			});
+
+		/*$http.put('/account/password_change/', $scope.password)
 			.success(function(data) {
 				console.log('updatePassword.put.success');
 				if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
@@ -19,12 +27,20 @@ function PasswordCtrl($scope, $http) {
 			.error(function() {
 				console.log('updatePassword.put.error');
 				$rootScope.http_error();
-			});
+			});*/
 	};
 
 	$scope.resetPassword = function(email) {
-		console.log('reset_password()');
-		$http.get($scope.settings.server+'/account/reset_send/'+encodeURIComponent(email))
+		console.log('reset_password(', email, ')');
+
+		$rest.http({
+				method:'get',
+				url: '/account/reset_send/'+encodeURIComponent(email)
+			}, function(data){
+				$rootScope.alerts = [{'class':'info', 'message':'We have sent an email to '+email+' with further instructions.'}];
+			});
+
+		/*$http.get('/account/reset_send/'+encodeURIComponent(email))
 			.success(function(data) {
 				console.log('resetPassword.get.success');
 				if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
@@ -36,9 +52,9 @@ function PasswordCtrl($scope, $http) {
 			.error(function() {
 				console.log('resetPassword.get.error');
 				$rootScope.http_error();
-			});
+			});*/
 	};
 
 }
-PasswordCtrl.$inject = ['$scope', '$http'];
+PasswordCtrl.$inject = ['$rootScope', '$scope', '$rest'];
 //}]);

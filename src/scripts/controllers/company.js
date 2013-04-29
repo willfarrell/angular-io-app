@@ -3,8 +3,8 @@
 //angular.module('io.controller.company', [])
 //.controller('CompanyCtrl', ['$scope', '$http', function($scope, $http) {
 
-function CompanyCtrl($scope, $http, $routeParams) {
-	console.log('CompanyCtrl ('+$scope.$id+')');
+function CompanyCtrl($rootScope, $scope, $http, $routeParams, $session) {
+	console.log('CompanyCtrl (', $scope.$id, ')');
 
 	$scope.errors = {};
 	$scope.toggle = {};
@@ -18,9 +18,9 @@ function CompanyCtrl($scope, $http, $routeParams) {
 
 	//-- Company --//
 	$scope.loadCompany = function(profile_ID) {
-		console.log('loadCompany('+profile_ID+')');
+		console.log('loadCompany(', profile_ID, ')');
 		profile_ID = profile_ID || 0;
-		$http.get($scope.settings.server+'/company/'+profile_ID)
+		$http.get('/company/'+profile_ID)
 			.success(function(data) {
 				if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
 					$scope.company = data;
@@ -42,9 +42,9 @@ function CompanyCtrl($scope, $http, $routeParams) {
 	};
 
 	$scope.loadCompanyName = function(profile_name) {
-		console.log('loadCompanyName('+profile_name+')');
+		console.log('loadCompanyName(', profile_name, ')');
 		profile_name = profile_name || '';
-		$http.get($scope.settings.server+'/company/name/'+profile_name)
+		$http.get('/company/name/'+profile_name)
 			.success(function(data) {
 				console.log('loadCompanyName.get.success');
 				if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
@@ -68,12 +68,12 @@ function CompanyCtrl($scope, $http, $routeParams) {
 	$scope.updateCompany = function() {
 		$rootScope.alerts = [];
 		if ($scope.company.company_ID) {	// update
-			$http.put($scope.settings.server+'/company/', $scope.company)
+			$http.put('/company/', $scope.company)
 				.success(function(data) {
 					console.log(data);
 					if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
-						$rootScope.session.company = $scope.company;
-						$rootScope.saveSession();
+						$session.company = $scope.company;
+						$session.save();
 						//$rootScope.updateSession();
 						$rootScope.alerts = [{'class':'success', 'label':'Company Profile:', 'message':'Saved'}];
 					} else {
@@ -84,14 +84,13 @@ function CompanyCtrl($scope, $http, $routeParams) {
 					$rootScope.http_error();
 				});
 		} else {	// create
-			$http.post($scope.settings.server+'/company/', $scope.company)
+			$http.post('/company/', $scope.company)
 				.success(function(data) {
 					console.log(data);
 					if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
 						$scope.company.company_ID = data;
-						$rootScope.session.company_ID = data;
-						$rootScope.session.company = $scope.company;
-						$rootScope.saveSession();
+						$session.company = $scope.company;
+						$session.save();
 						//$rootScope.updateSession();
 						$rootScope.alerts = [{'class':'success', 'label':'Company Profile:', 'message':'Saved'}];
 					} else {
@@ -107,7 +106,7 @@ function CompanyCtrl($scope, $http, $routeParams) {
 	//-- Locations --//
 	$scope.loadLocations = function() {
 		console.log('loadLocations');
-		$http.get($scope.settings.server+'/location/')
+		$http.get('/location/')
 			.success(function(data) {
 				console.log(data);
 				$scope.errors.user	= (data.errors) ? data.errors : {};
@@ -150,7 +149,7 @@ function CompanyCtrl($scope, $http, $routeParams) {
 		console.log('updateLocation');
 		$rootScope.alerts = [];
 		if ($scope.location.location_ID) {	// update
-			$http.put($scope.settings.server+'/location/', $scope.location)
+			$http.put('/location/', $scope.location)
 				.success(function(data) {
 					console.log('updateLocation.put.success');
 					console.log(data);
@@ -166,7 +165,7 @@ function CompanyCtrl($scope, $http, $routeParams) {
 					$rootScope.http_error();
 				});
 		} else {	// create
-			$http.post($scope.settings.server+'/location/', $scope.location)
+			$http.post('/location/', $scope.location)
 				.success(function(data) {
 					console.log('updateLocation.post.success');
 					console.log(data);
@@ -185,10 +184,10 @@ function CompanyCtrl($scope, $http, $routeParams) {
 		}
 	};
 	$scope.deleteLocation = function(id) {
-		console.log('deleteLocation('+id+')');
+		console.log('deleteLocation(', id, ')');
 		var http_config = {
 			'method':'delete',
-			'url':$scope.settings.server+'/location/'+id
+			'url':'/location/'+id
 		};
 		$http(http_config)
 			.success(function(data) {
@@ -208,7 +207,7 @@ function CompanyCtrl($scope, $http, $routeParams) {
 	//-- Users --//
 	$scope.loadUsers = function() {
 
-		$http.get($scope.settings.server+'/company/user/').success(function(data) {
+		$http.get('/company/user/').success(function(data) {
 			console.log(data);
 			$scope.errors.user	= (data.errors) ? data.errors : {};
 			$rootScope.alerts= (data.alerts) ? data.alerts : [];
@@ -234,7 +233,7 @@ function CompanyCtrl($scope, $http, $routeParams) {
 		console.log('updateLocation');
 		$rootScope.alerts = [];
 		if ($scope.user.user_ID) {	// update
-			$http.put($scope.settings.server+'/company/user/', $scope.user)
+			$http.put('/company/user/', $scope.user)
 				.success(function(data) {
 					console.log('updateUser.put.success');
 					console.log(data);
@@ -250,7 +249,7 @@ function CompanyCtrl($scope, $http, $routeParams) {
 					$rootScope.http_error();
 				});
 		} else {	// create
-			$http.post($scope.settings.server+'/company/user/', $scope.user)
+			$http.post('/company/user/', $scope.user)
 				.success(function(data) {
 					console.log('updateUser.post.success');
 					console.log(data);
@@ -269,9 +268,9 @@ function CompanyCtrl($scope, $http, $routeParams) {
 		}
 	};
 
-	$scope.require_signin(function(){
+	$rootScope.session.require_signin(function(){
 		console.log('CompanyCtrl require_signin');
-		console.log($rootScope.session.company);
+		console.log($session.company);
 		if ($routeParams.profile_name) {
 			$scope.loadCompanyName($routeParams.profile_name);
 		} else if ($routeParams.profile_ID) {
@@ -279,10 +278,7 @@ function CompanyCtrl($scope, $http, $routeParams) {
 			//$scope.company.company_ID = $routeParams.profile_ID;
 			$scope.loadCompany($routeParams.profile_ID);
 		} else {
-			$scope.company = $rootScope.session.company ? $rootScope.session.company : {
-				company_ID:$rootScope.session.company_ID,
-				country_code:$rootScope.country_code.toUpperCase()
-			};
+			$scope.company = $session.company;
 			$scope.loadCompany();
 		}
 		// load on settings page
@@ -292,5 +288,5 @@ function CompanyCtrl($scope, $http, $routeParams) {
 		}
 	});
 }
-CompanyCtrl.$inject = ['$scope', '$http', '$routeParams'];
+CompanyCtrl.$inject = ['$rootScope', '$scope', '$http', '$routeParams', '$session'];
 //}]);

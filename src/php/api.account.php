@@ -33,21 +33,22 @@ class Account extends Core {
 		// same as in session - refactor
 		$query = "SELECT * FROM users WHERE user_ID = '{{user_ID}}' LIMIT 0,1";
 		$result = $this->db->query($query, array('user_ID' => $this->session->cookie['user_ID']));
-		if (!$result) return $return; // user / pass combo not found
+		if (!$result) { return $return; } // user / pass combo not found
 		$r = $this->db->fetch_assoc($result);
 
 		$return = array();
-		$return["user_ID"]     = $r['user_ID'];
-		$return["user_level"]  = $r['user_level'];
-		$return["password_timestamp"]  = $r['password_timestamp']; // for password reset reminder
-		$return["password_age"] = floor(($_SERVER["REQUEST_TIME"] - $r['password_timestamp'])/86400);
-		$return["timestamp_create"]  = $r['timestamp_create']; // for onboard trigger
+		$return["account"] = array(
+			"password_timestamp" => $r['password_timestamp'], // for password reset reminder
+			"password_age" => floor(($_SERVER["REQUEST_TIME"] - $r['password_timestamp'])/86400),
+			"timestamp_create" => $r['timestamp_create'], // for onboard trigger
+			
+			"referral" => base_convert($r['user_ID'], 10, 32),
+			"email_confirm" => ($r['timestamp_confirm']) ? true : false,
+		);
 		
-		$return["referral"]   = base_convert($r['user_ID'],10,32);
-		$return["email_confirm"] = ($r['timestamp_confirm']) ? true : false;
-
 		$return["user"] = array(
 			"user_ID" => $r['user_ID'],
+			"user_level"  => $r['user_level'],
 			"user_email" => $r['user_email'],
 			"user_name" => $r['user_name'],
 			"user_name_first" => $r['user_name_first'],

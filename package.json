@@ -50,7 +50,7 @@
     	"grunt-sitemap": "~0.1.0",
     
     "grunt-rev": "~0.1.0",
-    "grunt-usemin": "~0.1.7",
+    "grunt-usemin": "~0.1.11",
     "grunt-string-replace": "~0.2.1",
     "grunt-imagemagick": "~0.1.5",
     

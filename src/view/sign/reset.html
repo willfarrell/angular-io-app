@@ -1,13 +1,13 @@
 <div class="pull-center" data-ng-controller="PasswordCtrl">
 	<form class="well" name="resetForm">
-	    <fieldset><legend>{{i18n.sign_reset_legend}}</legend></fieldset>
+	    <fieldset><legend>Reset Password</legend></fieldset>
 	    <div class="control-group" data-ng-class="{error: (errors.email)}">
-		    <input type="email" name="email" class="input-block-level" placeholder="{{i18n.sign_placeholder_email}}" data-ng-model="signin.email" required>
+		    <input type="email" name="email" class="input-block-level" placeholder="Email" data-ng-model="signin.email" required>
 		    <span class="error" data-ng-show="resetForm.email.$error.email">Not valid email</span>
 	    </div>
 	    <!-- CAPTCHA HERE? -->
-	    <button class="btn btn-primary" data-ng-click="resetPassword(signin.email)" data-ng-disabled="resetForm.$invalid">{{i18n.sign_reset_button}}</button>
+	    <button class="btn btn-primary" data-ng-click="resetPassword(signin.email)" data-ng-disabled="resetForm.$invalid">Send</button>
 	    
 	</form>
-	<a href="#/sign/in">{{i18n.sign_in_nav_button}}</a>
+	<a href="#/sign/in">Sign In</a>
 </div>

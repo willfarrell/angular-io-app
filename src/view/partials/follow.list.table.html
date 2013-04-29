@@ -1,0 +1,14 @@
+<table class="table table-striped table-bordered">
+	<tbody>
+		<tr data-ng-repeat="f in follow[type] | objectArray | filter:{following:true}">
+			<td><img data-ng-src="/img/user/{{f.user_ID}}.png" width="50" height="50" /></td>
+			<td>
+				<a>{{f.name}}</a><br>
+				<div data-follow-groups></div>
+			</td>
+			<td>
+				<div data-follow-button data-user-id="{{userId}}" data-company-id="{{companyId}}"></div>
+			</td>
+		</tr>
+	</tbody>
+</table>

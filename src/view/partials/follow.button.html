@@ -1,0 +1,22 @@
+<div class="btn-group" data-ng-hide="follow[type][userId].following">
+	<button class="btn btn-primary" data-ng-click="follow.add(companyId, userId, 0)">Follow</button>
+</div>
+<div class="btn-group" data-ng-show="follow[type][userId].following">
+	<button class="btn" data-toggle="dropdown">Following</button>
+	<button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+	<ul class="dropdown-menu">
+		<li data-ng-repeat="group in follow.groups" data-ng-show="group.group_ID">
+			<!--<a data-ng-click="follow.addFollow(company, user, group.group_ID);" data-ng-hide="(follow.groups.indexOf(group.group_ID) != -1)">
+				<i class="icon-blank"></i> {{group.group_name}}
+			</a>
+			<a data-ng-click="follow.deleteFollow(company, user, group.group_ID);" data-ng-show="(follow.groups.indexOf(group.group_ID) != -1)">
+				<i data-ng-class="{true:'icon-ok', false:'icon-blank'}[(follow.groups.indexOf(group.group_ID) != -1)]"></i> {{group.group_name}}
+			</a>-->
+			<a data-ng-click="follow.remove(companyId, userId, group.group_ID);">
+				<i data-ng-class="{true:'icon-ok', false:'icon-blank'}[(follow.groups.indexOf(group.group_ID) != -1)]"></i> {{group.group_name}}
+			</a>
+		</li>
+		<li class="divider" data-ng-show="objectLength(follow.groups)"></li>
+		<li><a data-ng-click="follow.remove(companyId, userId, 0)"><i class="icon-blank"></i> Unfollow</a></li>
+	</ul>
+</div>

@@ -45,24 +45,18 @@ var min_js = '.min.js',
 		Modernizr:	srcDir+'modernizr'+min_js
 	},
 // CDN
-	cdnSrc = {
+	/*cdnSrc = {
 		//jQuery:cdnHttp+'jquery/1.9.1/jquery'+min_js,
 		//Bootstrap:cdnHttp+'twitter-bootstrap/2.3.1/js/bootstrap'+min_js,
 		Angular:	cdnHttp+'angular.js/1.0.5/angular'+min_js
-		//Modernizr:	cdnHttp+'modernizr/2.6.2/modernizr'+min_js//,
-		// HTML5 Polyfills - https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-browser-Polyfills
-		//JSON3:		cdnHttp+'json3/3.2.4/json3'+min_js//, // add for IE 6-7 (place in html)
-		// localStorage IE 6-7
-		// HTML5 Sectioning Elements
-		//html5shiv:	cdnHttp+'html5shiv/3.6.2/html5shiv.js',	// IE 6-9 - https://github.com/aFarkas/html5shiv
-		//'html5shiv-print':	cdnHttp+'html5shiv/3.6.2/html5shiv-printshiv.js' // IE 6-8
+		//Modernizr:	cdnHttp+'modernizr/2.6.2/modernizr'+min_js,
 	},
 	cdnFallbackSrc = {
 		//jQuery:cdnDir+'jquery.min.js',
 		//Bootstrap:cdnDir+'bootstrap.min.js',
 		Angular:	cdnDir+'angular'+min_js
 		//Modernizr:	cdnDir+'modernizr'+min_js
-	},
+	},*/
 	fallbackCount = 1,
 	fallbackArray = [];
 
@@ -144,19 +138,19 @@ function modernizrFallback(id) {//, parent) {
 	console.groupEnd();
 }
 
-function cdnFallback(depsNotFound) {
+/*function cdnFallback(depsNotFound) {
 	var i = depsNotFound.length;
 	while (i--) {
 		//console.log('cdnFallback '+depsNotFound[i]);
 		$script(cdnFallbackSrc[depsNotFound[i]], depsNotFound[i]);
 	}
-}
+}*/
 
 // js Frameworks & Libraries
 $script(localSrc.Modernizr, 'Modernizr', function() {
 	console.log('Modernizr ready');
 	bootstrap();
-}, cdnFallback);
+});
 
 /*
 $script(cdnSrc.jQuery, 'jQuery', function() {
@@ -168,9 +162,9 @@ $script(cdnSrc.jQuery, 'jQuery', function() {
 }, cdnFallback);
 */
 
-$script(cdnSrc.Angular, 'Angular', function() {
+$script(localSrc.Angular, 'Angular', function() {
 	console.log('Angular ready');
-	var locale = JSON.parse(localStorage.getItem('locale'));
+	var locale = localStorage.getItem('locale');
 	if (locale) {
 		$script(cdnDir+'i18n/angular-locale_'+locale+'.js', function() {
 			console.log('Angular.ngLocale ready');
@@ -178,12 +172,16 @@ $script(cdnSrc.Angular, 'Angular', function() {
 			bootstrap();
 		});
 	}
+
 	// App Files
 	$script(localSrc.App, 'App', function(){
 		console.log('App ready');
 		bootstrap();
 	});
-}, cdnFallback);
+
+});
+
+
 
 // Polyfills - detect with Modernizr, lazy load Angular modules
 // Tests: http://modernizr.github.com/Modernizr/test/
@@ -193,28 +191,6 @@ $script.ready(['Modernizr', 'Angular', 'App'], function() {
 	console.log(Modernizr);
 	modernizrFallback(Modernizr);
 	countFallback();
-	// Ensure all fallback have had a chance to load before bootstrapping
-	/*fallbackCount = fallbackArray.length;
-	var i = fallbackCount;
-	while(i--) {
-		$script.ready(fallbackArray[i], function() {
-			console.log('Fallback Success');
-			console.log();
-			fallbackCount--;
-			if (!fallbackCount) {
-				bootstrap();
-			}
-		}, function(depsNotFound) { // causes issues in IE8
-			console.log('Fallback Failed');
-			console.log(depsNotFound);
-			fallbackCount--;
-			if (!fallbackCount) {
-				bootstrap();
-			}
-		});
-	}*/
-
-
 });
 
 

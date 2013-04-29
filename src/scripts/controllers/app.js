@@ -1,20 +1,38 @@
 //angular.module('app.controller.root', [])
 //.controller('AppCtrl',
-//['$rootScope', '$scope', '$http', '$follow', '$filepicker',
+//['$rootScope', '$scope', '$rest', '$follow', '$filepicker',
 //function(rootScope, $scope, $http, follow, filepicker) {
-function AppCtrl(rootScope, $scope, $window, $http, $cookies, $location, filepicker, accessibility, markdown, message, follow) {
-	console.log('AppCtrl ('+$scope.$id+')');
+function AppCtrl($rootScope, $scope, $window, $cookies, $location, $session, $rest, $filepicker, $accessibility, $message, $follow) {
+	console.log('AppCtrl (', $scope.$id, ')');
 
-	$rootScope = rootScope; // important
+	// Route Events
+	$rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
+		console.error('Failed to change routes.' + rejection); // rejection from defer.reject();
+	});
+	$rootScope.$on('$routeChangeStart', function(event, current, previous, rejection) {
 
-	// scope fall back for children
-	//$scope.$http = $http;
+	});
+	$rootScope.$on('$routeChangeSuccess', function(event, current, previous, rejection) {
+
+	});
+	// Render Events
+	$rootScope.$on('$viewContentLoaded', function(event) {
+		// ga - add $window and $location to $inject if adding in
+		// use $rootScope.$on('$routeChangeSuccess', ...) or angular-googleanalytics
+		//$window._gaq.push(['_trackPageView', $location.path()]);
+	});
+	$rootScope.$on('$includeContentLoaded', function(event) {
+
+	});
+
 
 	// Factory init - $scope.factory = factory;
-	$rootScope.filepicker = filepicker;
-	$rootScope.accessibility = accessibility;
-	$rootScope.message = message;
-	$rootScope.follow = follow;
+	$rootScope.session = $session;
+	$rootScope.filepicker = $filepicker;
+	$rootScope.accessibility = $accessibility;
+	$rootScope.message = $message;
+	$rootScope.follow = $follow;
+	/*
 	markdown.setOptions({
 		gfm: true,
 		tables: true,
@@ -24,21 +42,10 @@ function AppCtrl(rootScope, $scope, $window, $http, $cookies, $location, filepic
 		smartLists: true
 	});
 	$rootScope.markdown = markdown;
+	*/
 
-	// Events
-	$scope.$on('$viewContentLoaded', function(event) {
-		// ga - add $window and $location to $inject if adding in
-		// use $rootScope.$on('$routeChangeSuccess', ...) or angular-googleanalytics
-		//$window._gaq.push(['_trackPageView', $location.path()]);
-	});
-	$scope.$on('$includeContentLoaded', function(event) {
-	});
 
-	// referral param
-	// requires $location & $cookies
-	if ($location.search().ref) { $cookies.referral = $location.search().ref; }
-
-	$scope.slideNavBool = -1;
+	$scope.slideNavBool = -1;		// slider nav state (-1,+1)
 	$scope.slideNav = function(value) {
 		if (value === 1 || value === -1) { $scope.slideNavBool = value; }
 		else { $scope.slideNavBool *= -1; }
@@ -46,30 +53,15 @@ function AppCtrl(rootScope, $scope, $window, $http, $cookies, $location, filepic
 	//!-- App Root Scoope Functions --//
 	/*
 	$scope.sampleRequest = function(a, b, c, d) {
-		var http_config = {
-				'method':'post', // get,head,post,put,delete,jsonp
-				'url':$rootScope.settings.server+'/a/'+a+'/'+b+'/'+encodeURIComponent(c),
-				'data':d
-			},
-			http_callback = function(data) {
-			};
-		$http(http_config)
-			.success(function(data) {
-				console.log('sampleRequest.post.success');
-				if ($rootScope.checkHTTPReturn(data)) {
-					http_callback(data);
-				} else { // only if using local alerts and errors
-					$scope.alerts = (data.alerts) ? data.alerts : [];
-					$scope.errors = (data.errors) ? data.errors : {};
-				}
-			})
-			.error(function() {
-				console.log('sampleRequest.post.error');
-				$rootScope.http_error();
-				$rootScope.offline.que_request(http_config, http_callback);
+		$rest.http({
+				method:'get', // get,head,post,put,delete,jsonp
+				url: '/'+$scope.search.type+'/search/'+$scope.search.query,
+				data:{}
+			}, function(data){
+				$scope.results = data;
 			});
 	};
 	*/
 }
-AppCtrl.$inject = ['$rootScope', '$scope', '$window', '$http', '$cookies', '$location', '$filepicker', '$accessibility', '$markdown', '$message', '$follow'];
+AppCtrl.$inject = ['$rootScope', '$scope', '$window', '$cookies', '$location', '$session', '$rest', '$filepicker', '$accessibility', '$message', '$follow'];
 //}]);

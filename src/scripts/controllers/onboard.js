@@ -1,10 +1,8 @@
-/*global dom$:true */
-
 //angular.module('io.controller.onboard', [])
-//.controller('OnboardCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
+//.controller('OnboardCtrl', ['$scope', '$rest', '$routeParams', function($scope, $http, $routeParams) {
 
-function OnboardCtrl($scope, $cookies, $http, $routeParams) {
-	console.log('OnboardCtrl ('+$scope.$id+') page:'+$routeParams.page);
+function OnboardCtrl($rootScope, $scope, $cookies, $rest, $routeParams, $session) {
+	console.log('OnboardCtrl (', $scope.$id, ') ', $routeParams.page);
 	$scope.errors = {};
 
 	if (!$routeParams.page || $routeParams.page === 'start') { $scope.href('/onboard/'+$rootScope.settings.onboard.start); }
@@ -12,8 +10,8 @@ function OnboardCtrl($scope, $cookies, $http, $routeParams) {
 
 
 	$scope.BuildProgressTracker = function(page, action) {
-		console.log('BuildProgressTracker('+page+', '+action+')');
-		var elements = dom$('#progress_tracker').getElementsByTagName('a');
+		console.log('BuildProgressTracker(', page, action, ')');
+		var elements = document.querySelector('#progress_tracker').getElementsByTagName('a');
 
 		var after = false;	// apple after class
 		for (var i = 0, l = elements.length; i < l; i++ ) {
@@ -37,12 +35,22 @@ function OnboardCtrl($scope, $cookies, $http, $routeParams) {
 	};
 
 	$scope.done = function(redirect) {
-		$rootScope.session.timestamp_create = 1;
-		$http.get($rootScope.settings.server+'/account/onboard_done')
+		$session.account.timestamp_create = 1;
+
+		$rest.http({
+				method:'get',
+				url: '/account/onboard_done'
+			}, function(data){
+				$session.update(function(){
+					if (redirect) { $rootScope.href(redirect); }
+					else { $rootScope.redirect(); }
+				});
+			});
+
+		/*$http.get('/account/onboard_done')
 			.success(function(data) {
-				console.log('BuildProgressTracker.get.success');
-				console.log(data);
-				$rootScope.updateSession(function(){
+				console.log('BuildProgressTracker.get.success(', data, ')');
+				$session.update(function(){
 					if (redirect) { $rootScope.href(redirect); }
 					else { $rootScope.redirect(); }
 				});
@@ -50,7 +58,7 @@ function OnboardCtrl($scope, $cookies, $http, $routeParams) {
 			.error(function() {
 				console.log('BuildProgressTracker.get.error');
 				$rootScope.http_error();
-			});
+			});*/
 	};
 
 
@@ -59,9 +67,9 @@ function OnboardCtrl($scope, $cookies, $http, $routeParams) {
 	$scope.button.skip = function() { $scope.href($scope.uri()+'/skip'); };
 	//-- End Buttons --//
 
-	$scope.require_signin(function() {
+	$rootScope.session.require_signin(function() {
 		$scope.BuildProgressTracker($routeParams.page, $routeParams.action);
 	});
 }
-OnboardCtrl.$inject = ['$scope', '$cookies', '$http', '$routeParams'];
+OnboardCtrl.$inject = ['$rootScope', '$scope', '$cookies', '$rest', '$routeParams', '$session'];
 //}]);

@@ -43,17 +43,6 @@ class Notify {
 		// these defaults should overwrite any user set ones. (todo)**
 		$defaults = file_get_contents('json/config.notify.server.json');
 		$this->defaults = array_merge($this->defaults, json_decode($defaults, true));
-		
-		$this->email = new Email;
-		$this->sms = new SMS;
-		/*
-		$this->mobilepush = new PushNotification;
-		$this->social = new SocialPush; // send to twitter, fb, etc
-		$this->fax = new Fax;
-		
-		$this->snail = new SnailMail; // print and mail
-		$this->phonecall = new PhoneCall; // recorded message
-		*/
     }
 
 	function __destruct() {
@@ -113,27 +102,41 @@ class Notify {
 		
 		// send via types
 		$sent = true;
+		
+		if (in_array("web", $types) && $notify['web']) {
+			$sent = $sent && $this->web($to['user_ID'], $message);
+		}
+		
+		if (in_array("social", $types) && $notify['social']) {
+			$sent = $sent && $this->social($to['user_email'], $message);
+		}
+		
 		if (in_array("email", $types) && $notify['email']) {
 			if (array_key_exists('email', $security_json) && $security_json['email']['key']) {
 				//$this->email->encrypt($security_json['email']['key'], $to['user_email'], $subject, $message);
-				$sent = $sent && $this->email->encrypt($security_json['email']['key'], $to['user_email'], $subject, $message);
+				$sent = $sent && $this->pgp($security_json['email']['key'], $to['user_email'], $subject, $message);
 			} else {
-				$sent = $sent && $this->email->send($to['user_email'], $subject, $message);
+				$sent = $sent && $this->email($to['user_email'], $subject, $message);
 			}
 		}
-		if (in_array("sms", $types) && $notify['sms'])
-			$sent = $sent && $this->sms->send($to['user_phone'], $message);
-		/*
-		if (in_array("mobilepush", $types) && isset($notify['mobilepush']) && $notify['mobilepush'])
-			$this->mobilepush->send($user_phone, $message);
-		*/
+		
+		if (in_array("sms", $types) && $notify['sms']) {
+			$sent = $sent && $this->sms($to['user_phone'], $message);
+		}
+		if (in_array("push", $types) && $notify['push']) {
+			$sent = $sent && $this->push($to['user_phone'], $message);
+		}
+		if (in_array("fax", $types) && $notify['fax']) {
+			$sent = $sent && $this->fax($to['user_phone'], $message);
+		}
+		
 		return $sent;
 	}
 	
 	// for non-regestered users
 	public function sendEmail($user_email, $message_ID, $args = array()) {
 		list($message, $subject) = $this->compile($message_ID, $args);
-		$this->email->send($user_email, $subject, $message);
+		$this->email($user_email, $subject, $message);
 	}
 	
 	public function compile($message_ID, $args = array()) {
@@ -162,26 +165,13 @@ class Notify {
 	    }
 	    return $str;
 	}
-}
-
-/*
-- localhost
-- mailgun
-- AWS SES
-*/
-class Email {
-	function __construct() {
-		//parent::__construct();
-    }
-
-	function __destruct() {
-		//parent::__destruct();
-  	}
-  	
-  	function send($email, $subject, $message) {
+	
+	
+	// Services
+	private function email($email, $subject, $message) {
   		$sent = false;
   		
-  		if (EMAIL_MAILGUN_APIKEY) {
+  		if (!$sent && EMAIL_MAILGUN_APIKEY) {
 	  		exec("curl -s --user api:".EMAIL_MAILGUN_APIKEY." \
 				    https://api.mailgun.net/v2/".EMAIL_MAILGUN_DOMAIN."/messages \
 				    -F from=".escapeshellarg(NOTIFY_FROM_NAME." <".NOTIFY_FROM_EMAIL.">")." \
@@ -196,7 +186,9 @@ class Email {
 			if ($output['message'] == 'Queued. Thank you.') {
 				$sent = true;
 			}
-  		} else if (EMAIL_AWS_APIKEY) {
+  		}
+  		
+  		if (!$sent && EMAIL_AWS_APIKEY) {
 	  		
 	  	} 
 	  	
@@ -209,7 +201,7 @@ class Email {
 	  	return $sent;
   	}
   	
-  	function encrypt($pubkey, $email, $subject, $message) {
+  	private function pgp($pubkey, $email, $subject, $message) {
 	  	putenv("GNUPGHOME=/var/www/.gnupg");
 	  	
 	  	$pgp_message = (null);
@@ -219,9 +211,9 @@ class Email {
 		gnupg_addencryptkey($res,$rtv['fingerprint']);
 		$pgp_message = gnupg_encrypt($res, $message);
 		if ($pgp_message) {
-			$this->send($email, $subject, $pgp_message);
+			return $this->email($email, $subject, $pgp_message);
 		} else {
-			$this->send($email, $subject, $message);
+			return $this->email($email, $subject, $message);
 		}
   	}
   	
@@ -285,26 +277,17 @@ class Email {
 	  	}
 	  	
   	}*/
-}
-
-/*
-- AWS SNS-SMS
-- http://www.twilio.com/sms
-- https://www.nexmo.com/
-*/
-class SMS {
-	function __construct() {
-		//parent::__construct();
-    }
-
-	function __destruct() {
-		//parent::__destruct();
-  	}
   	
-  	function send($to, $message) {
+  	/*
+	- AWS SNS-SMS
+	- http://www.twilio.com/sms
+	- https://www.nexmo.com/
+	- http://www.smushbox.com/
+	*/
+  	private function sms($to, $message) {
   		$sent = false;
   		
-	  	if (SMS_NEXMO_APIKEY) {
+	  	if (!$sent && SMS_NEXMO_APIKEY) {
 	  		// https://www.nexmo.com/documentation/index.html#txt
 		  	exec("curl -s  \
 				    http://rest.nexmo.com/sms/json \
@@ -315,7 +298,15 @@ class SMS {
 				    -F text=".escapeshellarg($message)."",
 				    $output, $return
 			);
-		} else if (SMS_TWILIO_APIKEY) {
+			
+			// confirm sent
+			/*$output = json_decode(implode("", $output), true);
+			if ($output['message'] == 'Queued. Thank you.') {
+				$sent = true;
+			}*/
+		}
+		
+		if (!$sent && SMS_TWILIO_APIKEY) {
 			// http://www.twilio.com/docs/api/rest/sending-sms
 			exec("curl -s  \
 				    https://api.twilio.com/2010-04-01/Accounts/".SMS_TWILIO_APIKEY."/SMS/Messages \
@@ -324,57 +315,55 @@ class SMS {
 				    -F text=".escapeshellarg($message)."",
 				    $output, $return
 			);
-		} else if (SMS_AWS_APIKEY) {
+			
+			// confirm sent
+			/*$output = json_decode(implode("", $output), true);
+			if ($output['message'] == 'Queued. Thank you.') {
+				$sent = true;
+			}*/
+		}
+		
+		if (!$sent && SMS_AWS_APIKEY) {
 			// http://aws.amazon.com/sns/
-	  	} else {
-		  	$sent = true;
 	  	}
 	  	
+	  	return true;
 	  	return $sent;
   	}
-}
-
-/*
-- http://urbanairship.com/
-*/
-class PushNotification {
-	function __construct() {
-		//parent::__construct();
-    }
-
-	function __destruct() {
-		//parent::__destruct();
-  	}
   	
-  	function send($to, $message) {
+  	/*
+	- http://urbanairship.com/
+	*/
+  	private function push($to, $message) {
 	  	// https://docs.urbanairship.com/display/DOCS/Getting+Started
 	  	return true;
   	}
-}
-
-/*
-- http://www.efaxdeveloper.com/developer/faq
-*/
-class Fax {
-	function __construct() {
-		//parent::__construct();
-    }
-
-	function __destruct() {
-		//parent::__destruct();
+  	
+  	/*
+	facebook, twiter, linkedin
+	*/
+  	private function social($to, $message) {
+	  	return true;
   	}
   	
-  	function send($to, $message) {
-	  	// http://www.efaxdeveloper.com/developer/faq
+  	private function web($user_ID, $message) {
+  		/*$this->db->insert('notify', array(
+  			"user_ID" => 	$user_ID,
+  			"message" => 	$message,
+  			"timestamp" => 	$_SERVER['REQUEST_TIME'],
+  			"read" => 		"0"
+  		));*/
+  		
+  		
+	  	return true;
+  	}
+  	
+  	/*
+	- http://www.efaxdeveloper.com/developer/faq
+	*/
+  	private function fax($to, $message) {
 	  	return true;
   	}
 }
-
-class Social {
-	/*
-	facebook, twiter, linkedin
-	*/
-}
-
 
 ?>
