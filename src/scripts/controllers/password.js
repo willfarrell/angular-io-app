@@ -1,7 +1,7 @@
 //angular.module('io.controller.password', [])
 //.controller('PasswordCtrl', ['$scope', '$rest', function($scope, $http) {
 
-function PasswordCtrl($rootScope, $scope, $rest) {
+function PasswordCtrl($rootScope, $scope, $session, $rest) {
 	console.log('PasswordCtrl (', $scope.$id, ')');
 
 	$scope.updatePassword = function() {
@@ -11,6 +11,8 @@ function PasswordCtrl($rootScope, $scope, $rest) {
 				data: $scope.password
 			}, function(data){
 				$scope.password = {};
+				$session.account.password_timestamp = +new Data();
+				$session.account.password_age = 0;
 				$rootScope.alerts = [{'class':'success', 'label':'Change Password:', 'message':'Saved'}];
 			});
 
@@ -56,5 +58,5 @@ function PasswordCtrl($rootScope, $scope, $rest) {
 	};
 
 }
-PasswordCtrl.$inject = ['$rootScope', '$scope', '$rest'];
+PasswordCtrl.$inject = ['$rootScope', '$scope', '$session', '$rest'];
 //}]);

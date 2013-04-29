@@ -496,6 +496,34 @@ angular.module('io.modules')
 						console.log($scope);
 					});
 			};
+			
+			$scope.search = function(api, query) {
+				console.log('loadType(', api, query, ')');
+				api = api || 'search';
+				//var api = 'friends';
+				/*if (type === 'ers') {
+					api = 'ers';
+				} else if (type === 'ing') {
+					api = 'ing';
+				}*/
+				query = query || '';
+
+				$rest.http({
+						method:'get',
+						url: '/follow/'+api+'/'+query
+					}, function(data) {
+						console.log(data);
+						$scope.follow.user = {};
+						$scope.follow.company = {};
+						for (var i in data) {
+							if (data.hasOwnProperty(i)) {
+								if (data[i]['company_ID']) { $scope.follow.company[data[i]['company_ID']] = data[i]; }
+								if (data[i]['user_ID']) { $scope.follow.user[data[i]['user_ID']] = data[i]; }
+							}
+						}
+						console.log($scope);
+					});
+			};
 		},
 		link: function (scope, element, attrs, controller) {
 
@@ -503,8 +531,21 @@ angular.module('io.modules')
 			scope.$watch('user', function(value) {
 				console.log(value);
 				scope.api = attrs.follow;
-				scope.load(attrs.follow, scope.companyId, scope.userId, scope.query);
-
+				if (attrs.follow == 'search' || attrs.follow == 'suggestions') {
+					scope.search(attrs.follow, scope.query);
+				} else {
+					scope.load(attrs.follow, scope.companyId, scope.userId, scope.query);
+				}
+			});
+			
+			scope.$watch('query', function(value) {
+				console.log(value);
+				scope.api = attrs.follow;
+				if (attrs.follow == 'search' || attrs.follow == 'suggestions') {
+					scope.search(attrs.follow, scope.query);
+				} else {
+					scope.load(attrs.follow, scope.companyId, scope.userId, scope.query);
+				}
 			});
 		}
 	};

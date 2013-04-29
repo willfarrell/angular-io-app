@@ -751,11 +751,11 @@ module.exports = function(grunt) {
 				options: {
 					replacements: [
 						{
-							pattern: '<script async src="js/async.min.js"></script>',
+							pattern: '<script src="js/async.min.js"></script>',
 							replacement: '<script><%= grunt.file.read(yeoman.dist+\'/js/async.min.js\') %></script>'
 						},
 						{
-							pattern: '<script async src="js/appCache.min.js"></script>',
+							pattern: '<script src="js/appCache.min.js"></script>',
 							replacement: '<script><%= grunt.file.read(yeoman.dist+\'/js/appCache.min.js\') %></script>'
 						}
 					]
