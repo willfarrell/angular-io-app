@@ -127,11 +127,11 @@ angular.module('io.modules')
 				method:'get',
 				url: '/follow/'+company_ID+'/'+user_ID
 			}, function(data) {
-				console.log(data);
+				//console.log(data);
 				$scope.company[data.company_ID] = data;
 				$scope.user[data.user_ID] = data;
 				$scope.f = data;
-				console.log($scope.f);
+				//console.log($scope.f);
 			});
 
 		/*$http.get('/follow/'+company_ID+'/'+user_ID)
@@ -166,14 +166,14 @@ angular.module('io.modules')
 				method:'get',
 				url: '/follow/'+api+'/'+company_ID+'/'+user_ID+'/'+query
 			}, function(data) {
-				console.log(data);
+				//console.log(data);
 				for (var i in data) {
 					if (data.hasOwnProperty(i)) {
 						if (data[i]['company_ID']) { $scope.company[data[i]['company_ID']] = data[i]; }
 						if (data[i]['user_ID']) { $scope.user[data[i]['user_ID']] = data[i]; }
 					}
 				}
-				console.log($scope);
+				//console.log($scope);
 			});
 
 		/*$http.get('/follow/'+api+'/'+company_ID+'/'+user_ID+'/'+query)
@@ -486,14 +486,14 @@ angular.module('io.modules')
 						method:'get',
 						url: '/follow/'+api+'/'+company_ID+'/'+user_ID+'/'+query
 					}, function(data) {
-						console.log(data);
+						//console.log(data);
 						for (var i in data) {
 							if (data.hasOwnProperty(i)) {
 								if (data[i]['company_ID']) { $scope.follow.company[data[i]['company_ID']] = data[i]; }
 								if (data[i]['user_ID']) { $scope.follow.user[data[i]['user_ID']] = data[i]; }
 							}
 						}
-						console.log($scope);
+						//console.log($scope);
 					});
 			};
 			
@@ -512,7 +512,7 @@ angular.module('io.modules')
 						method:'get',
 						url: '/follow/'+api+'/'+query
 					}, function(data) {
-						console.log(data);
+						//console.log(data);
 						$scope.follow.user = {};
 						$scope.follow.company = {};
 						for (var i in data) {
@@ -521,7 +521,7 @@ angular.module('io.modules')
 								if (data[i]['user_ID']) { $scope.follow.user[data[i]['user_ID']] = data[i]; }
 							}
 						}
-						console.log($scope);
+						//console.log($scope);
 					});
 			};
 		},
@@ -531,7 +531,7 @@ angular.module('io.modules')
 			scope.$watch('user', function(value) {
 				console.log(value);
 				scope.api = attrs.follow;
-				if (attrs.follow == 'search' || attrs.follow == 'suggestions') {
+				if (attrs.follow === 'search' || attrs.follow === 'suggestions') {
 					scope.search(attrs.follow, scope.query);
 				} else {
 					scope.load(attrs.follow, scope.companyId, scope.userId, scope.query);
@@ -541,7 +541,7 @@ angular.module('io.modules')
 			scope.$watch('query', function(value) {
 				console.log(value);
 				scope.api = attrs.follow;
-				if (attrs.follow == 'search' || attrs.follow == 'suggestions') {
+				if (attrs.follow === 'search' || attrs.follow === 'suggestions') {
 					scope.search(attrs.follow, scope.query);
 				} else {
 					scope.load(attrs.follow, scope.companyId, scope.userId, scope.query);

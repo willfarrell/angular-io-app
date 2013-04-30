@@ -81,7 +81,7 @@ angular.module('io.modules')
 	return $scope;
 }])
 
-.controller('MessageCtrl', ['$rootScope', '$scope', '$rest', '$routeParams', '$session', function($rootScope, $scope, $rest, $routeParams, $session) {
+.controller('MessageCtrl', ['$rootScope', '$scope', '$rest', '$routeParams', '$session', '$message', function($rootScope, $scope, $rest, $routeParams, $session, $message) {
 	console.log('MessageCtrl (', $scope.$id, ')');
 
 	$scope.to_name = '';
@@ -131,7 +131,7 @@ angular.module('io.modules')
 					$scope.scrollBottom();
 				}, 100);
 				// update unread count
-				$scope.updateUnreadCount();
+				$message.updateUnreadCount();
 			});
 		/*$http.get('/message/'+user_ID)
 			.success(function(data) {

@@ -87,14 +87,6 @@ angular.module('app.config', []).value('app.config', {
 		'required'		:true,		// always true
 		'start'			:'user'		// ** make smart so not needed
 	},
-	'follow': {
-		'type': 'user',
-		'tpl': {
-			'button':'view/partials/follow.button.html',
-			'groups':'view/partials/follow.groups.html',
-			'list':'view/partials/follow.list.thumb.html'
-		}
-	},
 	'datepicker':{}
 });
 angular.module('app.controllers', ['app.config']);

@@ -175,7 +175,7 @@ class Permission
     
     // is user connected
     function connected() {
-    	if (defined(USER_ID) && !USER_ID) {
+    	if (!defined('USER_ID') || !USER_ID) {
 	    	$this->signout = true;
 	    	return false;
     	}
@@ -184,7 +184,7 @@ class Permission
     
     // user_level[1-3,5,9]
     function user_level($args, $params) {
-    	return defined(USER_LEVEL) && $this->in_param(USER_LEVEL, $params);
+    	return defined('USER_LEVEL') && $this->in_param(USER_LEVEL, $params);
     }
 }
 

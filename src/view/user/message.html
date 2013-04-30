@@ -29,7 +29,7 @@
 		    				<b data-ng-hide="m.user_from_ID == session.user.user_ID">{{message.to_name}}</b>
 		    				<b data-ng-show="m.user_from_ID == session.user.user_ID">{{session.user.user_name_first}} {{session.user.user_name_last}}</b>
 		    			</a><br>
-		    			<p>{{m.message}}</p>
+		    			<p data-ng-bind-html-unsafe="m.message | nl2br"></p>
 	    			</li>
 	    		</ul>
 	    		
