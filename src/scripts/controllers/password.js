@@ -11,7 +11,7 @@ function PasswordCtrl($rootScope, $scope, $session, $rest) {
 				data: $scope.password
 			}, function(data){
 				$scope.password = {};
-				$session.account.password_timestamp = +new Data();
+				$session.account.password_timestamp = +new Date();
 				$session.account.password_age = 0;
 				$rootScope.alerts = [{'class':'success', 'label':'Change Password:', 'message':'Saved'}];
 			});
