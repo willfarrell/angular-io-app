@@ -9,107 +9,107 @@
 -->
 
 <div class="row-fluid" data-ng-controller="FollowCtrl">
-    <div class="span6">
-    <h2>Following</h2>
+	<div class="span6">
+	<h2>Following</h2>
 	<!--<form class="form-search">
-    	<div class="input-append">
-            <input type="text" data-ng-model="search" class="search-query" placeholder="Search"><button class="btn" type="button" data-ng-click="searchCompanies()">Go!</button>
-        </div>
-    </form>-->
-    <table class="table table-striped table-bordered" data-ng-init="follow.loadFollowing()">
-	  	<tbody>
-	      	<tr data-ng-repeat="f in objectArray(follow.db.user) | filter:{following:true}"><!--  | filter:{following:true} -->
-		        <td><img data-ng-src="/img/user/{{f.user_ID}}.png" width="50" height="50" /></td>
-		        <td>
-		        	<a>{{f.name}}</a><br>
-		        	<div data-ng-include="'follow-groups'"></div>
-		        </td>
-		        <td>
+		<div class="input-append">
+			<input type="text" data-ng-model="search" class="search-query" placeholder="Search"><button class="btn" type="button" data-ng-click="searchCompanies()">Go!</button>
+		</div>
+	</form>-->
+	<table class="table table-striped table-bordered" data-ng-init="follow.loadFollowing()">
+	<tbody>
+		<tr data-ng-repeat="f in objectArray(follow.db.user) | filter:{following:true}"><!--  | filter:{following:true} -->
+				<td><img data-ng-src="/img/user/{{f.user_ID}}.png" width="50" height="50" /></td>
+				<td>
+					<a>{{f.name}}</a><br>
+					<div data-ng-include="'follow-groups'"></div>
+				</td>
+				<td>
 					<div data-ng-include="'follow-button-user'"></div>
-		        </td>
-	        </tr>
-	        <tr data-ng-repeat="f in objectArray(follow.db.company) | filter:{following:true}"><!--  | filter:{following:true} -->
-		        <td><img data-ng-src="/img/user/{{f.user_ID}}.png" width="50" height="50" /></td>
-		        <td>
-		        	<a>{{f.name}}</a><br>
-		        	<div data-ng-include="'follow-groups'"></div>
-		        </td>
-		        <td>
+				</td>
+			</tr>
+			<tr data-ng-repeat="f in objectArray(follow.db.company) | filter:{following:true}"><!--  | filter:{following:true} -->
+				<td><img data-ng-src="/img/user/{{f.user_ID}}.png" width="50" height="50" /></td>
+				<td>
+					<a>{{f.name}}</a><br>
+					<div data-ng-include="'follow-groups'"></div>
+				</td>
+				<td>
 					<div data-ng-include="'follow-button'"></div>
-		        </td>
-	        </tr>
-	        <!--<tr data-ng-hide="objectLength(followers)">
-	        	<td>You're currently not following anyone.</td>
-	        </tr>-->
-	  	</tbody>
+				</td>
+			</tr>
+			<!--<tr data-ng-hide="objectLength(followers)">
+				<td>You're currently not following anyone.</td>
+			</tr>-->
+	</tbody>
 	</table>
 
-    <h2>
-    	Suggestions
-    	<div class="pull-right"><button class="btn btn-primary" data-ng-click="loadSuggestions()"><i class="icon-refresh"></i></button></div>
-    </h2>
+	<h2>
+		Suggestions
+		<div class="pull-right"><button class="btn btn-primary" data-ng-click="loadSuggestions()"><i class="icon-refresh"></i></button></div>
+	</h2>
 
 	<!--<form class="form-search">
-    	<div class="input-append">
-            <input type="text" data-ng-model="search" class="search-query" placeholder="Search"><button class="btn" type="button" data-ng-click="searchCompanies()">Go!</button>
-        </div>
-    </form>-->
-    <table class="table table-striped table-bordered" data-ng-init="loadSuggestions()">
-      	<tbody>
-	      	<tr data-ng-repeat="f in follow_suggest"><!--  data-ng-click="href('/company/view/'+company.company_ID)" -->
-		        <td><img data-ng-src="/img/user/{{f.user_ID}}.png" width="50" height="50" /></td>
-		        <td>
-		        	<a>{{f.name}}</a><br>
-		        	<div data-ng-include="'follow-groups'"></div>
-		        </td>
-		        <td>
+		<div class="input-append">
+			<input type="text" data-ng-model="search" class="search-query" placeholder="Search"><button class="btn" type="button" data-ng-click="searchCompanies()">Go!</button>
+		</div>
+	</form>-->
+	<table class="table table-striped table-bordered" data-ng-init="loadSuggestions()">
+	<tbody>
+		<tr data-ng-repeat="f in follow_suggest"><!--  data-ng-click="href('/company/view/'+company.company_ID)" -->
+				<td><img data-ng-src="/img/user/{{f.user_ID}}.png" width="50" height="50" /></td>
+				<td>
+					<a>{{f.name}}</a><br>
+					<div data-ng-include="'follow-groups'"></div>
+				</td>
+				<td>
 					<div data-ng-include="'follow-button'"></div>
-		        </td>
-	        </tr>
-	        <tr data-ng-hide="objectLength(follow_suggest)">
-	        	<td>Currently there are no suggestion, try back later.</td>
-	        </tr>
-      	</tbody>
-    </table>
+				</td>
+			</tr>
+			<tr data-ng-hide="objectLength(follow_suggest)">
+				<td>Currently there are no suggestion, try back later.</td>
+			</tr>
+	</tbody>
+	</table>
 
-    </div>
-    <div class="span6">
+	</div>
+	<div class="span6">
 
-	    <h2>Groups</h2>
-    	<div data-ng-repeat="group in follow.groups" class="btn-group" style="margin-bottom:5px;">
-		  	<button class="btn">
-		  		<!--<span class="badge" style="background-color:#{{group.color}};"> ({{group.group_count}})</span>-->
-		  		{{group.group_name}}
-		  	</button>
-		  	<button class="btn dropdown-toggle" data-ng-click="follow.removeGroup(group.group_ID)">&times;</button>
-    	</div>
-    	<br /><br />
-    	
-    	<form data-ng-submit="follow.addGroup()">
-	  	<div class="input-append">
-	       <input type="text" data-ng-model="group_name" size="30" placeholder="add new group here"><span class="add-on btn-primary" data-ng-click="follow.addGroup(group_name)"><i class="icon-plus"></i></span>
-	  	</div>
-    	</form>
-    	
-	    <h2>Followers</h2>
-	    <table class="table table-striped table-bordered" data-ng-init="follow.loadFollowers()">
-	      	<tbody>
-		      	<tr data-ng-repeat="f in objectArray(follow.db.user) | filter:{follower:true}"><!--  data-ng-click="href('/company/view/'+company.company_ID)" -->
-			        <td><img data-ng-src="/img/user/{{f.user_ID}}.png" width="50" height="50" /></td>
-			        <td>
-			        	<a>{{f.name}}</a><br>
-			        	<div data-ng-include="'follow-groups'"></div>
-			        </td>
-			        <td>
+		<h2>Groups</h2>
+		<div data-ng-repeat="group in follow.groups" class="btn-group" style="margin-bottom:5px;">
+		<button class="btn">
+		<!--<span class="badge" style="background-color:#{{group.color}};"> ({{group.group_count}})</span>-->
+		{{group.group_name}}
+		</button>
+		<button class="btn dropdown-toggle" data-ng-click="follow.removeGroup(group.group_ID)">&times;</button>
+		</div>
+		<br /><br />
+
+		<form data-ng-submit="follow.addGroup()">
+	<div class="input-append">
+	<input type="text" data-ng-model="group_name" size="30" placeholder="add new group here"><span class="add-on btn-primary" data-ng-click="follow.addGroup(group_name)"><i class="icon-plus"></i></span>
+	</div>
+		</form>
+
+		<h2>Followers</h2>
+		<table class="table table-striped table-bordered" data-ng-init="follow.loadFollowers()">
+		<tbody>
+			<tr data-ng-repeat="f in objectArray(follow.db.user) | filter:{follower:true}"><!--  data-ng-click="href('/company/view/'+company.company_ID)" -->
+					<td><img data-ng-src="/img/user/{{f.user_ID}}.png" width="50" height="50" /></td>
+					<td>
+						<a>{{f.name}}</a><br>
+						<div data-ng-include="'follow-groups'"></div>
+					</td>
+					<td>
 						<div data-ng-include="'follow-button'"></div>
-			        </td>
-		        </tr>
-		        <!--<tr data-ng-hide="objectLength(followers)">
-		        	<td>You're currently do not have any followers.</td>
-		        </tr>-->
-	      	</tbody>
-	    </table>
-	    
-    </div>
+					</td>
+				</tr>
+				<!--<tr data-ng-hide="objectLength(followers)">
+					<td>You're currently do not have any followers.</td>
+				</tr>-->
+		</tbody>
+		</table>
+
+	</div>
 </div>
 

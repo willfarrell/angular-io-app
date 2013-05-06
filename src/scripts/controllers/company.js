@@ -268,7 +268,7 @@ function CompanyCtrl($rootScope, $scope, $http, $routeParams, $session) {
 		}
 	};
 
-	$rootScope.session.require_signin(function(){
+	$session.require_signin(function(){
 		console.log('CompanyCtrl require_signin');
 		console.log($session.company);
 		if ($routeParams.profile_name) {

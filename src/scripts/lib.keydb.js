@@ -1,55 +1,11 @@
 /*
-//== To Do ==//
--add update fucntions
--merge [g|s]etAllArray and [g|s]etAllObject into one
-
-//== Important Notes ==//
--JSON.parse() and JSON.stringify() are built-in
--"keys" is a reserved key name for keyDB objects
-
-//== Examples ==//
-
-//= General Examples =//
-db.get('key');
-db.set('key', {});
-db.remove('key');
-db.clear();
-
-db.keyDB_name.get('key');
-db.keyDB_name.getAllArray('key', []);
-db.keyDB_name.getAllArray('key', function() {reutrn [];});
-db.keyDB_name.set('key', {});
-db.keyDB_name.remove('key');
-db.keyDB_name.clear();
-
-var list = db.keyDB_name.keys;	// get list of keys
-var obj = db.keyDB_name.obj;	// get default obj
-
-//= init Examples =//
-var test = {}
-if (storage) {
-	test = db.get('test', test);
-} else {
-	alert('Your browser seems to be in Private Mode. Please disable it if you\'d like your settings saved for your next visit.');
-}
-
-//= Creating a keyDB =//
-db.name = keyDB(
-	"name",// DB prefix for all keys
-	{						// default object (optinal)
-		"key":"",
-		"value":"",
-		"timestamp":Date.now()
-	}
-);
-
-
-*/
+ * will Farrell
+ */
 
 // localStorage db wrapper
 var db = {
 	on: false,			// bool - if localStorage is enabled in browser
-	ls: localStorage,// localStorage short name - obfusification
+	ls: localStorage,	// localStorage short name - obfusification
 
 	/**
 	* set 'on' bool for those that want to
@@ -85,10 +41,15 @@ var db = {
 		/*if ( result === 'undefined' ) {
 			return result;
 		}*/
-		if (result.match(/^[{\["]/)) {
+		if (result && result.match(/^[{\["]/)) {
 			return JSON.parse(result);
-		}
-		return result;
+		} else if (result === 'true') {
+			return true;
+		} else if (result === 'false') {
+			return false;
+		} 
+		result = '"'+result+'"'; // to catch numbers
+		return JSON.parse(result);
 
 		// if (result === typeof Object)
 	},
@@ -97,9 +58,9 @@ var db = {
 	* @this {Object}
 	*/
 	set: function(key, obj) {
-		//console.log("db.set('"+key+"', "+JSON.stringify(obj)+")");
+		//console.log('db.set(', key, obj, ")");
 		if (key !== null) {
-			this.ls.setItem(key, typeof(obj) === 'object' ? JSON.stringify(obj) : obj);
+			this.ls.setItem(key, (typeof(obj) === 'object') ? JSON.stringify(obj) : obj);
 		}
 		return obj;
 	},
@@ -225,6 +186,20 @@ keyDB.prototype.setObject = function(list) {
 		}
 	}
 };
+
+
+/**
+ * list = [] or {} - default container
+ * key = string key name if list is array
+ */
+/*keyDB.prototype.setAll= function(list, key) {
+	this.clear();
+	if (typeof(list) === 'object') {
+		this.setObject(list);
+	} else if (key && typeof(list) === 'array') {
+		this.setArray(key, list);
+	}
+};*/
 
 /**
  * key = string key name

@@ -627,6 +627,41 @@ module.exports = function(grunt) {
 			}
 		},
 		replace: {
+			htmllint: {
+				options: {
+					replacements: [
+						{	// Clean "Trailing whitespace"
+							pattern: /[ \t]+[\n\r]/g,
+							replacement: '\n'
+						},
+						{	// Clean "Mixed spaces and tabs" - All spaces
+							pattern: /[ ]{4}/g,
+							replacement: '\t'
+						},
+						{	// Clean "Mixed spaces and tabs" - Pre Mix
+							pattern: /[ ]{1,3}\t+/g,
+							replacement: ''
+						},
+						{	// Clean "Mixed spaces and tabs" - Post Mix
+							pattern: /\t+[ ]{1,3}/g,
+							replacement: '\t'
+						}
+					]
+				},
+				files: [
+					{
+						expand: true,
+						dot: true,
+						cwd: '',
+						dest: '',
+						src: [
+							'<%= yeoman.app %>/*.html',
+							'<%= yeoman.app %>/view/*.html',
+							'<%= yeoman.app %>/view/**/*.html'
+						]
+					}
+				]
+			},
 			jslint: {
 				options: {
 					replacements: [
@@ -1019,6 +1054,7 @@ module.exports = function(grunt) {
 		'clean:deploy'
 	]);
 	grunt.registerTask('lint', [
+		//'replace:htmllint',
 		//'htmllint',	// not the best for angular
 		'csslint',
 		//'replace:jslint',

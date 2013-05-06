@@ -2,7 +2,7 @@
 //.controller('AppCtrl',
 //['$rootScope', '$scope', '$rest', '$follow', '$filepicker',
 //function(rootScope, $scope, $http, follow, filepicker) {
-function AppCtrl($rootScope, $scope, $window, $cookies, $location, $session, $rest, $filepicker, $accessibility, $message, $follow) {
+function AppCtrl(config, $rootScope, $scope, $window, $cookies, $location, $session, $rest, $filepicker, $accessibility, $message, $follow) {
 	console.log('AppCtrl (', $scope.$id, ')');
 
 	// Route Events
@@ -27,23 +27,12 @@ function AppCtrl($rootScope, $scope, $window, $cookies, $location, $session, $re
 
 
 	// Factory init - $scope.factory = factory;
+	$rootScope.settings = config;
 	$rootScope.session = $session;
 	$rootScope.filepicker = $filepicker;
 	$rootScope.accessibility = $accessibility;
 	$rootScope.message = $message;
 	$rootScope.follow = $follow;
-	/*
-	markdown.setOptions({
-		gfm: true,
-		tables: true,
-		breaks: false,
-		pedantic: false,
-		sanitize: true,
-		smartLists: true
-	});
-	$rootScope.markdown = markdown;
-	*/
-
 
 	$scope.slideNavBool = -1;		// slider nav state (-1,+1)
 	$scope.slideNav = function(value) {
@@ -63,5 +52,5 @@ function AppCtrl($rootScope, $scope, $window, $cookies, $location, $session, $re
 	};
 	*/
 }
-AppCtrl.$inject = ['$rootScope', '$scope', '$window', '$cookies', '$location', '$session', '$rest', '$filepicker', '$accessibility', '$message', '$follow'];
+AppCtrl.$inject = ['app.config', '$rootScope', '$scope', '$window', '$cookies', '$location', '$session', '$rest', '$filepicker', '$accessibility', '$message', '$follow'];
 //}]);

@@ -131,7 +131,7 @@ class Message extends Core {
 			'user_key' => $this->user_key($request_data['user_ID']),
 			'user_from_ID' => USER_ID,
 			'user_to_ID' => $request_data['user_ID'],
-			'message' => $request_data['message'],
+			'message' => strip_tags($request_data['message']),
 			'timestamp' => $_SERVER['REQUEST_TIME'],
 		);
     	$this->db->insert($this->table, $insert);

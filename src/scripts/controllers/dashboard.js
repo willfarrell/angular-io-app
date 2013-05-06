@@ -1,6 +1,6 @@
 //angular.module('app.controller.dashboard', [])
 //.controller('DashboardCtrl', ['$scope', '$rest', function($scope, $http) {
-function DashboardCtrl(config, $rootScope, $scope, $rest, $routeParams) {
+function DashboardCtrl(config, $rootScope, $scope, $rest, $routeParams, $session) {
 	console.log('DashboardCtrl (', $scope.$id, config,')');
 	//-- App Functions Here --//
 
@@ -18,9 +18,9 @@ function DashboardCtrl(config, $rootScope, $scope, $rest, $routeParams) {
 
 
 	//-- End App Functions Here --//
-	$rootScope.session.require_signin(function() {
+	$session.require_signin(function() {
 		//$scope.loadSearch();
 	});
 }
-DashboardCtrl.$inject = ['app.config', '$rootScope', '$scope', '$rest', '$routeParams'];
+DashboardCtrl.$inject = ['app.config', '$rootScope', '$scope', '$rest', '$routeParams', '$session'];
 //}]);

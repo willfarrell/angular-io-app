@@ -43,11 +43,11 @@ class Notify {
 		// these defaults should overwrite any user set ones. (todo)**
 		$defaults = file_get_contents('json/config.notify.server.json');
 		$this->defaults = array_merge($this->defaults, json_decode($defaults, true));
-    }
+	}
 
 	function __destruct() {
 		
-  	}
+	}
 	
 	public function send($user_ID, $message_ID, $args = array(), $types = "email") {
 		$types = explode(",", $types);
@@ -157,28 +157,28 @@ class Notify {
 	}
 	
 	private function replace_tags($str, $group = '', $tags = array()) {
-	    foreach ($tags as $key => $value) {
-	    	if ($group) $key = $group.":".$key;
-	    	//echo $key."\n";
-	    	if (is_array($value)) continue;
-	      	$str = preg_replace("/{{".$key."}}/i", $value, $str);
-	    }
-	    return $str;
+		foreach ($tags as $key => $value) {
+			if ($group) $key = $group.":".$key;
+			//echo $key."\n";
+			if (is_array($value)) continue;
+			$str = preg_replace("/{{".$key."}}/i", $value, $str);
+		}
+		return $str;
 	}
 	
 	
 	// Services
 	private function email($email, $subject, $message) {
-  		$sent = false;
-  		
-  		if (!$sent && EMAIL_MAILGUN_APIKEY) {
-	  		exec("curl -s --user api:".EMAIL_MAILGUN_APIKEY." \
-				    https://api.mailgun.net/v2/".EMAIL_MAILGUN_DOMAIN."/messages \
-				    -F from=".escapeshellarg(NOTIFY_FROM_NAME." <".NOTIFY_FROM_EMAIL.">")." \
-				    -F to=$email\
-				    -F subject=".escapeshellarg($subject)." \
-				    -F text=".escapeshellarg($message)."",
-				    $output, $return
+		$sent = false;
+		
+		if (!$sent && EMAIL_MAILGUN_APIKEY) {
+			exec("curl -s --user api:".EMAIL_MAILGUN_APIKEY." \
+					https://api.mailgun.net/v2/".EMAIL_MAILGUN_DOMAIN."/messages \
+					-F from=".escapeshellarg(NOTIFY_FROM_NAME." <".NOTIFY_FROM_EMAIL.">")." \
+					-F to=$email\
+					-F subject=".escapeshellarg($subject)." \
+					-F text=".escapeshellarg($message)."",
+					$output, $return
 			);
 			
 			// confirm sent
@@ -186,27 +186,27 @@ class Notify {
 			if ($output['message'] == 'Queued. Thank you.') {
 				$sent = true;
 			}
-  		}
-  		
-  		if (!$sent && EMAIL_AWS_APIKEY) {
-	  		
-	  	} 
-	  	
-	  	if (!$sent) {
-	  		$headers = 	"From: ".NOTIFY_FROM_NAME." <".NOTIFY_FROM_EMAIL.">\r\n" .
-					    "Reply-To: ".NOTIFY_FROM_EMAIL."\r\n";
-	  		$sent = mail($email, $subject, $message, $headers);
-  		}
-	  	
-	  	return $sent;
-  	}
-  	
-  	private function pgp($pubkey, $email, $subject, $message) {
-	  	putenv("GNUPGHOME=/var/www/.gnupg");
-	  	
-	  	$pgp_message = (null);
-	  	//$gpg = new gnupg();
-	  	$res = gnupg_init();
+		}
+		
+		if (!$sent && EMAIL_AWS_APIKEY) {
+			
+		} 
+		
+		if (!$sent) {
+			$headers = 	"From: ".NOTIFY_FROM_NAME." <".NOTIFY_FROM_EMAIL.">\r\n" .
+						"Reply-To: ".NOTIFY_FROM_EMAIL."\r\n";
+			$sent = mail($email, $subject, $message, $headers);
+		}
+		
+		return $sent;
+	}
+	
+	private function pgp($pubkey, $email, $subject, $message) {
+		putenv("GNUPGHOME=/var/www/.gnupg");
+		
+		$pgp_message = (null);
+		//$gpg = new gnupg();
+		$res = gnupg_init();
 		$rtv = gnupg_import($res, $pubkey);
 		gnupg_addencryptkey($res,$rtv['fingerprint']);
 		$pgp_message = gnupg_encrypt($res, $message);
@@ -215,15 +215,15 @@ class Notify {
 		} else {
 			return $this->email($email, $subject, $message);
 		}
-  	}
-  	
-  	// PGP encrypt message
-  	// import key - http://www.centos.org/docs/4/html/rhel-sbs-en-4/s1-gnupg-import.html - gpg --import public.key
-  	// rename key user_ID
-  	
-  	/*function encrypt($pubkey, $recipient, $email, $subject, $message) {
-	  	// http://www.pantz.org/software/php/pgpemailwithphp.html
-	  	$dir = "files/pgp";
+	}
+	
+	// PGP encrypt message
+	// import key - http://www.centos.org/docs/4/html/rhel-sbs-en-4/s1-gnupg-import.html - gpg --import public.key
+	// rename key user_ID
+	
+	/*function encrypt($pubkey, $recipient, $email, $subject, $message) {
+		// http://www.pantz.org/software/php/pgpemailwithphp.html
+		$dir = "files/pgp";
 		
 		//Tell gnupg where the key ring is. Home dir of user web server is running as.
 		putenv("GNUPGHOME=/var/www/.gnupg");
@@ -250,7 +250,7 @@ class Notify {
 		fclose($fp);
 		
 		//set up the gnupg command. Note: Remember to put E-mail address on the gpg keyring. --pgp2 --pgp6 --pgp7 
-		//$command = "gpg --no-default-keyring --keyring $tempkey --armor --local-user '' --recipient 'willfarrell <will.farrell@gmail.com>'  --output $outfile --trust-model always --verbose --encrypt $infile";
+		//$command = "gpg --no-default-keyring --keyring $tempkey --armor --local-user '' --recipient 'willfarrell <will.farrell@gmail.com>' --output $outfile --trust-model always --verbose --encrypt $infile";
 		$command = "gpg --armor --recipient '$recipient <$email>' --armor --output $dir/$outfile --yes --always-trust --verbose --encrypt $dir/$infile";
 		echo "$command\n\n";
 		
@@ -271,32 +271,32 @@ class Notify {
 			
 				//send the email
 				$this->send($email, $subject, $pgp_message);
-		    }
+			}
 		} else {
-		  	//$this->send($email, $subject, $message);
-	  	}
-	  	
-  	}*/
-  	
-  	/*
+			//$this->send($email, $subject, $message);
+		}
+		
+	}*/
+	
+	/*
 	- AWS SNS-SMS
 	- http://www.twilio.com/sms
 	- https://www.nexmo.com/
 	- http://www.smushbox.com/
 	*/
-  	private function sms($to, $message) {
-  		$sent = false;
-  		
-	  	if (!$sent && SMS_NEXMO_APIKEY) {
-	  		// https://www.nexmo.com/documentation/index.html#txt
-		  	exec("curl -s  \
-				    http://rest.nexmo.com/sms/json \
-				    -F api_key=".SMS_NEXMO_APIKEY." \
-				    -F api_secret=".SMS_NEXMO_APISECRET." \
-				    -F from=".escapeshellarg(NOTIFY_FROM_NAME)." \
-				    -F to=$to\
-				    -F text=".escapeshellarg($message)."",
-				    $output, $return
+	private function sms($to, $message) {
+		$sent = false;
+		
+		if (!$sent && SMS_NEXMO_APIKEY) {
+			// https://www.nexmo.com/documentation/index.html#txt
+			exec("curl -s \
+					http://rest.nexmo.com/sms/json \
+					-F api_key=".SMS_NEXMO_APIKEY." \
+					-F api_secret=".SMS_NEXMO_APISECRET." \
+					-F from=".escapeshellarg(NOTIFY_FROM_NAME)." \
+					-F to=$to \
+					-F text=".escapeshellarg($message)."",
+					$output, $return
 			);
 			
 			// confirm sent
@@ -308,12 +308,12 @@ class Notify {
 		
 		if (!$sent && SMS_TWILIO_APIKEY) {
 			// http://www.twilio.com/docs/api/rest/sending-sms
-			exec("curl -s  \
-				    https://api.twilio.com/2010-04-01/Accounts/".SMS_TWILIO_APIKEY."/SMS/Messages \
-				    -F from=".NOTIFY_FROM_NUMBER." \
-				    -F to=$to\
-				    -F text=".escapeshellarg($message)."",
-				    $output, $return
+			exec("curl -s\
+					https://api.twilio.com/2010-04-01/Accounts/".SMS_TWILIO_APIKEY."/SMS/Messages \
+					-F from=".NOTIFY_FROM_NUMBER." \
+					-F to=$to\
+					-F text=".escapeshellarg($message)."",
+					$output, $return
 			);
 			
 			// confirm sent
@@ -325,45 +325,44 @@ class Notify {
 		
 		if (!$sent && SMS_AWS_APIKEY) {
 			// http://aws.amazon.com/sns/
-	  	}
-	  	
-	  	return true;
-	  	return $sent;
-  	}
-  	
-  	/*
+		}
+		
+		return true;
+		return $sent;
+	}
+	
+	/*
 	- http://urbanairship.com/
 	*/
-  	private function push($to, $message) {
-	  	// https://docs.urbanairship.com/display/DOCS/Getting+Started
-	  	return true;
-  	}
-  	
-  	/*
+	private function push($to, $message) {
+		// https://docs.urbanairship.com/display/DOCS/Getting+Started
+		return true;
+	}
+	
+	/*
 	facebook, twiter, linkedin
 	*/
-  	private function social($to, $message) {
-	  	return true;
-  	}
-  	
-  	private function web($user_ID, $message) {
-  		/*$this->db->insert('notify', array(
-  			"user_ID" => 	$user_ID,
-  			"message" => 	$message,
-  			"timestamp" => 	$_SERVER['REQUEST_TIME'],
-  			"read" => 		"0"
-  		));*/
-  		
-  		
-	  	return true;
-  	}
-  	
-  	/*
+	private function social($to, $message) {
+		return true;
+	}
+	
+	private function web($user_ID, $message) {
+		/*$this->db->insert('notifications', array(
+			"user_ID" => $user_ID,
+			"message" => $message,
+			"timestamp" => $_SERVER['REQUEST_TIME'],
+			"read" => 0
+		));*/
+		
+		return true;
+	}
+	
+	/*
 	- http://www.efaxdeveloper.com/developer/faq
 	*/
-  	private function fax($to, $message) {
-	  	return true;
-  	}
+	private function fax($to, $message) {
+		return true;
+	}
 }
 
 ?>

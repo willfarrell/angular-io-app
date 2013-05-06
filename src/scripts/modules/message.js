@@ -167,7 +167,7 @@ angular.module('io.modules')
 		var t = document.getElementById('thread');
 		t.scrollTop = t.scrollHeight;
 	};
-	$rootScope.session.require_signin(function() {
+	$session.require_signin(function() {
 		$scope.loadMessages();
 		if ($routeParams.user_ID) {
 			$scope.loadThread($routeParams.user_ID);

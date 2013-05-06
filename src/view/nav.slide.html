@@ -1,13 +1,13 @@
 <!-- !Side Nav -->
 <!--<div class="navbar navbar-fixed-top visible-phone nav-slider-button">
 	<div class="navbar-inner">
-        <div class="container">
-        	<div class="pull-left">
-	        	<div class="btn-group">
-	        		<button class="btn" data-ng-click="sliderNav = sliderNav * -1"><i class="icon-list-ul"></i></button>
-	        	</div>
-        	</div>
-        </div>
+		<div class="container">
+			<div class="pull-left">
+				<div class="btn-group">
+					<button class="btn" data-ng-click="sliderNav = sliderNav * -1"><i class="icon-list-ul"></i></button>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>-->
 
@@ -20,20 +20,20 @@
 
 <div data-ng-show="session.user.user_ID">
 <!--<img src="img/user/{{session.user.user_ID}}.png" width="50" height="50" />
-	  	<a href="#/user/profile" data-ng-show="session.user.user_name"> {{session.user.user_name}}</a>
-        <a href="#/user/profile" data-ng-show="!session.user.user_name && session.user.user_name_first"> {{session.user.user_name_first}}</a>
-        <a href="#/user/profile" data-ng-hide="session.user.user_name || session.user.user_name_first"> {{session.user.user_email}}</a>-->
+	<a href="#/user/profile" data-ng-show="session.user.user_name"> {{session.user.user_name}}</a>
+		<a href="#/user/profile" data-ng-show="!session.user.user_name && session.user.user_name_first"> {{session.user.user_name_first}}</a>
+		<a href="#/user/profile" data-ng-hide="session.user.user_name || session.user.user_name_first"> {{session.user.user_email}}</a>-->
 
 <ul class="nav nav-tabs nav-stacked">
-  	<li class="nav-header">App</li>
-  	<li><a href="{{settings.dashboard}}"><i class="icon-dashboard"></i> Dashboard</a></li>
-  	
-  	<li class="nav-header">User</li>
+<li class="nav-header">App</li>
+<li><a href="{{settings.dashboard}}"><i class="icon-dashboard"></i> Dashboard</a></li>
+
+<li class="nav-header">User</li>
 	<li><a href="#/invite"><i class="icon-share"></i> Invite</a></li>
 	<li><a href="#/account/user"><i class="icon-cogs"></i> User Settings</a></li>
-	
-  	<li class="nav-header">Account</li>
-  	<li><a href="#/account/company"><i class="icon-edit"></i> Edit Account</a></li>
+
+<li class="nav-header">Account</li>
+<li><a href="#/account/company"><i class="icon-edit"></i> Edit Account</a></li>
 	<li><a href="#/sign/out"><i class="icon-signout"></i> Sign Out</a></li>
 	<li><a href="#/contact"	><i class="icon-bullhorn"></i> Contact</a></li>
 </ul>

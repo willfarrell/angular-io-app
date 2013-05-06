@@ -1,33 +1,33 @@
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 7]>	<html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>	<html class="no-js lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" manifest="manifest.appcache"><!--<![endif]-->
 <head>
-	<meta http-equiv="Content-Type" 				content="text/html; charset=UTF-8">
-	<meta name="robots" 							content="index, follow"><!-- index, noindex, follow, nofollow -->
+	<meta http-equiv="Content-Type"content="text/html; charset=UTF-8">
+	<meta name="robots"content="index, follow"><!-- index, noindex, follow, nofollow -->
 
 	<!-- !mobile tags -->
 	<!--<meta name="HandheldFriendly" content="True">
 	<meta name="MobileOptimized" content="320">-->
-	<meta name="viewport" 							content="user-scalable=no, initial-scale=1, maximum-scale=1">
-	<meta name="apple-mobile-web-app-capable" 		content="yes"><!-- Sets whether a web application runs in full-screen mode. -->
-	<!--<meta name="format-detection" 						content="telephone=no">-->
-	<!--<meta name="apple-mobile-web-app-status=bar-style" 	content="black-translucent">--><!-- black, black-translucent, default -->
+	<meta name="viewport"content="user-scalable=no, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-capable"content="yes"><!-- Sets whether a web application runs in full-screen mode. -->
+	<!--<meta name="format-detection"content="telephone=no">-->
+	<!--<meta name="apple-mobile-web-app-status=bar-style"content="black-translucent">--><!-- black, black-translucent, default -->
 	<!-- http://david-smith.org/blog/2012/09/20/implementing-smart-app-banners/ -->
 	<!--<meta name="apple-itunes-app" content="app-id="/>-->
 	<!-- !end mobile tags -->
-	
-	<link rel="icon" 							sizes="32x32" 	href="favicon/icon-32.png">
-	<link rel="shortcut icon" 	type="image/x-icon" 			href="favicon.ico">
-	<link rel="fluid-icon"		title="Angular.io" 				href="fluidicon.png">
-	
-	<link rel="apple-touch-icon-precomposed" 	sizes="57x57" 	href="icons/ios/icon-57.png">
-	<link rel="apple-touch-icon-precomposed" 	sizes="114x114" href="icons/ios/icon-57-2x.png">
-	<link rel="apple-touch-icon-precomposed" 	sizes="72x72"	href="icons/ios/icon-72.png">
-	<link rel="apple-touch-icon-precomposed" 	sizes="144x144" href="icons/ios/icon-72-2x.png">
-	<meta name="msapplication-TileImage" 		content="icons/winphone/icon-173-tile.png">
-	<meta name="msapplication-TileColor" 		content="#ffffff">
+
+	<link rel="icon"sizes="32x32"href="favicon/icon-32.png">
+	<link rel="shortcut icon"type="image/x-icon"href="favicon.ico">
+	<link rel="fluid-icon"		title="Angular.io"href="fluidicon.png">
+
+	<link rel="apple-touch-icon-precomposed"sizes="57x57"href="icons/ios/icon-57.png">
+	<link rel="apple-touch-icon-precomposed"sizes="114x114" href="icons/ios/icon-57-2x.png">
+	<link rel="apple-touch-icon-precomposed"sizes="72x72"	href="icons/ios/icon-72.png">
+	<link rel="apple-touch-icon-precomposed"sizes="144x144" href="icons/ios/icon-72-2x.png">
+	<meta name="msapplication-TileImage"content="icons/winphone/icon-173-tile.png">
+	<meta name="msapplication-TileColor"content="#ffffff">
 
 	<title>Angular.io</title>
 	<meta name="description" content="AngularJS Framework">
@@ -37,24 +37,24 @@
 	<style>.ng-cloak{display:none;}</style>
 	<!-- never serve from a subdomain -->
 	<link rel="stylesheet" href="css/app.min.css">
-	
+
 	<!--<link rel="dns-prefetch" href="//widget.foo.com">-->
 	<!-- use to preload images or fonts -->
 	<!--<link rel="prefetch" href="webfont.woff">-->
-	
+
 	<!-- there is a way to defer the loading of print.css -->
-	
+
 	<!-- build:js js/appCache.min.js -->
 	<script src="scripts/appCache.js"></script>
 	<!-- endbuild -->
-	
+
 	<!--[if lt IE 9]>
 	<script>
 		document.createElement('section');
 		document.createElement('canvas');
 	</script>
 	<![endif]-->
-	
+
 	<!-- build:js js/async.min.js -->
 	<!-- replace:inline -->
 	<script src="components/html5-boilerplate/js/plugins.js"></script><!-- can be removed if no use of `console`, replace:jsmin -->
@@ -117,14 +117,14 @@
 		</div>
 	</div>
 	<!-- !End Top Nav -->
-		
+
 	<!-- !View -->
 	<div class="wrapper" data-ng-click="slideNav(-1)"><!-- wrapper used for sticky footer -->
 		<div class="container" data-ng-view></div>
 		<div class="footer-push"></div><!-- footer-push used for sticky footer -->
 	</div>
 	<!-- !End View -->
-	
+
 	<div class="footer" data-ng-include="'view/footer.html'"></div>
 </div>
 

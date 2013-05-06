@@ -103,10 +103,10 @@ function SignCtrl($rootScope, $scope, $cookies, $routeParams, $rest, $session) {
 						$scope.action = 'totp';
 						$scope.user_ID = data.user_ID;
 					} else if (data.user_ID) {
-						$rootScope.session = syncVar(data, $rootScope.session);
+						$session = syncVar(data, $session);
 						$rootScope.account.remember = $scope.signin.remember;
 						$rootScope.offline.run_request();
-						console.log($rootScope.session);
+						console.log($session);
 						$rootScope.saveSession();
 						$scope.signin = {};	// clear form
 						$rootScope.redirect();
@@ -142,7 +142,7 @@ function SignCtrl($rootScope, $scope, $cookies, $routeParams, $rest, $session) {
 				$session.account.remember = $scope.signin.remember;
 				$session.user = data.user;
 				$session.company = data.company;
-				console.log($rootScope.session);
+				console.log($session);
 				$session.save();
 				$scope.signin = {};	// clear form
 
@@ -156,10 +156,10 @@ function SignCtrl($rootScope, $scope, $cookies, $routeParams, $rest, $session) {
 			.success(function(data) {
 				console.log('account_totp.put.success');
 				if ($rootScope.checkHTTPReturn(data) && data) {
-					$rootScope.session = syncVar(data, $rootScope.session);
-					//if ($rootScope.session != {})
+					$session = syncVar(data, $session);
+					//if ($session != {})
 					$session.account.remember = $scope.signin.remember;
-					console.log($rootScope.session);
+					console.log($session);
 					$rootScope.saveSession();
 					$scope.signin = {};	// clear form
 
@@ -213,7 +213,7 @@ function SignCtrl($rootScope, $scope, $cookies, $routeParams, $rest, $session) {
 	}*/
 	if ($scope.page === 'out') {
 		$scope.account_signout();
-	} else if ($rootScope.session.user_ID) {
+	} else if ($session.user_ID) {
 		// redirect if already signed in
 		$rootScope.redirect();
 	}

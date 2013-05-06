@@ -1,5 +1,6 @@
 {
 	"new_follow": {
+		"web":true,
 		"email":false
 	},
 	"new_message": {

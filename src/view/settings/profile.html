@@ -1,93 +1,93 @@
-<form name="userForm" class="form-horizontal" data-ng-controller="UserCtrl">
+<form name="form" class="form-horizontal" data-ng-controller="UserCtrl">
 	<fieldset><legend>Profile</legend></fieldset>
 	<hr>
-    <!--[if gt IE 8]><!-->
-    <div class="control-group" data-ui-if="filepicker">
+	<!--[if gt IE 8]><!-->
+	<div class="control-group" data-ui-if="filepicker">
 		<label class="control-label" for="user_img">Photo</label>
 
 		<div class="controls">
-    		<img data-ng-src="img/user/{{user.user_ID}}.png?{{filepicker.timestamp}}" class="img-rounded" width="50" height="50"/>
+			<img data-ng-src="img/user/{{user.user_ID}}.png?{{filepicker.timestamp}}" class="img-rounded" width="50" height="50"/>
 			<a href="#filepickerModal" class="btn" data-toggle="modal" data-ng-click="filepicker.upload(settings.filepicker.user_single_image, user.user_ID);" data-ng-disabled="!user.user_ID">Change photo</a>
 			<!--<span class="help-block">This photo is your identity and appears with your content.</span>-->
-    	</div>
-    </div>
-    <!--<![endif]-->
-    <div class="control-group" data-ng-class="{error: (errors.user_name_first)}">
-      	<label class="control-label" for="user_name_first">First Name</label>
-      	<div class="controls">
-            <input type="text" class="input-block-level" name="user_name_first" placeholder="" data-ng-model="user.user_name_first" required>
-            <!--<span class="help-block error" data-ng-show="userForm.user_name_first.$error.required">Required</span>-->
-            <span class="help-block error" data-ng-show="errors.user.user_name_first">{{errors.user.user_name_first}}</span>
-        </div>
-    </div>
+		</div>
+	</div>
+	<!--<![endif]-->
+	<div class="control-group" data-ng-class="{error: (errors.user_name_first)}">
+	<label class="control-label" for="user_name_first">First Name</label>
+	<div class="controls">
+			<input type="text" class="input-block-level" name="user_name_first" placeholder="" data-ng-model="user.user_name_first" required>
+			<!--<span class="help-block error" data-ng-show="form.user_name_first.$error.required">Required</span>-->
+			<span class="help-block error" data-ng-show="errors.user.user_name_first">{{errors.user.user_name_first}}</span>
+		</div>
+	</div>
 
-    <div class="control-group" data-ng-class="{error: (errors.user.user_name_last)}">
-      	<label class="control-label" for="user_name_last">Last Name</label>
-      	<div class="controls">
-            <input type="text" class="input-block-level" name="user_name_last" placeholder="" data-ng-model="user.user_name_last"/>
-            <!--<span class="help-block error" data-ng-show="userForm.user_name_last.$error.required">Required</span>-->
-            <span class="help-block error" data-ng-show="errors.user.user_name_last">{{errors.user.user_name_last}}</span>
-        </div>
-    </div>
-    
-    <div class="control-group" data-ng-class="{error: (errors.user_function)}">
-      	<label class="control-label" for="user_function">Title</label>
-      	<div class="controls">
-            <input type="text" class="input-block-level" name="user_function" data-ng-model="user.user_function" placeholder="ie Engineer">
-            <span class="help-block error" data-ng-show="errors.user_function">{{errors.user_function}}</span>
-        </div>
-    </div>
-    
-    <div class="control-group" data-ng-class="{error: (errors.user_phone)}">
-      	<label class="control-label" for="user_phone">Phone</label>
-      	<div class="controls">
-          	<div class="input-prepend">
-                <span class="add-on">+{{json.calling_codes[country_code]}}</span><input type="text" class="input-medium" name="user_phone" placeholder="(000) 000-0000" data-ng-model="user.user_phone" data-input-mask="(999) 999-9999 x999999">
-            </div>
-            <span class="help-block error" data-ng-show="errors.user_phone">{{errors.user_phone}}</span>
-        </div>
-    </div>
-    
-    <div class="control-group" data-ng-class="{error: (errors.user_url)}">
-      	<label class="control-label" for="user_url">Website</label>
-      	<div class="controls">
-            <input type="url" class="input-block-level" name="user_url" data-ng-model="user.user_url" placeholder="https://">
-            <span class="help-block error" data-ng-show="userForm.user_url.$error.url">Not valid url</span>
-            <span class="help-block error" data-ng-show="errors.user_url">{{errors.user_url}}</span>
-        </div>
-    </div>
-    
-    <!--<div class="control-group" data-ng-class="{error: (errors.user_url)}">
-      	<label class="control-label" for="user_url">Date of Birth</label>
-      	<div class="controls form-inline">
-            <select class="input-small" data-ng-model="dob.y" data-ng-options="n for n in [] | range:1900:2013">
-	            <option value="">YYYYY</option>
-            </select>
-            <select class="input-small" data-ng-model="dob.m" data-ng-options="key as value for (key, value) in json.month">
-	            <option value="">MMM</option>
-            </select>
-            <select class="input-small" data-ng-model="dob.d" data-ng-options="key as value for (key, value) in json.day(dob.y,dob.m)">
-	            <option value="">DD</option>
-            </select>
-            <span class="help-block error" data-ng-show="userForm.user_url.$error.url">Not valid url</span>
-            <span class="help-block error" data-ng-show="errors.user_url">{{errors.user_url}}</span>
-        </div>
-    </div>-->
-    
-    
-    <div class="control-group">
-        <label class="control-label" for="user_details">Bio</label>
-	    <div class="controls">
-		    <textarea class="input-block-level" rows="4" data-ng-model="user.user_details" placeholder=""></textarea>
+	<div class="control-group" data-ng-class="{error: (errors.user.user_name_last)}">
+	<label class="control-label" for="user_name_last">Last Name</label>
+	<div class="controls">
+			<input type="text" class="input-block-level" name="user_name_last" placeholder="" data-ng-model="user.user_name_last"/>
+			<!--<span class="help-block error" data-ng-show="form.user_name_last.$error.required">Required</span>-->
+			<span class="help-block error" data-ng-show="errors.user.user_name_last">{{errors.user.user_name_last}}</span>
+		</div>
+	</div>
+
+	<div class="control-group" data-ng-class="{error: (errors.user_function)}">
+	<label class="control-label" for="user_function">Title</label>
+	<div class="controls">
+			<input type="text" class="input-block-level" name="user_function" data-ng-model="user.user_function" placeholder="ie Engineer">
+			<span class="help-block error" data-ng-show="errors.user_function">{{errors.user_function}}</span>
+		</div>
+	</div>
+
+	<div class="control-group" data-ng-class="{error: (errors.user_phone)}">
+	<label class="control-label" for="user_phone">Phone</label>
+	<div class="controls">
+		<div class="input-prepend">
+				<span class="add-on">+{{json.calling_codes[country_code]}}</span><input type="text" class="input-medium" name="user_phone" placeholder="(000) 000-0000" data-ng-model="user.user_phone" data-input-mask="(999) 999-9999 x999999">
+			</div>
+			<span class="help-block error" data-ng-show="errors.user_phone">{{errors.user_phone}}</span>
+		</div>
+	</div>
+
+	<div class="control-group" data-ng-class="{error: (errors.user_url)}">
+	<label class="control-label" for="user_url">Website</label>
+	<div class="controls">
+			<input type="url" class="input-block-level" name="user_url" data-ng-model="user.user_url" placeholder="https://">
+			<span class="help-block error" data-ng-show="form.user_url.$error.url">Not valid url</span>
+			<span class="help-block error" data-ng-show="errors.user_url">{{errors.user_url}}</span>
+		</div>
+	</div>
+
+	<!--<div class="control-group" data-ng-class="{error: (errors.user_url)}">
+	<label class="control-label" for="user_url">Date of Birth</label>
+	<div class="controls form-inline">
+			<select class="input-small" data-ng-model="dob.y" data-ng-options="n for n in [] | range:1900:2013">
+				<option value="">YYYYY</option>
+			</select>
+			<select class="input-small" data-ng-model="dob.m" data-ng-options="key as value for (key, value) in json.month">
+				<option value="">MMM</option>
+			</select>
+			<select class="input-small" data-ng-model="dob.d" data-ng-options="key as value for (key, value) in json.day(dob.y,dob.m)">
+				<option value="">DD</option>
+			</select>
+			<span class="help-block error" data-ng-show="form.user_url.$error.url">Not valid url</span>
+			<span class="help-block error" data-ng-show="errors.user_url">{{errors.user_url}}</span>
+		</div>
+	</div>-->
+
+
+	<div class="control-group">
+		<label class="control-label" for="user_details">Bio</label>
+		<div class="controls">
+			<textarea class="input-block-level" rows="4" data-ng-model="user.user_details" placeholder=""></textarea>
 			<span class="pull-right">{{160 - user.user_details.length}}</span>
 			<span class="help-block">About yourself in 160 characters or less.</span>
-	    </div>
+		</div>
 	</div>
 	<hr>
-	
+
 	<div class="control-group">
-      	<div class="controls">
-	      	<button class="btn" data-ng-click="updateUser()" data-ng-disabled="userForm.$invalid">Save changes</button>
-      	</div>
+	<div class="controls">
+		<button class="btn" data-ng-click="updateUser()" data-require-change="{{user}}" data-ng-disabled="form.$invalid">Save changes</button>
+	</div>
 	</div>
 </form>

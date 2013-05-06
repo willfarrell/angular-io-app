@@ -1,25 +1,25 @@
 <div class="pull-center">
-	<form class="well" name="signinForm">
-	    <fieldset><legend>Sign In</legend></fieldset>
-	
-	    <!--<div class="control-group center"><img data-ng-src="img/user/{{session.user.user_ID}}.png" class="img-polaroid pull-center" width="100" height="100" /></div>-->
-	    
-	    <div class="control-group" data-ng-class="{error: (errors.signin)}">
-	        <input type="text" name="email" class="input-block-level" placeholder="Email" data-ng-model="signin.email" required>
-	    </div>
-	    <div class="control-group" data-ng-class="{error: (errors.signin)}">
-	        <input type="password" name="password" class="input-block-level" placeholder="Password" data-ng-model="signin.password" required>
-	    	<span class="help-block error" data-ng-show="errors.signin">{{errors.signin}}</span>
-	    </div>
-	    <div class="control-group">
-		    <label class="checkbox">
-		        <input type="checkbox" data-ng-model="signin.remember"> Remember me
-		    </label>
-	    </div>
-	    <button class="btn btn-success" data-ng-click="account_signin()" data-ng-disabled="signinForm.$invalid">Sign In</button>
-	
+	<form class="well" name="form">
+		<fieldset><legend>Sign In</legend></fieldset>
+
+		<!--<div class="control-group center"><img data-ng-src="img/user/{{session.user.user_ID}}.png" class="img-polaroid pull-center" width="100" height="100" /></div>-->
+
+		<div class="control-group" data-ng-class="{error: (errors.signin)}">
+			<input type="text" name="email" class="input-block-level" placeholder="Email" data-ng-model="signin.email" required>
+		</div>
+		<div class="control-group" data-ng-class="{error: (errors.signin)}">
+			<input type="password" name="password" class="input-block-level" placeholder="Password" data-ng-model="signin.password" required>
+			<span class="help-block error" data-ng-show="errors.signin">{{errors.signin}}</span>
+		</div>
+		<div class="control-group">
+			<label class="checkbox">
+				<input type="checkbox" data-ng-model="signin.remember"> Remember me
+			</label>
+		</div>
+		<button class="btn btn-success" data-ng-click="account_signin()" data-ng-disabled="form.$invalid">Sign In</button>
+
 	</form>
-	
+
 	<a href="#/sign/up">Sign Up</a>
 	<a href="#/sign/reset" class="pull-right">Reset Password</a>
 

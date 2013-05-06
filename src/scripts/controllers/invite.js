@@ -1,7 +1,7 @@
 //angular.module('io.controller.page', [])
 //.controller('PageCtrl', ['$scope', '$rest', '$routeParams', function($scope, $http, $routeParams) {
 
-function InviteCtrl($rootScope, $scope) {
+function InviteCtrl($rootScope, $scope, $session) {
 	console.log('InviteCtrl (', $scope.$id, ')');
 	/*$scope.copyAlert = function(site_url) {
 		console.log('copyAlert("'+site_url+'")');
@@ -30,8 +30,8 @@ function InviteCtrl($rootScope, $scope) {
 	$scope.twitter = function(text, url) {
 		$rootScope.href('https://twitter.com/intent/tweet?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(url)+'', true);
 	};
-	$rootScope.session.require_signin();
+	$session.require_signin();
 }
-InviteCtrl.$inject = ['$rootScope', '$scope'];
+InviteCtrl.$inject = ['$rootScope', '$scope', '$session'];
 
 //}]);

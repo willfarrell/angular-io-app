@@ -16,7 +16,8 @@ angular.module('io.modules')
 	var $scope = {
 		groups:{},
 		user:{},
-		company:{}
+		company:{},
+		last_call:{}	// last rest call return
 	};
 
 	// init root follow obj - list of all profiles viewed
@@ -149,7 +150,7 @@ angular.module('io.modules')
 				$rootScope.http_error();
 			});*/
 	};
-
+	
 	$scope.loadFollowType = function(api, company_ID, user_ID, query) {
 		api = api || 'friends';
 		//var api = 'friends';
@@ -173,6 +174,7 @@ angular.module('io.modules')
 						if (data[i]['user_ID']) { $scope.user[data[i]['user_ID']] = data[i]; }
 					}
 				}
+				$scope.last_call = data;
 				//console.log($scope);
 			});
 
@@ -213,6 +215,7 @@ angular.module('io.modules')
 						else if (data[i]['user_ID']) { $scope.user[data[i]['user_ID']] = data[i]; }
 					}
 				}
+				$scope.last_call = data;
 			});
 
 		/*$http.get('/follow/ers/'+company_ID+'/'+user_ID+'/'+query)
@@ -251,6 +254,7 @@ angular.module('io.modules')
 					if (data[i]['company_ID']) { $scope.company[data[i]['company_ID']] = data[i]; }
 					else if (data[i]['user_ID']) { $scope.user[data[i]['user_ID']] = data[i]; }
 				}
+				$scope.last_call = data;
 			});
 
 		/*$http.get('/follow/ing/'+company_ID+'/'+user_ID+'/'+query)

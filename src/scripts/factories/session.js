@@ -1,20 +1,16 @@
 
-/*
-To Do
-- test
-
-*/
 angular.module('app.factories')
-.factory('$session', ['app.config', '$rootScope', '$cookies', '$http', '$localStorage', function(config, $rootScope, $cookies, $http,$localStorage) {
-
+.factory('$session', ['app.config', '$rootScope', '$cookies', '$http', '$localStorage', function(config, $rootScope, $cookies, $http, $localStorage) {
+	console.log('SessionFactory (', $rootScope.$id, ')');
 	var $scope = {};
 	$scope.active = $localStorage.get('session.active', false); // signed in bool
 	$scope.account = $localStorage.get('session.account', {});
 	$scope.user = $localStorage.get('session.user', {});
 	$scope.company = $localStorage.get('session.company', {});
 
-	$rootScope.$on('session', function(value){
+	$rootScope.$on('session', function(event, value){
 		$scope.active = (value);
+		$scope.save();
 	});
 
 	$scope.reset = function() {
@@ -53,7 +49,7 @@ angular.module('app.factories')
 					$scope.account = $localStorage.set('session.account', data.account);
 					$scope.user = $localStorage.set('session.user', data.user);
 					$scope.company = $localStorage.set('session.company', data.company);
-					//$rootScope.session.timestamp = +new Date();
+					//$session.timestamp = +new Date();
 					$scope.save();
 					if (callback) { callback(); } // $rootScope.$eval();
 				}
@@ -90,7 +86,7 @@ angular.module('app.factories')
 	$scope.require_signin = function(callback) {
 		console.log('require_signin(', callback, ')');
 		//console.log(config);
-		//console.log(JSON.stringify($rootScope.session));
+		//console.log(JSON.stringify($session));
 		// not signed in -> sign/in
 
 		if (!$scope.active) {
@@ -102,11 +98,11 @@ angular.module('app.factories')
 			}
 		// email not confirmed -> onboard
 		} else if (config.onboard.required && !$scope.account.email_confirm && $rootScope.uri().match(/\/onboard\/email/) === null) {
-			//console.log('email not confirmed = '+(config.onboard.required)+' && '+!$rootScope.session.email_confirm+' && '+($rootScope.uri().match(/\/onboard/) === null));
+			//console.log('email not confirmed = '+(config.onboard.required)+' && '+!$session.email_confirm+' && '+($rootScope.uri().match(/\/onboard/) === null));
 			$rootScope.href('/onboard/email');
 		// haven't completed manditory onboard steps -> onboard
 		} else if (config.onboard.required && !$scope.account.timestamp_create && $rootScope.uri().match(/\/onboard/) === null) {
-			//console.log('onboard not completed = '+(config.onboard.required)+' && '+!$rootScope.session.timestamp_create+' && '+($rootScope.uri().match(/\/onboard/) === null));
+			//console.log('onboard not completed = '+(config.onboard.required)+' && '+!$session.timestamp_create+' && '+($rootScope.uri().match(/\/onboard/) === null));
 			$rootScope.href('/onboard/'+config.onboard.start);
 		// has an old password -> change pass
 		} else if (

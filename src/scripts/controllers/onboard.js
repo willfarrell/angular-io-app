@@ -67,7 +67,7 @@ function OnboardCtrl($rootScope, $scope, $cookies, $rest, $routeParams, $session
 	$scope.button.skip = function() { $scope.href($scope.uri()+'/skip'); };
 	//-- End Buttons --//
 
-	$rootScope.session.require_signin(function() {
+	$session.require_signin(function() {
 		$scope.BuildProgressTracker($routeParams.page, $routeParams.action);
 	});
 }

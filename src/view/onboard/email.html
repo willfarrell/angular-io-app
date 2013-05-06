@@ -1,39 +1,39 @@
 <div class="row-fluid" data-ng-controller="ConfirmCtrl">
 	<div class="span6 offset3 well" data-ng-show="session.account.email_confirm">
 		<fieldset><legend>
-    		Email Confirmed
-    		<div class="btn-group pull-right">
+			Email Confirmed
+			<div class="btn-group pull-right">
 				<button class="btn" data-ng-disabled="!session.account.email_confirm" data-ng-click="button.skip()">Next &raquo;</button>
 			</div>
-    	</legend></fieldset>
+		</legend></fieldset>
 	</div>
-	
+
 	<div class="span6 offset3 well" data-ng-hide="session.account.email_confirm">
 		<fieldset><legend>
-    		Confirm Email
-    		<div class="btn-group pull-right">
+			Confirm Email
+			<div class="btn-group pull-right">
 				<button class="btn btn-primary" data-ng-click="resend()"><i class="icon-envelope"></i> Resend</button>
 			</div>
-    	</legend></fieldset>
-		
+		</legend></fieldset>
+
 		<p>Please check your email inbox and click the confirm link or paste the confirmation code below.</p>
-		
+
 		<form name="confirmCodeForm" class="center">
 			<div class="control-group" data-ng-class="{error: (errors.confirm_code)}">
-	          	<!--<label class="control-label">Confirmation Code</label>-->
-	          	<div class="controls">
-	          		<div class="input-append">
-		                <input type="text" class="" name="confirm_code" placeholder="Confirmation Code" data-ng-model="confirm_code" required><button class="btn btn-primary" data-ng-click="check(confirm_code)">Confirm</button>
-		            </div>
-		            
-		            <!--<span class="help-block error" data-ng-show="confirmCodeForm.confirm_code.$error.required">Required</span>-->
-		            <span class="help-block error" data-ng-show="errors.confirm_code">{{errors.confirm_code}}</span>
-	            </div>
-	        </div>
-			
+			<!--<label class="control-label">Confirmation Code</label>-->
+			<div class="controls">
+			<div class="input-append">
+						<input type="text" class="" name="confirm_code" placeholder="Confirmation Code" data-ng-model="confirm_code" required><button class="btn btn-primary" data-ng-click="check(confirm_code)">Confirm</button>
+					</div>
+
+					<!--<span class="help-block error" data-ng-show="confirmCodeForm.confirm_code.$error.required">Required</span>-->
+					<span class="help-block error" data-ng-show="errors.confirm_code">{{errors.confirm_code}}</span>
+				</div>
+			</div>
+
 		</form>
-		
+
 	</div>
-	
-	
+
+
 </div>

@@ -3,7 +3,7 @@
 //angular.module('io.controller.page', [])
 //.controller('PageCtrl', ['$scope', '$rest', '$routeParams', function($scope, $http, $routeParams) {
 
-function NotificationsCtrl(config, $rootScope, $scope, $rest) {
+function NotificationsCtrl(config, $rootScope, $scope, $rest, $session) {
 	console.log('NotificationsCtrl (',  $scope.$id, ')');
 
 	// notifications
@@ -26,8 +26,11 @@ function NotificationsCtrl(config, $rootScope, $scope, $rest) {
 			}, function(data){
 				if (data !== '') {
 					// sync with defaults, allows for new defaults to be added
-					$scope.notify = syncVar(data, $scope.notify); // will add system defaults
-					//$scope.notify = data;
+					for (var i in data) {
+						if (data.hasOwnProperty(i)) {
+							$scope.notify[i] = data[i];
+						}
+					}
 				}
 			});
 
@@ -65,9 +68,9 @@ function NotificationsCtrl(config, $rootScope, $scope, $rest) {
 			});*/
 	};
 
-	$rootScope.session.require_signin(function() {
+	$session.require_signin(function() {
 		$scope.loadNotifications();
 	});
 }
-NotificationsCtrl.$inject = ['app.config', '$rootScope', '$scope', '$rest'];
+NotificationsCtrl.$inject = ['app.config', '$rootScope', '$scope', '$rest', '$session'];
 //}]);

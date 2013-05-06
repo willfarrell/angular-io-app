@@ -1,77 +1,77 @@
-<form name="userForm" class="form-horizontal" data-ng-controller="NotificationsCtrl">
-    <fieldset><legend>Notifications</legend></fieldset>
-    <hr>
-    
-    <!--<ul class="inline center">
-    	<li><i class="icon-envelope"></i> Email</li>
-    	<li><i class="icon-mobile-phone"></i> SMS</li>
-    	<li><i class="icon-tablet"></i> Push Notification</li>
-    </ul>
-    
-    <hr>-->
-    <div class="control-group">
-    	<b>Activity from your network</b>
-    </div>
-    <div class="control-group">
-      	<label class="control-label" for="notify">Email me when</label>
-      	<div class="controls">
-      		<label class="checkbox">
-            	<input type="checkbox" data-ng-model="notify.new_message.email"> I'm sent a direct message.
-      		</label>
-      		<label class="checkbox">
-            	<input type="checkbox" data-ng-model="notify.new_follow.email"> I'm followed by someone new.
-      		</label>
-        </div>
-    </div>
-    
-    
-    <hr>
-    <div class="control-group">
-    	<b>Activity from your account</b>
-    </div>
-    
-    <div class="control-group">
-      	<label class="control-label" for="notify">Email me when</label>
-      	<div class="controls">
-      		<label class="checkbox">
-            	<input type="checkbox" checked disabled> My password is changed.
-      		</label>
-      		<label class="checkbox">
-            	<input type="checkbox" checked disabled> My email is changed.
-            </label>
-        </div>
-    </div>
-    
-    <!--<hr>
-    <div class="control-group">
-    	<b>Activity from {{i18n.title}}</b>
-    </div>
-    
-    <div class="control-group">
-      	<label class="control-label" for="user_name">Notify me when there is</label>
-      	<div class="controls">
-      		<label class="checkbox">
-            	<input type="checkbox" disabled> News about {{i18n.title}} product and feature updates.  <div class="inline">( <i class="icon-envelope"></i> )</div>
-      		</label>
-      		<label class="checkbox">
-            	<input type="checkbox" disabled> News about {{i18n.title}} on partner products and other third party services. <div class="inline">( <i class="icon-envelope"></i> )</div>
-      		</label>
-        </div>
-    </div>-->
-    
-    
-    <hr>
-    
-    <div class="control-group">
-    	<b>Check your Junk/Spam folder and add "{{i18n.domain_clean}}" to your Safe Senders List.</b>
-    </div>
-    
-    <hr>
-    
-    <div class="control-group">
-      	<div class="controls">
-          	<button class="btn" data-ng-click="updateNotifications()" data-ng-disabled="userEmailForm.$invalid">Save changes</button>
-        </div>
-    </div>
-    
+<form name="form" class="form-horizontal" data-ng-controller="NotificationsCtrl">
+	<fieldset><legend>Notifications</legend></fieldset>
+	<hr>
+
+	<!--<ul class="inline center">
+		<li><i class="icon-envelope"></i> Email</li>
+		<li><i class="icon-mobile-phone"></i> SMS</li>
+		<li><i class="icon-tablet"></i> Push Notification</li>
+	</ul>
+
+	<hr>-->
+	<div class="control-group">
+		<b>Activity from your network</b>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="notify">Email me when</label>
+		<div class="controls">
+			<label class="checkbox">
+				<input type="checkbox" data-ng-model="notify.new_message.email"> I'm sent a direct message.
+			</label>
+			<label class="checkbox">
+				<input type="checkbox" data-ng-model="notify.new_follow.email"> I'm followed by someone new.
+			</label>
+		</div>
+	</div>
+
+
+	<hr>
+	<div class="control-group">
+		<b>Activity from your account</b>
+	</div>
+
+	<div class="control-group">
+		<label class="control-label" for="notify">Email me when</label>
+		<div class="controls">
+			<label class="checkbox">
+				<input type="checkbox" checked disabled> My password is changed.
+			</label>
+			<label class="checkbox">
+				<input type="checkbox" checked disabled> My email is changed.
+			</label>
+		</div>
+	</div>
+
+	<!--<hr>
+	<div class="control-group">
+		<b>Activity from {{i18n.title}}</b>
+	</div>
+
+	<div class="control-group">
+	<label class="control-label" for="user_name">Notify me when there is</label>
+	<div class="controls">
+	<label class="checkbox">
+				<input type="checkbox" disabled> News about {{i18n.title}} product and feature updates.  <div class="inline">( <i class="icon-envelope"></i> )</div>
+	</label>
+	<label class="checkbox">
+				<input type="checkbox" disabled> News about {{i18n.title}} on partner products and other third party services. <div class="inline">( <i class="icon-envelope"></i> )</div>
+	</label>
+		</div>
+	</div>-->
+
+
+	<hr>
+
+	<div class="control-group">
+		<b>Check your Junk/Spam folder and add "{{i18n.domain_clean}}" to your Safe Senders List.</b>
+	</div>
+
+	<hr>
+
+	<div class="control-group">
+	<div class="controls">
+		<button class="btn" data-ng-click="updateNotifications()" data-require-change="{{notify}}" data-ng-disabled="form.$invalid">Save changes</button>
+		</div>
+	</div>
+
 </form>

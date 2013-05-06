@@ -1,13 +1,13 @@
 <div class="pull-center" data-ng-controller="PasswordCtrl">
-	<form class="well" name="resetForm">
-	    <fieldset><legend>Reset Password</legend></fieldset>
-	    <div class="control-group" data-ng-class="{error: (errors.email)}">
-		    <input type="email" name="email" class="input-block-level" placeholder="Email" data-ng-model="signin.email" required>
-		    <span class="error" data-ng-show="resetForm.email.$error.email">Not valid email</span>
-	    </div>
-	    <!-- CAPTCHA HERE? -->
-	    <button class="btn btn-primary" data-ng-click="resetPassword(signin.email)" data-ng-disabled="resetForm.$invalid">Send</button>
-	    
+	<form class="well" name="form">
+		<fieldset><legend>Reset Password</legend></fieldset>
+		<div class="control-group" data-ng-class="{error: (errors.email)}">
+			<input type="email" name="email" class="input-block-level" placeholder="Email" data-ng-model="signin.email" required>
+			<span class="error" data-ng-show="form.email.$error.email">Not valid email</span>
+		</div>
+		<!-- CAPTCHA HERE? -->
+		<button class="btn btn-primary" data-ng-click="resetPassword(signin.email)" data-ng-disabled="form.$invalid">Send</button>
+
 	</form>
 	<a href="#/sign/in">Sign In</a>
 </div>

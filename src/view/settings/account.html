@@ -1,134 +1,134 @@
-<form name="userForm" class="form-horizontal" data-ng-controller="UserCtrl">
-    <fieldset><legend>Account</legend></fieldset>
-    <hr>
-    <div class="control-group" data-ng-class="{error: (errors.user.user_name)}" data-ui-if="settings.account.user_name">
-      	<label class="control-label" for="user_name">Username</label>
-      	<div class="controls">
-            <input type="text" class="input-block-level" name="user_name" placeholder="" data-ng-model="user.user_name" data-ng-minlength="3" data-ng-maxlength="14" data-ng-pattern="/^[\w]*$/" data-ng-change="check.user_name(user.user_name)" required>
-          	<span class="help-block"><a data-ng-href="/#/profile/{{user.user_name}}">/#/profile/{{user.user_name}}</a></span>
-            <span class="help-block error" data-ng-show="userForm.user_name.$error.pattern">only alphanumeric characters and underscores allowed</span>
-            <span class="help-block error" data-ng-show="userForm.user_name.$error.minlength">too short</span>
-            <span class="help-block error" data-ng-show="userForm.user_name.$error.maxlength">too long</span>
-            <span class="help-block error" data-ng-show="errors.user.user_name">{{errors.user.user_name}}</span>
-            
-        </div>
-    </div>
-    
-    
-    <div class="control-group">
-      	<label class="control-label" for="user_email">Email</label>
-      	<div class="controls">
-          	<input type="email" class="input-block-level" name="user_email" data-ng-model="user.user_email" disabled>
-          	<span class="help-block">Email will not be publicly displayed.  <a href="#/settings/email">Change</a></span>
+<form name="form" class="form-horizontal" data-ng-controller="UserCtrl">
+	<fieldset><legend>Account</legend></fieldset>
+	<hr>
+	<div class="control-group" data-ng-class="{error: (errors.user.user_name)}" data-ui-if="settings.account.user_name">
+	<label class="control-label" for="user_name">Username</label>
+	<div class="controls">
+			<input type="text" class="input-block-level" name="user_name" placeholder="" data-ng-model="user.user_name" data-ng-minlength="3" data-ng-maxlength="14" data-ng-pattern="/^[\w]*$/" data-ng-change="check.user_name(user.user_name)" required>
+		<span class="help-block"><a data-ng-href="/#/profile/{{user.user_name}}">/#/profile/{{user.user_name}}</a></span>
+			<span class="help-block error" data-ng-show="form.user_name.$error.pattern">only alphanumeric characters and underscores allowed</span>
+			<span class="help-block error" data-ng-show="form.user_name.$error.minlength">too short</span>
+			<span class="help-block error" data-ng-show="form.user_name.$error.maxlength">too long</span>
+			<span class="help-block error" data-ng-show="errors.user.user_name">{{errors.user.user_name}}</span>
 
-        </div>
-    </div>
-    
-    <!--<div class="control-group" data-ng-class="{error: (errors.user_cell)}">
-      	<label class="control-label" for="user_phone">Phone</label>
-      	<div class="controls">
-          	<div class="input-prepend">
-                <span class="add-on">+{{json.calling_codes[country_code]}}</span><input type="text" class="input-medium" name="user_cell" placeholder="(000) 000-0000" data-ng-model="user.user_cell" data-input-mask="(999) 999-9999 x999999">
-            </div>
-            <span class="help-block error" data-ng-show="errors.user_cell">{{errors.user_cell}}</span>
-        </div>
-    </div>-->
-    
-    <!--
-    devices
-    -->
-    <hr>
-    <div class="control-group">
-    	<b>Browser saved settings</b>
-    </div>
-    
-    <div class="control-group" data-ng-class="{error: (errors.accessibility)}" data-ui-if="accessibility">
-      	<label class="control-label" for="accessibility">Accessibility</label>
-      	<div class="controls">
-            <div class="checkbox">
-            	<input type="checkbox" data-ng-model="accessibility.settings.accessibility" data-ng-change="accessibility.load()"> Enable <a href="http://dyslexicfonts.com/" target="_blank">OpenDyslexic</a> Font-type.
-            </div>
-        </div>
-    </div>
-    
-    
-    <div class="control-group" data-ng-class="{error: (errors.locale)}">
-      	<label class="control-label" for="locale">Locale</label>
-      	<div class="controls">
-      		<select class="input-block-level" data-ng-model="locale" data-ng-options="key as value for (key,value) in json.languages" data-ng-selected="locale" data-ng-change="changeLocale(locale)"></select>
-      		<span class="help-block">Date and number formatting.</span>
-      	</div>
-    </div>
-    
-    <div class="control-group" data-ng-class="{error: (errors.timezone)}">
-      	<label class="control-label" for="timezone">Timezone</label>
-      	<div class="controls">
-      		<select class="input-block-level" disabled>
-	      		<option value="">UTC {{datetime | date:'Z'}}</option>
-      		</select>
-      	</div>
-    </div>
-    <!--
-    <hr>
-    
-    <div class="control-group" data-ng-class="{error: (errors.email.password)}">
-      	<label class="control-label" for="password.password">Language</label>
-      	<div class="controls">
-      		<select class="input-block-level" data-ng-model="country_code" data-ng-options="key as value for (key, value) in json.countries"></select>
-      		<div class="btn-group">
-				<button class="btn dropdown-toggle" data-toggle="dropdown"><!--<i class="flag-{{country_code}}"></i> --{{json.languages[locale]}}</button>
-			    <ul class="dropdown-menu">
-			    	<li data-ng-repeat="locale in settings.i18n.options">
-		        		<a href="" data-ng-click="changeLocale(locale)"><!--<i class="flag-{{locale.substr(3,2)}}"></i> --{{json.languages[locale]}}</a>
-		        	</li>
-		        </ul>
+		</div>
+	</div>
+
+
+	<div class="control-group">
+	<label class="control-label" for="user_email">Email</label>
+	<div class="controls">
+		<input type="email" class="input-block-level" name="user_email" data-ng-model="user.user_email" disabled>
+		<span class="help-block">Email will not be publicly displayed.  <a href="#/settings/email">Change</a></span>
+
+		</div>
+	</div>
+
+	<!--<div class="control-group" data-ng-class="{error: (errors.user_cell)}">
+	<label class="control-label" for="user_phone">Phone</label>
+	<div class="controls">
+		<div class="input-prepend">
+				<span class="add-on">+{{json.calling_codes[country_code]}}</span><input type="text" class="input-medium" name="user_cell" placeholder="(000) 000-0000" data-ng-model="user.user_cell" data-input-mask="(999) 999-9999 x999999">
 			</div>
-      	</div>
-    </div>
-    
-    <div class="control-group" data-ng-class="{error: (errors.country_code)}">
-      	<label class="control-label" for="country_code">Country</label>
-      	<div class="controls">
-            <select class="input-block-level" data-ng-model="country_code" data-ng-options="key as value for (key, value) in json.countries"></select>
-            <span class="help-block">Select your country. This setting is saved to this browser.</span>
-        </div>
-    </div>
+			<span class="help-block error" data-ng-show="errors.user_cell">{{errors.user_cell}}</span>
+		</div>
+	</div>-->
 
-    <div class="control-group" data-ng-class="{error: (errors.accessibility)}">
-      	<label class="control-label" for="accessibility">Accessibility</label>
-      	<div class="controls">
-            <div class="btn-group">
+	<!--
+	devices
+	-->
+	<hr>
+	<div class="control-group">
+		<b>Browser saved settings</b>
+	</div>
+
+	<div class="control-group" data-ng-class="{error: (errors.accessibility)}" data-ui-if="accessibility">
+	<label class="control-label" for="accessibility">Accessibility</label>
+	<div class="controls">
+			<div class="checkbox">
+				<input type="checkbox" data-ng-model="accessibility.settings.accessibility" data-ng-change="accessibility.load()"> Enable <a href="http://dyslexicfonts.com/" target="_blank">OpenDyslexic</a> Font-type.
+			</div>
+		</div>
+	</div>
+
+
+	<div class="control-group" data-ng-class="{error: (errors.locale)}">
+	<label class="control-label" for="locale">Locale</label>
+	<div class="controls">
+	<select class="input-block-level" data-ng-model="locale" data-ng-options="key as value for (key,value) in json.languages" data-ng-selected="locale" data-ng-change="changeLocale(locale)"></select>
+	<span class="help-block">Date and number formatting.</span>
+	</div>
+	</div>
+
+	<div class="control-group" data-ng-class="{error: (errors.timezone)}">
+	<label class="control-label" for="timezone">Timezone</label>
+	<div class="controls">
+	<select class="input-block-level" disabled>
+		<option value="">UTC {{datetime | date:'Z'}}</option>
+	</select>
+	</div>
+	</div>
+	<!--
+	<hr>
+
+	<div class="control-group" data-ng-class="{error: (errors.email.password)}">
+	<label class="control-label" for="password.password">Language</label>
+	<div class="controls">
+	<select class="input-block-level" data-ng-model="country_code" data-ng-options="key as value for (key, value) in json.countries"></select>
+	<div class="btn-group">
+				<button class="btn dropdown-toggle" data-toggle="dropdown"><!--<i class="flag-{{country_code}}"></i> --{{json.languages[locale]}}</button>
+				<ul class="dropdown-menu">
+					<li data-ng-repeat="locale in settings.i18n.options">
+						<a href="" data-ng-click="changeLocale(locale)"><!--<i class="flag-{{locale.substr(3,2)}}"></i> --{{json.languages[locale]}}</a>
+					</li>
+				</ul>
+			</div>
+	</div>
+	</div>
+
+	<div class="control-group" data-ng-class="{error: (errors.country_code)}">
+	<label class="control-label" for="country_code">Country</label>
+	<div class="controls">
+			<select class="input-block-level" data-ng-model="country_code" data-ng-options="key as value for (key, value) in json.countries"></select>
+			<span class="help-block">Select your country. This setting is saved to this browser.</span>
+		</div>
+	</div>
+
+	<div class="control-group" data-ng-class="{error: (errors.accessibility)}">
+	<label class="control-label" for="accessibility">Accessibility</label>
+	<div class="controls">
+			<div class="btn-group">
 					<button class="btn" data-ng-click="accessibility.toggle()">
-					    <i class="icon-eye-close" data-ng-hide="accessibility.settings.accessibility"></i>
-					    <i class="icon-eye-open" data-ng-show="accessibility.settings.accessibility"></i>
-				    </button>
-				    <!--<button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
-				    <ul class="dropdown-menu center">
-				    	<li style="zoom:1; 	MozTransform:scale(0.010)"><a href="" data-ng-click="accessibility.zoom(1)">Default</a></li>
-				    	<li style="zoom:1.2;MozTransform:scale(0.012)"><a href="" data-ng-click="accessibility.zoom(1.2)">Large</a></li>
-				    	<li style="zoom:1.4;MozTransform:scale(0.014)"><a href="" data-ng-click="accessibility.zoom(1.4)">X-Large</a></li>
-			        </ul>--
+						<i class="icon-eye-close" data-ng-hide="accessibility.settings.accessibility"></i>
+						<i class="icon-eye-open" data-ng-show="accessibility.settings.accessibility"></i>
+					</button>
+					<!--<button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+					<ul class="dropdown-menu center">
+						<li style="zoom:1;MozTransform:scale(0.010)"><a href="" data-ng-click="accessibility.zoom(1)">Default</a></li>
+						<li style="zoom:1.2;MozTransform:scale(0.012)"><a href="" data-ng-click="accessibility.zoom(1.2)">Large</a></li>
+						<li style="zoom:1.4;MozTransform:scale(0.014)"><a href="" data-ng-click="accessibility.zoom(1.4)">X-Large</a></li>
+					</ul>--
 				</div>
-        </div>
-    </div>-->
-    
-    <!--<div class="control-group">
-      	<label class="control-label" for="user_level">Permissions</label>
-      	<div class="controls">
-          	<input type="email" class="input-block-level" name="user_level" data-ng-model="user.user_level" disabled>
-          	<span class="help-block">Email will not be publicly displayed.  <a href="#/settings/email">Change</a></span>
+		</div>
+	</div>-->
 
-        </div>
-    </div>-->
-    
-    <hr>
-    
-    <div class="control-group">
-      	<div class="controls">
-          	<button class="btn" data-ng-click="updateUser()" data-ng-disabled="userForm.$invalid">Save changes</button>
-        </div>
-    </div>
-    
+	<!--<div class="control-group">
+	<label class="control-label" for="user_level">Permissions</label>
+	<div class="controls">
+		<input type="email" class="input-block-level" name="user_level" data-ng-model="user.user_level" disabled>
+		<span class="help-block">Email will not be publicly displayed.  <a href="#/settings/email">Change</a></span>
+
+		</div>
+	</div>-->
+
+	<!--<hr>
+
+	<div class="control-group">
+		<div class="controls">
+			<button class="btn" data-ng-click="updateUser()" data-require-change="{{user}}" data-ng-disabled="form.$invalid">Save changes</button>
+		</div>
+	</div>-->
+
 </form>
 
 <!--<a href="" data-ng-click="deleteUser()" data-ng-hide="true">Deactivate my account</a>-->

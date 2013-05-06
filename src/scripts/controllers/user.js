@@ -3,12 +3,8 @@
 //['$scope', '$http', '$routeParams',
 //function($scope, $rest, $routeParams) {
 
-function UserCtrl($rootScope, $scope, $rest, $routeParams) {
+function UserCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 	console.log('UserCtrl (', $scope.$id, ')');
-	$scope.errors = {
-		user:{},
-		email:{}
-	};
 
 	// forms
 	//$scope.forms
@@ -75,8 +71,8 @@ function UserCtrl($rootScope, $scope, $rest, $routeParams) {
 					url: '/user',
 					data: $scope.user
 				}, function(data){
-					$rootScope.updateSession();
-					console.log($rootScope.session);
+					$session.update();
+					console.log($session);
 					$rootScope.alerts = [{'class':'success', 'label':'User Information:', 'message':'Saved'}];
 				});
 			/*$http.put('/user/', $scope.user)
@@ -84,7 +80,7 @@ function UserCtrl($rootScope, $scope, $rest, $routeParams) {
 					console.log('updateUser.put.success');
 					if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
 						$rootScope.updateSession();
-						console.log($rootScope.session);
+						console.log($session);
 						$rootScope.alerts = [{'class':'success', 'label':'User Information:', 'message':'Saved'}];
 					} else {
 						$scope.errors.user	= (data.errors) ? data.errors : {};
@@ -160,7 +156,7 @@ function UserCtrl($rootScope, $scope, $rest, $routeParams) {
 				data: $scope.email
 			}, function(data){
 				$scope.email = {};
-				$rootScope.updateSession();
+				$session.update();
 				$rootScope.alerts = [{'class':'success', 'label':'Change Email:', 'message':'Saved'}];
 			});
 
@@ -179,9 +175,9 @@ function UserCtrl($rootScope, $scope, $rest, $routeParams) {
 			});*/
 	};
 
-	$rootScope.session.require_signin(function(){
+	$session.require_signin(function(){
 		console.log('UserCtrl require_signin');
-		//$scope.user = $rootScope.session.user ? $rootScope.session.user : {};
+		//$scope.user = $session.user ? $session.user : {};
 		if ($routeParams.profile_name) {
 			$scope.loadUserName($routeParams.profile_name);
 		} else if ($routeParams.profile_ID) {
@@ -191,11 +187,11 @@ function UserCtrl($rootScope, $scope, $rest, $routeParams) {
 			};
 			$scope.loadUser($routeParams.profile_ID);
 		} else {
-			$scope.user = $rootScope.session.user;
+			//$scope.user = $session.user;
 			$scope.loadUser();
 		}
 		console.log($scope.user);
 	});
 }
-UserCtrl.$inject = ['$rootScope', '$scope', '$rest', '$routeParams'];
+UserCtrl.$inject = ['$rootScope', '$scope', '$rest', '$routeParams', '$session'];
 //}]);

@@ -22,7 +22,11 @@ function SecurityCtrl($rootScope, $scope, $rest) {
 				url: '/user/security'
 			}, function(data){
 				if (data !== '') {
-					$scope.security = data;
+					for (var i in data) {
+						if (data.hasOwnProperty(i)) {
+							$scope.security[i] = data[i];
+						}
+					}
 				}
 			});
 
@@ -133,6 +137,6 @@ function SecurityCtrl($rootScope, $scope, $rest) {
 	};
 
 	$scope.loadSecurity();
-	//$rootScope.session.require_signin();
+	//$session.require_signin();
 }
 SecurityCtrl.$inject = ['$rootScope', '$scope', '$rest'];

@@ -1,90 +1,90 @@
-<form name="companyForm" class="form-horizontal" data-ng-controller="CompanyCtrl">
+<form name="form" class="form-horizontal" data-ng-controller="CompanyCtrl">
 	<fieldset><legend>Company Profile</legend></fieldset>
 	<hr>
-	
+
 	<div class="control-group" data-ui-if="filepicker">
 		<label class="control-label" for="company_img">Logo</label>
 
 		<div class="controls">
-    		<img data-ng-src="img/company/{{company.company_ID}}.png?{{filepicker.timestamp}}" class="img-polaroid" width="75" height="50"/>
+			<img data-ng-src="img/company/{{company.company_ID}}.png?{{filepicker.timestamp}}" class="img-polaroid" width="75" height="50"/>
 			<button class="btn" data-ng-click="filepicker.upload(settings.filepicker.company_single_image,  company.company_ID);" data-ng-disabled="!company.company_ID">Change logo</button>
 			<!--<span class="help-block">This photo is your identity and appears with your content.</span>-->
-    	</div>
-    </div>
-    
-    <div class="control-group" data-ng-class="{error: (errors.company_username)}" data-ui-if="settings.account.company_username">
-      	<label class="control-label" for="user_name">Username</label>
-      	<div class="controls">
-            <input type="text" class="input-block-level" name="user_name" placeholder="" data-ng-model="company.company_username" data-ng-minlength="3" data-ng-maxlength="32" data-ng-pattern="/^[\w]*$/" data-ng-change="check.user_name(user.user_name)">
-          	<span class="help-block"><a href="/#/profile/{{company.company_username}}">/#/profile/{{company.company_username}}</a></span>
-            <span class="help-block error" data-ng-show="companyForm.company_username.$error.pattern">only alphanumeric characters and underscores allowed</span>
-            <span class="help-block error" data-ng-show="companyForm.company_username.$error.minlength">too short</span>
-            <span class="help-block error" data-ng-show="companyForm.company_username.$error.maxlength">too long</span>
-            <span class="help-block error" data-ng-show="errors.company_username">{{errors.company_username}}</span>
-            
-        </div>
-    </div>
-    
+		</div>
+	</div>
+
+	<div class="control-group" data-ng-class="{error: (errors.company_username)}" data-ui-if="settings.account.company_username">
+	<label class="control-label" for="user_name">Username</label>
+	<div class="controls">
+			<input type="text" class="input-block-level" name="user_name" placeholder="" data-ng-model="company.company_username" data-ng-minlength="3" data-ng-maxlength="32" data-ng-pattern="/^[\w]*$/" data-ng-change="check.user_name(user.user_name)">
+		<span class="help-block"><a href="/#/profile/{{company.company_username}}">/#/profile/{{company.company_username}}</a></span>
+			<span class="help-block error" data-ng-show="form.company_username.$error.pattern">only alphanumeric characters and underscores allowed</span>
+			<span class="help-block error" data-ng-show="form.company_username.$error.minlength">too short</span>
+			<span class="help-block error" data-ng-show="form.company_username.$error.maxlength">too long</span>
+			<span class="help-block error" data-ng-show="errors.company_username">{{errors.company_username}}</span>
+
+		</div>
+	</div>
+
 	<div class="control-group" data-ng-class="{error: (errors.company_name)}">
-      	<label class="control-label">Company Name</label>
-      	<div class="controls">
-            <input type="text" class="input-block-level" name="company_name" placeholder="Required" data-ng-model="company.company_name" required>
-            <!--<span class="help-block error" data-ng-show="companyForm.company_name.$error.required">Required</span>-->
-            <span class="help-block error" data-ng-show="errors.company_name">{{errors.company_name}}</span>
-        </div>
-    </div>
+	<label class="control-label">Company Name</label>
+	<div class="controls">
+			<input type="text" class="input-block-level" name="company_name" placeholder="Required" data-ng-model="company.company_name" required>
+			<!--<span class="help-block error" data-ng-show="form.company_name.$error.required">Required</span>-->
+			<span class="help-block error" data-ng-show="errors.company_name">{{errors.company_name}}</span>
+		</div>
+	</div>
 
-    <div class="control-group" data-ng-class="{error: (errors.company_url)}">
-      	<label class="control-label" for="company_url">Website</label>
-      	<div class="controls">
-            <input type="url" class="input-block-level" name="company_url" data-ng-model="company.company_url" placeholder="https://">
-            <!--<span class="help-block error" data-ng-show="onboardCompanyForm.company_name.$error.required">Required</span>-->
-            <span class="help-block error" data-ng-show="companyForm.company_url.$error.url">Not valid url</span>
-            <span class="help-block error" data-ng-show="errors.company_url">{{errors.company_url}}</span>
-        </div>
-    </div>
+	<div class="control-group" data-ng-class="{error: (errors.company_url)}">
+	<label class="control-label" for="company_url">Website</label>
+	<div class="controls">
+			<input type="url" class="input-block-level" name="company_url" data-ng-model="company.company_url" placeholder="https://">
+			<!--<span class="help-block error" data-ng-show="onboardform.company_name.$error.required">Required</span>-->
+			<span class="help-block error" data-ng-show="form.company_url.$error.url">Not valid url</span>
+			<span class="help-block error" data-ng-show="errors.company_url">{{errors.company_url}}</span>
+		</div>
+	</div>
 
-    <div class="control-group" data-ng-class="{error: (errors.company_phone)}">
-      	<label class="control-label" for="company_phone">Phone</label>
-      	<div class="controls">
-          	<div class="input-prepend">
-                <span class="add-on">+{{json.calling_codes[country_code]}}</span><input type="text" class="input-medium" name="company_phone" placeholder="(000) 000-0000" data-ng-model="company.company_phone" data-input-mask="(999) 999-9999 x999999">
-            </div>
-            <span class="help-block error" data-ng-show="errors.company_phone">{{errors.company_phone}}</span>
-        </div>
-    </div>
-    
-    <div class="control-group" data-ng-class="{error: (errors.user_default_ID)}">
-      	<label class="control-label" for="user_default_ID">Primary User</label>
-      	<div class="controls">
-          	<select class="input-block-level" data-ng-model="company.user_default_ID" data-ng-options="value.user_ID as value.user_name_first+' '+value.user_name_last for (key, value) in users" required></select>
-            <span class="help-block error" data-ng-show="errors.user_default_ID">{{errors.user_default_ID}}</span>
-        </div>
-    </div>
-    
-    <div class="control-group" data-ng-class="{error: (errors.location_default_ID)}">
-      	<label class="control-label" for="location_default_ID">Primary Location</label>
-      	<div class="controls">
-          	<select class="input-block-level" data-ng-model="company.location_default_ID" data-ng-options="value.location_ID as value.location_name for (key, value) in locations" required></select>
-            <span class="help-block error" data-ng-show="errors.location_default_ID">{{errors.location_default_ID}}</span>
-        </div>
-    </div>
-    
-    <hr>
-    
-    <div class="control-group">
-        <label class="control-label" for="company_details">Bio</label>
-	    <div class="controls">
-		    <textarea class="input-block-level" rows="4" data-ng-model="company.company_details" placeholder=""></textarea>
+	<div class="control-group" data-ng-class="{error: (errors.company_phone)}">
+	<label class="control-label" for="company_phone">Phone</label>
+	<div class="controls">
+		<div class="input-prepend">
+				<span class="add-on">+{{json.calling_codes[country_code]}}</span><input type="text" class="input-medium" name="company_phone" placeholder="(000) 000-0000" data-ng-model="company.company_phone" data-input-mask="(999) 999-9999 x999999">
+			</div>
+			<span class="help-block error" data-ng-show="errors.company_phone">{{errors.company_phone}}</span>
+		</div>
+	</div>
+
+	<div class="control-group" data-ng-class="{error: (errors.user_default_ID)}">
+	<label class="control-label" for="user_default_ID">Primary User</label>
+	<div class="controls">
+		<select class="input-block-level" data-ng-model="company.user_default_ID" data-ng-options="value.user_ID as value.user_name_first+' '+value.user_name_last for (key, value) in users" required></select>
+			<span class="help-block error" data-ng-show="errors.user_default_ID">{{errors.user_default_ID}}</span>
+		</div>
+	</div>
+
+	<div class="control-group" data-ng-class="{error: (errors.location_default_ID)}">
+	<label class="control-label" for="location_default_ID">Primary Location</label>
+	<div class="controls">
+		<select class="input-block-level" data-ng-model="company.location_default_ID" data-ng-options="value.location_ID as value.location_name for (key, value) in locations" required></select>
+			<span class="help-block error" data-ng-show="errors.location_default_ID">{{errors.location_default_ID}}</span>
+		</div>
+	</div>
+
+	<hr>
+
+	<div class="control-group">
+		<label class="control-label" for="company_details">Bio</label>
+		<div class="controls">
+			<textarea class="input-block-level" rows="4" data-ng-model="company.company_details" placeholder=""></textarea>
 			<span class="pull-right">{{company.company_details.length}}</span>
 			<span class="help-block">About your company.</span>
-	    </div>
+		</div>
 	</div>
-	
+
 	<hr>
 	<div class="control-group">
-      	<div class="controls">
-	      	<button class="btn" data-ng-click="updateCompany()" data-ng-disabled="companyForm.$invalid">Save changes</button>
-      	</div>
+	<div class="controls">
+		<button class="btn" data-ng-click="updateCompany()" data-require-change="{{conpany}}" data-ng-disabled="form.$invalid">Save changes</button>
+	</div>
 	</div>
 </form>
