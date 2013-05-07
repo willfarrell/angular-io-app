@@ -104,7 +104,7 @@ class User extends Core {
 		$ignore = json_decode($ignore, true);
 		
 		foreach($ignore as $key => $value) {
-			if (isset($request_data[$key])) {
+			if (isset($request_data[$key]) && $request_data[$key] == $value) {
 				unset($request_data[$key]);
 			}
 		}

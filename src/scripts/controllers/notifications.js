@@ -51,7 +51,7 @@ function NotificationsCtrl(config, $rootScope, $scope, $rest, $session) {
 	$scope.updateNotifications = function() {
 		console.log($scope.notify);
 		$rest.http({
-				method:'get',
+				method:'put',
 				url: '/user/notify',
 				data: $scope.notify
 			}, function(data){
