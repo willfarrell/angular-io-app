@@ -47,7 +47,7 @@ var db = {
 			return true;
 		} else if (result === 'false') {
 			return false;
-		} 
+		}
 		result = '"'+result+'"'; // to catch numbers
 		return JSON.parse(result);
 

@@ -19,6 +19,8 @@ class Password {
 		$this->user_ID = $user_ID;
 		$this->user_email = $user_email;
 		
+		$this->config = json_decode(file_get_contents('json/config.password.json'), false); // object
+
 		// Dev
 		$this->timer = new Timers;
 	}
@@ -93,8 +95,8 @@ class Password {
 		$error = array();
 		$length = strlen($password);
 		
-		if ($length < PASSWORD_MIN_LENGTH) {
-			$this->errors["min_length"] = "Password too short, must be {PASSWORD_MIN_LENGTH} or more";
+		if ($length < $this->config->min_length) {
+			$this->errors["min_length"] = "Password too short, must be $this->config->min_length or more";
 			return false;
 		}
 		return true;
@@ -127,15 +129,15 @@ class Password {
 			else 																		{ ++$subsets['other'];	}
 			
 			// max_charset_identical check
-			if ($i >= PASSWORD_MAX_CHARSET_IDENTICAL-1) {
+			if ($i >= $this->config->max_identical-1) {
 				$charset_identical = true;
-				for ($j = $i-1, $k = $i - PASSWORD_MAX_CHARSET_IDENTICAL; $j > $k; $j--) {
+				for ($j = $i-1, $k = $i - $this->config->max_identical; $j > $k; $j--) {
 					if ($password_chars[$j] != $char) {
 						$charset_identical = false;
 					}
 				}
 				if ($charset_identical) {
-					$this->errors["max_charset_identical"] = "Password cannot have {PASSWORD_MAX_CHARSET_IDENTICAL} or more identical characters";
+					$this->errors["max_charset_identical"] = "Password cannot have $this->config->max_identical or more identical characters";
 					$return = false;
 				}
 			}
@@ -147,25 +149,25 @@ class Password {
 			if ($subset) $subset_count++;
 		}
 		
-		if ($subset_count < PASSWORD_MIN_CHARSET_SUBSET) {
+		if ($subset_count < $this->config->min_subset) {
 			$this->errors["min_charset_subset"] = "Password needs different types of characters";
-			if ($subsets['lower'] < PASSWORD_MIN_CHARSET_LOWER) {
+			if ($subsets['lower'] < $this->config->min_lower) {
 				$this->errors["min_charset_lower"] = "Password needs at least one lower case letter";
 				$return = false;
 			}
-			if ($subsets['upper'] < PASSWORD_MIN_CHARSET_UPPER) {
+			if ($subsets['upper'] < $this->config->min_upper) {
 				$this->errors["min_charset_upper"] = "Password needs at least one upper case letter";
 				$return = false;
 			}
-			if ($subsets['number'] < PASSWORD_MIN_CHARSET_NUMBER) {
+			if ($subsets['number'] < $this->config->min_number) {
 				$this->errors["min_charset_number"] = "Password needs at least one number";
 				$return = false;
 			}
-			if ($subsets['special'] < PASSWORD_MIN_CHARSET_SPECIAL) {
+			if ($subsets['special'] < $this->config->min_special) {
 				$this->errors["min_charset_special"] = "Password needs an special character (!\"£$%&...)";
 				$return = false;
 			}
-			if ($subsets['other'] < PASSWORD_MIN_CHARSET_OTHER) {
+			if ($subsets['other'] < $this->config->min_other) {
 				$this->errors["min_charset_other"] = true;
 				$return = false;
 			}

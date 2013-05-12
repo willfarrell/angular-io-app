@@ -2,7 +2,9 @@
 angular.module('app.factories')
 .factory('$session', ['app.config', '$rootScope', '$cookies', '$http', '$localStorage', function(config, $rootScope, $cookies, $http, $localStorage) {
 	console.log('SessionFactory (', $rootScope.$id, ')');
+	
 	var $scope = {};
+	
 	$scope.active = $localStorage.get('session.active', false); // signed in bool
 	$scope.account = $localStorage.get('session.account', {});
 	$scope.user = $localStorage.get('session.user', {});
@@ -85,10 +87,9 @@ angular.module('app.factories')
 
 	$scope.require_signin = function(callback) {
 		console.log('require_signin(', callback, ')');
-		//console.log(config);
+		console.log('config', config);
 		//console.log(JSON.stringify($session));
 		// not signed in -> sign/in
-
 		if (!$scope.active) {
 			console.log('not signed in');
 

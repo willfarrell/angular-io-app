@@ -1,16 +1,13 @@
 
 // AngularIO (io)
 angular.module('io.config', []).value('io.config', {
-	'password':{				// As per OWASP
-		'min_length'	:10,
-		'min_subset'	:3,
-		'min_upper'		:1,
-		'min_lower'		:1,
-		'min_number'	:1,
-		'min_special'	:1,
-		'min_other'		:0,
-		'max_identical'	:3
-	},
+	'views': 'view/',	// must end with /
+	// json configs shared with serverside
+	'filepicker': 'json/config.filepicker.json',
+	'i18n': 'json/config.i18n.json',
+	'password': 'json/config.password.json',
+	'notify': 'json/config.notify.client.json',
+	
 	'follow': {
 		'type': 'user',
 		'tpl': {
@@ -21,9 +18,9 @@ angular.module('io.config', []).value('io.config', {
 	}
 });
 angular.module('io.controllers', ['io.config']);
-angular.module('io.directives', ['io.config']);
+angular.module('io.directives', ['io.config', 'io.factories', 'io.modules']);
 angular.module('io.factories', ['io.config']);
-angular.module('io.filters', ['io.config']);
+angular.module('io.filters', ['io.config', 'io.factories', 'io.modules']);
 angular.module('io.modules', ['io.config']);	// plugins (mix of types)
 angular.module('io.modernizr', []);
 angular.module('io', ['io.controllers', 'io.directives', 'io.factories', 'io.filters', 'io.modules', 'io.modernizr', 'io.config']);
@@ -43,7 +40,7 @@ angular.module('$strap.filters', ['$strap.config']);
 angular.module('$strap', ['$strap.directives', '$strap.filters', '$strap.config']);
 
 // App (app)
-angular.module('app.config', []).value('app.config', {
+angular.module('app.config', []).value('app.config', { // defaults - overwrite with json/config.app.json
 	'dashboard'		:'#/app',				// app dashboard ie #/app - special button
 	//'offline'		:[],		//'class':{							// add in classes at root level ($rootScope.class_name.class_attr)
 		//'validate':validate,			// validation (password)
@@ -69,14 +66,18 @@ angular.module('app.config', []).value('app.config', {
 	'json':{								// load json files into $rootScope.json[key] = JSON.parse(file);
 		'calling_codes'	:'calling_codes'	// {'country_code':'calling_code'}
 	},
+	
 	'account': {
 		'user_name'		:false,	// Require username in profile
 		'company'		:false,
 		'company_username':false
 	},
-	'password':{				// As per OWASP
-		'min_age'		:0,
-		'min_timestamp'	:0
+	// sign in params
+	'captcha': false,
+	'password': {
+		'min_timestamp'	:0,
+		'max_age'		:0,
+		'min_length'	:10 // for strings
 	},
 	'security': {
 		'totp': true

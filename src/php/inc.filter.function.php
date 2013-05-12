@@ -18,6 +18,12 @@ $filter_function = array (
       'label' => '',
       'rules' => 'required',
     ),
+    'referral' => 
+    array (
+      'field' => 'referral',
+      'label' => 'Referral',
+      'rules' => '',
+    ),
   ),
   'account_post_signin' => 
   array (
@@ -112,13 +118,13 @@ $filter_function = array (
     array (
       'field' => 'old_password',
       'label' => 'Old Password',
-      'rules' => '',
+      'rules' => 'required',
     ),
     'new_password' => 
     array (
       'field' => 'new_password',
       'label' => 'New Password',
-      'rules' => '',
+      'rules' => 'required',
     ),
   ),
   'account_put_reset_password' => 
@@ -127,19 +133,13 @@ $filter_function = array (
     array (
       'field' => 'hash',
       'label' => 'Hash',
-      'rules' => '',
-    ),
-    'password' => 
-    array (
-      'field' => 'password',
-      'label' => 'Password',
-      'rules' => '',
+      'rules' => 'required',
     ),
     'new_password' => 
     array (
       'field' => 'new_password',
       'label' => 'New Password',
-      'rules' => '',
+      'rules' => 'required',
     ),
   ),
   'location_post' => 

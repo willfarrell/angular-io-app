@@ -3,7 +3,7 @@
 //angular.module('io.controller.company', [])
 //.controller('CompanyCtrl', ['$scope', '$http', function($scope, $http) {
 
-function CompanyCtrl($rootScope, $scope, $http, $routeParams, $session) {
+function CompanyCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 	console.log('CompanyCtrl (', $scope.$id, ')');
 
 	$scope.errors = {};
@@ -20,41 +20,59 @@ function CompanyCtrl($rootScope, $scope, $http, $routeParams, $session) {
 	$scope.loadCompany = function(profile_ID) {
 		console.log('loadCompany(', profile_ID, ')');
 		profile_ID = profile_ID || 0;
-		$http.get('/company/'+profile_ID)
+		$rest.http({
+				method:'get', // get,head,post,put,delete,jsonp
+				url: '/company/'+profile_ID
+			}, function(data){
+				$scope.company = data;
+				$scope.location = data.location_default_ID ? data.location : $scope.location;
+				$scope.location.primary = true;
+				/*if ($scope.session.company_ID == data.company_ID) {
+					$scope.loadUsers();
+					$scope.loadLocations();
+				}*/
+			});
+			
+		/*$http.get('/company/'+profile_ID)
 			.success(function(data) {
 				if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
 					$scope.company = data;
 					$scope.location = data.location_default_ID ? data.location : $scope.location;
 					$scope.location.primary = true;
 					//$scope.loadLocations();
-					/*if ($scope.session.company_ID == data.company_ID) {
-						$scope.loadUsers();
-						$scope.loadLocations();
-					}*/
+					
 				} else {
 					$scope.errors.company	= (data.errors) ? data.errors : {};
 				}
 			})
 			.error(function() {
 				$rootScope.http_error();
-			});
+			});*/
 
 	};
 
 	$scope.loadCompanyName = function(profile_name) {
 		console.log('loadCompanyName(', profile_name, ')');
 		profile_name = profile_name || '';
-		$http.get('/company/name/'+profile_name)
+		$rest.http({
+				method:'get', // get,head,post,put,delete,jsonp
+				url: '/company/name/'+profile_name
+			}, function(data){
+				$scope.company = data;
+				$scope.location = data.location_default_ID ? data.location : $scope.location;
+				$scope.location.primary = true;
+				/*if ($scope.session.company_ID == data.company_ID) {
+					$scope.loadUsers();
+					$scope.loadLocations();
+				}*/
+			});
+		/*$http.get('/company/name/'+profile_name)
 			.success(function(data) {
 				console.log('loadCompanyName.get.success');
 				if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
 					$scope.company = data;
 					$scope.location = data.location_default_ID ? data.location : $scope.location;
 					$scope.location.primary = true;
-					/*if ($scope.session.company_ID == data.company_ID) {
-						$scope.loadUsers();
-						$scope.loadLocations();
-					}*/
 				} else {
 					$scope.errors.company	= (data.errors) ? data.errors : {};
 				}
@@ -62,13 +80,24 @@ function CompanyCtrl($rootScope, $scope, $http, $routeParams, $session) {
 			.error(function() {
 				console.log('loadCompanyName.get.error');
 				$rootScope.http_error();
-			});
+			});*/
 	};
 
-	$scope.updateCompany = function() {
-		$rootScope.alerts = [];
+	$scope.updateCompany = function(callback) {
+		
 		if ($scope.company.company_ID) {	// update
-			$http.put('/company/', $scope.company)
+			$rest.http({
+					method:'put', // get,head,post,put,delete,jsonp
+					url: '/company/',
+					data: $scope.company
+				}, function(data){
+					$session.company = $scope.company;
+					$session.save();
+					//$rootScope.updateSession();
+					$rootScope.alerts = [{'class':'success', 'label':'Company Profile:', 'message':'Saved'}];
+					if (callback) { callback($scope.company.company_ID); }
+				});
+			/*$http.put('/company/', $scope.company)
 				.success(function(data) {
 					console.log(data);
 					if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
@@ -76,15 +105,28 @@ function CompanyCtrl($rootScope, $scope, $http, $routeParams, $session) {
 						$session.save();
 						//$rootScope.updateSession();
 						$rootScope.alerts = [{'class':'success', 'label':'Company Profile:', 'message':'Saved'}];
+						if (callback) { callback($scope.company.company_ID); }
 					} else {
 						$scope.errors.company	= (data.errors) ? data.errors : {};
 					}
 				})
 				.error(function() {
 					$rootScope.http_error();
-				});
+				});*/
 		} else {	// create
-			$http.post('/company/', $scope.company)
+			$rest.http({
+					method:'post', // get,head,post,put,delete,jsonp
+					url: '/company/',
+					data: $scope.company
+				}, function(data){
+					$scope.company.company_ID = data;
+					$session.company = $scope.company;
+					$session.save();
+					//$rootScope.updateSession();
+					$rootScope.alerts = [{'class':'success', 'label':'Company Profile:', 'message':'Saved'}];
+					if (callback) { callback(data); }
+				});
+			/*$http.post('/company/', $scope.company)
 				.success(function(data) {
 					console.log(data);
 					if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
@@ -93,20 +135,40 @@ function CompanyCtrl($rootScope, $scope, $http, $routeParams, $session) {
 						$session.save();
 						//$rootScope.updateSession();
 						$rootScope.alerts = [{'class':'success', 'label':'Company Profile:', 'message':'Saved'}];
+						if (callback) { callback(data); }
 					} else {
 						$scope.errors	= (data.errors) ? data.errors : {};
 					}
 				})
 				.error(function() {
 					$rootScope.http_error();
-				});
+				});*/
 		}
 	};
 
 	//-- Locations --//
 	$scope.loadLocations = function() {
 		console.log('loadLocations');
-		$http.get('/location/')
+		$rest.http({
+				method:'get', // get,head,post,put,delete,jsonp
+				url: '/location/'
+			}, function(data){
+				$scope.locations = data;
+				// load region data
+				var regions = [], i;
+				for (i in data) {
+					if (data.hasOwnProperty(i)) {
+						regions.push(data[i].country_code);
+					}
+				}
+				regions = arrayUnique(regions);
+				for (i in regions) {
+					if (regions.hasOwnProperty(i)) {
+						$rootScope.loadRegions(regions[i]);
+					}
+				}
+			});
+		/*$http.get('/location/')
 			.success(function(data) {
 				console.log(data);
 				$scope.errors.user	= (data.errors) ? data.errors : {};
@@ -130,7 +192,7 @@ function CompanyCtrl($rootScope, $scope, $http, $routeParams, $session) {
 			})
 			.error(function() {
 				$rootScope.http_error();
-			});
+			});*/
 	};
 
 	$scope.editLocation = function(location) {
@@ -149,7 +211,15 @@ function CompanyCtrl($rootScope, $scope, $http, $routeParams, $session) {
 		console.log('updateLocation');
 		$rootScope.alerts = [];
 		if ($scope.location.location_ID) {	// update
-			$http.put('/location/', $scope.location)
+			$rest.http({
+					method:'put', // get,head,post,put,delete,jsonp
+					url: '/location/',
+					data: $scope.location
+				}, function(data){
+					$scope.locations[$scope.location.location_ID] = $scope.location;
+					$rootScope.alerts = [{'class':'success', 'label':'Location:', 'message':'Saved'}];
+				});
+			/*$http.put('/location/', $scope.location)
 				.success(function(data) {
 					console.log('updateLocation.put.success');
 					console.log(data);
@@ -163,9 +233,18 @@ function CompanyCtrl($rootScope, $scope, $http, $routeParams, $session) {
 				.error(function() {
 					console.log('updateLocation.put.error');
 					$rootScope.http_error();
-				});
+				});*/
 		} else {	// create
-			$http.post('/location/', $scope.location)
+			$rest.http({
+					method:'post', // get,head,post,put,delete,jsonp
+					url: '/location/',
+					data: $scope.location
+				}, function(data){
+					$scope.location.location_ID = data;
+					$scope.locations[$scope.location.location_ID] = $scope.location;
+					$rootScope.alerts = [{'class':'success', 'label':'Location:', 'message':'Saved'}];
+				});
+			/*$http.post('/location/', $scope.location)
 				.success(function(data) {
 					console.log('updateLocation.post.success');
 					console.log(data);
@@ -180,16 +259,18 @@ function CompanyCtrl($rootScope, $scope, $http, $routeParams, $session) {
 				.error(function() {
 					console.log('updateLocation.post.error');
 					$rootScope.http_error();
-				});
+				});*/
 		}
 	};
 	$scope.deleteLocation = function(id) {
 		console.log('deleteLocation(', id, ')');
-		var http_config = {
-			'method':'delete',
-			'url':'/location/'+id
-		};
-		$http(http_config)
+		$rest.http({
+				method:'delete', // get,head,post,put,delete,jsonp
+				url: '/location/'+id
+			}, function(data){
+				delete $scope.locations[id];
+			});
+		/*$http(http_config)
 			.success(function(data) {
 				console.log('deleteLocation.delete.success');
 				console.log(data);
@@ -202,22 +283,27 @@ function CompanyCtrl($rootScope, $scope, $http, $routeParams, $session) {
 			.error(function() {
 				console.log('deleteLocation.delete.error');
 				$rootScope.http_error();
-			});
+			});*/
 	};
 	//-- Users --//
 	$scope.loadUsers = function() {
-
-		$http.get('/company/user/').success(function(data) {
-			console.log(data);
-			$scope.errors.user	= (data.errors) ? data.errors : {};
-			$rootScope.alerts= (data.alerts) ? data.alerts : [];
-			if (!data.alerts && !data.errors) {
+		$rest.http({
+				method:'get', // get,head,post,put,delete,jsonp
+				url: '/company/user/'
+			}, function(data){
 				$scope.users = data;
-			}
-		})
-		.error(function() {
-			$rootScope.http_error();
-		});
+			});
+		/*$http.get('/company/user/').success(function(data) {
+				console.log(data);
+				$scope.errors.user	= (data.errors) ? data.errors : {};
+				$rootScope.alerts= (data.alerts) ? data.alerts : [];
+				if (!data.alerts && !data.errors) {
+					$scope.users = data;
+				}
+			})
+			.error(function() {
+				$rootScope.http_error();
+			});*/
 	};
 	$scope.editUser = function(user) {
 		console.log('editUser(user)');
@@ -233,7 +319,15 @@ function CompanyCtrl($rootScope, $scope, $http, $routeParams, $session) {
 		console.log('updateLocation');
 		$rootScope.alerts = [];
 		if ($scope.user.user_ID) {	// update
-			$http.put('/company/user/', $scope.user)
+			$rest.http({
+					method:'put', // get,head,post,put,delete,jsonp
+					url: '/company/user/',
+					data: $scope.user
+				}, function(data){
+					$scope.users[$scope.user.user_ID] = $scope.user;
+					$rootScope.alerts = [{'class':'success', 'label':'User:', 'message':'Saved'}];
+				});
+			/*$http.put('/company/user/', $scope.user)
 				.success(function(data) {
 					console.log('updateUser.put.success');
 					console.log(data);
@@ -247,9 +341,18 @@ function CompanyCtrl($rootScope, $scope, $http, $routeParams, $session) {
 				.error(function() {
 					console.log('updateUser.put.error');
 					$rootScope.http_error();
-				});
+				});*/
 		} else {	// create
-			$http.post('/company/user/', $scope.user)
+			$rest.http({
+					method:'post', // get,head,post,put,delete,jsonp
+					url: '/company/user/',
+					data: $scope.user
+				}, function(data){
+					$scope.user.user_ID = data;
+					$scope.users[$scope.user.user_ID] = $scope.user;
+					$rootScope.alerts = [{'class':'success', 'label':'User:', 'message':'Saved'}];
+				});
+			/*$http.post('/company/user/', $scope.user)
 				.success(function(data) {
 					console.log('updateUser.post.success');
 					console.log(data);
@@ -264,7 +367,7 @@ function CompanyCtrl($rootScope, $scope, $http, $routeParams, $session) {
 				.error(function() {
 					console.log('updateUser.post.error');
 					$rootScope.http_error();
-				});
+				});*/
 		}
 	};
 

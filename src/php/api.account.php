@@ -12,7 +12,6 @@ class Account extends Core {
 	}
 
 	function __destruct() {
-		
 		parent::__destruct();
 	}
 	
@@ -55,11 +54,10 @@ class Account extends Core {
 			"user_name_last" => $r['user_name_last'],
 		);
 		
-		$return["company_ID"] = $r['company_ID'];
 		// company
-		if ($return["company_ID"]) {
+		if ($r["company_ID"]) {
 			$query = "SELECT * FROM companies WHERE company_ID = '{{company_ID}}' LIMIT 0,1";
-			$result = $this->db->query($query, array('company_ID' => $return["company_ID"]));
+			$result = $this->db->query($query, array('company_ID' => $r["company_ID"]));
 			if ($result) {
 				$r = $this->db->fetch_assoc($result);
 
@@ -69,6 +67,10 @@ class Account extends Core {
 					"company_url" => $r['company_url'],
 				);
 			}
+		} else {
+			$return["company"] = array(
+				"company_ID" => 0
+			);
 		}
 
 		return $return;
@@ -121,18 +123,22 @@ class Account extends Core {
 			"password_history"    => $password_hash,
 			'password_timestamp'  => $_SERVER['REQUEST_TIME'],
 			'referral_user_ID'    => $referral_user_ID,
+			'timestamp_confirm'   => REQUIRE_EMAIL_CONFIRM ? 0 : $_SERVER['REQUEST_TIME'],
 			//'timestamp_create'    => $_SERVER['REQUEST_TIME'],
 			//'timestamp_update'    => $_SERVER['REQUEST_TIME'],
 		);
 		$user_ID = $this->db->insert('users', $user);
 
-
-		$hash = substr(hash("sha512", $email.$_SERVER['REQUEST_TIME']), 0, 16);
+		if (REQUIRE_EMAIL_CONFIRM) {
+			$hash = substr(hash("sha512", $email.$_SERVER['REQUEST_TIME']), 0, 16);
 		
-		$insert = array('user_ID' => $user_ID, 'hash' => $hash);
-		$this->db->insert_update('user_confirm', $insert, $insert);
-
-		$this->notify->send($user_ID, 'signup_confirm_email', array("hash" => $hash), "email");
+			$insert = array('user_ID' => $user_ID, 'hash' => $hash);
+			$this->db->insert_update('user_confirm', $insert, $insert);
+	
+			$this->notify->send($user_ID, 'signup_confirm_email', array("hash" => $hash), "email");
+			
+			$return = array("alerts" => array(array('class' => 'success', 'label' => 'Account created!', 'message' => 'Check your email for an activation link.')));
+		}
 		
 		return $return;
 	}
@@ -260,7 +266,7 @@ class Account extends Core {
 		$result = $this->db->select('users', array('user_email' => $email));
 		if ($result) { // user exists
 			$user = $this->db->fetch_assoc($result);
-			$expire_timestamp = $_SERVER['REQUEST_TIME']+360;
+			$expire_timestamp = $_SERVER['REQUEST_TIME']+PASSWORD_RESET_LENGTH;
 			
 			$hash = substr(hash("sha512", $email.$_SERVER['REQUEST_TIME']), 0, 16);
 			
@@ -327,8 +333,6 @@ class Account extends Core {
 		$return = array();
 		
 		$this->filter->set_request_data($request_data);
-		$this->filter->set_group_rules('password');
-		$this->filter->set_key_rules(array('hash', 'new_password'), 'required');
 		if(!$this->filter->run()) {
 			$return["errors"] = $this->filter->get_errors();
 			return $return;
@@ -391,8 +395,6 @@ class Account extends Core {
 		$user_ID = USER_ID;
 		
 		$this->filter->set_request_data($request_data);
-		$this->filter->set_group_rules('password');
-		$this->filter->set_key_rules(array('old_password', 'new_password'), 'required');
 		if(!$this->filter->run()) {
 			$return["errors"] = $this->filter->get_errors();
 			return $return;

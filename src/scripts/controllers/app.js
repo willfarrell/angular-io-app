@@ -2,7 +2,7 @@
 //.controller('AppCtrl',
 //['$rootScope', '$scope', '$rest', '$follow', '$filepicker',
 //function(rootScope, $scope, $http, follow, filepicker) {
-function AppCtrl(config, $rootScope, $scope, $window, $cookies, $location, $session, $rest, $filepicker, $accessibility, $message, $follow) {
+function AppCtrl(config, $rootScope, $scope, $window, $cookies, $location, $session, $rest, $filepicker, $accessibility, $message, $follow, $timeout) {
 	console.log('AppCtrl (', $scope.$id, ')');
 
 	// Route Events
@@ -33,12 +33,23 @@ function AppCtrl(config, $rootScope, $scope, $window, $cookies, $location, $sess
 	$rootScope.accessibility = $accessibility;
 	$rootScope.message = $message;
 	$rootScope.follow = $follow;
-
+	
+	// Responsive hamburger menu
 	$scope.slideNavBool = -1;		// slider nav state (-1,+1)
 	$scope.slideNav = function(value) {
 		if (value === 1 || value === -1) { $scope.slideNavBool = value; }
 		else { $scope.slideNavBool *= -1; }
 	};
+	
+	// Cookies Accepted Message
+	$rootScope.cookies = $cookies;
+	console.log('Modernizr.cookies', Modernizr.cookies);
+	$scope.hideCookieMessage = function() {
+		console.log(JSON.stringify($cookies));
+		$cookies.CookiesAccepted = 'true';
+		console.log(JSON.stringify($cookies));
+	};
+	
 	//!-- App Root Scoope Functions --//
 	/*
 	$scope.sampleRequest = function(a, b, c, d) {
@@ -52,5 +63,5 @@ function AppCtrl(config, $rootScope, $scope, $window, $cookies, $location, $sess
 	};
 	*/
 }
-AppCtrl.$inject = ['app.config', '$rootScope', '$scope', '$window', '$cookies', '$location', '$session', '$rest', '$filepicker', '$accessibility', '$message', '$follow'];
+AppCtrl.$inject = ['app.config', '$rootScope', '$scope', '$window', '$cookies', '$location', '$session', '$rest', '$filepicker', '$accessibility', '$message', '$follow', '$timeout'];
 //}]);

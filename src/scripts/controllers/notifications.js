@@ -3,21 +3,11 @@
 //angular.module('io.controller.page', [])
 //.controller('PageCtrl', ['$scope', '$rest', '$routeParams', function($scope, $http, $routeParams) {
 
-function NotificationsCtrl(config, $rootScope, $scope, $rest, $session) {
+function NotificationsCtrl($config, $rootScope, $scope, $rest, $session) {
 	console.log('NotificationsCtrl (',  $scope.$id, ')');
-
-	// notifications
-	// defaults as per class.notify.php
-	// email:true
-	// sms:false
-	if (config.notify) {
-		$scope.notify = config.notify;
-	} else {
-		$rootScope.loadJSON(null, 'config.notify.client', 'json', function(data){
-			config.notify = data;
-			$scope.notify = data;
-		});
-	}
+	
+	$scope.notify = {};
+	$config.get('notify', $scope.notify, function(value) { $scope.notify = value; });
 
 	$scope.loadNotifications = function() {
 		$rest.http({
@@ -72,5 +62,5 @@ function NotificationsCtrl(config, $rootScope, $scope, $rest, $session) {
 		$scope.loadNotifications();
 	});
 }
-NotificationsCtrl.$inject = ['app.config', '$rootScope', '$scope', '$rest', '$session'];
+NotificationsCtrl.$inject = ['$config', '$rootScope', '$scope', '$rest', '$session'];
 //}]);

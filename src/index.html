@@ -14,6 +14,7 @@
 
 	<!-- build:css css/app.min.css -->
 	<link rel="stylesheet" href="styles/bootstrap.css"><!-- generated from styles/less/bootstrap.less -->
+	<link rel="stylesheet" href="styles/cookieMessage.css"><!-- Required if using Cookie Accepted Message -->
 	<link rel="stylesheet" href="components/font-awesome/css/font-awesome.css">
 	<!--<link rel="stylesheet" href="components/font-awesome/build/fontawesome.css">--><!-- doesn't catch var icons -->
 	<link rel="stylesheet" href="components/angular-io/src/styles/accessibility.css">
@@ -36,7 +37,7 @@
 <!-- Break out of iFrame -->
 <body class="ng-cloak" onload="if(this!=top){top.location.href=this.location.href}" data-ng-controller="AppCtrl">
 
-<!-- !Loading Screen -->
+<!-- !Loading Screen - to be phased out -->
 <div id="init-blanket" data-ng-show="loader.count < loader.total">
 	<div class="span4"></div>
 	<div class="well span4">
@@ -48,6 +49,12 @@
 	</div>
 </div>
 <!-- !End Loading Screen -->
+
+<!-- Notify user of cookie use -->
+<div class="cookies center" data-ng-hide="cookies.CookiesAccepted">
+	<div class="close" data-ng-click="hideCookieMessage()">x</div>
+	<p>We use <a href="#/support/cookies">cookies</a> on your computer or mobile device to help make this website better.<br>You can change your cookie settings at any time. Otherwise, we'll assume you're OK to continue.</p>
+</div>
 
 <div class="nav-slider visible-phone" data-ng-include="'view/nav.slide.html'" data-ng-class="{'1':'nav-slider-open', '-1':'nav-slider-closed'}[slideNavBool]" data-ng-click="slideNav()"></div>
 <div class="page" data-ng-class="{'1':'page-slider-open', '-1':'page-slider-closed'}[slideNavBool]">
@@ -87,7 +94,7 @@
 		</div>
 	</div>
 	<!-- !End Top Nav -->
-
+		
 	<!-- !View -->
 	<div class="wrapper" data-ng-click="slideNav(-1)"><!-- wrapper used for sticky footer -->
 		<div class="container" data-ng-view></div>
@@ -124,14 +131,16 @@
 <!-- build:js js/modernizr.min.js -->
 <!-- http://modernizr.com/download/# -->
 <script src="components/modernizr/modernizr.js"></script>
+<script src="components/modernizr/feature-detects/cookies.js"></script>
 <script src="components/modernizr/feature-detects/json.js"></script>
 <script src="components/modernizr/feature-detects/forms-placeholder.js"></script>
 <script src="components/angular-modernizr/src/feature-detects/forms-reveal.js"></script>
+
 <!-- endbuild -->
 
 <!-- build:js js/app.min.js -->
 <!-- !Non-CDN Components -->
-<script src="components/angular-complete/angular-cookies.js"></script>
+<script src="components/angular-io/src/scripts/factories/angular-cookies.js"></script>
 
 <!-- !Liabraries -->
 <script src="components/marked/lib/marked.js"></script>
@@ -146,7 +155,6 @@
 
 <script src="scripts/controllers/app.js"></script>
 
-<script src="scripts/controllers/templateurl.js"></script>
 <script src="scripts/controllers/sign.js"></script>
 <script src="scripts/controllers/confirm.js"></script>
 <script src="scripts/controllers/reset.js"></script>
@@ -185,6 +193,7 @@
 <!--<script src="components/angular-io/src/scripts/directives/selectSize.js"></script>-->
 
 
+<script src="components/angular-io/src/scripts/factories/config.js"></script>
 <script src="components/angular-io/src/scripts/factories/localStorage.js"></script>
 <script src="components/angular-io/src/scripts/factories/offline.js"></script>
 <script src="components/angular-io/src/scripts/factories/rest.js"></script>
@@ -206,6 +215,7 @@
 
 <script src="components/angular-io/src/scripts/modules/404.js"></script>
 <script src="components/angular-io/src/scripts/modules/accessibility.js"></script>
+<script src="components/angular-io/src/scripts/modules/templateurl.js"></script>
 
 <!-- !AngularUI -->
 <script src="components/angular-ui/modules/directives/if/if.js"></script>

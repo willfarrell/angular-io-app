@@ -706,15 +706,15 @@ module.exports = function(grunt) {
 					// grunt-string-replace
 					replacements: [
 						{
-							pattern: /{{version}}/g,
+							pattern: /\{\{version\}\}/g,
 							replacement: '<%= pkg.version %>'
 						},
 						{
-							pattern: /{{date}}/g,
+							pattern: /\{\{date\}\}/g,
 							replacement: '<%= new Date().toString() %>'
 						},
 						{
-							pattern: /{{timestamp}}/g,
+							pattern: /\{\{timestamp\}\}/g,
 							replacement: '<%= new Date().getTime() %>'
 						}
 					]

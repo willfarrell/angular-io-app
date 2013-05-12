@@ -3,10 +3,13 @@
 //angular.module('io.controller.sign', [])
 //.controller('SignCtrl', ['$scope', '$rest', '$cookies', '$routeParams', function($scope, $http, $cookies, $routeParams) {
 
-function SignCtrl($rootScope, $scope, $cookies, $routeParams, $rest, $session) {
+function SignCtrl($config, $rootScope, $scope, $cookies, $routeParams, $rest, $session) {
 	console.log('SignCtrl (', $scope.$id, ')');
 	$scope.page = $routeParams.page ? $routeParams.page : 'in';
-
+	
+	$scope.config = {};
+	$config.get('password', {}, function(value){ $scope.config = value; });
+	
 	//-- Sign Up --//
 	$scope.signup = {
 		//email:'',
@@ -26,9 +29,14 @@ function SignCtrl($rootScope, $scope, $cookies, $routeParams, $rest, $session) {
 				method:'post',
 				url: '/account/signup',
 				data: $scope.signup
-			}, function(data){
+			}, function(data){ // sign in
 				$scope.signin.email = $scope.signup.email;
-				$rootScope.alerts = [{'class':'success', 'label':'Account created!', 'message':'Check your email for an activation link.'}];
+				$scope.signin.password = $scope.signup.password;
+				$scope.signup = {};
+				$scope.account_signin();
+			}, function(data){ // requires confirm
+				$scope.signin.email = $scope.signup.email;
+				$scope.signup = {};
 			});
 
 		/*$http.post('/account/signup', $scope.signup)
@@ -219,5 +227,5 @@ function SignCtrl($rootScope, $scope, $cookies, $routeParams, $rest, $session) {
 	}
 
 }
-SignCtrl.$inject = ['$rootScope', '$scope', '$cookies', '$routeParams', '$rest', '$session'];
+SignCtrl.$inject = ['$config', '$rootScope', '$scope', '$cookies', '$routeParams', '$rest', '$session'];
 //}]);

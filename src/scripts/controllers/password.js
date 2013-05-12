@@ -1,9 +1,14 @@
 //angular.module('io.controller.password', [])
 //.controller('PasswordCtrl', ['$scope', '$rest', function($scope, $http) {
 
-function PasswordCtrl($rootScope, $scope, $session, $rest) {
+function PasswordCtrl($config, $rootScope, $scope, $session, $rest) {
 	console.log('PasswordCtrl (', $scope.$id, ')');
-
+	
+	$scope.config = {};
+	$config.get('password', {}, function(value){ $scope.config = value; });
+	
+	$scope.password = {};
+	
 	$scope.updatePassword = function() {
 		$rest.http({
 				method:'put',
@@ -58,5 +63,5 @@ function PasswordCtrl($rootScope, $scope, $session, $rest) {
 	};
 
 }
-PasswordCtrl.$inject = ['$rootScope', '$scope', '$session', '$rest'];
+PasswordCtrl.$inject = ['$config', '$rootScope', '$scope', '$session', '$rest'];
 //}]);

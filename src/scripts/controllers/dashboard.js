@@ -1,7 +1,7 @@
 //angular.module('app.controller.dashboard', [])
 //.controller('DashboardCtrl', ['$scope', '$rest', function($scope, $http) {
 function DashboardCtrl(config, $rootScope, $scope, $rest, $routeParams, $session) {
-	console.log('DashboardCtrl (', $scope.$id, config,')');
+	console.log('DashboardCtrl (', $scope.$id, config, ')');
 	//-- App Functions Here --//
 
 	//-- Directory Search --//

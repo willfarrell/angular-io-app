@@ -1,4 +1,4 @@
-# Angular.io - AngularJS + Bootstrap [![Build Status](https://travis-ci.org/willfarrell/angular-io-app.png?branch=master)](https://travis-ci.org/willfarrell/angular-io-app)
+# Angular.io - AngularJS + Bootstrap [![Build Status](https://travis-ci.org/willfarrell/angular-io-app.png?branch=master)](https://travis-ci.org/willfarrell/angular-io-app) [![Dependencies](https://david-dm.org/willfarrell/angular-io-app.png)](https://david-dm.org/willfarrell/angular-io-app) [![devDependency Status](https://david-dm.org/willfarrell/angular-io-app/dev-status.png)](https://david-dm.org/willfarrell/angular-io-app#info=devDependencies)
 ## Usage
 As few brew requirements if not installed:
 ```

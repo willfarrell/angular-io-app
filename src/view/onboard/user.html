@@ -5,7 +5,7 @@
 			<fieldset><legend>
 				User Profile
 				<div class="btn-group pull-right">
-					<button class="btn btn-primary" data-ng-click="updateUser()" data-ng-disabled="userForm.$invalid"><i class="icon-ok"></i> Save</button>
+					<button class="btn btn-primary" data-ng-click="updateUser(button.skip)" data-ng-disabled="userForm.$invalid"><i class="icon-ok"></i> Save</button>
 					<button class="btn" data-ng-disabled="!session.user.user_name && !session.user.user_name_first" data-ng-click="button.skip()">Next &raquo;</button>
 				</div>
 			</legend></fieldset>

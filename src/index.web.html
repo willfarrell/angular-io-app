@@ -79,6 +79,12 @@
 </div>
 <!-- !End Loading Screen -->
 
+<!-- Notify user of cookie use -->
+<div class="cookies center" data-ng-hide="cookies.CookiesAccepted">
+	<div class="close" data-ng-click="hideCookieMessage()">x</div>
+	<p>We use <a href="#/support/cookies">cookies</a> on your computer or mobile device to help make this website better.<br>You can change your cookie settings at any time. Otherwise, we'll assume you're OK to continue.</p>
+</div>
+
 <div class="nav-slider visible-phone" data-ng-include="'view/nav.slide.html'" data-ng-class="{'1':'nav-slider-open', '-1':'nav-slider-closed'}[slideNavBool]" data-ng-click="slideNav()"></div>
 <div class="page" data-ng-class="{'1':'page-slider-open', '-1':'page-slider-closed'}[slideNavBool]">
 

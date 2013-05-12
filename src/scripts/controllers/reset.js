@@ -1,8 +1,12 @@
 //angular.module('io.controller.reset', [])
 //.controller('ResetCtrl', ['$scope', '$rest', '$routeParams', function($scope, $http, $routeParams) {
 
-function ResetCtrl($rootScope, $scope, $rest, $routeParams) {
+function ResetCtrl($config, $rootScope, $scope, $rest, $routeParams) {
 	console.log('ResetCtrl (', $scope.$id, ')');
+	
+	$scope.config = {};
+	$config.get('password', {}, function(value){ $scope.config = value; });
+	
 	$scope.hash = ($routeParams && $routeParams.action) ? $routeParams.action : ''; // /:folder/:page/:action
 	$scope.state = {
 		verify:true,
@@ -111,5 +115,5 @@ function ResetCtrl($rootScope, $scope, $rest, $routeParams) {
 
 	if ($scope.hash) { $scope.check(); }
 }
-ResetCtrl.$inject = ['$rootScope', '$scope', '$rest', '$routeParams'];
+ResetCtrl.$inject = ['$config', '$rootScope', '$scope', '$rest', '$routeParams'];
 //}]);

@@ -5,7 +5,7 @@
 
 function UserCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 	console.log('UserCtrl (', $scope.$id, ')');
-
+	
 	// forms
 	//$scope.forms
 	$scope.user = {};
@@ -63,8 +63,8 @@ function UserCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 			});*/
 	};
 
-	$scope.updateUser = function() {
-		console.log('updateUser()');
+	$scope.updateUser = function(callback) {
+		console.log('updateUser(', callback, ')');
 		if ($scope.user.user_ID) {	// update
 			$rest.http({
 					method:'put',
@@ -74,6 +74,7 @@ function UserCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 					$session.update();
 					console.log($session);
 					$rootScope.alerts = [{'class':'success', 'label':'User Information:', 'message':'Saved'}];
+					if (callback) { callback(); }
 				});
 			/*$http.put('/user/', $scope.user)
 				.success(function(data) {

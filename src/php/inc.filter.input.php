@@ -31,28 +31,6 @@ $filter_input = array(
 	        'rules'   => 'trim|valid_email|valid_email_dns'
 	    ),
     ),
-    'password' => array(
-	    array(
-	    	'field'   => 'password',
-	        'label'   => 'Password',
-	        'rules'   => 'min_length[10]'
-	    ),
-	    array(
-	    	'field'   => 'old_password',
-	        'label'   => 'Password',
-	        'rules'   => 'min_length[1]'
-	    ),
-	    array(
-	    	'field'   => 'new_password',
-	        'label'   => 'Password',
-	        'rules'   => 'min_length[10]'
-	    ),
-	    array(
-	    	'field'   => 'hash',
-	        'label'   => 'Hash',
-	        'rules'   => 'min_length[1]'
-	    ),
-    ),
     'users' => array(
 		array(
 	    	'field'   => 'user_ID',

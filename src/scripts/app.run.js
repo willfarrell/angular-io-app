@@ -4,7 +4,7 @@ angular.module('app')
 .run(['app.config', '$rootScope', '$timeout', '$locale', '$cookies', '$http', '$window', '$location',
 function(config, $rootScope, $timeout, $locale, $cookies, $http, $window, $location) {
 	console.group('app.rootScope (', $rootScope.$id, ')');
-
+	
 	// appCache - from outside of angular (appCache.js)
 	$rootScope.appCache = $window.appCache;
 	$rootScope.$on('appCache', function(e, value) {
@@ -40,6 +40,7 @@ function(config, $rootScope, $timeout, $locale, $cookies, $http, $window, $locat
 	// referral param
 	// requires $location & $cookies
 	if ($location.search().ref) { $cookies.referral = $location.search().ref; }
+	if ($location.search().redirect) { $cookies.redirect = $location.search().redirect; }
 
 	$rootScope.device= (typeof device !== 'undefined') ? device : false; // cordova active?
 	// history tracking - research History API / History.js (22Kb) - migrate?
