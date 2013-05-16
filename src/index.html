@@ -43,7 +43,7 @@
 	<div class="well span4">
 		<h2 data-ng-bind-template="{{i18n.title}}"></h2>
 		<div class="progress progress-striped active">
-			<div class="bar" style="width:{{loader.width}}%;"></div>
+			<div class="bar" data-ng-style="{width: loader.width+'%'}"></div>
 		</div>
 		<span data-ng-bind-template="{{loader.details}}"></span>
 	</div>
@@ -51,7 +51,7 @@
 <!-- !End Loading Screen -->
 
 <!-- Notify user of cookie use -->
-<div class="cookies center" data-ng-hide="cookies.CookiesAccepted">
+<div class="cookie-message center" data-ng-hide="cookies.CookiesAccepted">
 	<div class="close" data-ng-click="hideCookieMessage()">x</div>
 	<p>We use <a href="#/support/cookies">cookies</a> on your computer or mobile device to help make this website better.<br>You can change your cookie settings at any time. Otherwise, we'll assume you're OK to continue.</p>
 </div>
@@ -70,7 +70,7 @@
 		</div>
 	</div>
 	<![endif]-->
-	<div class="alert-fixed-top appCache alert-no-close" data-ng-show="appCache.status > 2">
+	<div class="alert-fixed-top appCache alert-no-close" data-ng-show="appCache.percent">
 		<div class="container">
 			<div class="alert alert-info">
 				<table width="100%"><tr><td>
@@ -94,7 +94,7 @@
 		</div>
 	</div>
 	<!-- !End Top Nav -->
-		
+
 	<!-- !View -->
 	<div class="wrapper" data-ng-click="slideNav(-1)"><!-- wrapper used for sticky footer -->
 		<div class="container" data-ng-view></div>
@@ -140,7 +140,7 @@
 
 <!-- build:js js/app.min.js -->
 <!-- !Non-CDN Components -->
-<script src="components/angular-io/src/scripts/factories/angular-cookies.js"></script>
+<script src="components/angular-io/src/scripts/factories/cookies.js"></script>
 
 <!-- !Liabraries -->
 <script src="components/marked/lib/marked.js"></script>

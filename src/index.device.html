@@ -7,30 +7,60 @@
 </head>
 <body class="ng-cloak" data-ng-controller="AppCtrl">
 
-<!-- !Loading Screen -->
+<!-- !Loading Screen - to be phased out -->
 <div id="init-blanket" data-ng-show="loader.count < loader.total">
 	<div class="span4"></div>
 	<div class="well span4">
 		<h2 data-ng-bind-template="{{i18n.title}}"></h2>
 		<div class="progress progress-striped active">
-			<div class="bar" style="width:{{loader.width}}%;"></div>
+			<div class="bar" data-ng-style="{width: loader.width+'%'}"></div>
 		</div>
 		<span data-ng-bind-template="{{loader.details}}"></span>
 	</div>
 </div>
 <!-- !End Loading Screen -->
 
+<!-- Notify user of cookie use -->
+<div class="cookie-message center" data-ng-hide="cookies.CookiesAccepted">
+	<div class="close" data-ng-click="hideCookieMessage()">x</div>
+	<p>We use <a href="#/support/cookies">cookies</a> on your computer or mobile device to help make this website better.<br>You can change your cookie settings at any time. Otherwise, we'll assume you're OK to continue.</p>
+</div>
+
 <div class="nav-slider visible-phone" data-ng-include="'view/nav.slide.html'" data-ng-class="{'1':'nav-slider-open', '-1':'nav-slider-closed'}[slideNavBool]" data-ng-click="slideNav()"></div>
 <div class="page" data-ng-class="{'1':'page-slider-open', '-1':'page-slider-closed'}[slideNavBool]">
 
 	<!-- !Top Nav -->
-	<header class="header" data-ng-include="'view/nav.top.html'"></header>
-	<div class="alert-fixed-top">
-		<div class="alert alert-{{alert.class}}" data-ng-repeat="alert in alerts" data-dismiss="alert">
+	<div class="header" data-ng-include="'view/nav.top.html'"></div>
+	<!--[if lte IE 9]>
+	<div class="alert-fixed-top alert-no-close">
 		<div class="container">
-			<button class="close">&times;</button>
-			<strong>{{alert.label}}</strong> {{alert.message}}
+			<div class="alert alert-error">
+				<strong>You are using an outdated browser.</strong> <a href="http://browsehappy.com/" target="_blank">Upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true" target="_blank">install Google Chrome Frame Plug-in</a> to better experience this site.
+			</div>
 		</div>
+	</div>
+	<![endif]-->
+	<div class="alert-fixed-top appCache alert-no-close" data-ng-show="appCache.percent">
+		<div class="container">
+			<div class="alert alert-info">
+				<table width="100%"><tr><td>
+					<strong>New Version</strong>
+				</td><td class="auto-span">
+					<div class="progress" data-ng-class="{false: 'progress-striped active'}[appCache.percent == 100]">
+						<div class="bar" data-ng-style="{width: appCache.percent+'%'}"><!--{{appCache.loaded}} / {{appCache.total}}--></div>
+					</div>
+				</td><td>
+					<button class="btn btn-mini btn-primary pull-right" onclick="window.location.reload()" data-ng-disabled="appCache.percent != 100"><i class="icon-refresh"></i> Reload</button>
+				</td></tr></table>
+			</div>
+		</div>
+	</div>
+	<div class="alert-fixed-top">
+		<div class="container">
+			<div class="alert alert-{{alert.class}}" data-ng-repeat="alert in alerts">
+				<button class="close" data-dismiss="alert">&times;</button>
+				<strong>{{alert.label}}</strong> {{alert.message}}
+			</div>
 		</div>
 	</div>
 	<!-- !End Top Nav -->
@@ -41,12 +71,10 @@
 		<div class="footer-push"></div><!-- footer-push used for sticky footer -->
 	</div>
 	<!-- !End View -->
-
-	<footer class="footer" data-ng-include="'view/footer.html'"></footer>
+	<div class="footer" data-ng-include="'view/footer.html'"></div>
 </div>
 
-<!-- !Plugin Modals & Partials -->
-<div data-ng-include="'view/partials/follow.html'"></div>
+<!-- !Plugin Modals & Partials -> to be repace by directives -->
 <div data-ng-include="'view/partials/filepicker.html'"></div>
 <div data-ng-include="'view/partials/message.html'"></div>
 <div data-ng-include="'view/partials/alert.html'"></div>
