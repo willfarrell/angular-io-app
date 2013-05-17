@@ -27,6 +27,7 @@ $permission_tests = array (
   'follow_get_suggestions' => 'connected',
   'follow_put' => '',
   'location_get' => '',
+  'location_post' => '',
   'message_get_list' => 'connected',
   'message_unread' => 'connected',
   'user_get' => '',

@@ -1,5 +1,3 @@
-/*global arrayUnique:true */
-
 //angular.module('io.controller.company', [])
 //.controller('CompanyCtrl', ['$scope', '$http', function($scope, $http) {
 
@@ -155,18 +153,19 @@ function CompanyCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 			}, function(data){
 				$scope.locations = data;
 				// load region data
-				var regions = [], i;
-				for (i in data) {
+				//var regions = [];
+				for (var i in data) {
 					if (data.hasOwnProperty(i)) {
-						regions.push(data[i].country_code);
+						//regions.push(data[i].country_code);
+						$rootScope.loadRegions(data[i].country_code);
 					}
 				}
-				regions = arrayUnique(regions);
-				for (i in regions) {
+				//regions = arrayUnique(regions);
+				/*for (i in regions) {
 					if (regions.hasOwnProperty(i)) {
 						$rootScope.loadRegions(regions[i]);
 					}
-				}
+				}*/
 			});
 		/*$http.get('/location/')
 			.success(function(data) {
@@ -208,8 +207,10 @@ function CompanyCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 	};
 
 	$scope.updateLocation = function() {
-		console.log('updateLocation');
+		console.log('updateLocation()');
+		if (!$scope.location.location_name) { return; }
 		$rootScope.alerts = [];
+		
 		if ($scope.location.location_ID) {	// update
 			$rest.http({
 					method:'put', // get,head,post,put,delete,jsonp
@@ -391,5 +392,5 @@ function CompanyCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 		}
 	});
 }
-CompanyCtrl.$inject = ['$rootScope', '$scope', '$http', '$routeParams', '$session'];
+CompanyCtrl.$inject = ['$rootScope', '$scope', '$rest', '$routeParams', '$session'];
 //}]);

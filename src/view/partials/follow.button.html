@@ -16,7 +16,14 @@
 				<i data-ng-class="{true:'icon-ok', false:'icon-blank'}[(follow.groups.indexOf(group.group_ID) != -1)]"></i> {{group.group_name}}
 			</a>
 		</li>
-		<li class="divider" data-ng-show="objectLength(follow.groups)"></li>
+		<!--<li>
+			<div class="input-append">
+				<input type="text" class="input-small" placeholder="New Group" data-ng-model="new_group_name">
+				<span class="add-on" data-ng-click="follow.addGroup(new_group_name, companyId, userId)"><i class="icon-plus"></i></span>
+			</div>
+		</li>-->
+		<li class="divider"></li>
+		<!--<li class="divider" data-ng-show="objectLength(follow.groups)"></li>-->
 		<li><a data-ng-click="follow.remove(companyId, userId, 0)"><i class="icon-blank"></i> Unfollow</a></li>
 	</ul>
 </div>

@@ -1,3 +1,4 @@
+/*globals Modernizr:true */
 //angular.module('app.controller.root', [])
 //.controller('AppCtrl',
 //['$rootScope', '$scope', '$rest', '$follow', '$filepicker',

@@ -69,8 +69,8 @@ angular.module('app.config', []).value('app.config', { // defaults - overwrite w
 	
 	'account': {
 		'user_name'		:false,	// Require username in profile
-		'company'		:false,
-		'company_username':false
+		'company'		:true,
+		'company_username':true
 	},
 	// sign in params
 	'captcha': false,

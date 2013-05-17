@@ -13,8 +13,8 @@ module.exports = function(grunt) {
 		dist:	'dist',
 		web:	'dist-web', // only static, for CDN
 		api:	'dist-api', // web service
-		phonegap:'dist-phonegap',	// only static, for phonegap
-		splashcolor:'white'		// phonegap splash screen background color
+		phonegap:'dist-phonegap', // only static, for phonegap
+		splashcolor:'white' // phonegap splash screen background color
 	};
 	grunt.initConfig({
 		yeoman: yeomanConfig,

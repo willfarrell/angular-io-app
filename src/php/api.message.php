@@ -103,6 +103,7 @@ class Message extends Core {
 				." FROM ".$this->table
 				." WHERE "
 				." user_key = '{{user_key}}'"
+				." ORDER BY timestamp DESC"
 				." LIMIT 0,25";
 		
 		$where = array(

@@ -1,11 +1,11 @@
 {
-	'default'	:'en',		// default locale
-	'options'	:['en'],	// all language options
-	'core':[				// array of core level lang files (nav, header, footer, etc)
-		'angular-io',
-		'app'
+	"default"	:"en",		// default locale
+	"options"	:["en"],	// all language options
+	"core":[				// array of core level lang files (nav, header, footer, etc)
+		"angular-io",
+		"app"
 	],
-	'view': [				// maping a view to a lang file to lazy load in 
-		'sign':'sign'
+	"view": [				// maping a view to a lang file to lazy load in 
+		"sign":"sign"
 	]
 }

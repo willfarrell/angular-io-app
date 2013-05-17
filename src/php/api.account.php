@@ -42,7 +42,7 @@ class Account extends Core {
 			"timestamp_create" => $r['timestamp_create'], // for onboard trigger
 			
 			"referral" => base_convert($r['user_ID'], 10, 32),
-			"email_confirm" => ($r['timestamp_confirm']) ? true : false,
+			"email_confirm" => (REQUIRE_EMAIL_CONFIRM && $r['timestamp_confirm']) ? true : false,
 		);
 		
 		$return["user"] = array(
@@ -123,7 +123,7 @@ class Account extends Core {
 			"password_history"    => $password_hash,
 			'password_timestamp'  => $_SERVER['REQUEST_TIME'],
 			'referral_user_ID'    => $referral_user_ID,
-			'timestamp_confirm'   => REQUIRE_EMAIL_CONFIRM ? 0 : $_SERVER['REQUEST_TIME'],
+			//'timestamp_confirm'   => 0,
 			//'timestamp_create'    => $_SERVER['REQUEST_TIME'],
 			//'timestamp_update'    => $_SERVER['REQUEST_TIME'],
 		);

@@ -1,11 +1,11 @@
 <div class="row-fluid" data-ng-controller="CompanyCtrl">
 	<div class="span6 offset3 well">
 
-		<form name="onboardCompanyForm" class="form-vertical">
+		<form name="form" class="form-vertical">
 			<fieldset><legend>
 				Company Profile
 				<div class="btn-group pull-right">
-					<button class="btn btn-primary" data-ng-click="updateCompany()" data-ng-disabled="onboardCompanyForm.$invalid"><i class="icon-ok"></i> Save</button>
+					<button class="btn btn-primary" data-ng-click="updateCompany()" data-ng-disabled="form.$invalid"><i class="icon-ok"></i> Save</button>
 					<button class="btn" data-ng-disabled="!company.company_ID" data-ng-click="button.skip()">Next &raquo;</button>
 				</div>
 			</legend></fieldset>
@@ -24,7 +24,7 @@
 			<label class="control-label">Company Name</label>
 			<div class="controls">
 					<input type="text" class="input-block-level" name="company_name" placeholder="required" data-ng-model="company.company_name" required>
-					<!--<span class="help-block error" data-ng-show="onboardCompanyForm.company_name.$error.required">Required</span>-->
+					<!--<span class="help-block error" data-ng-show="form.company_name.$error.required">Required</span>-->
 					<span class="help-block error" data-ng-show="errors.company_name">{{errors.company_name}}</span>
 				</div>
 			</div>
@@ -41,12 +41,18 @@
 			<label class="control-label" for="company_url">Website</label>
 			<div class="controls">
 					<input type="url" class="input-block-level" name="company_url" data-ng-model="company.company_url" placeholder="http://">
-					<!--<span class="help-block error" data-ng-show="onboardCompanyForm.company_name.$error.required">Required</span>-->
-					<span class="help-block error" data-ng-show="onboardCompanyForm.company_url.$error.url">Not valid url</span>
+					<!--<span class="help-block error" data-ng-show="form.company_name.$error.required">Required</span>-->
+					<span class="help-block error" data-ng-show="form.company_url.$error.url">Not valid url</span>
 					<span class="help-block error" data-ng-show="errors.company_url">{{errors.company_url}}</span>
 				</div>
 			</div>
-
+			
+			<div class="btn-group pull-right">
+				<button class="btn btn-primary" data-ng-click="updateCompany(); updateLocation();" data-ng-disabled="form.$invalid"><i class="icon-ok"></i> Save</button>
+				<button class="btn" data-ng-disabled="!company.company_ID" data-ng-click="button.skip()">Next &raquo;</button>
+			</div>
+			
+			
 			<div data-ui-if="company.company_ID">
 			<hr>
 
@@ -120,7 +126,7 @@
 
 			<hr>
 			<div class="btn-group pull-right">
-				<button class="btn btn-primary" data-ng-click="updateCompany(); updateLocation();" data-ng-disabled="onboardCompanyForm.$invalid"><i class="icon-ok"></i> Save</button>
+				<button class="btn btn-primary" data-ng-click="updateCompany(); updateLocation();" data-ng-disabled="form.$invalid"><i class="icon-ok"></i> Save</button>
 				<button class="btn" data-ng-disabled="!company.company_ID" data-ng-click="button.skip()">Next &raquo;</button>
 			</div>
 		</form>
