@@ -1,6 +1,9 @@
 <div data-ng-controller="CompanyCtrl">
-<div class="btn-group pull-right" data-ng-show="session.company.company_ID != company.company_ID" data-ng-init="follow.loadFollow(company.company_ID)">
+<!--<div class="btn-group pull-right" data-ng-show="session.company.company_ID != company.company_ID" data-ng-init="follow.loadFollow(company.company_ID)">
 	<div data-ng-include="'follow-global-button'"></div>
+</div>-->
+<div class="btn-group pull-right" data-ng-show="session.company.company_ID != company.company_ID">
+	<div data-follow-button data-company-id="{{company.company_ID}}"></div>
 </div>
 <h2>{{company.company_name}}</h2>
 

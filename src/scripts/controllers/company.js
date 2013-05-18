@@ -6,7 +6,9 @@ function CompanyCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 
 	$scope.errors = {};
 	$scope.toggle = {};
-	$scope.company = {};
+	$scope.company = {
+		company_ID: 0
+	};
 	$scope.user = {};
 	$scope.users = {};
 	$scope.location = {
@@ -56,6 +58,7 @@ function CompanyCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 				method:'get', // get,head,post,put,delete,jsonp
 				url: '/company/name/'+profile_name
 			}, function(data){
+				console.log(data);
 				$scope.company = data;
 				$scope.location = data.location_default_ID ? data.location : $scope.location;
 				$scope.location.primary = true;
@@ -83,17 +86,22 @@ function CompanyCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 
 	$scope.updateCompany = function(callback) {
 		
+		var success = function(company_ID) {
+			$session.company = $scope.company;
+			console.log($session.company, $scope.company);
+			$session.save();
+			//$rootScope.updateSession();
+			$rootScope.alerts = [{'class':'success', 'label':'Company Profile:', 'message':'Saved'}];
+			if (callback) { callback(company_ID); }
+		};
+		
 		if ($scope.company.company_ID) {	// update
 			$rest.http({
 					method:'put', // get,head,post,put,delete,jsonp
 					url: '/company/',
 					data: $scope.company
 				}, function(data){
-					$session.company = $scope.company;
-					$session.save();
-					//$rootScope.updateSession();
-					$rootScope.alerts = [{'class':'success', 'label':'Company Profile:', 'message':'Saved'}];
-					if (callback) { callback($scope.company.company_ID); }
+					success($scope.company.company_ID);
 				});
 			/*$http.put('/company/', $scope.company)
 				.success(function(data) {
@@ -118,11 +126,7 @@ function CompanyCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 					data: $scope.company
 				}, function(data){
 					$scope.company.company_ID = data;
-					$session.company = $scope.company;
-					$session.save();
-					//$rootScope.updateSession();
-					$rootScope.alerts = [{'class':'success', 'label':'Company Profile:', 'message':'Saved'}];
-					if (callback) { callback(data); }
+					success(data);
 				});
 			/*$http.post('/company/', $scope.company)
 				.success(function(data) {

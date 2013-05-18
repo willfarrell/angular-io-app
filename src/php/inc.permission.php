@@ -7,6 +7,7 @@ $permission_tests = array (
   'account_get_session' => 'connected',
   'account_post_signin' => '',
   'account_post_signup' => '',
+  'account_put_email_change' => '',
   'account_put_password_change' => '',
   'company_get' => '',
   'company_get_user' => '',

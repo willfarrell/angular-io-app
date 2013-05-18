@@ -42,7 +42,7 @@ class Account extends Core {
 			"timestamp_create" => $r['timestamp_create'], // for onboard trigger
 			
 			"referral" => base_convert($r['user_ID'], 10, 32),
-			"email_confirm" => (REQUIRE_EMAIL_CONFIRM && $r['timestamp_confirm']) ? true : false,
+			"email_confirm" => (REQUIRE_EMAIL_CONFIRM && $r['timestamp_confirm'] || !REQUIRE_EMAIL_CONFIRM) ? true : false,
 		);
 		
 		$return["user"] = array(
@@ -55,6 +55,9 @@ class Account extends Core {
 		);
 		
 		// company
+		$return["company"] = array(
+			"company_ID" => 0
+		);
 		if ($r["company_ID"]) {
 			$query = "SELECT * FROM companies WHERE company_ID = '{{company_ID}}' LIMIT 0,1";
 			$result = $this->db->query($query, array('company_ID' => $r["company_ID"]));
@@ -67,10 +70,6 @@ class Account extends Core {
 					"company_url" => $r['company_url'],
 				);
 			}
-		} else {
-			$return["company"] = array(
-				"company_ID" => 0
-			);
 		}
 
 		return $return;

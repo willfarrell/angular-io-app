@@ -3,13 +3,27 @@ angular.module('app.factories')
 .factory('$session', ['app.config', '$rootScope', '$cookies', '$http', '$localStorage', function(config, $rootScope, $cookies, $http, $localStorage) {
 	console.log('SessionFactory (', $rootScope.$id, ')');
 	
-	var $scope = {};
+	var $scope = {},
+		default_obj = {
+			active: false,
+			account: {},
+			user: {},
+			company: {}
+		}//,
+		//session_tmp = $localStorage.get('session', default_obj)
+		;
 	
-	$scope.active = $localStorage.get('session.active', false); // signed in bool
-	$scope.account = $localStorage.get('session.account', {});
-	$scope.user = $localStorage.get('session.user', {});
-	$scope.company = $localStorage.get('session.company', {});
-
+	/*
+	$scope.active = session_tmp.active;
+	$scope.account = session_tmp.account;
+	$scope.user = session_tmp.user;
+	$scope.company = session_tmp.company;
+	*/
+	$scope.active = $localStorage.get('session.active', default_obj.active);
+	$scope.account = $localStorage.get('session.account', default_obj.account);
+	$scope.user = $localStorage.get('session.user', default_obj.user);
+	$scope.company = $localStorage.get('session.company', default_obj.company);
+	
 	$rootScope.$on('session', function(event, value){
 		$scope.active = (value);
 		$scope.save();
@@ -17,10 +31,10 @@ angular.module('app.factories')
 
 	$scope.reset = function() {
 		console.log('reset()');
-		$scope.active = false;
-		$scope.account = {};
-		$scope.user = {};
-		$scope.company = {};
+		$scope.active = default_obj.active;
+		$scope.account = default_obj.account;
+		$scope.user = default_obj.user;
+		$scope.company = default_obj.company;
 		$scope.save(true);
 		/*$localStorage.set('session.active', false); // signed in bool
 		$localStorage.set('session.account', {});
@@ -29,12 +43,21 @@ angular.module('app.factories')
 	};
 
 	$scope.save = function(force) {
-		console.log('saveSession()');
+		console.log('saveSession(', $scope.account, $scope.user, $scope.company, ')');
 		if ($scope.account.remember || force) {
-			$localStorage.set('session.active', $scope.active); // signed in bool
+			/*
+			$localStorage.set('session', {
+				active: $scope.active,
+				account: $scope.account,
+				user: $scope.user,
+				company: $scope.company
+			}); // signed in bool
+			*/
+			$localStorage.set('session.active', $scope.active);
 			$localStorage.set('session.account', $scope.account);
 			$localStorage.set('session.user', $scope.user);
 			$localStorage.set('session.company', $scope.company);
+			console.log('Session saved');
 		}
 	};
 

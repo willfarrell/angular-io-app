@@ -56,11 +56,11 @@
 			</div>
 		</div>
 
-		<div class="control-group" data-ng-class="{error: (errors.user.user_name_last)}">
+		<div class="control-group" data-ng-class="{error: (errors.user_name_last)}">
 		<label class="control-label" for="user_name_last">Last Name</label>
 		<div class="controls">
 				<input type="text" class="input-block-level" name="user_name_last" placeholder="optional" data-ng-model="user.user_name_last" data-ng-disabled="user.timestamp_create">
-				<span class="help-block error" data-ng-show="errors.user.user_name_last">{{errors.user.user_name_last}}</span>
+				<span class="help-block error" data-ng-show="errors.user_name_last">{{errors.user_name_last}}</span>
 				<span class="help-block error" data-ng-show="userForm.user_name_last.$error.required">Required</span>
 			</div>
 		</div>

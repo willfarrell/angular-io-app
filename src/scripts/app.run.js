@@ -282,10 +282,11 @@ function(config, $rootScope, $timeout, $locale, $cookies, $http, $window, $locat
 	};
 	// used by SignCtrl and OnboardCtrl
 	$rootScope.redirect = function() {
-		console.log('redirect(', $rootScope.session.user_ID, ')');
+		console.log('redirect(', $cookies.redirect, ')');
 		//if ($rootScope.session.user_ID) {
-			$rootScope.href($cookies.redirect || config.dashboard);
-			$cookies.redirect = null;
+			var redirect = $cookies.redirect || config.dashboard;
+			delete $cookies.redirect;
+			$rootScope.href(redirect);
 		//} else {
 		//	window.setTimeout(function() {
 				//alert(JSON.stringify($rootScope.session));

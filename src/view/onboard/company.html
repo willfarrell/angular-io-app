@@ -1,7 +1,7 @@
 <div class="row-fluid" data-ng-controller="CompanyCtrl">
-	<div class="span6 offset3 well">
+	<div class="span6 offset3">
 
-		<form name="form" class="form-vertical">
+		<form name="form" class="form-vertical well">
 			<fieldset><legend>
 				Company Profile
 				<div class="btn-group pull-right">
@@ -52,10 +52,18 @@
 				<button class="btn" data-ng-disabled="!company.company_ID" data-ng-click="button.skip()">Next &raquo;</button>
 			</div>
 			
-			
-			<div data-ui-if="company.company_ID">
-			<hr>
+			<br>
+		</form>
 
+		<form name="form" class="form-vertical well" data-ui-if="company.company_ID">
+			<fieldset><legend>
+				Location
+				<div class="btn-group pull-right">
+					<button class="btn btn-primary" data-ng-click="updateLocation();" data-ng-disabled="form.$invalid"><i class="icon-ok"></i> Save</button>
+					<button class="btn" data-ng-disabled="!company.company_ID" data-ng-click="button.skip()">Next &raquo;</button>
+				</div>
+			</legend></fieldset>
+			
 			<div class="control-group" data-ng-class="{error: (errors.address_1)}">
 			<label class="control-label" for="location_name">Location Name</label>
 			<div class="controls">
@@ -122,13 +130,13 @@
 					<span class="help-block error" data-ng-show="errors.location_phone">{{errors.location_phone}}</span>
 				</div>
 			</div>
-			</div>
 
 			<hr>
 			<div class="btn-group pull-right">
-				<button class="btn btn-primary" data-ng-click="updateCompany(); updateLocation();" data-ng-disabled="form.$invalid"><i class="icon-ok"></i> Save</button>
+				<button class="btn btn-primary" data-ng-click="updateLocation();" data-ng-disabled="form.$invalid"><i class="icon-ok"></i> Save</button>
 				<button class="btn" data-ng-disabled="!company.company_ID" data-ng-click="button.skip()">Next &raquo;</button>
 			</div>
+			<br>
 		</form>
 	</div>
 </div>

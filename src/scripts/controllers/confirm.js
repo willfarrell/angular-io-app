@@ -3,12 +3,12 @@
 
 function ConfirmCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 	console.log('ConfirmCtrl (', $scope.$id, ')');
-	$scope.errors = {};
+	
 	$scope.hash = ($routeParams && $routeParams.action) ? $routeParams.action : ''; // /:folder/:page/:action
 	$scope.status = false; // used on confirm page
 
 	$scope.check = function(hash) {
-		$scope.errors = {};
+		$rootScope.errors = {};
 		hash = hash || $scope.hash;
 
 		$rest.http({

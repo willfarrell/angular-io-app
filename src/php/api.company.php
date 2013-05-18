@@ -268,7 +268,7 @@ class Company extends Core {
 	 */
 	function get($company_ID=NULL) {
 		$return = array();
-		$company_ID = is_null($company_ID) ? COMPANY_ID: $company_ID;
+		$company_ID = !$company_ID ? COMPANY_ID: $company_ID;
 		
 		// Check permissions
 		if(!$this->permission->check(array("company_ID" => $company_ID))) {

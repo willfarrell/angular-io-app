@@ -26,7 +26,6 @@ function AppCtrl(config, $rootScope, $scope, $window, $cookies, $location, $sess
 
 	});
 
-
 	// Factory init - $scope.factory = factory;
 	$rootScope.settings = config;
 	$rootScope.session = $session;
