@@ -1,12 +1,8 @@
 'use strict';
-var lrSnippet = require('grunt-contrib-livereload/lib/utils').livereloadSnippet;
-var mountFolder = function (connect, dir) {
-	return connect['static'](require('path').resolve(dir));
-};
 
 module.exports = function(grunt) {
 	// load all grunt tasks
-	require('matchdep').filterDev('grunt-*').concat(['gruntacular']).forEach(grunt.loadNpmTasks);
+	require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 	// configurable paths
 	var yeomanConfig = {
 		app:	'src',
@@ -19,6 +15,7 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		yeoman: yeomanConfig,
 		pkg: grunt.file.readJSON('package.json'),
+		bowerrc: grunt.file.readJSON('.bowerrc'),
 		jshintrc: grunt.file.readJSON('.jshintrc'),
 		watch: {
 			coffee: {
@@ -167,7 +164,7 @@ module.exports = function(grunt) {
 					'!<%= yeoman.app %>/scripts/script.js',
 					'!<%= yeoman.app %>/scripts/angular-io/plugins/browser/*.js',
 					'!<%= yeoman.app %>/scripts/modernizr.js',
-				'test/spec/*.js'
+				'test/{e2e,midway,unit}/*.js'
 			]
 		},
 		htmllint: {
@@ -929,6 +926,15 @@ module.exports = function(grunt) {
 	grunt.renameTask('regarde', 'watch');
 
 	grunt.renameTask('string-replace', 'replace');
+	
+	// Provides the "karma" task.
+	grunt.registerMultiTask('karma', 'Starts up a karma server.', function() {
+		var done = this.async();
+		require('karma').server.start(this.options(), function(code) {
+			done(code === 0);
+		});
+	});
+	
 	grunt.registerTask('server', function (target) {
 		if (target === 'dist') {
 			return grunt.task.run(['open', 'connect:dist:keepalive']);
@@ -946,11 +952,8 @@ module.exports = function(grunt) {
 	});
 
 	grunt.registerTask('test', [
-		'clean:server',
-		'coffee',
-		'compass',
-		'connect:test',
-		'mocha'
+		'lint',
+		'karma:test'
 	]);
 	// generate all icon files from icon.png
 	grunt.registerTask('icon_convert', [

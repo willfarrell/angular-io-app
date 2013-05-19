@@ -3,15 +3,14 @@
 
 //(function (angular) {
 angular.module('app.modules')
-.factory('$filepicker', ['app.config', '$rootScope', '$rest', function(config, $rootScope, $rest) {
+.factory('$filepicker', ['$config', '$rootScope', '$rest', function($config, $rootScope, $rest) {
 	console.log('FilepickerFactory (', $rootScope.$id, ')');
 	var $scope = {};
 	$scope.alerts = [];
-	if (!config.filepicker) {
-		$rootScope.loadJSON(null, 'config.filepicker', 'json', function(data){
-			config.filepicker = data;
-		});
-	}
+	
+	var config = {};
+	$config.get('filepicker', config, function(value) { config = value; });
+	
 	$scope.services = {
 		'':{
 			'name':'Filepicker',

@@ -58,7 +58,7 @@ var db = {
 	* @this {Object}
 	*/
 	set: function(key, obj) {
-		//console.log('db.set(', key, obj, ")");
+		//console.log('db.set(', key, obj, JSON.stringify(obj), ")");
 		if (key !== null) {
 			this.ls.setItem(key, (typeof(obj) === 'object') ? JSON.stringify(obj) : obj);
 		}

@@ -84,7 +84,7 @@ href="https://twitter.com/share" class="twitter-share-button" data-url="http://r
 	<div class="span8">
 		<tabs>
 			<pane title="About">
-				<div data-ng-bind-html-unsafe="markdown(company.company_details)"></div>
+				<div data-ng-bind-html-unsafe="company.company_details | markdown"></div>
 			</pane>
 
 			<!--<pane title="Team">
@@ -101,7 +101,7 @@ href="https://twitter.com/share" class="twitter-share-button" data-url="http://r
 							</div>
 							<b>{{u.user_name_first}} {{u.user_name_last}}</b><br>
 							<p>{{u.user_function}}</p>
-							<div data-ng-bind-html-unsafe="markdown(u.user_details)"></div>
+							<div data-ng-bind-html-unsafe="u.user_details | markdown"></div>
 						</td>
 					</tr>
 					</tbody>

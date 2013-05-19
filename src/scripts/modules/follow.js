@@ -306,8 +306,8 @@ angular.module('io.modules')
 				$rootScope.http_error();
 			});*/
 	};
-	$scope.addGroup = function(group_name) {
-		console.log('addGroup(', group_name, ')');
+	$scope.addGroup = function(group_name, company_ID, user_ID) {
+		console.log('addGroup(', group_name, company_ID, user_ID, ')');
 
 		$rest.http({
 				method:'post',
@@ -319,6 +319,9 @@ angular.module('io.modules')
 					group_ID:data,
 					group_count:0
 				};
+				if (company_ID || user_ID) {
+					$scope.add(company_ID, user_ID, data);
+				}
 				console.log($scope.groups);
 				$scope.group_name = ''; // clear form
 			});
