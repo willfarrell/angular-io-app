@@ -1,6 +1,5 @@
 /*globals
-LOG_DISABLE:true, LOG_ERROR:true, LOG_WARN:true, LOG_INFO:true, LOG_DEBUG:true,
-JASMINE:true, JASMINE_ADAPTER:true,
+LOG_DISABLE:true, LOG_ERROR:true, LOG_WARN:true, LOG_INFO:true, LOG_DEBUG:true
 */
 
 // Testacular configuration
@@ -8,23 +7,28 @@ JASMINE:true, JASMINE_ADAPTER:true,
 
 // base path, that will be used to resolve files and exclude
 var basePath = '..',
+	urlRoot = '/src/',
 
-//frameworks = ['jasmine'];
+frameworks = ['jasmine'], // 'requirejs' for ANGULAR_SCENARIO:true, ANGULAR_SCENARIO_ADAPTER:true,
 
 // list of files / patterns to load in the browser
 files = [
-  JASMINE, JASMINE_ADAPTER,
-  'test/lib/angular.js',
-  'test/lib//angular-mocks.js',
-  
-  'src/scripts/app.sample.js',
-  'src/scripts/filters/*.js',
-  'src/scripts/directives/*.js',
-  'test/unit/filters/*.js'
+ 	'test/lib/angular.js',
+ 	'test/lib/angular-mocks.js',
+ 	
+ 	'src/scripts/app.js',
+ 	'src/components/angular-io/src/scripts/**/*.js',
+ 	'src/scripts/**/*.js',
+	'test/unit/**/*.js'
 ],
 
 // list of files to exclude
-exclude = [],
+exclude = [
+	'**/_*',
+	'src/scripts/script.js',
+	'src/scripts/async.js',
+	'src/scripts/appCache.js',
+],
 
 // use dots reporter, as travis terminal does not support escaping sequences
 // possible values: 'dots', 'progress', 'junit', 'teamcity'
@@ -32,8 +36,8 @@ exclude = [],
 reporters = ['progress', 'junit'],
 
 junitReporter = {
-  // will be resolved to basePath (in the same way as files/exclude patterns)
-  outputFile: 'test-results.xml'
+	// will be resolved to basePath (in the same way as files/exclude patterns)
+	outputFile: 'test-results.xml'
 },
 
 // web server port
@@ -61,6 +65,7 @@ autoWatch = false,
 // - Opera
 // - Safari
 // - PhantomJS
+// - IE (only Windows)
 browsers = ['PhantomJS'],
 
 // If browser does not capture in given timeout [ms], kill it
@@ -71,18 +76,24 @@ browsers = ['PhantomJS'],
 // if true, it capture browsers, run tests and exit
 singleRun = false,
 
+//proxies = { '/': 'http://angulario:8888/' },
+
 // report which specs are slower than 500ms
 // CLI --report-slower-than 500
 reportSlowerThan = 500,
 
 // compile coffee scripts
 preprocessors = {
-  //'**/*.coffee': 'coffee'
+	//'**/*.coffee': 'coffee'
 },
 
 plugins = [
-  'karma-jasmine',
-  'karma-chrome-launcher',
-  'karma-firefox-launcher',
-  'karma-junit-reporter'
+	'karma-jasmine',
+	'karma-chrome-launcher',
+	'karma-firefox-launcher',
+	//'karma-opera-launcher',
+	//'karma-safari-launcher',
+	'karma-phantomjs-launcher',
+	'karma-script-launcher',
+	'karma-junit-reporter'
 ];

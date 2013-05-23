@@ -5,8 +5,8 @@
 		<!--<div class="control-group center"><img data-ng-src="img/user/{{session.user.user_ID}}.png" class="img-polaroid pull-center" width="100" height="100" /></div>-->
 		<div class="control-group center"><img data-ng-src="/img/user/{{user_ID}}.png" class="img-rounded" width="100" height="100" /></div>
 
-		<div class="control-group" data-ng-class="{error: (errors.signin)}">
-			<input type="text" name="email" class="input-block-level" placeholder="One-time Password" data-ng-model="code" required>
+		<div class="control-group" data-ng-class="{error: (errors.totp)}">
+			<input type="text" name="totp" class="input-block-level" placeholder="One-time Password" data-ng-model="code" data-field-error="totp" required>
 			<span class="help-block error" data-ng-show="errors.totp">{{errors.totp}}</span>
 		</div>
 

@@ -58,7 +58,6 @@ function CompanyCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 				method:'get', // get,head,post,put,delete,jsonp
 				url: '/company/name/'+profile_name
 			}, function(data){
-				console.log(data);
 				$scope.company = data;
 				$scope.location = data.location_default_ID ? data.location : $scope.location;
 				$scope.location.primary = true;

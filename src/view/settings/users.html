@@ -1,4 +1,4 @@
-<form name="userForm" class="form-horizontal" data-ng-controller="CompanyCtrl">
+<form name="form" class="form-horizontal" data-ng-controller="CompanyCtrl">
 
 	<div data-ng-hide="toggle.user">
 		<fieldset><legend>Users</legend></fieldset>
@@ -42,8 +42,8 @@
 		<span class="add-on">{{session.user.user_email.substr(session.user.user_email.lastIndexOf('@'))}}</span>
 		</div>-->
 				<!--<span class="help-block error" data-ng-show="userEmailForm.user_email.$error.required">Required</span>-->
-				<span class="help-block error" data-ng-show="userForm.user_email.$error.email">Not valid email.</span>
-				<span class="help-block error" data-ng-show="errors.user_email">{{errors.email.user_email}}</span>
+				<span class="help-block error" data-ng-show="form.user_email.$error.email">Not valid email.</span>
+				<span class="help-block error" data-ng-show="errors.user_email">{{errors.user_email}}</span>
 			</div>
 		</div>
 
@@ -52,7 +52,7 @@
 		<div class="controls">
 				<input type="text" class="input-block-level" name="user_name_first" placeholder="required" data-ng-model="user.user_name_first" data-ng-disabled="user.timestamp_create" required>
 				<span class="help-block error" data-ng-show="errors.user_name_first">{{errors.user_name_first}}</span>
-				<!--<span class="help-block error" data-ng-show="userForm.user_name_first.$error.required">Required</span>-->
+				<!--<span class="help-block error" data-ng-show="form.user_name_first.$error.required">Required</span>-->
 			</div>
 		</div>
 
@@ -61,7 +61,7 @@
 		<div class="controls">
 				<input type="text" class="input-block-level" name="user_name_last" placeholder="optional" data-ng-model="user.user_name_last" data-ng-disabled="user.timestamp_create">
 				<span class="help-block error" data-ng-show="errors.user_name_last">{{errors.user_name_last}}</span>
-				<span class="help-block error" data-ng-show="userForm.user_name_last.$error.required">Required</span>
+				<span class="help-block error" data-ng-show="form.user_name_last.$error.required">Required</span>
 			</div>
 		</div>
 
@@ -93,7 +93,7 @@
 		<hr>
 		<div class="control-group">
 		<div class="controls">
-			<button class="btn" data-ng-click="updateUser()" data-ng-disabled="userForm.$invalid">Save changes</button>
+			<button class="btn" data-ng-click="updateUser()" data-ng-disabled="form.$invalid">Save changes</button>
 			<div class="btn-group">
 					<button class="btn" data-ng-click="toggle.user = false">Back</button>
 				</div>

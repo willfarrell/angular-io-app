@@ -96,7 +96,7 @@ class Password {
 		$length = strlen($password);
 		
 		if ($length < $this->config->min_length) {
-			$this->errors["min_length"] = "Password too short, must be $this->config->min_length or more";
+			$this->errors["min_length"] = "Password too short, must be ".$this->config->min_length." or more";
 			return false;
 		}
 		return true;
@@ -137,7 +137,7 @@ class Password {
 					}
 				}
 				if ($charset_identical) {
-					$this->errors["max_charset_identical"] = "Password cannot have $this->config->max_identical or more identical characters";
+					$this->errors["max_charset_identical"] = "Password cannot have ".$this->config->max_identical." or more identical characters";
 					$return = false;
 				}
 			}

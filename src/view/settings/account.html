@@ -4,7 +4,7 @@
 	<div class="control-group" data-ng-class="{error: (errors.user_name)}" data-ui-if="settings.account.user_name">
 	<label class="control-label" for="user_name">Username</label>
 	<div class="controls">
-			<input type="text" class="input-block-level" name="user_name" placeholder="" data-ng-model="user.user_name" data-ng-minlength="3" data-ng-maxlength="14" data-ng-pattern="/^[\w]*$/" data-ng-change="check.user_name(user.user_name)" required>
+			<input type="text" class="input-block-level" name="user_name" placeholder="" data-ng-model="user.user_name" data-ng-minlength="3" data-ng-maxlength="14" data-ng-pattern="/^[\w]*$/" data-ng-change="check.user_name(user.user_name)" data-field-error="user_name" required>
 		<span class="help-block"><a data-ng-href="/#/profile/{{user.user_name}}">/#/profile/{{user.user_name}}</a></span>
 			<span class="help-block error" data-ng-show="form.user_name.$error.pattern">only alphanumeric characters and underscores allowed</span>
 			<span class="help-block error" data-ng-show="form.user_name.$error.minlength">too short</span>
@@ -18,7 +18,7 @@
 	<div class="control-group">
 	<label class="control-label" for="user_email">Email</label>
 	<div class="controls">
-		<input type="email" class="input-block-level" name="user_email" data-ng-model="user.user_email" disabled>
+		<input type="email" class="input-block-level" name="user_email" data-ng-model="user.user_email" data-field-error="user_email" disabled>
 		<span class="help-block">Email will not be publicly displayed.  <a href="#/settings/email">Change</a></span>
 
 		</div>
@@ -43,8 +43,8 @@
 	</div>
 
 	<div class="control-group" data-ng-class="{error: (errors.accessibility)}" data-ui-if="accessibility">
-	<label class="control-label" for="accessibility">Accessibility</label>
-	<div class="controls">
+		<label class="control-label" for="accessibility">Accessibility</label>
+		<div class="controls">
 			<div class="checkbox">
 				<input type="checkbox" data-ng-model="accessibility.settings.accessibility" data-ng-change="accessibility.load()"> Enable <a href="http://dyslexicfonts.com/" target="_blank">OpenDyslexic</a> Font-type.
 			</div>

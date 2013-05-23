@@ -1,5 +1,5 @@
 
-angular.module('app.factories')
+angular.module('io.factories')
 .factory('$session', ['app.config', '$rootScope', '$cookies', '$http', '$localStorage', function(config, $rootScope, $cookies, $http, $localStorage) {
 	console.log('SessionFactory (', $rootScope.$id, ')');
 	
@@ -13,16 +13,18 @@ angular.module('app.factories')
 		//session_tmp = $localStorage.get('session', default_obj)
 		;
 	
-	/*
-	$scope.active = session_tmp.active;
-	$scope.account = session_tmp.account;
-	$scope.user = session_tmp.user;
-	$scope.company = session_tmp.company;
-	*/
-	$scope.active = $localStorage.get('session.active', default_obj.active);
-	$scope.account = $localStorage.get('session.account', default_obj.account);
-	$scope.user = $localStorage.get('session.user', default_obj.user);
-	$scope.company = $localStorage.get('session.company', default_obj.company);
+	$scope.init = function() {
+		/*
+		$scope.active = session_tmp.active;
+		$scope.account = session_tmp.account;
+		$scope.user = session_tmp.user;
+		$scope.company = session_tmp.company;
+		*/
+		$scope.active = $localStorage.get('session.active', default_obj.active);
+		$scope.account = $localStorage.get('session.account', default_obj.account);
+		$scope.user = $localStorage.get('session.user', default_obj.user);
+		$scope.company = $localStorage.get('session.company', default_obj.company);
+	};
 	
 	$rootScope.$on('session', function(event, value){
 		$scope.active = (value);
@@ -140,7 +142,7 @@ angular.module('app.factories')
 		}
 	};
 
-
+	$scope.init();
 
 	return $scope;
 }]);

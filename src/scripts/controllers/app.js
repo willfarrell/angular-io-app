@@ -45,9 +45,9 @@ function AppCtrl(config, $rootScope, $scope, $window, $cookies, $location, $sess
 	$rootScope.cookies = $cookies;
 	console.log('Modernizr.cookies', Modernizr.cookies);
 	$scope.hideCookieMessage = function() {
-		console.log(JSON.stringify($cookies));
+		//console.log(JSON.stringify($cookies));
 		$cookies.CookiesAccepted = 'true';
-		console.log(JSON.stringify($cookies));
+		//console.log(JSON.stringify($cookies));
 	};
 	
 	//!-- App Root Scoope Functions --//

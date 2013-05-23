@@ -2,14 +2,14 @@
 	<form class="well" name="form">
 		<fieldset><legend>Sign Up</legend></fieldset>
 		<div class="control-group" data-ng-class="{error: (errors.email)}">
-			<input type="email" name="email" class="input-block-level" placeholder="Email" data-ng-model="signup.email" required>
+			<input type="email" name="email" class="input-block-level" placeholder="Email" data-ng-model="signup.email" data-field-error="email" required>
 			<!--<span class="error" data-ng-show="signinForm.email.$error.required">Email is required</span>-->
 			<span class="help-block error" data-ng-show="form.email.$error.email">Not valid email</span>
 			<span class="help-block error" data-ng-show="errors.email">{{errors.email}}</span>
 		</div>
 
 		<div class="control-group" data-ng-class="{error: (errors.password)}">
-			<input type="text" name="password" class="input-block-level" placeholder="Password" data-ng-model="signup.password" data-password-check required>
+			<input type="text" name="password" class="input-block-level" placeholder="Password" data-ng-model="signup.password" data-password-check data-field-error="password" required>
 			<!--<span class="help-block error" data-ng-show="signinForm.password.$error.required">Password is required</span>-->
 			<span class="help-block error" data-ng-show="form.password.$error.minlength">Password too short, must be {{config.min_length}} or more</span>
 			<span class="help-block error" data-ng-show="form.password.$error.lower">Password needs at least one lower case letter</span>

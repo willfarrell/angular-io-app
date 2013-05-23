@@ -31,13 +31,13 @@ $filter_function = array (
     array (
       'field' => 'email',
       'label' => 'Email',
-      'rules' => '',
+      'rules' => 'required',
     ),
     'password' => 
     array (
       'field' => 'password',
       'label' => 'Password',
-      'rules' => '',
+      'rules' => 'required',
     ),
     'remember' => 
     array (

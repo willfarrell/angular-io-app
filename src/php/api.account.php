@@ -157,7 +157,7 @@ class Account extends Core {
 
 		// validate and sanitize
 		$this->filter->set_request_data($request_data);
-		if(!$this->filter->run('signin')) {
+		if(!$this->filter->run()) {
 			$return["errors"] = $this->filter->get_errors('error');
 			return $return;
 		}

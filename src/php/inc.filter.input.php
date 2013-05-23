@@ -12,18 +12,6 @@ don't use table_
 */
 $filter_input = array(
 	//-- Actions --//
-	'signin' => array(
-		array(
-	    	'field'   => 'email',
-	        'label'   => 'Email',
-	        'rules'   => 'required'
-	    ),
-	    array(
-	        'field'   => 'password',
-	        'label'   => 'Password',
-	        'rules'   => 'required'
-	    ),
-    ),
     'email' => array(
 		array(
 	    	'field'   => 'email',

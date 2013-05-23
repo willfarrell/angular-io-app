@@ -40,7 +40,7 @@ angular.module('$strap.filters', ['$strap.config']);
 angular.module('$strap', ['$strap.directives', '$strap.filters', '$strap.config']);
 
 // App (app)
-angular.module('app.config', []).value('app.config', { // defaults - overwrite with json/config.app.json
+angular.module('app.config', []).value('app.config', {
 	'dashboard'		:'#/app',				// app dashboard ie #/app - special button
 	//'offline'		:[],		//'class':{							// add in classes at root level ($rootScope.class_name.class_attr)
 		//'validate':validate,			// validation (password)

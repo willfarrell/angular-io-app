@@ -2,7 +2,7 @@
 	<form class="well" name="form">
 		<fieldset><legend>Reset Password</legend></fieldset>
 		<div class="control-group" data-ng-class="{error: (errors.email)}">
-			<input type="email" name="email" class="input-block-level" placeholder="Email" data-ng-model="signin.email" required>
+			<input type="email" name="email" class="input-block-level" placeholder="Email" data-ng-model="signin.email" data-field-error="email" required>
 			<span class="error" data-ng-show="form.email.$error.email">Not valid email</span>
 		</div>
 		<!-- CAPTCHA HERE? -->

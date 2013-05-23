@@ -302,6 +302,5 @@ function(config, $rootScope, $timeout, $locale, $cookies, $http, $window, $locat
 
 
 
-
 	//!-- End JS Functions --//
 }]);

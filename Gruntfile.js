@@ -1056,10 +1056,11 @@ module.exports = function(grunt) {
 		'manifest',
 		'clean:deploy'
 	]);
+	
 	grunt.registerTask('lint', [
 		//'replace:htmllint',
 		//'htmllint',	// not the best for angular
-		'csslint',
+		//'csslint',
 		//'replace:jslint',
 		'jshint'
 		// PHP
