@@ -56,6 +56,14 @@
     "spyOn": false,
     "spyOnEvent": false,
     "waitsFor": false,
-    "xdescribe": false
+    "xdescribe": false,
+    
+    "browser": false,
+    "input": false,
+    "repeater": false,
+    "select": false,
+    "element": false,
+    "sleep": false,
+    "pause": false
   }
 }
