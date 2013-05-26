@@ -33,8 +33,8 @@
 	<li><a href="#/account/user"><i class="icon-cogs"></i> User Settings</a></li>
 
 <li class="nav-header">Account</li>
-<li><a href="#/account/company"><i class="icon-edit"></i> Edit Account</a></li>
-	<li><a href="#/sign/out"><i class="icon-signout"></i> Sign Out</a></li>
-	<li><a href="#/contact"	><i class="icon-bullhorn"></i> Contact</a></li>
+<li data-ng-show="session.company.company_ID"><a href="#/account/company"><i class="icon-edit"></i> Edit Account</a></li>
+<li><a href="#/sign/out"><i class="icon-signout"></i> Sign Out</a></li>
+<li><a href="#/contact"	><i class="icon-bullhorn"></i> Contact</a></li>
 </ul>
 </div>

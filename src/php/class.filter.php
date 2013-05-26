@@ -117,6 +117,7 @@ class Filter {
 		'valid_ip' 				=> 'is not a valid IP',
 		'valid_base64' 			=> 'is not in Base64',
 		
+		'valid_email'			=> 'is not a valid email address',
 		'valid_email_dns'		=> 'is not a valid email domain',
 		'valid_url' 			=> 'is not a valid url',
 		'valid_mail_code' 		=> 'is not a valid mail code',
@@ -1101,10 +1102,12 @@ class Filter {
 	{
 		if ($this->valid_email($str)) {
 			$host = substr($str, strpos($str, "@")+1);
-			return checkdnsrr($host, "MX");
-		} else {
-			return FALSE;
+			// return checkdnsrr($host, "MX");
+			if (getmxrr($host, $mxhosts) || !count($mxhosts) || $mxhosts[0] == NULL || $mxhosts[0] == '0.0.0.0') {
+				return TRUE;
+			}
 		}
+		return FALSE;
 	}
 
 	// --------------------------------------------------------------------

@@ -1,7 +1,8 @@
 describe('$session', function() {
-	beforeEach(module('ngCookies', 'io.factories'));
+	beforeEach(module('app.config', 'ngCookies', 'app.factories', 'io.factories'));
 	
 	it('should contain default values', inject(function($session) {
+		$session.reset();
 		expect($session.active).toEqual(false);
 		expect($session.account).toEqual({});
 		expect($session.user).toEqual({});

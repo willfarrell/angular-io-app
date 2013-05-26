@@ -12,7 +12,7 @@ function NotificationsCtrl($config, $rootScope, $scope, $rest, $session) {
 	$scope.loadNotifications = function() {
 		$rest.http({
 				method:'get',
-				url: '/user/notify'
+				url: $rest.server+'user/notify'
 			}, function(data){
 				if (data !== '') {
 					// sync with defaults, allows for new defaults to be added
@@ -42,7 +42,7 @@ function NotificationsCtrl($config, $rootScope, $scope, $rest, $session) {
 		console.log($scope.notify);
 		$rest.http({
 				method:'put',
-				url: '/user/notify',
+				url: $rest.server+'user/notify',
 				data: $scope.notify
 			}, function(data){
 				$rootScope.alerts = [{'class':'success', 'label':'Notifications:', 'message':'Saved'}];

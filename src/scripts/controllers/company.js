@@ -22,7 +22,7 @@ function CompanyCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 		profile_ID = profile_ID || 0;
 		$rest.http({
 				method:'get', // get,head,post,put,delete,jsonp
-				url: '/company/'+profile_ID
+				url: $rest.server+'company/'+profile_ID
 			}, function(data){
 				$scope.company = data;
 				$scope.location = data.location_default_ID ? data.location : $scope.location;
@@ -56,7 +56,7 @@ function CompanyCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 		profile_name = profile_name || '';
 		$rest.http({
 				method:'get', // get,head,post,put,delete,jsonp
-				url: '/company/name/'+profile_name
+				url: $rest.server+'company/name/'+profile_name
 			}, function(data){
 				$scope.company = data;
 				$scope.location = data.location_default_ID ? data.location : $scope.location;
@@ -97,7 +97,7 @@ function CompanyCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 		if ($scope.company.company_ID) {	// update
 			$rest.http({
 					method:'put', // get,head,post,put,delete,jsonp
-					url: '/company/',
+					url: $rest.server+'company/',
 					data: $scope.company
 				}, function(data){
 					success($scope.company.company_ID);
@@ -121,7 +121,7 @@ function CompanyCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 		} else {	// create
 			$rest.http({
 					method:'post', // get,head,post,put,delete,jsonp
-					url: '/company/',
+					url: $rest.server+'company/',
 					data: $scope.company
 				}, function(data){
 					$scope.company.company_ID = data;
@@ -152,7 +152,7 @@ function CompanyCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 		console.log('loadLocations');
 		$rest.http({
 				method:'get', // get,head,post,put,delete,jsonp
-				url: '/location/'
+				url: $rest.server+'location/'
 			}, function(data){
 				$scope.locations = data;
 				// load region data
@@ -217,7 +217,7 @@ function CompanyCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 		if ($scope.location.location_ID) {	// update
 			$rest.http({
 					method:'put', // get,head,post,put,delete,jsonp
-					url: '/location/',
+					url: $rest.server+'location/',
 					data: $scope.location
 				}, function(data){
 					$scope.locations[$scope.location.location_ID] = $scope.location;
@@ -241,7 +241,7 @@ function CompanyCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 		} else {	// create
 			$rest.http({
 					method:'post', // get,head,post,put,delete,jsonp
-					url: '/location/',
+					url: $rest.server+'location/',
 					data: $scope.location
 				}, function(data){
 					$scope.location.location_ID = data;
@@ -270,7 +270,7 @@ function CompanyCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 		console.log('deleteLocation(', id, ')');
 		$rest.http({
 				method:'delete', // get,head,post,put,delete,jsonp
-				url: '/location/'+id
+				url: $rest.server+'location/'+id
 			}, function(data){
 				delete $scope.locations[id];
 			});
@@ -293,7 +293,7 @@ function CompanyCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 	$scope.loadUsers = function() {
 		$rest.http({
 				method:'get', // get,head,post,put,delete,jsonp
-				url: '/company/user/'
+				url: $rest.server+'company/user/'
 			}, function(data){
 				$scope.users = data;
 			});
@@ -325,7 +325,7 @@ function CompanyCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 		if ($scope.user.user_ID) {	// update
 			$rest.http({
 					method:'put', // get,head,post,put,delete,jsonp
-					url: '/company/user/',
+					url: $rest.server+'company/user/',
 					data: $scope.user
 				}, function(data){
 					$scope.users[$scope.user.user_ID] = $scope.user;
@@ -349,7 +349,7 @@ function CompanyCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 		} else {	// create
 			$rest.http({
 					method:'post', // get,head,post,put,delete,jsonp
-					url: '/company/user/',
+					url: $rest.server+'company/user/',
 					data: $scope.user
 				}, function(data){
 					$scope.user.user_ID = data;

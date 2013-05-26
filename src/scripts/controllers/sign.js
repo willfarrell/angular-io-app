@@ -27,7 +27,7 @@ function SignCtrl($config, $rootScope, $scope, $cookies, $routeParams, $rest, $s
 
 		$rest.http({
 				method:'post',
-				url: '/account/signup',
+				url: $rest.server+'account/signup',
 				data: $scope.signup
 			}, function(data){ // sign in
 				$scope.signin.email = $scope.signup.email;
@@ -70,7 +70,7 @@ function SignCtrl($config, $rootScope, $scope, $cookies, $routeParams, $rest, $s
 
 		$rest.http({
 				method:'post',
-				url: '/account/signin',
+				url: $rest.server+'account/signin',
 				data: {
 					email:		$scope.signin.email,
 					password:	$scope.signin.password,
@@ -138,7 +138,7 @@ function SignCtrl($config, $rootScope, $scope, $cookies, $routeParams, $rest, $s
 
 		$rest.http({
 				method:'put',
-				url: '/account/totp/'+code,
+				url: $rest.server+'account/totp/'+code,
 				data: {
 					email:		$scope.signin.email,
 					password:	$scope.signin.password,
@@ -194,7 +194,7 @@ function SignCtrl($config, $rootScope, $scope, $cookies, $routeParams, $rest, $s
 		if ($session.user.user_ID) {	// prevent multiple calls
 			$rest.http({
 					method:'get',
-					url: '/account/signout'
+					url: $rest.server+'account/signout'
 				}, function(data){
 					$rootScope.alerts = [{'class':'info', 'label':'Signed Out'}];
 					$rootScope.href('/sign/in');

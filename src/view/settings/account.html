@@ -4,7 +4,7 @@
 	<div class="control-group" data-ng-class="{error: (errors.user_name)}" data-ui-if="settings.account.user_name">
 	<label class="control-label" for="user_name">Username</label>
 	<div class="controls">
-			<input type="text" class="input-block-level" name="user_name" placeholder="" data-ng-model="user.user_name" data-ng-minlength="3" data-ng-maxlength="14" data-ng-pattern="/^[\w]*$/" data-ng-change="check.user_name(user.user_name)" data-field-error="user_name" required>
+			<input type="text" class="input-block-level" name="user_name" placeholder="" data-ng-model="user.user_name" data-ng-minlength="3" data-ng-maxlength="14" data-ng-pattern="/^[\w-]*$/" data-ng-change="check.user_name(user.user_name)" data-field-error="user_name" required>
 		<span class="help-block"><a data-ng-href="/#/profile/{{user.user_name}}">/#/profile/{{user.user_name}}</a></span>
 			<span class="help-block error" data-ng-show="form.user_name.$error.pattern">only alphanumeric characters and underscores allowed</span>
 			<span class="help-block error" data-ng-show="form.user_name.$error.minlength">too short</span>
@@ -16,11 +16,25 @@
 
 
 	<div class="control-group">
-	<label class="control-label" for="user_email">Email</label>
-	<div class="controls">
-		<input type="email" class="input-block-level" name="user_email" data-ng-model="user.user_email" data-field-error="user_email" disabled>
-		<span class="help-block">Email will not be publicly displayed.  <a href="#/settings/email">Change</a></span>
-
+		<label class="control-label" for="user_email">Email</label>
+		<div class="controls">
+			<input type="email" class="input-block-level" name="user_email" data-ng-model="user.user_email" data-field-error="user_email" disabled>
+			<span class="help-block">Email will not be publicly displayed.  <a href="#/settings/email">Change email</a>.</span>
+		</div>
+	</div>
+	
+	<div class="control-group" data-ng-hide="session.account.email_confirm" data-ng-controller="ConfirmCtrl">
+		<label class="control-label" for="user_email">Confirm Email</label>
+		<div class="controls">
+			<div class="input-append">
+				<input type="text" class="" name="confirm_code" placeholder="Confirmation Code" data-ng-model="email.hash" required><button class="btn btn-primary" data-ng-click="check(email.hash)">Confirm</button>{{email.hash}}
+			</div>
+			<span class="help-block error" data-ui-if="errors.confirm_code">{{errors.confirm_code}}</span>
+			<span class="help-block">Didn't receive a confirmation email?<br>
+			<li>Check your spam folder, mark it as "Not Spam".</li>
+			<li>Try resending it. <a href="" data-ng-click="resend()">Send Copy</a>.</li>
+			<li>Try using a different email. <a href="#/settings/email">Change email</a>.</li>
+			</span>
 		</div>
 	</div>
 
@@ -128,7 +142,13 @@
 			<button class="btn" data-ng-click="updateUser()" data-require-change="{{user}}" data-ng-disabled="form.$invalid">Save changes</button>
 		</div>
 	</div>-->
+	
+	<hr>
+
+	<div class="control-group">
+		<div class="controls">
+			<button class="btn btn-danger" data-ng-click="deleteUser()">Delete my account</button>
+		</div>
+	</div>
 
 </form>
-
-<!--<a href="" data-ng-click="deleteUser()" data-ng-hide="true">Deactivate my account</a>-->

@@ -64,6 +64,8 @@
     "select": false,
     "element": false,
     "sleep": false,
-    "pause": false
+    "pause": false,
+    
+    "confirmOK": false
   }
 }

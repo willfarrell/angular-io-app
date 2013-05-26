@@ -59,7 +59,7 @@ angular.module('io.modules')
 
 		$rest.http({
 				method:'put',
-				url: '/follow/'+company_ID+'/'+user_ID+'/'+group_ID
+				url: $rest.server+'follow/'+company_ID+'/'+user_ID+'/'+group_ID
 			}, function() {
 				$scope.f.following = true;
 			});
@@ -105,7 +105,7 @@ angular.module('io.modules')
 
 		$rest.http({
 				method:'delete',
-				url: '/follow/'+company_ID+'/'+user_ID+'/'+group_ID
+				url: $rest.server+'follow/'+company_ID+'/'+user_ID+'/'+group_ID
 			});
 
 		/*$http({'method':'DELETE', 'url':'/follow/'+company_ID+'/'+user_ID+'/'+group_ID})
@@ -126,7 +126,7 @@ angular.module('io.modules')
 
 		$rest.http({
 				method:'get',
-				url: '/follow/'+company_ID+'/'+user_ID
+				url: $rest.server+'follow/'+company_ID+'/'+user_ID
 			}, function(data) {
 				//console.log(data);
 				$scope.company[data.company_ID] = data;
@@ -165,7 +165,7 @@ angular.module('io.modules')
 
 		$rest.http({
 				method:'get',
-				url: '/follow/'+api+'/'+company_ID+'/'+user_ID+'/'+query
+				url: $rest.server+'follow/'+api+'/'+company_ID+'/'+user_ID+'/'+query
 			}, function(data) {
 				//console.log(data);
 				for (var i in data) {
@@ -205,7 +205,7 @@ angular.module('io.modules')
 
 		$rest.http({
 				method:'get',
-				url: '/follow/ers/'+company_ID+'/'+user_ID+'/'+query
+				url: $rest.server+'follow/ers/'+company_ID+'/'+user_ID+'/'+query
 			}, function(data) {
 				for (var i in data) {
 					if (data.hasOwnProperty(i)) {
@@ -247,7 +247,7 @@ angular.module('io.modules')
 
 		$rest.http({
 				method:'get',
-				url: '/follow/ing/'+company_ID+'/'+user_ID+'/'+query
+				url: $rest.server+'follow/ing/'+company_ID+'/'+user_ID+'/'+query
 			}, function(data) {
 				for (var i = 0, l = data.length; i < l; i++) {
 					data[i].following = (data[i].following) ? true : false;
@@ -280,7 +280,7 @@ angular.module('io.modules')
 
 		$rest.http({
 				method:'get',
-				url: '/follow/group/'
+				url: $rest.server+'follow/group/'
 			}, function(data) {
 				for (var i in data) {
 					if (data.hasOwnProperty(i)) {
@@ -311,7 +311,7 @@ angular.module('io.modules')
 
 		$rest.http({
 				method:'post',
-				url: '/follow/group/',
+				url: $rest.server+'follow/group/',
 				data: {'group_name':group_name}
 			}, function(data){
 				$scope.groups[data.toString()] = {
@@ -352,7 +352,7 @@ angular.module('io.modules')
 
 		$rest.http({
 				method:'delete',
-				url: '/follow/group/'+group_ID
+				url: $rest.server+'follow/group/'+group_ID
 			}, function(data){
 				var index;
 				delete $scope.groups[group_ID];
@@ -491,7 +491,7 @@ angular.module('io.modules')
 
 				$rest.http({
 						method:'get',
-						url: '/follow/'+api+'/'+company_ID+'/'+user_ID+'/'+query
+						url: $rest.server+'follow/'+api+'/'+company_ID+'/'+user_ID+'/'+query
 					}, function(data) {
 						//console.log(data);
 						for (var i in data) {
@@ -517,7 +517,7 @@ angular.module('io.modules')
 
 				$rest.http({
 						method:'get',
-						url: '/follow/'+api+'/'+query
+						url: $rest.server+'follow/'+api+'/'+query
 					}, function(data) {
 						//console.log(data);
 						$scope.follow.user = {};

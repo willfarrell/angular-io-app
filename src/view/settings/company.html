@@ -2,22 +2,22 @@
 	<fieldset><legend>Company Profile</legend></fieldset>
 	<hr>
 
-	<div class="control-group" data-ui-if="filepicker">
+	<div class="control-group" data-ui-if="filepicker" data-ng-show="session.company.company_ID">
 		<label class="control-label" for="company_img">Logo</label>
 
 		<div class="controls">
 			<img data-ng-src="img/company/{{company.company_ID}}.png?{{filepicker.timestamp}}" class="img-polaroid" width="75" height="50"/>
-			<button class="btn" data-ng-click="filepicker.upload(settings.filepicker.company_single_image,  company.company_ID);" data-ng-disabled="!company.company_ID">Change logo</button>
+			<button class="btn" data-ng-click="filepicker.upload('company_single_image', company.company_ID);" data-ng-disabled="!company.company_ID">Change logo</button>
 			<!--<span class="help-block">This photo is your identity and appears with your content.</span>-->
 		</div>
 	</div>
 
 	<div class="control-group" data-ng-class="{error: (errors.company_username)}" data-ui-if="settings.account.company_username">
-	<label class="control-label" for="user_name">Username</label>
+	<label class="control-label" for="company_username">Username</label>
 	<div class="controls">
-			<input type="text" class="input-block-level" name="user_name" placeholder="" data-ng-model="company.company_username" data-ng-minlength="3" data-ng-maxlength="32" data-ng-pattern="/^[\w]*$/" data-ng-change="check.user_name(user.user_name)">
+			<input type="text" class="input-block-level" name="company_username" placeholder="" data-ng-model="company.company_username" data-ng-minlength="3" data-ng-maxlength="32" data-ng-pattern="/^[\w-]*$/" data-ng-change="check.company_username(company.company_username)">
 		<span class="help-block"><a href="/#/profile/{{company.company_username}}">/#/profile/{{company.company_username}}</a></span>
-			<span class="help-block error" data-ng-show="form.company_username.$error.pattern">only alphanumeric characters and underscores allowed</span>
+			<span class="help-block error" data-ng-show="form.company_username.$error.pattern">only alphanumeric characters, dashes and underscores allowed</span>
 			<span class="help-block error" data-ng-show="form.company_username.$error.minlength">too short</span>
 			<span class="help-block error" data-ng-show="form.company_username.$error.maxlength">too long</span>
 			<span class="help-block error" data-ng-show="errors.company_username">{{errors.company_username}}</span>
@@ -54,7 +54,7 @@
 		</div>
 	</div>
 
-	<div class="control-group" data-ng-class="{error: (errors.user_default_ID)}">
+	<div class="control-group" data-ng-class="{error: (errors.user_default_ID)}" data-ui-if="session.company.company_ID">
 	<label class="control-label" for="user_default_ID">Primary User</label>
 	<div class="controls">
 		<select class="input-block-level" data-ng-model="company.user_default_ID" data-ng-options="value.user_ID as value.user_name_first+' '+value.user_name_last for (key, value) in users" required></select>
@@ -62,7 +62,7 @@
 		</div>
 	</div>
 
-	<div class="control-group" data-ng-class="{error: (errors.location_default_ID)}">
+	<div class="control-group" data-ng-class="{error: (errors.location_default_ID)}" data-ui-if="session.company.company_ID">
 	<label class="control-label" for="location_default_ID">Primary Location</label>
 	<div class="controls">
 		<select class="input-block-level" data-ng-model="company.location_default_ID" data-ng-options="value.location_ID as value.location_name for (key, value) in locations" required></select>
@@ -84,7 +84,7 @@
 	<hr>
 	<div class="control-group">
 	<div class="controls">
-		<button class="btn" data-ng-click="updateCompany()" data-require-change="{{conpany}}" data-ng-disabled="form.$invalid">Save changes</button>
+		<button class="btn" data-ng-click="updateCompany(button.skip)" data-require-change="{{company}}" data-ng-disabled="form.$invalid">Save changes</button>
 	</div>
 	</div>
 </form>

@@ -8,26 +8,28 @@ LOG_DISABLE:true, LOG_ERROR:true, LOG_WARN:true, LOG_INFO:true, LOG_DEBUG:true
 // base path, that will be used to resolve files and exclude
 var basePath = '..',
 	urlRoot = '/src/',
+	hostname = 'localhost',
 
-frameworks = ['jasmine'], // 'requirejs' for ANGULAR_SCENARIO:true, ANGULAR_SCENARIO_ADAPTER:true,
+frameworks = ['jasmine'],
 
 // list of files / patterns to load in the browser
 files = [
- 	'test/lib/angular.js',
- 	'test/lib/angular-mocks.js',
- 	
- 	'src/scripts/app.js',
- 	'src/components/angular-io/src/scripts/**/*.js',
- 	'src/scripts/**/*.js',
+	'test/lib/angular.js',
+	'test/lib/angular-mocks.js',
+	
+	'src/scripts/app.js',
+	'src/scripts/**/*.js',
+	'src/components/angular-io/src/scripts/**/*.js',
+	
 	'test/unit/**/*.js'
 ],
 
 // list of files to exclude
 exclude = [
 	'**/_*',
-	'src/scripts/script.js',
-	'src/scripts/async.js',
+	'src/scripts/app.device.js',
 	'src/scripts/appCache.js',
+	'src/scripts/async.js'
 ],
 
 // use dots reporter, as travis terminal does not support escaping sequences
@@ -36,8 +38,8 @@ exclude = [
 reporters = ['progress', 'junit'],
 
 junitReporter = {
-	// will be resolved to basePath (in the same way as files/exclude patterns)
-	outputFile: 'test-results.xml'
+	outputFile: 'test/unit.xml',
+	suite: 'unit'
 },
 
 // web server port
@@ -62,15 +64,15 @@ autoWatch = false,
 // - Chrome
 // - ChromeCanary
 // - Firefox
-// - Opera
-// - Safari
-// - PhantomJS
 // - IE (only Windows)
+// - Opera
+// - PhantomJS
+// - Safari
 browsers = ['PhantomJS'],
 
 // If browser does not capture in given timeout [ms], kill it
 // CLI --capture-timeout 5000
-//captureTimeout = 5000;
+//captureTimeout = 60000;
 
 // Continuous Integration mode
 // if true, it capture browsers, run tests and exit
@@ -89,11 +91,14 @@ preprocessors = {
 
 plugins = [
 	'karma-jasmine',
+	'karma-ng-scenario',
+	'karma-qunit',
 	'karma-chrome-launcher',
 	'karma-firefox-launcher',
+	//'karma-ie-launcher',
 	//'karma-opera-launcher',
-	//'karma-safari-launcher',
 	'karma-phantomjs-launcher',
 	'karma-script-launcher',
+	//'karma-safari-launcher',
 	'karma-junit-reporter'
 ];

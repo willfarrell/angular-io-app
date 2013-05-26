@@ -14,8 +14,8 @@ console.group('Async Load');
 
 //-- Error Detection and Tracking --//
 // http://errorception.com
-var _errs=['5113b3e6bedd207c2b000400'];
-$script('//d15qhc0lu1ghnk.cloudfront.net/beacon.js');
+// //beacon.errorception.com/XXXXXX.js
+$script('//beacon.errorception.com/5113b3e6bedd207c2b000400.js');
 
 // Google Analytics
 /*

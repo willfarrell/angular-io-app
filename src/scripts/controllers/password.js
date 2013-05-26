@@ -12,7 +12,7 @@ function PasswordCtrl($config, $rootScope, $scope, $session, $rest) {
 	$scope.updatePassword = function() {
 		$rest.http({
 				method:'put',
-				url: '/account/password_change/',
+				url: $rest.server+'account/password_change/',
 				data: $scope.password
 			}, function(data){
 				$scope.password = {};
@@ -42,7 +42,7 @@ function PasswordCtrl($config, $rootScope, $scope, $session, $rest) {
 
 		$rest.http({
 				method:'get',
-				url: '/account/reset_send/'+encodeURIComponent(email)
+				url: $rest.server+'account/reset_send/'+encodeURIComponent(email)
 			}, function(data){
 				$rootScope.alerts = [{'class':'info', 'message':'We have sent an email to '+email+' with further instructions.'}];
 			});

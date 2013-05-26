@@ -18,8 +18,8 @@
 	<link rel="stylesheet" href="components/font-awesome/css/font-awesome.css">
 	<!--<link rel="stylesheet" href="components/font-awesome/build/fontawesome.css">--><!-- doesn't catch var icons -->
 	<link rel="stylesheet" href="components/angular-io/src/styles/accessibility.css">
-	<link rel="stylesheet" href="components/angular-io/src/styles/angular-io.css">
-	<link rel="stylesheet" href="components/angular-io/src/styles/angular-io-onboard.css">
+	<link rel="stylesheet" href="styles/angular-io.css">
+	<link rel="stylesheet" href="styles/angular-io-onboard.css">
 
 	<link rel="stylesheet" href="components/angular-modernizr/src/styles/forms-reveal.text.css">
 	<link rel="stylesheet" href="components/angular-modernizr/src/styles/forms-placeholder.css">
@@ -35,7 +35,7 @@
 	<![endif]-->
 </head>
 <!-- Break out of iFrame -->
-<body class="ng-cloak" onload="if(this!=top){top.location.href=this.location.href}" data-ng-controller="AppCtrl">
+<body class="ng-cloak" data-ng-controller="AppCtrl">
 
 <!-- !Loading Screen - to be phased out -->
 <div id="init-blanket" data-ng-show="loader.count < loader.total">
@@ -162,6 +162,7 @@
 <script src="scripts/controllers/notifications.js"></script>
 <script src="scripts/controllers/onboard.js"></script>
 <script src="scripts/controllers/invite.js"></script>
+<script src="scripts/controllers/settings.js"></script>
 <script src="scripts/controllers/security.js"></script>
 <script src="scripts/controllers/user.js"></script>
 <script src="scripts/controllers/company.js"></script>
@@ -195,7 +196,6 @@
 <script src="components/angular-io/src/scripts/directives/requireChange.js"></script>
 <!--<script src="components/angular-io/src/scripts/directives/selectSize.js"></script>-->
 
-
 <script src="components/angular-io/src/scripts/factories/config.js"></script>
 <script src="components/angular-io/src/scripts/factories/localStorage.js"></script>
 <script src="components/angular-io/src/scripts/factories/offline.js"></script>
@@ -224,7 +224,7 @@
 <script src="components/angular-ui/modules/directives/if/if.js"></script>
 
 <!-- !AngularStrap -->
-<!--<script src="components/angular-strap/src/directives/navbar.js"></script><!-- waiting on commit pull -->
+<!--<script src="components/angular-strap/src/directives/navbar.js"></script><!-- rewrite own -->
 
 <!-- !AngularBS -->
 <script src="components/angular-ui-bootstrap/src/dropdownToggle/dropdownToggle.js"></script><!-- bootstrap replacement -->

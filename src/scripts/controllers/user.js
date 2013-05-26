@@ -18,7 +18,7 @@ function UserCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 
 		$rest.http({
 				method:'get',
-				url: '/user/'+profile_ID
+				url: $rest.server+'user/'+profile_ID
 			}, function(data){
 				$scope.user = data;
 			});
@@ -43,7 +43,7 @@ function UserCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 
 		$rest.http({
 				method:'get',
-				url: '/user/name/'+profile_name
+				url: $rest.server+'user/name/'+profile_name
 			}, function(data){
 				$scope.user = data;
 			});
@@ -68,9 +68,10 @@ function UserCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 		if ($scope.user.user_ID) {	// update
 			$rest.http({
 					method:'put',
-					url: '/user',
+					url: $rest.server+'user',
 					data: $scope.user
 				}, function(data){
+					console.log(data);
 					$session.update();
 					console.log($session);
 					$rootScope.alerts = [{'class':'success', 'label':'User Information:', 'message':'Saved'}];
@@ -99,10 +100,10 @@ function UserCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 
 	};
 	$scope.deleteUser = function() {
-		if (confirm('Are you sure you want to delete your account?')) {
+		if (confirm('Are you sure you want to delete your account? After clicking `OK`, this action cannot be undone.')) {
 			$rest.http({
-					method:'get',
-					url: '/user/delete'
+					method:'delete',
+					url: $rest.server+'account'
 				}, function(data){
 					$scope.href('/sign/out');
 				});
@@ -126,7 +127,7 @@ function UserCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 
 			$rest.http({
 					method:'get',
-					url: '/account/unique/'+encodeURIComponent(user_name)
+					url: $rest.server+'account/unique/'+encodeURIComponent(user_name)
 				}, function(data){
 					console.log('*******');
 				});
@@ -153,7 +154,7 @@ function UserCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 
 		$rest.http({
 				method:'put',
-				url: '/account/email_change/',
+				url: $rest.server+'account/email_change/',
 				data: $scope.email
 			}, function(data){
 				$scope.email = {};

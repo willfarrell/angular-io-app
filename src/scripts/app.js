@@ -2,6 +2,11 @@
 // AngularIO (io)
 angular.module('io.config', []).value('io.config', {
 	'views': 'view/',	// must end with /
+	'http': { // copied over to $rest
+		// end with /
+		'client': '', // client side static files
+		'server': '' // server side api calls
+	},
 	// json configs shared with serverside
 	'filepicker': 'json/config.filepicker.json',
 	'i18n': 'json/config.i18n.json',
@@ -74,6 +79,7 @@ angular.module('app.config', []).value('app.config', {
 	},
 	// sign in params
 	'captcha': false,
+	// phase out
 	'password': {
 		'min_timestamp'	:0,
 		'max_age'		:0,
@@ -87,8 +93,7 @@ angular.module('app.config', []).value('app.config', {
 	'onboard':{
 		'required'		:true,		// always true
 		'start'			:'user'		// ** make smart so not needed
-	},
-	'datepicker':{}
+	}
 });
 angular.module('app.controllers', ['app.config']);
 angular.module('app.directives', ['app.config']);

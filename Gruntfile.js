@@ -135,13 +135,15 @@ module.exports = function(grunt) {
 			}
 		},
 		karma: {
-			options: {
-				configFile: 'test/karma.conf.js',
-				browsers: ['PhantomJS']
-			},
-			test: {
+			unit: {
 				options: {
-					reporters: ['dots'],
+					configFile: 'test/karma.conf.js',
+					singleRun: true
+				}
+			},
+			e2e: {
+				options: {
+					configFile: 'test/karma-e2e.conf.js',
 					singleRun: true
 				}
 			},
@@ -221,10 +223,10 @@ module.exports = function(grunt) {
 		uglify: {
 			options: {
 				preserveComments: 'some' // preserve !, @cc_on for IE var in scripts/async.js
-			},
+			}
 			// fallback scripts
-			'<%= yeoman.dist %>/js/fallback/placeholder.min.js':'<%= yeoman.app %>/components/angular-modernizr/src/scripts/placeholder.js',
-			'<%= yeoman.dist %>/js/fallback/reveal.min.js':'<%= yeoman.app %>/components/angular-modernizr/src/scripts/reveal.js'
+			//'<%= yeoman.dist %>/js/fallback/placeholder.min.js':'<%= yeoman.app %>/components/angular-modernizr/src/scripts/placeholder.js',
+			//'<%= yeoman.dist %>/js/fallback/reveal.min.js':'<%= yeoman.app %>/components/angular-modernizr/src/scripts/reveal.js'
 		},
 		useminPrepare: {
 			html: ['<%= yeoman.app %>/index.html', '<%= yeoman.app %>/index.web.html', '<%= yeoman.app %>/index.device.html'],
@@ -923,38 +925,28 @@ module.exports = function(grunt) {
 			indent: '	'
 		}*/
 	});
+	
 	grunt.renameTask('regarde', 'watch');
-
 	grunt.renameTask('string-replace', 'replace');
 	
-	// Provides the "karma" task.
+	// Provides the "karma" task. - replace with grunt-karma when it support 0.9
 	grunt.registerMultiTask('karma', 'Starts up a karma server.', function() {
 		var done = this.async();
 		require('karma').server.start(this.options(), function(code) {
 			done(code === 0);
 		});
 	});
-	
-	grunt.registerTask('server', function (target) {
-		if (target === 'dist') {
-			return grunt.task.run(['open', 'connect:dist:keepalive']);
-		}
-
-		grunt.task.run([
-			'clean:server',
-			'coffee:dist',
-			'compass:server',
-			'livereload-start',
-			'connect:livereload',
-			'open',
-			'watch'
-		]);
-	});
 
 	grunt.registerTask('test', [
 		'lint',
 		'karma:test'
 	]);
+	
+	grunt.registerTask('e2e', [
+		'lint',
+		'karma:e2e'
+	]);
+	
 	// generate all icon files from icon.png
 	grunt.registerTask('icon_convert', [
 		'favicon_convert',
@@ -1015,10 +1007,18 @@ module.exports = function(grunt) {
 	]);
 	// seperate web and api for deploymen
 	grunt.registerTask('deploy', [
-		'clean:deploy',
+		'lint',
+		
+		'karma:unit',
+		'karma:e2e',
+		
+		'build',
+		'icon_convert',
 		'copy:web',
-		'copy:api'
+		'copy:api',
+		'phonegap'
 	]);
+	
 	// build phonegap ready
 	grunt.registerTask('phonegap', [
 		'clean:phonegap',
@@ -1029,7 +1029,6 @@ module.exports = function(grunt) {
 	grunt.registerTask('build', [
 
 		// Dev
-		'lint',
 		//'test',
 		//'coffee',
 		//'compass:dist',
@@ -1067,5 +1066,5 @@ module.exports = function(grunt) {
 		//'phpcs'
 	]);
 
-	grunt.registerTask('default', ['build']); // , 'deploy', 'phonegap'
+	grunt.registerTask('default', ['lint', 'build']); // , 'deploy', 'phonegap'
 };

@@ -42,7 +42,7 @@ class Account extends Core {
 			"timestamp_create" => $r['timestamp_create'], // for onboard trigger
 			
 			"referral" => base_convert($r['user_ID'], 10, 32),
-			"email_confirm" => (REQUIRE_EMAIL_CONFIRM && $r['timestamp_confirm'] || !REQUIRE_EMAIL_CONFIRM) ? true : false,
+			"email_confirm" => ($r['timestamp_confirm']) ? true : false,
 		);
 		
 		$return["user"] = array(
@@ -127,17 +127,16 @@ class Account extends Core {
 			//'timestamp_update'    => $_SERVER['REQUEST_TIME'],
 		);
 		$user_ID = $this->db->insert('users', $user);
-
-		if (REQUIRE_EMAIL_CONFIRM) {
-			$hash = substr(hash("sha512", $email.$_SERVER['REQUEST_TIME']), 0, 16);
 		
-			$insert = array('user_ID' => $user_ID, 'hash' => $hash);
-			$this->db->insert_update('user_confirm', $insert, $insert);
+		// send confirm email
+		$hash = substr(hash("sha512", $email.$_SERVER['REQUEST_TIME']), 0, 16);
 	
-			$this->notify->send($user_ID, 'signup_confirm_email', array("hash" => $hash), "email");
-			
-			$return = array("alerts" => array(array('class' => 'success', 'label' => 'Account created!', 'message' => 'Check your email for an activation link.')));
-		}
+		$insert = array('user_ID' => $user_ID, 'hash' => $hash);
+		$this->db->insert_update('user_confirm', $insert, $insert);
+
+		$this->notify->send($user_ID, 'signup_confirm_email', array("hash" => $hash), "email");
+		
+		//$return = array("alerts" => array(array('class' => 'success', 'label' => 'Account created!', 'message' => 'Check your email for an activation link.')));
 		
 		return $return;
 	}
@@ -200,7 +199,7 @@ class Account extends Core {
 
 			$this->db->delete('user_confirm', array('hash' => $hash));
 		} else {
-			$return["alerts"][] = array("class" => "error", "label" => "Error", "message"=>"Confirmation code invalid.");
+			$return["alerts"][] = array("class" => "error", "label" => "Error:", "message"=>"Confirmation code invalid.");
 			$return["errors"]["confirm_code"] = "Confirmation code invalid.";
 		}
 		return $return;
@@ -482,10 +481,11 @@ class Account extends Core {
 			return $this->permission->errorMessage();
 		};
 		
-		$this->db->update('users',
-			array('timestamp_delete' => $_SERVER['REQUEST_TIME']),
+		$this->db->delete('users',
 			array('user_ID' => USER_ID)
 		);
+		
+		//** add in hooks to delete entire footprint
 	}
 
 }

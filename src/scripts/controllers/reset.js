@@ -23,7 +23,7 @@ function ResetCtrl($config, $rootScope, $scope, $rest, $routeParams) {
 	$scope.check = function() {
 		$rest.http({
 				method:'get',
-				url: '/account/reset_check/'+encodeURIComponent($scope.hash)
+				url: $rest.server+'account/reset_check/'+encodeURIComponent($scope.hash)
 			}, function(data){
 				if (data === 'true') {
 					$scope.state.reset = true;
@@ -57,7 +57,7 @@ function ResetCtrl($config, $rootScope, $scope, $rest, $routeParams) {
 	$scope.verify = function() {
 		$rest.http({
 				method:'put',
-				url: '/account/reset_verify/',
+				url: $rest.server+'account/reset_verify/',
 				data: {hash:$scope.hash, id:$scope.ID}
 			}, function(data){
 				$scope.state.verify = false;
@@ -84,7 +84,7 @@ function ResetCtrl($config, $rootScope, $scope, $rest, $routeParams) {
 	$scope.reset = function() {
 		$rest.http({
 				method:'put',
-				url: '/account/reset_password/',
+				url: $rest.server+'account/reset_password/',
 				data: $scope.password
 			}, function(data){
 				$scope.state.reset = false;

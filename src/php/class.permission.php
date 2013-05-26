@@ -8,11 +8,11 @@
  *
  * @category  N/A
  * @package   N/A
- * @author    will Farrell <will.farrell@gmail.com>
+ * @author	will Farrell <will.farrell@gmail.com>
  * @copyright 2000 - 2013 willFarrell.ca
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
  * @version   GIT: <git_id>
- * @link      http://willFarrell.ca
+ * @link	  http://willFarrell.ca
  */
 
 /**
@@ -36,42 +36,42 @@ include_once "inc.permission.php";
  *
  * @category  N/A
  * @package   N/A
- * @author    Original Author <author@example.com>
- * @author    Another Author <another@example.com>
+ * @author	Original Author <author@example.com>
+ * @author	Another Author <another@example.com>
  * @copyright 2000 - 2011 willFarrell.ca
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
  * @version   Release: <package_version>
- * @link      http://willFarrell.ca
+ * @link	  http://willFarrell.ca
  */
 
 class Permission
 {
 	private $tests = array();
-    private $signout = false;	// signout flag set by test that that check session
-    //private $access = false;	// access flag set by test that that check a users access
-    
-    /**
-     * Constructor
-     */
-    function __construct()
-    {
-        global $database, $permission_tests;
-        $this->db = $database;
-        
-        if (!$permission_tests) $this->tests = array();
-        else $this->tests = $permission_tests;
-    }
+	private $signout = false;	// signout flag set by test that that check session
+	//private $access = false;	// access flag set by test that that check a users access
+	
+	/**
+	 * Constructor
+	 */
+	function __construct()
+	{
+		global $database, $permission_tests;
+		$this->db = $database;
+		
+		if (!$permission_tests) $this->tests = array();
+		else $this->tests = $permission_tests;
+	}
 
-    /**
-     * Destructor
-     */
-    function __destruct()
-    {
-        
-    }
-    
-    // mailtain inc.permission.php
-    private function add_function_array($name = "") {
+	/**
+	 * Destructor
+	 */
+	function __destruct()
+	{
+		
+	}
+	
+	// mailtain inc.permission.php
+	private function add_function_array($name = "") {
 		$regenerate = false;
 		if ($name) {
 			if (!isset($this->tests[$name])) {
@@ -80,7 +80,7 @@ class Permission
 			}
 		}
 		
-        if ($regenerate) $this->build_function_array();
+		if ($regenerate) $this->build_function_array();
 	}
 	
 	private function build_function_array($file = 'php/inc.permission.php') {
@@ -99,35 +99,35 @@ class Permission
 		$label = ucwords($label);
 		return $label;
 	}
-    
-    function errorMessage() {
-    	
-    	if ($this->signout) {
-	    	$return["session"] = "signout";
-    	} else {
-	    	$return = array(
-		    	"alerts" => array(
-		    		"message" => "You don't have permission to make that request."
-		    	)
-		    );
-    	}
-    	
-	    return $return;
-    }
-    
-    /**
-     * 
-     * check
-     *
-     * @param array $args array of params to be used in tests
-     *
-     * @return true
-     * @aceess puiblic
-     */
-    function check($args = NULL) {
-    	$allowed = true;
-    	
-	    // trace source
+	
+	function errorMessage() {
+		
+		if ($this->signout) {
+			$return["session"] = "signout";
+		} else {
+			$return = array(
+				"alerts" => array(
+					"message" => "You don't have permission to make that request."
+				)
+			);
+		}
+		
+		return $return;
+	}
+	
+	/**
+	 * 
+	 * check
+	 *
+	 * @param array $args array of params to be used in tests
+	 *
+	 * @return true
+	 * @aceess puiblic
+	 */
+	function check($args = NULL) {
+		$allowed = true;
+		
+		// trace source
 		$trace = debug_backtrace();
 		if (!isset($trace[1])) return $allowed;	// trace failed
 		
@@ -154,38 +154,45 @@ class Permission
 			}
 		}
 		
-        return $allowed;
-    }
-    
-    private function in_param($value, $params) {
-    	$allowed = false;
-	    foreach($params as $param) {
-		    $bounds = explode("-", $param);
-		    
-		    if (count($bounds) == 1 && $bounds[0] == $value) {
-			    $allowed = true;
-		    } else if (count($bounds) == 2 && $bounds[0] <= $value && $value <= $bounds[1]) {
-			    $allowed = true;
-		    }
-	    }
-	    return $allowed;
-    }
-    
-    //-- tests that are commonly used --//
-    
-    // is user connected
-    function connected() {
-    	if (!defined('USER_ID') || !USER_ID) {
-	    	$this->signout = true;
-	    	return false;
-    	}
-	    return true;
-    }
-    
-    // user_level[1-3,5,9]
-    function user_level($args, $params) {
-    	return defined('USER_LEVEL') && $this->in_param(USER_LEVEL, $params);
-    }
+		return $allowed;
+	}
+	
+	private function in_param($value, $params) {
+		$allowed = false;
+		foreach($params as $param) {
+			$bounds = explode("-", $param);
+			
+			if (count($bounds) == 1 && $bounds[0] == $value) {
+				$allowed = true;
+			} else if (count($bounds) == 2 && $bounds[0] <= $value && $value <= $bounds[1]) {
+				$allowed = true;
+			}
+		}
+		return $allowed;
+	}
+	
+	//-- tests that are commonly used --//
+	
+	// is user connected
+	function user_ID() {
+		if (!defined('USER_ID') || !USER_ID) {
+			$this->signout = true;
+			return false;
+		}
+		return true;
+	}
+	
+	// user_level[1-3,5,9]
+	function user_level($args, $params) {
+		return defined('USER_LEVEL') && $this->in_param(USER_LEVEL, $params);
+	}
+	
+	function company_ID() {
+		if (!defined('COMPANY_ID') || !COMPANY_ID) {
+			return false;
+		}
+		return true;
+	}
 }
 
 ?>

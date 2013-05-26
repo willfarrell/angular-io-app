@@ -11,7 +11,7 @@ angular.module('io.modules')
 
 		$rest.http({
 				method:'post',
-				url: '/contact/',
+				url: $rest.server+'contact/',
 				data: $scope.contact
 			}, function(data){
 				$scope.contact = {};
@@ -35,7 +35,7 @@ angular.module('io.modules')
 
 		$rest.http({
 				method:'post',
-				url: '/contact/',
+				url: $rest.server+'contact/',
 				data: $scope.contact
 			}, function(data){
 				$scope.contact = {};

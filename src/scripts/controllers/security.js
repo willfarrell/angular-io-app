@@ -19,7 +19,7 @@ function SecurityCtrl($rootScope, $scope, $rest) {
 
 		$rest.http({
 				method:'get',
-				url: '/user/security'
+				url: $rest.server+'user/security'
 			}, function(data){
 				if (data !== '') {
 					for (var i in data) {
@@ -51,7 +51,7 @@ function SecurityCtrl($rootScope, $scope, $rest) {
 
 		$rest.http({
 				method:'put',
-				url: '/user/security',
+				url: $rest.server+'user/security',
 				data: $scope.security
 			}, function(data){
 				$rootScope.alerts = [{'class':'success', 'label':'Security:', 'message':'Saved'}];
@@ -74,7 +74,7 @@ function SecurityCtrl($rootScope, $scope, $rest) {
 
 		$rest.http({
 				method:'get',
-				url: '/totp/'+$scope.security.totp.service
+				url: $rest.server+'totp/'+$scope.security.totp.service
 			}, function(data){
 				$scope.security.totp.secret = JSON.parse(data);
 			});
@@ -99,7 +99,7 @@ function SecurityCtrl($rootScope, $scope, $rest) {
 
 		$rest.http({
 				method:'put',
-				url: '/totp/'+$scope.security.totp.secret+'/'+code
+				url: $rest.server+'totp/'+$scope.security.totp.secret+'/'+code
 			}, function(data){
 				$scope.test_code_return = data;
 			});
@@ -121,7 +121,7 @@ function SecurityCtrl($rootScope, $scope, $rest) {
 
 		$rest.http({
 				method:'put',
-				url: '/user/pgp/',
+				url: $rest.server+'user/pgp/',
 				data: email
 			});
 

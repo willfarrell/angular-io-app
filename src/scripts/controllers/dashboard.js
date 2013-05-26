@@ -10,7 +10,7 @@ function DashboardCtrl(config, $rootScope, $scope, $rest, $routeParams, $session
 	$scope.loadSearch = function() {
 		$rest.http({
 				method:'get',
-				url: '/'+$scope.search.type+'/search/'+$scope.search.query
+				url: $rest.server+''+$scope.search.type+'/search/'+$scope.search.query
 			}, function(data){
 				$scope.results = data;
 			});

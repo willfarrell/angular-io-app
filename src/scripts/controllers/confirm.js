@@ -8,12 +8,13 @@ function ConfirmCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 	$scope.status = false; // used on confirm page
 
 	$scope.check = function(hash) {
+		$rootScope.alerts = {};
 		$rootScope.errors = {};
 		hash = hash || $scope.hash;
-
+		
 		$rest.http({
 				method:'get',
-				url: '/account/confirm_email/'+encodeURIComponent(hash)
+				url: $rest.server+'account/confirm_email/'+encodeURIComponent(hash)
 			}, function(data){
 				$session.account.email_confirm = true;
 				$session.save();
@@ -35,7 +36,7 @@ function ConfirmCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 	$scope.resend = function() {
 		$rest.http({
 				method:'get',
-				url: '/account/resend_confirm_email/'
+				url: $rest.server+'account/resend_confirm_email/'
 			}, function(data){
 				$rootScope.alerts = [{'class':'info', 'label':'Email Confirmation:', 'message':'Sent'}];
 			});

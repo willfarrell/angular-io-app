@@ -1,4 +1,4 @@
-<div class="row-fluid" data-ng-controller="InviteCtrl">
+<!--<div class="row-fluid" data-ng-controller="InviteCtrl">
 	<div class="span6 offset3 well center">
 		<fieldset><legend>Spread the Word...</legend></fieldset>
 
@@ -12,6 +12,30 @@
 			<button class="btn" data-ng-click="twitter(i18n.invite_twitter_tweet,i18n.domain+'/#/?ref='+session.account.referral)">
 			<i class="icon-twitter"></i> Share via Twitter
 			</button>
+		</div>
+	</div>
+</div>
+-->
+<div class="row" data-ng-controller="InviteCtrl">
+	<div class="pull-center span7 well-white">
+		<fieldset><legend>
+			Spread the Word...
+		</legend></fieldset>
+		<hr>
+		<div class="center">
+			<p>Share this link with friends and coworkers</p>
+			<div class="input-append">
+				<input type="text" class="" value="{{i18n.domain}}/#/?ref={{session.account.referral}}" />
+				<span class="add-on" onclick="clipboard('{{i18n.domain}}/#/?ref={{session.account.referral}}')"><i class="icon-copy"></i></span>
+			</div>
+			<p>
+				<div class="btn-group">
+					<button class="btn" data-ng-click="mailto(i18n.invite_mail_subject,i18n.invite_mail_body+' '+i18n.domain+'/#/?ref='+session.account.referral)"><i class="icon-envelope"></i> Email</button>
+					<button class="btn" data-ng-click="twitter(i18n.invite_twitter_tweet,i18n.domain+'/#/?ref='+session.account.referral)"><i class="icon-twitter"></i> Twitter</button>
+					<button class="btn" data-ng-click="facebook(i18n.invite_facebook_tweet,i18n.domain+'/#/?ref='+session.account.referral)"><i class="icon-twitter"></i> Facebook</button>
+				</div>
+			</p>
+			<br>
 		</div>
 	</div>
 </div>

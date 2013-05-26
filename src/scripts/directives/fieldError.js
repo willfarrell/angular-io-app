@@ -19,7 +19,7 @@ angular.module('io.directives')
 				if (original === null || (err_msg && error !== err_msg)) {
 					//console.log('set', original, err_msg, error)
 					original = value;
-					error = $rootScope.errors[attrs.fieldError]
+					error = err_msg;
 				}
 				
 				//console.log(original, '==', value, 'error:', error);

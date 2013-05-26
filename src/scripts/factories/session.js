@@ -1,5 +1,5 @@
 
-angular.module('io.factories')
+angular.module('app.factories')
 .factory('$session', ['app.config', '$rootScope', '$cookies', '$http', '$localStorage', function(config, $rootScope, $cookies, $http, $localStorage) {
 	console.log('SessionFactory (', $rootScope.$id, ')');
 	
@@ -46,7 +46,7 @@ angular.module('io.factories')
 
 	$scope.save = function(force) {
 		console.log('saveSession(', $scope.account, $scope.user, $scope.company, ')');
-		if ($scope.account.remember || force) {
+		if (($scope.account && $scope.account.remember) || force) {
 			/*
 			$localStorage.set('session', {
 				active: $scope.active,
@@ -65,7 +65,7 @@ angular.module('io.factories')
 
 	$scope.update = function(callback) {
 		console.log('updateSession(', callback, ')');
-		$http.get('/account/session')	// re-get session data if currently no storing any
+		$http.get('account/session')	// re-get session data if currently no storing any
 			.success(function(data) {
 				console.log('updateSession.get.success');
 				console.log(data);
@@ -85,7 +85,7 @@ angular.module('io.factories')
 
 	$scope.regen = function() {
 		console.log('regenSession()');
-		$http.get('/account/regen')
+		$http.get('account/regen')
 			.success(function(data) {
 				console.log('regenSession.get.success');
 			});
@@ -93,7 +93,7 @@ angular.module('io.factories')
 
 	$scope.check = function(callback) {
 		console.log('checkSession(', callback, ')');
-		$http.get('/account/signcheck')
+		$http.get('account/signcheck')
 			.success(function(data) {
 				console.log('checkSession.get.success');
 				console.log(data);
@@ -115,18 +115,18 @@ angular.module('io.factories')
 		console.log('config', config);
 		//console.log(JSON.stringify($session));
 		// not signed in -> sign/in
-		if (!$scope.active) {
+		if (!$scope.active || !$scope.account) {
 			console.log('not signed in');
 
 			if ($rootScope.uri().match(/\/sign\//) === null) { // prevent redirect loop
 				$cookies.redirect = $rootScope.uri();
 				$rootScope.href('/sign/in');
 			}
-		// email not confirmed -> onboard
-		} else if (config.onboard.required && !$scope.account.email_confirm && $rootScope.uri().match(/\/onboard\/email/) === null) {
+		// email not confirmed -> onboard *** move to settings with alert
+		/*} else if (config.onboard.required && !$scope.account.email_confirm && $rootScope.uri().match(/\/onboard\/email/) === null) {
 			//console.log('email not confirmed = '+(config.onboard.required)+' && '+!$session.email_confirm+' && '+($rootScope.uri().match(/\/onboard/) === null));
 			$rootScope.href('/onboard/email');
-		// haven't completed manditory onboard steps -> onboard
+		// haven't completed manditory onboard steps -> onboard*/
 		} else if (config.onboard.required && !$scope.account.timestamp_create && $rootScope.uri().match(/\/onboard/) === null) {
 			//console.log('onboard not completed = '+(config.onboard.required)+' && '+!$session.timestamp_create+' && '+($rootScope.uri().match(/\/onboard/) === null));
 			$rootScope.href('/onboard/'+config.onboard.start);
@@ -135,7 +135,7 @@ angular.module('io.factories')
 			(config.password.max_age && $scope.account.password_age > config.password.max_age) ||
 			(config.password.min_timestamp && $scope.account.password_timestamp < config.password.min_timestamp)
 			) {
-			$rootScope.href('/onboard/password');
+			$rootScope.href('/settings/password');
 		// all good -> eval callback
 		} else if (callback) {
 			callback();//$rootScope.$eval(callback());

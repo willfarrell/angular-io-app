@@ -39,7 +39,7 @@ function OnboardCtrl($rootScope, $scope, $cookies, $rest, $routeParams, $session
 
 		$rest.http({
 				method:'get',
-				url: '/account/onboard_done'
+				url: $rest.server+'account/onboard_done'
 			}, function(data){
 				$session.update(function(){
 					if (redirect) { $rootScope.href(redirect); }

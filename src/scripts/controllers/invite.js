@@ -23,13 +23,21 @@ function InviteCtrl($rootScope, $scope, $session) {
 		};
 		console.log($rootScope.modal);
 	};*/
-	$scope.mailto = function(subject, message) {
-		console.log(subject, message);
-		$rootScope.href('mailto:?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(message)+'', true);
+	
+	// window.open
+	$scope.mailto = function(subject, body) {
+		console.log('mailto:?subject=',subject, '&body=', body);
+		$rootScope.href('mailto:?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body), true);
 	};
+	
 	$scope.twitter = function(text, url) {
-		$rootScope.href('https://twitter.com/intent/tweet?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(url)+'', true);
+		$rootScope.href('https://twitter.com/intent/tweet?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(url), true);
 	};
+	
+	$scope.facebook = function(text, url) {
+		$rootScope.href('http://www.facebook.com/sharer.php?u='+encodeURIComponent(url)+'&t='+encodeURIComponent(text), true);
+	};
+	
 	$session.require_signin();
 }
 InviteCtrl.$inject = ['$rootScope', '$scope', '$session'];

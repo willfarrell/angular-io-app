@@ -10,7 +10,7 @@
 <div class="row-fluid">
 	<div class="span4">
 		<!-- logo -->
-		<p><img data-ng-src="/img/company/{{company.company_ID}}.png" /></p>
+		<p><img data-ng-src="img/company/{{company.company_ID}}.png" /></p>
 		<p data-ng-show="company.company_url"><i class="icon-link"></i> <a data-ng-href="{{company.company_url}}" target="_blank">{{company.company_url}}</a></p>
 		<p data-ng-show="company.company_phone"><i class="icon-phone"></i> <a data-ng-href="tel:+{{json.calling_codes[location.country_code]}} {{company.company_phone}}">+{{json.calling_codes[location.country_code]}} {{company.company_phone | phone}}</a></p>
 		<!--<a href="" onclick="openURL({{company.company_url}})"><i class="icon-linkedin"></i> LinkenIn</a>

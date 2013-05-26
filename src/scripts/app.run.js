@@ -114,7 +114,7 @@ function(config, $rootScope, $timeout, $locale, $cookies, $http, $window, $locat
 	$rootScope.loadJSON = function(key, file, folder, callback) {
 		folder = folder || 'json';
 		console.log('loadJSON(', key, file, ')');
-		$http.get('/'+folder+'/'+file+'.json')
+		$http.get(''+folder+'/'+file+'.json')
 			.success(function(data){
 				console.log('loadJSON.get(', folder+'/'+file, ').success');
 				//console.log(data);
@@ -173,7 +173,7 @@ function(config, $rootScope, $timeout, $locale, $cookies, $http, $window, $locat
 	};
 	$rootScope.loadLocaleFile = function(locale, file) {
 		console.log('loadLocaleFile(', locale, file, ')');
-		$http.get('/i18n/'+locale+'/'+file+'.json')
+		$http.get('i18n/'+locale+'/'+file+'.json')
 			.success(function(data) {
 				console.log('loadLocaleFile.get(', locale+'/'+file, ').success');
 				//console.log(data);
@@ -214,7 +214,7 @@ function(config, $rootScope, $timeout, $locale, $cookies, $http, $window, $locat
 		$rootScope.json.regions = $rootScope.json.regions || {};
 		if ($rootScope.json.regions[country_code]) { return; }
 		console.log('loadRegions(', country_code, ')');
-		$http.get('/i18n/'+$rootScope.language+'/geo/'+country_code+'.json')
+		$http.get('i18n/'+$rootScope.language+'/geo/'+country_code+'.json')
 			.success(function(data){
 				console.log('loadRegions.get.success');
 				$rootScope.json.regions[country_code] = data;

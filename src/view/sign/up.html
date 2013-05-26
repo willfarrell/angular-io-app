@@ -21,7 +21,7 @@
 			<!--<span class="help-block" data-ng-show="objectLength(form.password.$error) > 2">Our intern could crack that password, best to be safe and make it stronger.</span>-->
 		</div>
 
-		<button class="btn btn-primary" data-ng-click="account_signup()" data-ng-disabled="form.$invalid">Sign Up</button>
+		<button class="btn btn-primary" data-ng-click="account_signup()" data-ng-disabled="form.$invalid || form.password.$invalid">Sign Up</button>
 	</form>
 	<a href="#/sign/in">Sign In</a>
 </div>

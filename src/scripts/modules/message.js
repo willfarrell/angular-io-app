@@ -30,7 +30,7 @@ angular.module('io.modules')
 
 		$rest.http({
 				method:'get',
-				url: '/message/unread'
+				url: $rest.server+'message/unread'
 			}, function(data){
 				$scope.unread = data;
 			});
@@ -53,7 +53,7 @@ angular.module('io.modules')
 
 		$rest.http({
 				method:'post',
-				url: '/message',
+				url: $rest.server+'message',
 				data: $scope.compose
 			}, function(data){
 				$scope.compose.message = '';
@@ -94,7 +94,7 @@ angular.module('io.modules')
 
 		$rest.http({
 				method:'get',
-				url: '/message/list'
+				url: $rest.server+'message/list'
 			}, function(data){
 				$scope.list = data;
 			});
@@ -123,7 +123,7 @@ angular.module('io.modules')
 
 		$rest.http({
 				method:'get',
-				url: '/message/'+user_ID
+				url: $rest.server+'message/'+user_ID
 			}, function(data){
 				$rootScope.message.to_name = data.user.user_name_first+' '+data.user.user_name_last;
 				$scope.thread = data.thread;

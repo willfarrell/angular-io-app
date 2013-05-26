@@ -1,4 +1,4 @@
-/*global syncVar:true */
+/*global */
 // version 0.2.0
 
 //(function (angular) {
@@ -89,7 +89,7 @@ angular.module('app.modules')
 
 		$rest.http({
 				method:'get',
-				url: '/filepicker/list/'+$scope.args.action+'/'+$scope.args.ID
+				url: $rest.server+'filepicker/list/'+$scope.args.action+'/'+$scope.args.ID
 			}, function(data){
 				$scope.args.files = data;
 			});
@@ -103,12 +103,20 @@ angular.module('app.modules')
 			.error(function() {
 			});*/
 	};
-	$scope.upload = function(args, ID) {
+	$scope.upload = function(args_ID, ID) {
 		ID = ID || '';
+		var args = config[args_ID];
 		console.log(args);
 		console.log(ID);
 		$scope.alerts = [];
-		$scope.args = syncVar(args, $scope.args_upload);
+		$scope.args = $scope.args_upload;
+		
+		for (var i in args) {
+			if (args.hasOwnProperty(i)) {
+				$scope.args[i] = args[i];
+			}
+		}
+		console.log($scope.args);
 		$scope.args.ID = ID;
 		$scope.cameraModernizr(); // incase camera is default
 		$scope.location($scope.args.service);
@@ -116,21 +124,34 @@ angular.module('app.modules')
 		// input accept tag
 		$scope.accept = $scope.args.extensions.length ? $scope.args.extensions.join(',') : $scope.args.types.join(',');
 		$scope.setDropzoneName();
-		//$('#filepickerModal').modal('show');
 	};
-	$scope.view = function(args, ID) {
+	$scope.view = function(args_ID, ID) {
 		ID = ID || '';
 		console.log(ID);
+		var args = config[args_ID];
+		console.log(args);
 		$scope.alerts = [];
-		$scope.args = syncVar(args, $scope.args_download);
+		$scope.args = $scope.args_download;
+		for (var i in args) {
+			if (args.hasOwnProperty(i)) {
+				$scope.args[i] = args[i];
+			}
+		}
 		$scope.args.ID = ID;
 		$scope.loadFiles();
 	};
-	$scope.download = function(args, ID) {
+	$scope.download = function(args_ID, ID) {
 		ID = ID || '';
 		console.log(ID);
+		var args = config[args_ID];
+		console.log(args);
 		$scope.alerts = [];
-		$scope.args = syncVar(args, $scope.args_download);
+		$scope.args = $scope.args_download;
+		for (var i in args) {
+			if (args.hasOwnProperty(i)) {
+				$scope.args[i] = args[i];
+			}
+		}
 		$scope.args.ID = ID;
 		$scope.loadFiles();
 		//$('#filepickerModal').modal('show');
@@ -138,7 +159,7 @@ angular.module('app.modules')
 	$scope.downloadFile = function(file) {
 		$rest.http({
 				method:'post',
-				url: '/filepicker/list/'+$scope.args.action+'/'+$scope.args.ID,
+				url: $rest.server+'filepicker/list/'+$scope.args.action+'/'+$scope.args.ID,
 				data: {'file':file}
 			}, function(data){
 				$rootScope.alerts = [{'class':'success', 'label':'File deleted'}];
@@ -191,7 +212,7 @@ angular.module('app.modules')
 
 		$rest.http({
 				method:'delete',
-				url: '/filepicker/'+$scope.args.action+'/'+$scope.args.ID+'/'+encodeURIComponent(file)
+				url: $rest.server+'filepicker/'+$scope.args.action+'/'+$scope.args.ID+'/'+encodeURIComponent(file)
 			}, function(data){
 				$rootScope.alerts = [{'class':'success', 'label':'File deleted'}];
 				$scope.view($scope.args, $scope.args.ID); // reload list
@@ -410,7 +431,7 @@ angular.module('app.modules')
 			//'/filepicker/url/'+url.replace(/\./g, '%2E');
 			$rest.http({
 					method:'post',
-					url: '/filepicker/url/' + $scope.filepicker.args.action + '/' + $scope.filepicker.args.ID+'/'+url,
+					url: $rest.server+'filepicker/url/' + $scope.filepicker.args.action + '/' + $scope.filepicker.args.ID+'/'+url,
 					data: {url: url}
 				}, function(data){
 					data = {
@@ -728,7 +749,7 @@ angular.module('app.modules')
 	$scope.camera = {};
 	$scope.camera.save = function() {
 		console.log('camera.save');
-		console.log(filepicker.camera);
+		console.log($scope.filepicker.camera);
 		if (!$scope.filepicker.camera.video.videoWidth && !$scope.filepicker.camera.video.videoHeight) { return; } // camera not loaded yet
 		// reset canvas to camera size
 		$scope.filepicker.camera.canvas.width = $scope.filepicker.camera.video.videoWidth;
@@ -869,7 +890,7 @@ angular.module('app.modules')
 		xhr.addEventListener('load', $scope.uploadComplete, false);
 		xhr.addEventListener('error', $scope.uploadFailed, false);
 		xhr.addEventListener('abort', $scope.uploadCanceled, false);
-		xhr.open('POST', $rootScope.settings.server + '/filepicker/computer/' + $scope.filepicker.args.action + '/' + $scope.filepicker.args.ID);
+		xhr.open('POST', $rest.server + 'filepicker/computer/' + $scope.filepicker.args.action + '/' + $scope.filepicker.args.ID);
 		$scope.progressVisible = true;
 		xhr.send(fd);
 		//console.log('POST /filepicker/computer/'+$scope.filepicker.args.action);
@@ -895,7 +916,7 @@ angular.module('app.modules')
 		//'/filepicker/url/'+url.replace(/\./g, '%2E');
 		$rest.http({
 				method:'post',
-				url: '/filepicker/url/' + $scope.filepicker.args.action + '/' + $scope.filepicker.args.ID,
+				url: $rest.server+'filepicker/url/' + $scope.filepicker.args.action + '/' + $scope.filepicker.args.ID,
 				data: {url: url}
 			}, function(data){
 				data = {
