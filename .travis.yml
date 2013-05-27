@@ -10,4 +10,4 @@ before_script:
   - npm install -g grunt-cli
 
 script:
-  - grunt deploy
+  - grunt karma:unit karma:e2e
