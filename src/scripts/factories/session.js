@@ -97,8 +97,9 @@ angular.module('app.factories')
 			.success(function(data) {
 				console.log('checkSession.get.success');
 				console.log(data);
-				if (parseInt(data, 10)) {	// has active cookie
-					if (!$scope.active) {
+				data = parseInt(data, 10);
+				if (data) {	// has active cookie
+					if (!$scope.active || data !== $scope.user.user_ID) {
 						$scope.update(callback);
 					} else if (callback) {
 						callback();//$rootScope.$eval(callback());

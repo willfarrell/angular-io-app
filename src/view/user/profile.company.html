@@ -10,9 +10,9 @@
 <div class="row-fluid">
 	<div class="span4">
 		<!-- logo -->
-		<p><img data-ng-src="img/company/{{company.company_ID}}.png" /></p>
+		<p><img data-ng-src="img/company/{{company.company_ID}}.png?{{filepicker.timestamp}}" /></p>
 		<p data-ng-show="company.company_url"><i class="icon-link"></i> <a data-ng-href="{{company.company_url}}" target="_blank">{{company.company_url}}</a></p>
-		<p data-ng-show="company.company_phone"><i class="icon-phone"></i> <a data-ng-href="tel:+{{json.calling_codes[location.country_code]}} {{company.company_phone}}">+{{json.calling_codes[location.country_code]}} {{company.company_phone | phone}}</a></p>
+		<p data-ng-show="company.company_phone"><i class="icon-phone"></i> <a data-ng-href="tel:+{{json.calling_codes[location.country_code]}} {{company.company_phone}}">+{{json.calling_codes[company.location.country_code]}} {{company.company_phone | phone}}</a></p>
 		<!--<a href="" onclick="openURL({{company.company_url}})"><i class="icon-linkedin"></i> LinkenIn</a>
 		<a href="" onclick="openURL({{company.company_url}})"><i class="icon-facebook"></i> Facebook</a>
 		<a href="" onclick="openURL({{company.company_url}})"><i class="icon-twitter"></i> Twitter</a>
@@ -21,15 +21,14 @@
 		<br>
 
 		<!-- user -->
-		<fieldset><legend><i class="icon-user"></i> Primary Contact</legend></fieldset>
+		<fieldset><legend><i class="icon-user"></i> {{company.user.user_name_first}} {{company.user.user_name_last}}</legend></fieldset>
 		<div class="row-fluid">
 			<div class="span5">
 				<img data-ng-src="img/user/{{company.user.user_ID}}.png?{{filepicker.timestamp}}" class="img-polaroid" width="100" height="100" />
 			</div>
 			<div class="span1"></div>
 			<div class="span6">
-				<h4>{{company.user.user_name_first}} {{company.user.user_name_last}}</h4>
-				<p data-ng-show="company.user.user_function">{{company.user.user_function}}</p>
+				<p><i data-ng-show="company.user.user_function">{{company.user.user_function}}</i></p>
 				<div class="btn-group" data-ng-hide="session.user.user_ID == company.user.user_ID">
 					<a href="#messageModal" class="btn" data-ng-click="message.open(company.user.user_ID, company.user.user_name_first+' '+company.user.user_name_last)" data-toggle="modal"><i class="icon-envelope"></i></a>
 					<!--<a class="btn" rel="tooltip" title="+{{json.calling_codes[company.location.country_code]}} {{company.user.user_phone | phone}}" href="tel:+{{json.calling_codes[company.location.country_code]}} {{company.user.user_phone}}" data-ng-disabled="!(company.user.user_phone)"><i class="icon-phone"></i></a>-->
@@ -41,7 +40,7 @@
 		<br>
 
 		<!-- location -->
-		<fieldset><legend data-ng-show="company.location"><i class="icon-map-marker"></i> Primary Location</legend></fieldset>
+		<fieldset><legend data-ng-show="company.location"><i class="icon-map-marker"></i> {{company.location.location_name}}</legend></fieldset>
 		<div class="row-fluid" data-ng-show="company.location">
 			<div class="span5">
 				<!--<img src="http://placehold.it/100x100" width="100" height="100" />-->
@@ -50,12 +49,11 @@
 			</div>
 			<div class="span1"></div>
 			<div class="span6">
-				<h4>{{company.location.location_name}}</h4>
 				<span>{{company.location.address_1}}</span><br>
 				<span data-ng-show="company.location.address_2">{{company.location.address_2}}<br></span>
 				<span>{{company.location.city}}, {{company.location.region_code}}, {{company.location.country_code}}</span><br>
 				<span>{{company.location.mail_code}}</span><br>
-				<span data-ng-show="company.location.location_phone"><i class="icon-phone"></i> +{{json.calling_codes[company.location.country_code]}} {{company.location.location_phone | phone}}<br></span>
+				<span data-ng-show="company.location.location_phone"><i class="icon-phone"></i> <a data-ng-href="tel:+{{json.calling_codes[company.location.country_code]}} {{company.location.location_phone}}">+{{json.calling_codes[company.location.country_code]}} {{company.location.location_phone | phone}}</a><br></span>
 				<!--<p>{{company.location.latitude}},{{company.location.longitude}}</p>-->
 			</div>
 		</div>

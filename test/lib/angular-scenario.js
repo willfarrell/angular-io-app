@@ -25684,7 +25684,7 @@ angular.scenario.dsl('select', function() {
 
   chain.option = function(value) {
     return this.addFutureAction("select '" + this.name + "' option '" + value + "'", function($window, $document, done) {
-      var select = $document.elements('select[ng\\:model="$1"]', this.name);
+      var select = $document.elements('select[data-ng-model="$1"]', this.name);
       var option = select.find('option[value="' + value + '"]');
       if (option.length) {
         select.val(value);
@@ -25702,7 +25702,7 @@ angular.scenario.dsl('select', function() {
   chain.options = function() {
     var values = arguments;
     return this.addFutureAction("select '" + this.name + "' options '" + values + "'", function($window, $document, done) {
-      var select = $document.elements('select[multiple][ng\\:model="$1"]', this.name);
+      var select = $document.elements('select[multiple][data-ng-model="$1"]', this.name);
       select.val(values);
       select.trigger('change');
       done();

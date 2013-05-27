@@ -228,7 +228,7 @@ class Password {
 	function user_input_data($password) {
 		if (!$this->getId()) return false;
 		$return = true;
-		$data = array("user_email", "user_name", "user_name_first", "user_name_last", "user_phone");
+		$data = array("user_email", "user_username", "user_name_first", "user_name_last", "user_phone");
 		
 		
 		

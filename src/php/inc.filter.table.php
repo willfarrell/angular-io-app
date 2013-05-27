@@ -422,9 +422,9 @@ $filter_table = array (
       'label' => 'User Level',
       'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
     ),
-    'user_name' => 
+    'user_username' => 
     array (
-      'field' => 'user_name',
+      'field' => 'user_username',
       'label' => 'User Name',
       'rules' => 'max_length[65535]',
     ),

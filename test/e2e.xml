@@ -1,23 +1,26 @@
 <?xml version="1.0"?>
 <testsuites>
-  <testsuite name="Chrome 28.0 (Mac)" package="e2e" timestamp="2013-05-25T17:05:14" id="0" hostname="wills-MacBook-Pro.local" tests="14" errors="0" failures="0" time="17.382">
+  <testsuite name="Chrome 28.0 (Mac)" package="e2e" timestamp="2013-05-27T22:00:20" id="0" hostname="wills-MacBook-Pro.local" tests="17" errors="0" failures="0" time="22.177">
     <properties>
       <property name="browser.fullName" value="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.20 Safari/537.36"/>
     </properties>
-    <testcase name="should redirect to sign in" time="2.052" classname="e2e Chrome 28.0 (Mac).E2E: Account Initalization Delete test User"/>
-    <testcase name="should not allow sign up of existing user" time="0.67" classname="e2e Chrome 28.0 (Mac).E2E: Account Initalization Delete test User"/>
-    <testcase name="should sign in" time="0.906" classname="e2e Chrome 28.0 (Mac).E2E: Account Initalization Delete test User"/>
-    <testcase name="should delete user data" time="0.902" classname="e2e Chrome 28.0 (Mac).E2E: Account Initalization Delete test User"/>
-    <testcase name="should allow sign up" time="1.012" classname="e2e Chrome 28.0 (Mac).E2E: Account Initalization Initial sign up and onboard process"/>
-    <testcase name="should require user data" time="0.876" classname="e2e Chrome 28.0 (Mac).E2E: Account Initalization Initial sign up and onboard process"/>
-    <testcase name="should complete onboard" time="0.675" classname="e2e Chrome 28.0 (Mac).E2E: Account Initalization Initial sign up and onboard process"/>
-    <testcase name="should signout" time="0.622" classname="e2e Chrome 28.0 (Mac).E2E: Account Initalization Initial sign up and onboard process"/>
-    <testcase name="should update account" time="1.546" classname="e2e Chrome 28.0 (Mac).E2E: Account Settings"/>
-    <testcase name="should update email" time="1.763" classname="e2e Chrome 28.0 (Mac).E2E: Account Settings"/>
-    <testcase name="should update password" time="2.16" classname="e2e Chrome 28.0 (Mac).E2E: Account Settings"/>
-    <testcase name="should update notifications" time="1.423" classname="e2e Chrome 28.0 (Mac).E2E: Account Settings"/>
-    <testcase name="should update profile" time="1.677" classname="e2e Chrome 28.0 (Mac).E2E: Account Settings"/>
-    <testcase name="should update security" time="1.098" classname="e2e Chrome 28.0 (Mac).E2E: Account Settings"/>
+    <testcase name="should redirect to sign in" time="2.019" classname="e2e Chrome 28.0 (Mac).E2E: Account Initalization Delete test User"/>
+    <testcase name="should not allow sign up of existing user" time="0.554" classname="e2e Chrome 28.0 (Mac).E2E: Account Initalization Delete test User"/>
+    <testcase name="should sign in" time="0.704" classname="e2e Chrome 28.0 (Mac).E2E: Account Initalization Delete test User"/>
+    <testcase name="should delete user data" time="0.782" classname="e2e Chrome 28.0 (Mac).E2E: Account Initalization Delete test User"/>
+    <testcase name="should allow sign up" time="1.393" classname="e2e Chrome 28.0 (Mac).E2E: Account Initalization Initial sign up and onboard process"/>
+    <testcase name="should require onbaord data" time="0.931" classname="e2e Chrome 28.0 (Mac).E2E: Account Initalization Initial sign up and onboard process"/>
+    <testcase name="should confirm email" time="0.51" classname="e2e Chrome 28.0 (Mac).E2E: Account Initalization Initial sign up and onboard process"/>
+    <testcase name="should signout" time="0.517" classname="e2e Chrome 28.0 (Mac).E2E: Account Initalization Initial sign up and onboard process"/>
+    <testcase name="should update account" time="1.502" classname="e2e Chrome 28.0 (Mac).E2E: Account Settings"/>
+    <testcase name="should update email" time="1.877" classname="e2e Chrome 28.0 (Mac).E2E: Account Settings"/>
+    <testcase name="should update password" time="2.462" classname="e2e Chrome 28.0 (Mac).E2E: Account Settings"/>
+    <testcase name="should update notifications" time="1.469" classname="e2e Chrome 28.0 (Mac).E2E: Account Settings"/>
+    <testcase name="should update security" time="1.153" classname="e2e Chrome 28.0 (Mac).E2E: Account Settings"/>
+    <testcase name="should update user profile" time="1.657" classname="e2e Chrome 28.0 (Mac).E2E: Account Settings"/>
+    <testcase name="should update company profile" time="1.634" classname="e2e Chrome 28.0 (Mac).E2E: Account Settings"/>
+    <testcase name="should add a location" time="1.938" classname="e2e Chrome 28.0 (Mac).E2E: Account Settings"/>
+    <testcase name="should add another user change default" time="1.075" classname="e2e Chrome 28.0 (Mac).E2E: Account Settings"/>
     <system-out><![CDATA[
 ]]></system-out>
     <system-err/>

@@ -26,11 +26,11 @@ class User extends Core {
 			return $this->permission->errorMessage();
 		};
 		
-		$query = "SELECT user_ID, user_name, user_name_first, user_name_last, user_phone, user_function" //
+		$query = "SELECT user_ID, user_username, user_name_first, user_name_last, user_phone, user_function" //
 				." FROM users U"
 				." WHERE"
 				." U.timestamp_confirm != 0 AND"
-				." (user_name LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%@' OR user_details LIKE '%{{keyword}}%' OR user_url LIKE '%{{keyword}}%')"
+				." (user_username LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%@' OR user_details LIKE '%{{keyword}}%' OR user_url LIKE '%{{keyword}}%')"
 				." LIMIT 0,{{limit}}";
 		$users = $this->db->query($query, array('keyword' => $keyword, 'limit' => $limit));
 		while ($users && $user = $this->db->fetch_assoc($users)) {
@@ -46,28 +46,28 @@ class User extends Core {
 		$return = array();
 		
 		// Check permissions
-		if(!$this->permission->check(array("user_name" => $username))) {
+		if(!$this->permission->check(array("user_username" => $username))) {
 			return $this->permission->errorMessage();
 		};
 		
-		// add in user_name check
+		// add in user_username check
 		
 		
 		
 		// check user_ID
 		$db_where = array();
 		if ($username) {
-			$db_where['user_name'] = $username;
+			$db_where['user_username'] = $username;
 		} else {
 			return $return;
 		}
-		$db_select = array("user_ID", "user_name", "user_name_first", "user_name_last", "user_email", "user_function", "user_phone", "user_url", "user_details");
+		$db_select = array("user_ID", "user_username", "user_name_first", "user_name_last", "user_email", "user_function", "user_phone", "user_url", "user_details");
 
 		$results = $this->db->select('users', $db_where, $db_select);
 		if ($results) {
 			while($user = $this->db->fetch_assoc($results, array("user_phone"))) {
-				/*if (!is_null($user_ID) && $user['user_name'] == '') {
-					$user['user_name'] = $user["user_name_first"]." ".$user["user_name_last"];
+				/*if (!is_null($user_ID) && $user['user_username'] == '') {
+					$user['user_username'] = $user["user_name_first"]." ".$user["user_name_last"];
 				}*/
 				$return = $user;
 			}
@@ -181,13 +181,13 @@ class User extends Core {
 		} else {
 			$db_where['user_ID'] = USER_ID;
 		}
-		$db_select = array("user_ID", "user_name", "user_name_first", "user_name_last", "user_email", "user_function", "user_phone", "user_url", "user_details");
+		$db_select = array("user_ID", "user_username", "user_name_first", "user_name_last", "user_email", "user_function", "user_phone", "user_url", "user_details");
 		
 		$results = $this->db->select('users', $db_where, $db_select);
 		if ($results) {
 			while($user = $this->db->fetch_assoc($results, array("user_phone"))) {
-				/*if (!is_null($user_ID) && $user['user_name'] == '') {
-					$user['user_name'] = $user["user_name_first"]." ".$user["user_name_last"];
+				/*if (!is_null($user_ID) && $user['user_username'] == '') {
+					$user['user_username'] = $user["user_name_first"]." ".$user["user_name_last"];
 				}*/
 				$return = $user;
 			}
@@ -206,7 +206,7 @@ class User extends Core {
 		$params = array(
 			//"user_ID",
 			//"company_ID",
-			"user_name",
+			"user_username",
 			"user_name_first",
 			"user_name_last",
 			//"user_email",
@@ -228,9 +228,9 @@ class User extends Core {
 		//unset($request_data['user_email']);	// incase it was passed - angular passes disabled fields
 		
 		// username unique?
-		if (isset($request_data['user_name']) && $request_data['user_name']) {
+		if (isset($request_data['user_username']) && $request_data['user_username']) {
 			$account = new Account;
-			$user_name_errors = $account->get_unique($request_data['user_name']);
+			$user_name_errors = $account->get_unique($request_data['user_username']);
 			if (is_array($user_name_errors)) $return = $user_name_errors;
 		}
 
@@ -247,7 +247,7 @@ class User extends Core {
 		$user = array(
 			'user_ID' => USER_ID,
 			//'user_email' => $request_data['user_email'],
-			'user_name' => $request_data['user_name'],
+			'user_username' => $request_data['user_username'],
 			'user_name_first' => $request_data['user_name_first'],
 			'user_name_last' => $request_data['user_name_last'],
 			'user_phone' => $request_data['user_phone'],

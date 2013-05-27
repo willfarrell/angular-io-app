@@ -81,7 +81,7 @@ angular.module('io.modules')
 	return $scope;
 }])
 
-.controller('MessageCtrl', ['$rootScope', '$scope', '$rest', '$routeParams', '$session', '$message', function($rootScope, $scope, $rest, $routeParams, $session, $message) {
+.controller('MessageCtrl', ['$rootScope', '$scope', '$timeout', '$rest', '$routeParams', '$session', '$message', function($rootScope, $scope, $timeout, $rest, $routeParams, $session, $message) {
 	console.log('MessageCtrl (', $scope.$id, ')');
 
 	$scope.to_name = '';
@@ -127,9 +127,9 @@ angular.module('io.modules')
 			}, function(data){
 				$rootScope.message.to_name = data.user.user_name_first+' '+data.user.user_name_last;
 				$scope.thread = data.thread;
-				setTimeout(function() {
+				$timeout(function() {
 					$scope.scrollBottom();
-				}, 100);
+				}, 0);
 				// update unread count
 				$message.updateUnreadCount();
 			});

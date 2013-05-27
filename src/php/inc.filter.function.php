@@ -54,9 +54,9 @@ $filter_function = array (
       'label' => 'User ID',
       'rules' => '',
     ),
-    'user_name' => 
+    'user_username' => 
     array (
-      'field' => 'user_name',
+      'field' => 'user_username',
       'label' => 'User Name',
       'rules' => '',
     ),
@@ -249,9 +249,9 @@ $filter_function = array (
       'label' => 'User ID',
       'rules' => '',
     ),
-    'user_name' => 
+    'user_username' => 
     array (
-      'field' => 'user_name',
+      'field' => 'user_username',
       'label' => 'User Name',
       'rules' => '',
     ),
@@ -270,9 +270,9 @@ $filter_function = array (
       'label' => 'User Level',
       'rules' => '',
     ),
-    'user_name' => 
+    'user_username' => 
     array (
-      'field' => 'user_name',
+      'field' => 'user_username',
       'label' => 'User Name',
       'rules' => '',
     ),

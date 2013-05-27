@@ -283,16 +283,9 @@ function(config, $rootScope, $timeout, $locale, $cookies, $http, $window, $locat
 	// used by SignCtrl and OnboardCtrl
 	$rootScope.redirect = function() {
 		console.log('redirect(', $cookies.redirect, ')');
-		//if ($rootScope.session.user_ID) {
-			var redirect = $cookies.redirect || config.dashboard;
-			delete $cookies.redirect;
-			$rootScope.href(redirect);
-		//} else {
-		//	window.setTimeout(function() {
-				//alert(JSON.stringify($rootScope.session));
-		//		$scope.redirect();
-		//	}, 100);
-		//}
+		var redirect = $cookies.redirect || config.dashboard;
+		delete $cookies.redirect;
+		$rootScope.href(redirect);
 	};
 
 	// usecase: <div ng-bind-html-unsafe="renderIframe(item, 'http://url.com')"></div>

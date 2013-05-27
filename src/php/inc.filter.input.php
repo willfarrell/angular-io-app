@@ -41,7 +41,7 @@ $filter_input = array(
 	        'rules'   => 'valid_email|valid_email_dns',//|is_unique[users.user_email]' use when creating
 	    ),
 	    array(
-	        'field'   => 'user_name',
+	        'field'   => 'user_username',
 	        'label'   => 'Name',
 	        'rules'   => 'trim|strip_tags[]'
 	    ),

@@ -34,10 +34,10 @@
 		<hr>
 
 		<div class="control-group" data-ng-class="{error: (errors.user_email)}">
-		<label class="control-label" for="user_function">Email</label>
-		<div class="controls">
-		<input type="email" class="input-block-level" name="user_email" placeholder="required" data-ng-model="user.user_email" data-ng-disabled="user.user_ID" required/>
-		<!--<div class="input-append">
+			<label class="control-label" for="user_function">Email</label>
+			<div class="controls">
+				<input type="email" class="input-block-level" name="user_email" placeholder="required" data-ng-model="user.user_email" data-ng-disabled="user.user_ID" data-field-error="user_email" required/>
+				<!--<div class="input-append">
 		<input type="email" class="input-block-level" name="user_email" placeholder="required" data-ng-model="user.user_email" data-ng-disabled="user.user_ID" required/>
 		<span class="add-on">{{session.user.user_email.substr(session.user.user_email.lastIndexOf('@'))}}</span>
 		</div>-->
@@ -50,7 +50,7 @@
 		<div class="control-group" data-ng-class="{error: (errors.user_name_first)}">
 		<label class="control-label" for="user_name_first">First Name</label>
 		<div class="controls">
-				<input type="text" class="input-block-level" name="user_name_first" placeholder="required" data-ng-model="user.user_name_first" data-ng-disabled="user.timestamp_create" required>
+				<input type="text" class="input-block-level" name="user_name_first" placeholder="required" data-ng-model="user.user_name_first" data-ng-disabled="user.timestamp_create" data-field-error="user_name_first" required>
 				<span class="help-block error" data-ng-show="errors.user_name_first">{{errors.user_name_first}}</span>
 				<!--<span class="help-block error" data-ng-show="form.user_name_first.$error.required">Required</span>-->
 			</div>
@@ -59,42 +59,42 @@
 		<div class="control-group" data-ng-class="{error: (errors.user_name_last)}">
 		<label class="control-label" for="user_name_last">Last Name</label>
 		<div class="controls">
-				<input type="text" class="input-block-level" name="user_name_last" placeholder="optional" data-ng-model="user.user_name_last" data-ng-disabled="user.timestamp_create">
+				<input type="text" class="input-block-level" name="user_name_last" placeholder="optional" data-ng-model="user.user_name_last" data-ng-disabled="user.timestamp_create" data-field-error="user_name_last">
 				<span class="help-block error" data-ng-show="errors.user_name_last">{{errors.user_name_last}}</span>
 				<span class="help-block error" data-ng-show="form.user_name_last.$error.required">Required</span>
 			</div>
 		</div>
 
 		<div class="control-group" data-ng-class="{error: (errors.user_function)}">
-		<label class="control-label" for="user_function">Title</label>
-		<div class="controls">
-				<input type="text" class="input-block-level" name="user_function" data-ng-model="user.user_function" placeholder="ie Engineer">
+			<label class="control-label" for="user_function">Title</label>
+			<div class="controls">
+				<input type="text" class="input-block-level" name="user_function" data-ng-model="user.user_function" placeholder="ie Engineer" data-field-error="user_function">
 				<span class="help-block error" data-ng-show="errors.user_function">{{errors.user_function}}</span>
 			</div>
 		</div>
 
 		<div class="control-group" data-ng-class="{error: (errors.user_phone)}">
-		<label class="control-label" for="user_phone">Phone</label>
-		<div class="controls">
-			<div class="input-prepend">
-					<span class="add-on">+{{json.calling_codes[country_code]}}</span><input type="text" class="input-medium" name="user_phone" placeholder="(000) 000-0000" data-ng-model="user.user_phone" data-input-mask="(999) 999-9999 x999999" data-ng-disabled="user.timestamp_create">
+			<label class="control-label" for="user_phone">Phone</label>
+			<div class="controls">
+				<div class="input-prepend">
+					<span class="add-on">+{{json.calling_codes[country_code]}}</span><input type="text" class="input-medium" name="user_phone" placeholder="(000) 000-0000" data-ng-model="user.user_phone" data-input-mask="(999) 999-9999 x999999" data-ng-disabled="user.timestamp_create" data-field-error="user_phone">
 				</div>
 				<span class="help-block error" data-ng-show="errors.user_phone">{{errors.user_phone}}</span>
 			</div>
 		</div>
 
 		<div class="control-group" data-ng-class="{error: (errors.user_level)}">
-		<label class="control-label" for="user_level">Permissions</label>
-		<div class="controls">
-				<select class="input-block-level" data-ng-model="user.user_level" data-ng-options="key as value for (key, value) in json.user_levels" data-ng-disabled="user.user_ID == session.user.user_ID" required></select>
+			<label class="control-label" for="user_level">Permissions</label>
+			<div class="controls">
+				<select class="input-block-level" data-ng-model="user.user_level" data-ng-options="key as value for (key, value) in json.user_levels" data-ng-disabled="user.user_ID == session.user.user_ID" data-field-error="user_level" required></select>
 			</div>
 		</div>
 
 		<hr>
 		<div class="control-group">
-		<div class="controls">
-			<button class="btn" data-ng-click="updateUser()" data-ng-disabled="form.$invalid">Save changes</button>
-			<div class="btn-group">
+			<div class="controls">
+				<button class="btn" data-ng-click="updateUser()" data-ng-disabled="form.$invalid">Save changes</button>
+				<div class="btn-group">
 					<button class="btn" data-ng-click="toggle.user = false">Back</button>
 				</div>
 		</div>

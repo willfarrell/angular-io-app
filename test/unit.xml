@@ -1,17 +1,17 @@
 <?xml version="1.0"?>
 <testsuites>
-  <testsuite name="PhantomJS 1.8 (Mac)" package="unit" timestamp="2013-05-25T16:00:54" id="0" hostname="wills-MacBook-Pro.local" tests="8" errors="0" failures="0" time="0.025">
+  <testsuite name="PhantomJS 1.8 (Mac)" package="unit" timestamp="2013-05-27T22:00:19" id="0" hostname="wills-MacBook-Pro.local" tests="8" errors="0" failures="0" time="0.02">
     <properties>
       <property name="browser.fullName" value="Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/534.34 (KHTML, like Gecko) PhantomJS/1.8.2 Safari/534.34"/>
     </properties>
-    <testcase name="should contain default values" time="0.013" classname="unit PhantomJS 1.8 (Mac).$session"/>
-    <testcase name="should reset values" time="0.002" classname="unit PhantomJS 1.8 (Mac).$session"/>
-    <testcase name="should update active bool" time="0.002" classname="unit PhantomJS 1.8 (Mac).$session"/>
+    <testcase name="should contain default values" time="0.011" classname="unit PhantomJS 1.8 (Mac).$session"/>
+    <testcase name="should reset values" time="0.001" classname="unit PhantomJS 1.8 (Mac).$session"/>
+    <testcase name="should update active bool" time="0.001" classname="unit PhantomJS 1.8 (Mac).$session"/>
     <testcase name="should save session" time="0.003" classname="unit PhantomJS 1.8 (Mac).$session"/>
     <testcase name="should update session" time="0.001" classname="unit PhantomJS 1.8 (Mac).$session"/>
     <testcase name="should regen session ID" time="0.001" classname="unit PhantomJS 1.8 (Mac).$session"/>
     <testcase name="should confirm current session value" time="0.002" classname="unit PhantomJS 1.8 (Mac).$session"/>
-    <testcase name="should require signin" time="0.001" classname="unit PhantomJS 1.8 (Mac).$session"/>
+    <testcase name="should require signin" time="0" classname="unit PhantomJS 1.8 (Mac).$session"/>
     <system-out><![CDATA[PhantomJS 1.8 (Mac) LOG: [ 'SessionFactory (', '001', ')' ]
 ,PhantomJS 1.8 (Mac) LOG: 'reset()'
 ,PhantomJS 1.8 (Mac) LOG: [ 'saveSession(', {}, {}, {}, ')' ]

@@ -73,7 +73,7 @@ class Message extends Core {
 			
 			$user_obj = $this->db->select("users",
 				array("user_ID" => $user_ID),
-				array("user_ID", "user_name", "user_name_first", "user_name_last")
+				array("user_ID", "user_username", "user_name_first", "user_name_last")
 			);
 			if ($user_obj) $message['user'] = $this->db->fetch_assoc($user_obj);
 			
@@ -94,7 +94,7 @@ class Message extends Core {
 		
 		$user_obj = $this->db->select("users",
 			array("user_ID" => $user_ID),
-			array("user_ID", "user_name", "user_name_first", "user_name_last")
+			array("user_ID", "user_username", "user_name_first", "user_name_last")
 		);
 		if ($user_obj) $return['user'] = $this->db->fetch_assoc($user_obj);
 		else return;

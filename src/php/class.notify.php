@@ -53,7 +53,7 @@ class Notify {
 		$types = explode(",", $types);
 		
 		// from user details
-		$select = array("user_ID", "user_name", "user_name_first", "user_name_last","user_email", "user_phone");
+		$select = array("user_ID", "user_username", "user_name_first", "user_name_last","user_email", "user_phone");
 		$from = $this->db->select("users", array("user_ID" => USER_ID), $select);
 		if ($from) {
 			$from = $this->db->fetch_assoc($from);

@@ -91,7 +91,7 @@ class Timers {
 		else $results = $this->results_all();
 		
 		echo "\n=== Timings ===\n";
-		echo "API\t\tavg\tmin\tmax\ttotal\n";
+		echo "ID\t\tavg\tmin\tmax\ttotal\n";
 		
 		foreach($results as $key => $value) {
 			echo "$key\t\t"

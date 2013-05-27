@@ -22,7 +22,8 @@
 	"require": {
 		"ccampbell/chromephp": "4.0.x",
 		"firephp/firephp-core": "0.4.x",
-		"luracast/restler": "3.x-dev"
+		"luracast/restler": "3.x-dev",
+		"stripe/stripe-php": "1.7.x"
 	},
 	"autoload": {
 		"psr-0": {

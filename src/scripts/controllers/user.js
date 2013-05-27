@@ -120,19 +120,19 @@ function UserCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 	};
 
 	$scope.check = {};
-	$scope.check.user_name = function(user_name) {
-		console.log('check.user_name('+user_name+')');
-		if (user_name) {	// update
-			//$scope.user.user_name = user_name.replace(/[^a-z0-9_]/, "");
+	$scope.check.user_username = function(user_username) {
+		console.log('check.user_username('+user_username+')');
+		if (user_username) {	// update
+			//$scope.user.user_username = user_username.replace(/[^a-z0-9_]/, "");
 
 			$rest.http({
 					method:'get',
-					url: $rest.server+'account/unique/'+encodeURIComponent(user_name)
+					url: $rest.server+'account/unique/'+encodeURIComponent(user_username)
 				}, function(data){
 					console.log('*******');
 				});
 
-			/*$http.get('/account/unique/'+encodeURIComponent(user_name))
+			/*$http.get('/account/unique/'+encodeURIComponent(user_username))
 				.success(function(data) {
 					if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
 					} else {

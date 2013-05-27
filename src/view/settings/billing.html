@@ -1,0 +1,131 @@
+<form name="form" class="form-horizontal" data-ng-controller="StripeCtrl">
+	<fieldset><legend>Billing</legend></fieldset>
+	<hr>
+
+	<div class="control-group">
+		<label class="control-label" for="input01">Client # or Case Name </label>
+		<div class="controls">
+		<input type="text" id="client-number" name="client-number" class="input-xlarge" placeholder="Which account is this payment for">
+		</div>
+	</div>
+	
+	<div class="control-group">
+		<label class="control-label" for="input02">Amount of payment</label>
+		<div class="controls">
+		<div class="input-prepend">
+		 <span class="add-on">$</span>
+		 <input type="text" id="card-amount" name="card-amount" class="input-small">
+					</div>
+		</div>
+	</div>
+	
+	<div class="control-group">
+		<label class="control-label" for="input03">Full Name on Card</label>
+		<div class="controls">
+		 <input type="text" id="card-name" name="card-name" class="input-xlarge">
+		</div>
+	</div>
+	
+	
+	<div class="control-group">
+		<label class="control-label" for="input04">Card Number</label>
+		<div class="controls">
+		 <input type="text" id="card-number" name="card-number" class="input-medium" placeholder="Numbers only, no dashes needed">
+		</div>
+	</div>
+	
+	
+	<div class="control-group">
+		<label class="control-label" for="input05">CVC Number</label>
+		<div class="controls">
+		 <input type="text" id="card-cvc" name="card-cvc" class="input-mini" placeholder="NNN">
+		</div>
+	</div>
+	
+	
+	<div class="control-group">
+		<label class="control-label" for="input06">Expiration Date (mm/yyyy)</label>
+		<div class="controls">
+		 <input type="text" id="card-expiry-month" class="input-mini" placeholder="MM"> / <input type="text" id="card-expiry-year" name="card-expiry-year" class="input-mini" placeholder="YYYY">
+		</div>
+	</div>
+	
+	
+	<div class="control-group">
+		<label class="control-label" for="input07">Billing Address</label>
+		<div class="controls">
+		 <input type="text" id="card-address-1" name="card-address-1" class="input-xlarge">
+		</div>
+	</div>
+	
+	
+	<div class="control-group">
+		<label class="control-label" for="input08">Address Continued</label>
+		<div class="controls">
+		 <input type="text" id="card-address-2" name="card-address-2" class="input-xlarge">
+		</div>
+	</div>
+	
+	
+	<div class="control-group">
+		<label class="control-label" for="input09">City</label>
+		<div class="controls">
+		 <input type="text" id="card-city" name="card-city" class="input-large">
+		</div>
+	</div>
+	
+	
+	<div class="control-group">
+		<label class="control-label" for="input10">State</label>
+		<div class="controls">
+		 <input type="text" id="card-address-state" name="card-address-state" class="input-mini">
+		</div>
+	</div>
+	
+	
+	<div class="control-group">
+		<label class="control-label" for="input11">Zip</label>
+		<div class="controls">
+		 <input type="text" id="card-address-zip" name="card-address-zip" class="input-small">
+		</div>
+	</div>
+	
+	
+	<div class="control-group">
+		<label class="control-label" for="input12">Phone Number</label>
+		<div class="controls">
+		 <input type="text" id="card-phone" name="card-phone" class="input-medium">
+		</div>
+	</div>
+	
+	
+	<div class="control-group">
+		<label class="control-label" for="input13">Email Address</label>
+		<div class="controls">
+		 <input type="text" id="card-email" name="card-email" class="input-medium">
+		</div>
+	</div>
+	
+	<div class="control-group">
+		<label class="control-label" for="input14">Confirm Email Address</label>
+		<div class="controls">
+		 <input type="text" id="card-email2" name="card-email2" class="input-medium">
+		</div>
+	</div>
+	
+	<div class="control-group">
+		<label class="control-label" id="submit-label" for="input15">Unable to submit</label>
+		<div class="controls">
+					<button type="submit" id="submit-button" class="submit-button btn btn-primary" disabled>Javascript Required</button>
+		</div>
+	</div>
+
+	<hr>
+
+	<div class="control-group">
+	<div class="controls">
+		<button class="btn" data-ng-click="updateNotifications()" data-require-change="{{notify}}" data-ng-disabled="form.$invalid">Save changes</button>
+		</div>
+	</div>
+
+</form>

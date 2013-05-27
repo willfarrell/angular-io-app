@@ -73,7 +73,7 @@ angular.module('app.config', []).value('app.config', {
 	},
 	
 	'account': {
-		'user_name'		:false,	// Require username in profile
+		'user_username'	:false,	// Require username in profile
 		'company'		:true,
 		'company_username':true
 	},

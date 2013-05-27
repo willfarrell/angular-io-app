@@ -155,7 +155,7 @@ class Session {
 	// reset session_ID for security
 	function login($email, $password, $remember = 0) {
 
-		$query = "SELECT * FROM users WHERE user_email = '{{user_email}}' OR user_name = '{{user_email}}' LIMIT 0,1";
+		$query = "SELECT * FROM users WHERE user_email = '{{user_email}}' OR user_username = '{{user_email}}' LIMIT 0,1";
 		$result = $this->db->query($query, array('user_email' => $email));
 		if (!$result) return false;	// user / pass combo not found
 		$r = $this->db->fetch_assoc($result);

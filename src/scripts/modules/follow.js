@@ -12,7 +12,7 @@ To Do:
 //(function (angular) {
 angular.module('io.modules')
 .factory('$follow', ['$rootScope', '$rest', function($rootScope, $rest) {
-	console.log('FollowFactory (', $rootScope.$id, ')');
+	//console.log('FollowFactory (', $rootScope.$id, ')');
 	var $scope = {
 		groups:{},
 		user:{},
@@ -45,7 +45,7 @@ angular.module('io.modules')
 	};
 
 	$scope.add = function(company_ID, user_ID, group_ID) {
-		console.log('add(', company_ID, user_ID, group_ID, ')');
+		//console.log('add(', company_ID, user_ID, group_ID, ')');
 		if (!company_ID && !user_ID) { return; }
 		company_ID = company_ID || 0;
 		user_ID = user_ID || 0;
@@ -66,18 +66,18 @@ angular.module('io.modules')
 
 		/*$http.put('/follow/'+company_ID+'/'+user_ID+'/'+group_ID)
 			.success(function(data) {
-				console.log('addFollow.put.success');
-				console.log(data);
+				//console.log('addFollow.put.success');
+				//console.log(data);
 				//$scopeing[id].name = data.name;
 			})
 			.error(function() {
-				console.log('addFollow.put.error');
+				//console.log('addFollow.put.error');
 				$rootScope.http_error();
 			});*/
 	};
 
 	$scope.remove = function(company_ID, user_ID, group_ID) {
-		console.log('remove(', company_ID, user_ID, group_ID, ')');
+		//console.log('remove(', company_ID, user_ID, group_ID, ')');
 		company_ID = company_ID || 0;
 		user_ID = user_ID || 0;
 		group_ID = group_ID || 0;
@@ -110,17 +110,17 @@ angular.module('io.modules')
 
 		/*$http({'method':'DELETE', 'url':'/follow/'+company_ID+'/'+user_ID+'/'+group_ID})
 			.success(function() {
-				console.log('deleteFollow.put.success');
+				//console.log('deleteFollow.put.success');
 			})
 			.error(function() {
-				console.log('deleteFollow.put.error');
+				//console.log('deleteFollow.put.error');
 				$rootScope.http_error();
 			});*/
 	};
 
 	// load follow details of a user - use on profile page
 	$scope.loadFollow = function(company_ID, user_ID) {
-		console.log('loadFollow(', company_ID, user_ID, ')');
+		//console.log('loadFollow(', company_ID, user_ID, ')');
 		company_ID = company_ID || 0;
 		user_ID = user_ID || 0;
 
@@ -137,8 +137,8 @@ angular.module('io.modules')
 
 		/*$http.get('/follow/'+company_ID+'/'+user_ID)
 			.success(function(data) {
-				console.log('loadFollow.get.success');
-				console.log(data);
+				//console.log('loadFollow.get.success');
+				//console.log(data);
 				if ($rootScope.checkHTTPReturn(data)) {
 					$scope.company[data.company_ID] = data;
 					$scope.user[data.user_ID] = data;
@@ -146,7 +146,7 @@ angular.module('io.modules')
 				}
 			})
 			.error(function() {
-				console.log('loadFollow.put.error');
+				//console.log('loadFollow.put.error');
 				$rootScope.http_error();
 			});*/
 	};
@@ -180,8 +180,8 @@ angular.module('io.modules')
 
 		/*$http.get('/follow/'+api+'/'+company_ID+'/'+user_ID+'/'+query)
 			.success(function(data) {
-				console.log('loadFollowers.get.success');
-				console.log(data);
+				//console.log('loadFollowers.get.success');
+				//console.log(data);
 				if ($rootScope.checkHTTPReturn(data)) {
 					for (var i in data) {
 						if (data.hasOwnProperty(i)) {
@@ -192,7 +192,7 @@ angular.module('io.modules')
 				}
 			})
 			.error(function() {
-				console.log('loadFollowers.get.error');
+				//console.log('loadFollowers.get.error');
 				$rootScope.http_error();
 			});*/
 	};
@@ -220,8 +220,8 @@ angular.module('io.modules')
 
 		/*$http.get('/follow/ers/'+company_ID+'/'+user_ID+'/'+query)
 			.success(function(data) {
-				console.log('loadFollowers.get.success');
-				console.log(data);
+				//console.log('loadFollowers.get.success');
+				//console.log(data);
 				if ($rootScope.checkHTTPReturn(data)) {
 					for (var i in data) {
 						if (data.hasOwnProperty(i)) {
@@ -234,7 +234,7 @@ angular.module('io.modules')
 				}
 			})
 			.error(function() {
-				console.log('loadFollowers.get.error');
+				//console.log('loadFollowers.get.error');
 				$rootScope.http_error();
 			});*/
 	};
@@ -259,10 +259,10 @@ angular.module('io.modules')
 
 		/*$http.get('/follow/ing/'+company_ID+'/'+user_ID+'/'+query)
 			.success(function(data) {
-				console.log('loadFollowing.get.success');
-				console.log(data);
+				//console.log('loadFollowing.get.success');
+				//console.log(data);
 				if ($rootScope.checkHTTPReturn(data)) {
-					console.log(typeof data);
+					//console.log(typeof data);
 					for (var i = 0, l = data.length; i < l; i++) {
 						data[i].following = (data[i].following) ? true : false;
 						if (data[i]['company_ID']) { $scope.company[data[i]['company_ID']] = data[i]; }
@@ -271,12 +271,12 @@ angular.module('io.modules')
 				}
 			})
 			.error(function() {
-				console.log('loadFollowing.get.error');
+				//console.log('loadFollowing.get.error');
 				$rootScope.http_error();
 			});*/
 	};
 	$scope.loadGroups = function() {
-		console.log('loadGroups()');
+		//console.log('loadGroups()');
 
 		$rest.http({
 				method:'get',
@@ -291,8 +291,8 @@ angular.module('io.modules')
 
 		/*$http.get('/follow/group/')
 			.success(function(data) {
-				console.log('loadGroups.get.success');
-				console.log(data);
+				//console.log('loadGroups.get.success');
+				//console.log(data);
 				if ($rootScope.checkHTTPReturn(data)) {
 					for (var i in data) {
 						if (data.hasOwnProperty(i)) {
@@ -302,12 +302,12 @@ angular.module('io.modules')
 				}
 			})
 			.error(function() {
-				console.log('loadGroups.get.error');
+				//console.log('loadGroups.get.error');
 				$rootScope.http_error();
 			});*/
 	};
 	$scope.addGroup = function(group_name, company_ID, user_ID) {
-		console.log('addGroup(', group_name, company_ID, user_ID, ')');
+		//console.log('addGroup(', group_name, company_ID, user_ID, ')');
 
 		$rest.http({
 				method:'post',
@@ -322,14 +322,14 @@ angular.module('io.modules')
 				if (company_ID || user_ID) {
 					$scope.add(company_ID, user_ID, data);
 				}
-				console.log($scope.groups);
+				//console.log($scope.groups);
 				$scope.group_name = ''; // clear form
 			});
 
 		/*$http.post('/follow/group/', {'group_name':group_name, 'color':color})
 			.success(function(data) {
-				console.log('addGroup.post.success');
-				console.log(data);
+				//console.log('addGroup.post.success');
+				//console.log(data);
 				if ($rootScope.checkHTTPReturn(data)) {
 					$scope.groups[data.toString()] = {
 						group_name:group_name,
@@ -337,18 +337,18 @@ angular.module('io.modules')
 						group_count:0,
 						color:color
 					};
-					console.log($scope.groups);
+					//console.log($scope.groups);
 					$scope.group_name = ''; // clear form
 				}
 			})
 			.error(function() {
-				console.log('addGroup.post.error');
+				//console.log('addGroup.post.error');
 				$rootScope.http_error();
 			});*/
 	};
 
 	$scope.removeGroup = function(group_ID) {
-		console.log('removeGroup(', group_ID, ')');
+		//console.log('removeGroup(', group_ID, ')');
 
 		$rest.http({
 				method:'delete',
@@ -372,8 +372,8 @@ angular.module('io.modules')
 
 		/*$http({'method':'DELETE', 'url':'/follow/group/'+group_ID})
 			.success(function(data) {
-				console.log('removeGroup.delete.success');
-				console.log(data);
+				//console.log('removeGroup.delete.success');
+				//console.log(data);
 				var id,index;
 				if ($rootScope.checkHTTPReturn(data)) {
 					delete $scope.groups[group_ID];
@@ -392,7 +392,7 @@ angular.module('io.modules')
 				}
 			})
 			.error(function() {
-				console.log('removeGroup.delete.error');
+				//console.log('removeGroup.delete.error');
 				$rootScope.http_error();
 			});*/
 	};
@@ -420,10 +420,10 @@ angular.module('io.modules')
 		//require: 'ngModel',
 		//controller: $follow,
 		link: function (scope, element, attrs, controller) {
-			console.log(scope);
-			/*console.log(element);
-			console.log(attrs);
-			console.log(controller);*/
+			//console.log(scope);
+			/*//console.log(element);
+			//console.log(attrs);
+			//console.log(controller);*/
 
 			scope.type = config.type;
 			scope.follow = $follow;
@@ -477,7 +477,7 @@ angular.module('io.modules')
 			$scope.follow.company = {};
 
 			$scope.load = function(api, company_ID, user_ID, query) {
-				console.log('loadType(', api, company_ID, user_ID, query, ')');
+				//console.log('loadType(', api, company_ID, user_ID, query, ')');
 				api = api || 'friends';
 				//var api = 'friends';
 				/*if (type === 'ers') {
@@ -505,7 +505,7 @@ angular.module('io.modules')
 			};
 			
 			$scope.search = function(api, query) {
-				console.log('loadType(', api, query, ')');
+				//console.log('loadType(', api, query, ')');
 				api = api || 'search';
 				//var api = 'friends';
 				/*if (type === 'ers') {
@@ -536,7 +536,7 @@ angular.module('io.modules')
 
 			scope.type = config.type;
 			scope.$watch('user', function(value) {
-				console.log(value);
+				//console.log(value);
 				scope.api = attrs.follow;
 				if (attrs.follow === 'search' || attrs.follow === 'suggestions') {
 					scope.search(attrs.follow, scope.query);
@@ -546,7 +546,7 @@ angular.module('io.modules')
 			});
 			
 			scope.$watch('query', function(value) {
-				console.log(value);
+				//console.log(value);
 				scope.api = attrs.follow;
 				if (attrs.follow === 'search' || attrs.follow === 'suggestions') {
 					scope.search(attrs.follow, scope.query);

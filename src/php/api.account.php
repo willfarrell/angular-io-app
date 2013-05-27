@@ -17,7 +17,7 @@ class Account extends Core {
 	
 	// check if still signned in
 	function get_signcheck() {
-		return USER_ID ? 1 : 0;
+		return USER_ID;
 	}
 
 	// change session ID
@@ -49,7 +49,7 @@ class Account extends Core {
 			"user_ID" => $r['user_ID'],
 			"user_level"  => $r['user_level'],
 			"user_email" => $r['user_email'],
-			"user_name" => $r['user_name'],
+			"user_username" => $r['user_username'],
 			"user_name_first" => $r['user_name_first'],
 			"user_name_last" => $r['user_name_last'],
 		);
@@ -77,7 +77,7 @@ class Account extends Core {
 	
 	/**
      * 
-     * Check if a user_name is unique
+     * Check if a user_username is unique
      *
      * @param string $value query string
      *
@@ -85,12 +85,12 @@ class Account extends Core {
      * @aceess puiblic
      */
 	function get_unique($value=NULL) {	// $type=NULL,
-		// for user_name only
+		// for user_username only
 
-		$query = "SELECT * FROM users WHERE user_name = '{{user_name}}' && user_ID != '{{user_ID}}' LIMIT 0,1";
-		$result = $this->db->query($query, array('user_name' => strtolower($value), 'user_ID' => USER_ID));
+		$query = "SELECT * FROM users WHERE user_username = '{{user_username}}' && user_ID != '{{user_ID}}' LIMIT 0,1";
+		$result = $this->db->query($query, array('user_username' => strtolower($value), 'user_ID' => USER_ID));
 		if ($result) {
-			$return["errors"]["user_name"] = "Not unique";
+			$return["errors"]["user_username"] = "Not unique";
 			return $return;
 		}
 	}
@@ -117,7 +117,7 @@ class Account extends Core {
 		$user = array(
 			"user_email"   		  => $request_data["email"],
 			"user_level"		  => 9,
-			//"user_name"   		  => $request_data["user_name"],
+			//"user_username"   		  => $request_data["user_username"],
 			"password"     		  => $password_hash,
 			"password_history"    => $password_hash,
 			'password_timestamp'  => $_SERVER['REQUEST_TIME'],

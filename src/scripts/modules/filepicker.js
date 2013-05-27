@@ -537,48 +537,83 @@ angular.module('app.modules')
 			var this_width = this.width,
 				this_height = this.height,
 				// thumbnail size to upload
-				dest_width = $scope.filepicker.args.width,
-				dest_height = $scope.filepicker.args.height,
+				dest_min_width = $scope.filepicker.args.min_width || $scope.filepicker.args.width,
+				dest_min_height = $scope.filepicker.args.min_height || $scope.filepicker.args.height,
+				dest_max_width = $scope.filepicker.args.width,
+				dest_max_height = $scope.filepicker.args.height,
+				
 				// canvas size
-				canvas_width = dest_width * 1.5,
-				canvas_height = dest_height * 1.5,
-				// canvas crop offsets
-				crop_left = ((canvas_width - dest_width) / 2),
-				crop_top = ((canvas_height - dest_height) / 2),
+				canvas_width = dest_max_width * 1.5,
+				canvas_height = dest_max_height * 1.5,
+				
+				// center of canvas (starting point)
+				x = (canvas_width / 2),
+				y = (canvas_height / 2),
+				
+				// canvas crop offsets - max size
+				crop_left = ((canvas_width - dest_max_width) / 2),
+				crop_top = ((canvas_height - dest_max_height) / 2),
+				
+				// min size offsets
+				dotted_left = ((canvas_width - dest_min_width) / 2),
+				dotted_top = ((canvas_height - dest_min_height) / 2),
+				
 				// image scale ratios
 				width = this_width,
 				height = this_height,
 				// image scale ratios
-				width_ratio = dest_width / this_width,
-				height_ratio = dest_height / this_height,
-				x = (canvas_width / 2),
-				y = (canvas_height / 2);
+				width_ratio = dest_max_width / this_width,
+				height_ratio = dest_max_height / this_height;
 
 			function scaleImage() {
 				width = Math.round(this_width * ((width_ratio > height_ratio) ? width_ratio : height_ratio)) * $scope.resizecrop.img.zoom / 100;
 				height = Math.round(this_height * ((width_ratio > height_ratio) ? width_ratio : height_ratio)) * $scope.resizecrop.img.zoom / 100;
 				//console.log(width+' x '+height+' ('+x+','+y+')>('+(x-width/2)+','+(y-height/2)+') @ '+zoom+'% zoom');
 				// check image is still positioned right
-				//console.log(crop_left+' < '+(x - width/2)+' < '+(crop_left + dest_width)+' -> x = '+(x));
-				//console.log(crop_top+' < '+(y - height/2)+' < '+(crop_top + dest_height)+' -> y = '+(y));
-				var left = (crop_left < (x - width / 2)),
-					right = ((x + width / 2) < (crop_left + dest_width)),
+				//console.log(crop_left+' < '+(x - width/2)+' < '+(crop_left + dest_max_width)+' -> x = '+(x));
+				//console.log(crop_top+' < '+(y - height/2)+' < '+(crop_top + dest_max_height)+' -> y = '+(y));
+				
+				// to min size position centering
+				var left = (dotted_left < (x - width / 2)),
+					right = ((x + width / 2) < (dotted_left + dest_min_width)),
+					top = (dotted_top < (y - height / 2)),
+					bottom = ((y + height / 2) < (dotted_top + dest_min_height));
+				if (left) {
+					console.log('l');
+					x = dotted_left + width / 2;
+				} else if (right) {
+					console.log('r');
+					x = dotted_left + dest_min_width - width / 2;
+				}
+				if (top) {
+					console.log('t');
+					y = dotted_top + height / 2;
+				} else if (bottom) {
+					console.log('b');
+					y = dotted_top + dest_min_height - height / 2;
+				}
+				
+				// to max size
+				/*var left = (crop_left < (x - width / 2)),
+					right = ((x + width / 2) < (crop_left + dest_max_width)),
 					top = (crop_top < (y - height / 2)),
-					bottom = ((y + height / 2) < (crop_top + dest_height));
+					bottom = ((y + height / 2) < (crop_top + dest_max_height));
 				if (left) {
 					console.log('l');
 					x = crop_left + width / 2;
 				} else if (right) {
 					console.log('r');
-					x = crop_left + dest_width - width / 2;
+					x = crop_left + dest_max_width - width / 2;
 				}
 				if (top) {
 					console.log('t');
 					y = crop_top + height / 2;
 				} else if (bottom) {
 					console.log('b');
-					y = crop_top + dest_height - height / 2;
-				}
+					y = crop_top + dest_max_height - height / 2;
+				}*/
+				
+				
 				// scaled image canvas
 				var canvas = document.createElement('canvas');
 				canvas.width = width;
@@ -593,25 +628,39 @@ angular.module('app.modules')
 				//canvas.style.cursor = 'move'; // see css rules
 				//canvas.onselectstart = function(){ return false; }; // browser bug work around - http://stackoverflow.com/questions/2745028/chrome-sets-cursor-to-text-while-dragging-why
 				var ctx = canvas.getContext('2d');
+				
 				//ctx.clearRect(0, 0, canvas_width, canvas_height);
 				//ctx.drawImage(copy, image_left, image_top)
 				ctx.drawImage($scope.resizecrop.img.canvas, (x - width / 2), (y - height / 2));
 				// draw faded overlay
 				ctx.save();
-				ctx.globalAlpha = 0.5;
-				// left
+				
+				
+				// overflow
 				ctx.beginPath();
+				ctx.globalAlpha = 0.5;
 				ctx.rect(0, 0, crop_left, canvas_height);
-				ctx.rect(crop_left, 0, dest_width, crop_top);
-				ctx.rect(crop_left + dest_width, 0, crop_left, canvas_height);
-				ctx.rect(crop_left, crop_top + dest_height, dest_width, crop_top);
+				ctx.rect(crop_left, 0, dest_max_width, crop_top);
+				ctx.rect(crop_left + dest_max_width, 0, crop_left, canvas_height);
+				ctx.rect(crop_left, crop_top + dest_max_height, dest_max_width, crop_top);
 				ctx.fillStyle = 'white';
 				ctx.fill();
+				
+				// max size
 				ctx.beginPath();
-				ctx.rect(crop_left, crop_top, dest_width, dest_height);
+				ctx.rect(crop_left, crop_top, dest_max_width, dest_max_height);
 				ctx.lineWidth = 1;
 				ctx.strokeStyle = 'grey';
 				ctx.stroke();
+				
+				// min size
+				/*ctx.beginPath();
+				ctx.rect(dotted_left, dotted_top, dest_min_width, dest_min_height);
+				ctx.lineWidth = 1;
+				ctx.strokeStyle = 'white';
+				ctx.setLineDash([2,4]);
+				ctx.stroke();*/
+				
 				document.getElementById('resizecrop').innerHTML = '';
 				document.getElementById('resizecrop').appendChild(canvas);
 				build();
@@ -622,18 +671,25 @@ angular.module('app.modules')
 /*console.log(
 					'left: ('+(x-width/2)+')-('+(crop_left)+')'+' = '+
 					((x-width/2)-(crop_left))+' = '+
-					(((width - dest_width) / 2)-(x-canvas_width/2))+', '+
+					(((width - dest_max_width) / 2)-(x-canvas_width/2))+', '+
 					'top: ('+(y-height/2)+')-('+(crop_top)+')'+' = '+
 					((y-height/2)-(crop_top))+' = '+
-					(((height - dest_height) / 2)-(y-canvas_height/2))
+					(((height - dest_max_height) / 2)-(y-canvas_height/2))
 				);*/
-				var top = Math.round(((height - dest_height) / 2) - (y - canvas_height / 2));
-				var left = Math.round(((width - dest_width) / 2) - (x - canvas_width / 2));
-				var canvas = document.createElement('canvas');
+				//console.log(Math.max(dest_min_width, Math.min(width, dest_max_width)), '= max(', dest_min_width, 'min(', width, dest_max_width,'))');
+				//console.log(Math.max(dest_min_height, Math.min(width, dest_max_height)), '= max(', dest_min_height, 'min(', height, dest_max_height,'))');
+				var export_width = Math.max(dest_min_width, Math.min(width, dest_max_width)),
+					export_height = Math.max(dest_min_height, Math.min(height, dest_max_height)),
+					top = Math.round(((height - export_height) / 2) - (y - canvas_height / 2)),
+					//right Math.round(0),
+					//bottom = Math.round(0),
+					left = Math.round(((width - export_width) / 2) - (x - canvas_width / 2)),
+					canvas = document.createElement('canvas');
+				
 				// export canvas
-				canvas.width = dest_width;
-				canvas.height = dest_height;
-				canvas.getContext('2d').drawImage($scope.resizecrop.img.canvas, left, top, dest_width, dest_height, 0, 0, dest_width, dest_height);
+				canvas.width = export_width;
+				canvas.height = export_height;
+				canvas.getContext('2d').drawImage($scope.resizecrop.img.canvas, left, top, export_width, export_height, 0, 0, export_width, export_height);
 				$scope.resizecrop.img.data = canvas.toDataURL($scope.resizecrop.img.type);
 				//var img = document.createElement('img');
 				//img.src = $scope.resizecrop.img.data;
@@ -680,27 +736,27 @@ angular.module('app.modules')
 					grab_x = (pageX - totalOffsetX) - x;
 					grab_y = (pageY - totalOffsetY) - y;
 				}
-				//console.log(totalOffsetX + crop_left+' < '+(pageX - width/2)+' < '+(totalOffsetX + crop_left + dest_width)+' -> x = '+(pageX - totalOffsetX));
-				//console.log(totalOffsetY + crop_top+' < '+(pageY - height/2)+' < '+(totalOffsetY + crop_top + dest_height)+' -> y = '+(pageY - totalOffsetY));
+				//console.log(totalOffsetX + crop_left+' < '+(pageX - width/2)+' < '+(totalOffsetX + crop_left + dest_max_width)+' -> x = '+(pageX - totalOffsetX));
+				//console.log(totalOffsetY + crop_top+' < '+(pageY - height/2)+' < '+(totalOffsetY + crop_top + dest_max_height)+' -> y = '+(pageY - totalOffsetY));
 				// x,y = center of image from canvas origin (top-left)
 				// check if img is outside limits
-				var left = (pageX - width / 2 - grab_x < totalOffsetX + crop_left),
-					right = (totalOffsetX + crop_left + dest_width < pageX + width / 2 - grab_x),
-					top = (pageY - height / 2 - grab_y < totalOffsetY + crop_top),
-					bottom = (totalOffsetY + crop_top + dest_height < pageY + height / 2 - grab_y);
+				var left = (pageX - width / 2 - grab_x < totalOffsetX + dotted_left),
+					right = (totalOffsetX + dotted_left + dest_min_width < pageX + width / 2 - grab_x),
+					top = (pageY - height / 2 - grab_y < totalOffsetY + dotted_top),
+					bottom = (totalOffsetY + dotted_top + dest_min_height < pageY + height / 2 - grab_y);
 				if (left && right) { // left
 					x = (pageX - totalOffsetX) - grab_x;
 				} else if (left) {
-					x = crop_left + dest_width - width / 2;
+					x = dotted_left + dest_min_width - width / 2;
 				} else if (right) {
-					x = crop_left + width / 2;
+					x = dotted_left + width / 2;
 				}
 				if (top && bottom) { // top
 					y = (pageY - totalOffsetY) - grab_y;
 				} else if (top) {
-					y = crop_top + dest_height - height / 2;
+					y = dotted_top + dest_min_height - height / 2;
 				} else if (bottom) {
-					y = crop_top + height / 2;
+					y = dotted_top + height / 2;
 				}
 				//console.log('('+x+','+y+')');
 				draw();

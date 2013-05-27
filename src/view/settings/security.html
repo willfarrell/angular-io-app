@@ -14,72 +14,75 @@
 	</div>
 
 	<div class="control-group">
-	<label class="control-label" for="">Service Provider</label>
-	<div class="controls">
-		<select class="input-block-level" data-ng-model="security.totp.service" data-ng-change="loadTOTPService()">
-		<option value="">None</option>
-		<option value="google">Google Authenticator</option>
-		<!--<option value="email">Email</option>-->
-		<!--<option value="sms">SMS</option>-->
-		<!--<option value="rsa">RSA SecurID</option>-->
-		<!--<option value="symantec">Symantec VIP</option>-->
-		<!--<option value="authy">Authy.com</option>-->
-		</select>
-	</div>
-	</div>
-
-	<div class="control-group" data-ng-show="security.totp.service == 'google'">
-	<label class="control-label" for="">App Download</label>
-	<div class="controls">
-	<a href="https://itunes.apple.com/us/app/google-authenticator/id388497605" target="_blank">iOS</a> |
-	<a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en" target="_blank">Android</a>
-	</div>
+		<label class="control-label" for="">Service Provider</label>
+		<div class="controls">
+			<select class="input-block-level" data-ng-model="security.totp.service" data-ng-change="loadTOTPService()">
+				<option value="">None</option>
+				<option value="google">Google Authenticator</option>
+				<!--<option value="email">Email</option>-->
+				<!--<option value="sms">SMS</option>-->
+				<!--<option value="rsa">RSA SecurID</option>-->
+				<!--<option value="symantec">Symantec VIP</option>-->
+				<!--<option value="authy">Authy.com</option>-->
+			</select>
+		</div>
 	</div>
 
 	<div class="control-group" data-ng-show="security.totp.service == 'google'">
-	<label class="control-label" for="">Secret</label>
-	<div class="controls">
-	<input type="text" class="input-block-level" name="secret" placeholder="" data-ng-model="security.totp.secret"/>
-	<img class="help-block" data-ng-src="https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=otpauth%3A%2F%2Ftotp%2F{{i18n.title}}%3Fsecret%3D{{security.totp.secret}}" width="200" height="200" />
+		<label class="control-label" for="">App Download</label>
+		<div class="controls">
+			<span class="help-block">
+				<a href="https://itunes.apple.com/us/app/google-authenticator/id388497605" target="_blank">iOS</a> |
+				<a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en" target="_blank">Android</a> | 
+				<a href="http://www.authomator.com/" target="_blank">BlackBerry</a>
+			</span>
+		</div>
 	</div>
+
+	<div class="control-group" data-ng-show="security.totp.service == 'google'">
+		<label class="control-label" for="">Secret</label>
+		<div class="controls">
+			<input type="text" class="input-block-level" name="secret" placeholder="" data-ng-model="security.totp.secret"/>
+			<img class="help-block" data-ng-src="https://chart.googleapis.com/chart?chs=200x200&chld=M|0&cht=qr&chl=otpauth%3A%2F%2Ftotp%2F{{i18n.title}}%3Fsecret%3D{{security.totp.secret}}" width="200" height="200" />
+		</div>
 	</div>
 
 	<div class="control-group" data-ng-show="security.totp.service">
-	<label class="control-label" for="">Test</label>
-	<div class="controls">
-	<div class="input-append">
-		<input type="text" class="input-block-level" name="secret" placeholder="" data-ng-model="test_code" />
-		<button class="btn" data-ng-click="checkTOTP(test_code)">check</button>
-	</div>
-	<span class="help-block success" data-ng-show="test_code_check && test_code_return">Check Passed</span>
-	<span class="help-block error" data-ng-show="test_code_check && !test_code_return">Check Failed</span>
-	</div>
+		<label class="control-label" for="">Test</label>
+		<div class="controls">
+			<div class="input-append">
+				<input type="text" class="input-block-level" name="secret" placeholder="" data-ng-model="test_code" />
+				<button class="btn" data-ng-click="checkTOTP(test_code)">check</button>
+			</div>
+			<span class="help-block success" data-ng-show="test_code_check && test_code_return">Check Passed</span>
+			<span class="help-block error" data-ng-show="test_code_check && !test_code_return">Check Failed</span>
+		</div>
 	</div>
 
-	<hr>
+	<!--<hr>
 	<div class="control-group">
 		<b>Email Encryption</b>
 	</div>
 
 	<!--<div class="control-group">
-	<label class="control-label" for="">Recipient Name</label>
-	<div class="controls">
-		<input type="text" class="input-block-level" name="recipient" placeholder="" data-ng-model="security.email.recipient" />
-	</div>
-	</div>-->
+		<label class="control-label" for="">Recipient Name</label>
+		<div class="controls">
+			<input type="text" class="input-block-level" name="recipient" placeholder="" data-ng-model="security.email.recipient" />
+		</div>
+	</div>--
 
 	<div class="control-group">
-	<label class="control-label" for="user_name">PGP/GPG Public Key</label>
-	<div class="controls">
-		<textarea name="message" class="input-block-level" data-ng-model="security.email.key" rows="6" data-ng-minlength="1" disabled></textarea>
-	</div>
+		<label class="control-label" for="pgpkey">PGP/GPG Public Key</label>
+		<div class="controls">
+			<textarea name="message" class="input-block-level" data-ng-model="security.email.key" rows="6" data-ng-minlength="1" data-field-error="pgpkey" disabled></textarea>
+		</div>
 	</div>
 
 	<div class="control-group">
 		<div class="controls">
 			<button class="btn input-block-level" data-ng-click="testPGP(security.email)" disabled>Test</button>
 		</div>
-	</div>
+	</div>-->
 	<!--<hr>
 
 	<div class="control-group">
@@ -88,8 +91,8 @@
 
 	<hr>
 	<div class="control-group">
-	<div class="controls">
-		<button class="btn" data-ng-click="updateSecurity()" data-require-change="{{security}}" data-ng-disabled="form.$invalid">Save change</button>
-	</div>
+		<div class="controls">
+			<button class="btn" data-ng-click="updateSecurity()" data-require-change="{{security}}" data-ng-disabled="form.$invalid">Save change</button>
+		</div>
 	</div>
 </form>

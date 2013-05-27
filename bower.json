@@ -3,7 +3,6 @@
 	"version":"0.1.0",
 	"dependencies":{
 		"modernizr":null,
-		"html5-boilerplate":null,
 		"html5-mobile-boilerplate":null,
 		"json3":null,
 		"angular-complete":null,

@@ -13,7 +13,7 @@ describe('E2E: Account Settings', function() {
 		sleep(0.1);
 		input('signin.email').enter(email);
 		input('signin.password').enter(pass);
-		element('[data-ng-view] .btn').click();
+		element('[data-ng-view] [data-ng-disabled]').click();
 		expect(browser().location().path()).not().toContain('/sign/');
 	});
 	
@@ -38,27 +38,27 @@ describe('E2E: Account Settings', function() {
 		browser().navigateTo('#/settings/email');
 		sleep(0.1);
 		
-		expect(element('[data-ng-view] .btn').attr('disabled')).toBeDefined();
+		expect(element('[data-ng-view] [data-ng-disabled]').attr('disabled')).toBeDefined();
 		input('email.user_email').enter(new_email);
 		input('email.password').enter(pass);
-		expect(element('[data-ng-view] .btn').attr('disabled')).not().toBeDefined();
-		element('[data-ng-view] .btn').click();
+		expect(element('[data-ng-view] [data-ng-disabled]').attr('disabled')).not().toBeDefined();
+		element('[data-ng-view] [data-ng-disabled]').click();
 		expect(element('.alert-fixed-top').text()).toContain('Saved');
 		
 		input('email.user_email').enter(email);
 		input('email.password').enter(pass);
-		element('[data-ng-view] .btn').click();
+		element('[data-ng-view] [data-ng-disabled]').click();
 	});
 	
 	it('should update password', function() {
 		browser().navigateTo('#/settings/password');
 		sleep(0.1);
 		
-		expect(element('[data-ng-view] .btn').attr('disabled')).toBeDefined();
+		expect(element('[data-ng-view] [data-ng-disabled]').attr('disabled')).toBeDefined();
 		input('password.old_password').enter(pass);
 		input('password.new_password').enter(new_pass);
-		expect(element('[data-ng-view] .btn').attr('disabled')).not().toBeDefined();
-		element('[data-ng-view] .btn').click();
+		expect(element('[data-ng-view] [data-ng-disabled]').attr('disabled')).not().toBeDefined();
+		element('[data-ng-view] [data-ng-disabled]').click();
 		expect(element('.alert-fixed-top').text()).toContain('Saved');
 		pass = new_pass;
 		//input('password.old_password').enter(new_pass);
@@ -73,7 +73,7 @@ describe('E2E: Account Settings', function() {
 		
 		expect(element('[data-ng-model="notify.new_message.email"]').attr('checked')).not().toBeDefined();
 		input('notify.new_message.email').check();
-		element('[data-ng-view] .btn').click();
+		element('[data-ng-view] [data-ng-disabled]').click();
 		expect(element('.alert-fixed-top').text()).toContain('Saved');
 		
 		browser().navigateTo('#/');
@@ -86,7 +86,10 @@ describe('E2E: Account Settings', function() {
 		browser().navigateTo('#/settings/security');
 		sleep(0.1);
 		
-		// to do once complete
+		// set totp (requires phone) > sign in with totp > turn off
+		
+		// PGP email
+		
 	});
 	
 	it('should update user profile', function() {
@@ -99,7 +102,7 @@ describe('E2E: Account Settings', function() {
 		input('user.user_phone').enter('9115555555');
 		input('user.user_url').enter('http://willfarrell.ca');
 		input('user.user_details').enter('about details here');
-		element('[data-ng-view] .btn').click();
+		element('[data-ng-view] [data-ng-disabled]').click();
 		expect(element('.alert-fixed-top').text()).toContain('Saved');
 		
 		browser().navigateTo('#/');
@@ -118,7 +121,6 @@ describe('E2E: Account Settings', function() {
 	
 	it('should update company profile', function() {
 		browser().navigateTo('#/settings/company');
-		sleep(0.1);
 		
 		input('company.company_username').enter('karma-inc');
 		input('company.company_name').enter('karma Inc');
@@ -126,12 +128,11 @@ describe('E2E: Account Settings', function() {
 		input('company.company_phone').enter('9115555555');
 		input('company.company_details').enter('about details here');
 		element('[data-ng-view] .btn').click();
-		pause();
 		expect(element('.alert-fixed-top').text()).toContain('Saved');
+		expect(input('company.user_default_ID').val()).toBeDefined();
 		
 		browser().navigateTo('#/');
 		browser().navigateTo('#/settings/company');
-		sleep(0.1);
 		
 		expect(input('company.company_username').val()).toBe('karma-inc');
 		expect(input('company.company_name').val()).toBe('karma Inc');
@@ -143,13 +144,63 @@ describe('E2E: Account Settings', function() {
 	
 	it('should add a location', function() {
 		browser().navigateTo('#/settings/locations');
-		sleep(0.1);
 		
+		element('[data-ng-view] .btn').click(); // click new location
+		
+		input('location.location_name').enter('Head Office');
+		input('location.address_1').enter('1 Young St.');
+		input('location.address_2').enter('314159');
+		input('location.city').enter('Toronto');
+		select('location.country_code').option('CA'); // must be before region_code
+		select('location.region_code').option('ON');
+		input('location.mail_code').enter('A1A1A1');
+		input('location.location_phone').enter('9115555555');
+		
+		element('[data-ng-view] [data-ng-disabled]').click();
+		expect(element('.alert-fixed-top').text()).toContain('Saved');
+		
+		browser().navigateTo('#/');
+		browser().navigateTo('#/settings/locations');
+		
+		element('[data-ng-view] td').click(); // click first location to confirm
+		
+		expect(input('location.location_name').val()).toBe('Head Office');
+		expect(input('location.address_1').val()).toBe('1 Young St.');
+		expect(input('location.address_2').val()).toBe('314159');
+		expect(input('location.city').val()).toBe('Toronto');
+		expect(input('location.region_code').val()).toBe('ON');
+		expect(input('location.country_code').val()).toBe('CA');
+		expect(input('location.mail_code').val()).toBe('A1A1A1');
+		expect(input('location.location_phone').val()).toBe('(911) 555-5555');
+		
+		// check default was set
+		browser().navigateTo('#/settings/company');
+		expect(input('company.location_default_ID').val()).toBeDefined();
 	});
 	
-	it('should add a user', function() {
+	/*it('should add another location change default', function() {
+		browser().navigateTo('#/settings/locations');
+		
+		element('[data-ng-view] .btn').click(); // click new location
+		
+		input('location.location_name').enter('Remote Office');
+		input('location.address_1').enter('1314 Kapiolani Blvd');
+		input('location.address_2').enter('');
+		input('location.city').enter('Honolulu');
+		select('location.country_code').option('US'); // must be before region_code
+		select('location.region_code').option('HI');
+		input('location.mail_code').enter('96814');
+		input('location.location_phone').enter('9115555555');
+		
+		element('[data-ng-view] [data-ng-disabled]').click();
+		expect(element('.alert-fixed-top').text()).toContain('Saved');
+		
+		browser().navigateTo('#/settings/company');
+		expect(input('company.location_default_ID').val()).toBeDefined();
+	});*/
+	
+	it('should add another user change default', function() {
 		browser().navigateTo('#/settings/users');
-		sleep(0.1);
 		
 	});
 });

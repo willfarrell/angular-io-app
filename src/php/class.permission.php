@@ -107,7 +107,10 @@ class Permission
 		} else {
 			$return = array(
 				"alerts" => array(
-					"message" => "You don't have permission to make that request."
+					array(
+						"class" => "error",
+						"message" => "You don't have permission to make that request."
+					)
 				)
 			);
 		}

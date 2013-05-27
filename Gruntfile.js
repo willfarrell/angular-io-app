@@ -153,7 +153,8 @@ module.exports = function(grunt) {
 		},
 		clean: {
 			dist: ['.tmp', '<%= yeoman.dist %>/*'],
-			deploy: ['<%= yeoman.web %>', '<%= yeoman.api %>'],//'<%= yeoman.dist %>/img/user/*', '<%= yeoman.dist %>/img/company/*',			phonegap: ['<%= yeoman.phonegap %>', 'build.phonegap.zip'],
+			deploy: ['<%= yeoman.web %>', '<%= yeoman.api %>'],
+			phonegap: ['<%= yeoman.phonegap %>', 'build.phonegap.zip'],
 			server: '.tmp'
 		},
 		jshint: {
@@ -163,10 +164,7 @@ module.exports = function(grunt) {
 			all: [
 				'Gruntfile.js',
 				'<%= yeoman.app %>/scripts/**/*.js',
-					'!<%= yeoman.app %>/scripts/script.js',
-					'!<%= yeoman.app %>/scripts/angular-io/plugins/browser/*.js',
-					'!<%= yeoman.app %>/scripts/modernizr.js',
-				'test/{e2e,midway,unit}/*.js'
+				'test/{e2e,unit}/*.js'
 			]
 		},
 		htmllint: {
@@ -1013,7 +1011,7 @@ module.exports = function(grunt) {
 		'karma:e2e',
 		
 		'build',
-		'icon_convert',
+		//'icon_convert',
 		'copy:web',
 		'copy:api',
 		'phonegap'

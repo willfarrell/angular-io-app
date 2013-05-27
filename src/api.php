@@ -17,8 +17,6 @@
 
 // set_include_path(dirname(dirname(__FILE__)).'/lib'.PATH_SEPARATOR.get_include_path());
 
-
-
 require_once 'php/inc.config.php';		// config vars
 require_once 'php/lib.global.php';		// collection of php missing function
 
@@ -45,9 +43,6 @@ require_once 'php/api.filepicker.php';	// plugin
 //-- Add-ons --//
 require_once 'php/api.contact.php';		// plugin
 
-
-
-
 // REST API
 $r = new Restler();
 $r->setSupportedFormats('JsonpFormat');
@@ -66,7 +61,6 @@ $r->addAPIClass('Filepicker');
 
 $r->addAPIClass('Follow');
 $r->addAPIClass('Message');
-
 
 $r->handle();
 

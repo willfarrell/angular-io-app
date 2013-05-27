@@ -62,7 +62,7 @@ class Company extends Core {
 
 		$results = $this->db->select('users',
 			$db_where,
-			array("user_ID", "user_level", "user_name", "user_name_first", "user_name_last", "user_email", "user_phone", "user_details", "timestamp_create")
+			array("user_ID", "user_level", "user_username", "user_name_first", "user_name_last", "user_email", "user_phone", "user_function", "user_details", "timestamp_create")
 		);
 		if ($results) {
 			while($user = $this->db->fetch_assoc($results, array("user_phone"))) {
@@ -82,7 +82,7 @@ class Company extends Core {
 		$return = array();
 		$params = array(
 			"user_ID",
-			"user_name",
+			"user_username",
 			"user_email",
 			"user_level",
 			//"user_cell",
@@ -110,7 +110,7 @@ class Company extends Core {
 		
 		$user = array(
 			'company_ID' => COMPANY_ID,
-			//'user_name' => $request_data['user_name'],
+			//'user_username' => $request_data['user_username'],
 			'user_name_first' => $request_data['user_name_first'],
 			'user_name_last' => $request_data['user_name_last'],
 			'user_email' => $request_data['user_email'],
@@ -171,7 +171,7 @@ class Company extends Core {
 		$user = array(
 			'user_ID' => $request_data['user_ID'],
 			'company_ID' => COMPANY_ID,
-			//'user_name' => $request_data['user_name'],
+			//'user_username' => $request_data['user_username'],
 			'user_name_first' => $request_data['user_name_first'],
 			'user_name_last' => $request_data['user_name_last'],
 			//'user_email' => $request_data['user_email'],
@@ -194,7 +194,7 @@ class Company extends Core {
 			return $this->permission->errorMessage();
 		};
 		
-		// add in user_name check
+		// add in user_username check
 		
 		
 		
@@ -207,56 +207,55 @@ class Company extends Core {
 		}
 		$db_select = array('company_ID','company_username', 'company_name','company_url','company_phone','company_details','user_default_ID','location_default_ID');
 
-		$results = $this->db->select('companies', $db_where, $db_select);
-		if ($results) {
-			while($company = $this->db->fetch_assoc($results, array("company_phone"))) {
-				/*if (!is_null($user_ID) && $user['user_name'] == '') {
-					$user['user_name'] = $user["user_name_first"]." ".$user["user_name_last"];
-				}*/
-				$return = $company;
-				
-				// primary user
-				$results = $this->db->select('users',
-					array('company_ID' => $company['company_ID'], 'user_ID' => $company['user_default_ID']),
-					array("user_ID", "user_name", "user_name_first", "user_name_last", "user_phone", "user_details")
-				);
-				while ($results && $user = $this->db->fetch_assoc($results, array("user_phone"))) {
-					$user['user_ID'] = $user['user_ID'];
-					$return['user'] = $user;
-				}
-				// get users
-				/*$results = $this->db->select('users',
-					array('company_ID' => COMPANY_ID),
-					array("user_ID", "user_name", "user_name_first", "user_name_last", "user_email", "user_details")
-				);
-				while ($results && $user = $this->db->fetch_assoc($results)) {
-					$return['users'][$user['user_ID']] = $user;
-				}*/
-				
-				// primary location
-				$results = $this->db->select('locations',
-					array('company_ID' => $company['company_ID'], 'location_ID' => $company['location_default_ID']),
-					array('location_ID', 'company_ID', 'location_name', 'address_1', 'address_2', 'city', 'region_code', 'country_code', 'mail_code', 'latitude', 'longitude', 'location_phone')
-				);
-				while ($results && $location = $this->db->fetch_assoc($results, array("location_phone"))) {
-					//$location['primary'] = true;
-					//$location['company_ID'] =  $location['company_ID'];
-					//$location['location_ID'] =  $location['location_ID'];
-					//$location['latitude'] = (double) $location['latitude'];
-					//$location['longitude'] = (double) $location['longitude'];
-					$return['location'] = $location;
-				}
-				// get locations
-				/*$results = $this->db->select('locations', array('company_ID' => COMPANY_ID));
-				while ($results && $location = $this->db->fetch_assoc($results)) {
-					$return['locations'][$location['location_ID']] = $location;
-				}*/
-	
+		$results_companies = $this->db->select('companies', $db_where, $db_select);
+		while($results_companies && $company = $this->db->fetch_assoc($results_companies, array("company_phone"))) {
+			/*if (!is_null($user_ID) && $user['user_username'] == '') {
+				$user['user_username'] = $user["user_name_first"]." ".$user["user_name_last"];
+			}*/
+			$return = $company;
+			
+			// primary user
+			$results_users = $this->db->select('users',
+				array('company_ID' => $company['company_ID'], 'user_ID' => $company['user_default_ID']),
+				array("user_ID", "user_username", "user_name_first", "user_name_last", "user_phone", "user_function", "user_details")
+			);
+			while ($results_users && $user = $this->db->fetch_assoc($results_users, array("user_phone"))) {
+				$user['user_ID'] = $user['user_ID'];
+				$return['user'] = $user;
 			}
-				/*if (!is_null($user_ID)) {
-					$return = $return[0];
-				}*/
+			// get users
+			/*$results = $this->db->select('users',
+				array('company_ID' => COMPANY_ID),
+				array("user_ID", "user_username", "user_name_first", "user_name_last", "user_email", "user_details")
+			);
+			while ($results && $user = $this->db->fetch_assoc($results)) {
+				$return['users'][$user['user_ID']] = $user;
+			}*/
+			
+			// primary location
+			$results_locations = $this->db->select('locations',
+				array('company_ID' => $company['company_ID'], 'location_ID' => $company['location_default_ID']),
+				array('location_ID', 'company_ID', 'location_name', 'address_1', 'address_2', 'city', 'region_code', 'country_code', 'mail_code', 'latitude', 'longitude', 'location_phone')
+			);
+			while ($results_locations && $location = $this->db->fetch_assoc($results_locations, array("location_phone"))) {
+				//$location['primary'] = true;
+				//$location['company_ID'] =  $location['company_ID'];
+				//$location['location_ID'] =  $location['location_ID'];
+				//$location['latitude'] = (double) $location['latitude'];
+				//$location['longitude'] = (double) $location['longitude'];
+				$return['location'] = $location;
+			}
+			// get locations
+			/*$results = $this->db->select('locations', array('company_ID' => COMPANY_ID));
+			while ($results && $location = $this->db->fetch_assoc($results)) {
+				$return['locations'][$location['location_ID']] = $location;
+			}*/
+
 		}
+			/*if (!is_null($user_ID)) {
+				$return = $return[0];
+			}*/
+		
 		
 		
 		return $return;
@@ -287,7 +286,7 @@ class Company extends Core {
 			// primary user
 			$results = $this->db->select('users',
 				array('company_ID' => $company['company_ID'], 'user_ID' => $company['user_default_ID']),
-				array("user_ID", "user_name", "user_name_first", "user_name_last", "user_phone", "user_details")
+				array("user_ID", "user_username", "user_name_first", "user_name_last", "user_phone", "user_function", "user_details")
 			);
 			//echo $this->db->last_query;
 			while ($results && $user = $this->db->fetch_assoc($results, array("user_phone"))) {
@@ -297,7 +296,7 @@ class Company extends Core {
 			// get users
 			/*$results = $this->db->select('users',
 				array('company_ID' => COMPANY_ID),
-				array("user_ID", "user_name", "user_name_first", "user_name_last", "user_email", "user_details")
+				array("user_ID", "user_username", "user_name_first", "user_name_last", "user_email", "user_details")
 			);
 			while ($results && $user = $this->db->fetch_assoc($results)) {
 				$return['users'][$user['user_ID']] = $user;
@@ -332,14 +331,12 @@ class Company extends Core {
 	session company only (privacy)
 	*/
 	function post($request_data=NULL) {
-		$alerts = array();
 		$params = array(
-			// company
 			"company_username",
 			"company_name",
 			"company_url",
 			"company_phone",
-
+			"company_details",
 		);
 
 		foreach ($params as $key) {
@@ -354,7 +351,7 @@ class Company extends Core {
 		// validate and sanitize
 		/*$this->filter->set_request_data($request_data);
 		$this->filter->set_group_rules('companies,locations,users');
-		$this->filter->set_key_rules(array('company_name', 'company_type', 'address_1', 'city', 'region_code', 'country_code', 'mail_code', 'user_name', 'user_email', 'password'), 'required');
+		$this->filter->set_key_rules(array('company_name', 'company_type', 'address_1', 'city', 'region_code', 'country_code', 'mail_code', 'user_username', 'user_email', 'password'), 'required');
 		$this->filter->set_all_rules('trim|sanitize_string', true);
 		if(!$this->filter->run()) {
 			$return["errors"] = $this->filter->get_errors();
@@ -368,6 +365,7 @@ class Company extends Core {
 			"company_name"			=> $request_data["company_name"],
 			"company_url"			=> $request_data["company_url"],
 			"company_phone"			=> $request_data["company_phone"],
+			"company_details"		=> $request_data["company_details"],
 			"user_default_ID"		=> USER_ID,
 			'timestamp_create' 		=> $_SERVER['REQUEST_TIME'],
 			'timestamp_update' 		=> $_SERVER['REQUEST_TIME'],
@@ -391,6 +389,8 @@ class Company extends Core {
 			"company_url",
 			"company_details",
 			"company_phone",
+			"user_default_ID",
+			"location_default_ID",
 		);
 
 		foreach ($params as $key) {
@@ -410,6 +410,8 @@ class Company extends Core {
 			"company_url"			=> $request_data["company_url"],
 			"company_phone"			=> $request_data["company_phone"],
 			"company_details"		=> $request_data["company_details"],
+			"user_default_ID"		=> $request_data["user_default_ID"],
+			"location_default_ID"	=> $request_data["location_default_ID"],
 			//'timestamp_create' 		=> $_SERVER['REQUEST_TIME'],
 			'timestamp_update' 		=> $_SERVER['REQUEST_TIME'],
 		);
