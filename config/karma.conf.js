@@ -38,7 +38,7 @@ exclude = [
 reporters = ['progress', 'junit'],
 
 junitReporter = {
-	outputFile: 'test/unit.xml',
+	outputFile: 'logs/unit.xml',
 	suite: 'unit'
 },
 

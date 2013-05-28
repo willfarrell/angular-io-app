@@ -1,6 +1,7 @@
 # Folders #
 _notes/*
 _*
+libs/*
 files/build/*
 src/components/*
 src/img/user/*

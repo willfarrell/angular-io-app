@@ -27,7 +27,7 @@ proxies = {
 },
 
 junitReporter = {
-	outputFile: 'test/e2e.xml',
+	outputFile: 'logs/e2e.xml',
 	suite: 'e2e'
 },
 

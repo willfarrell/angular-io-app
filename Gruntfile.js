@@ -137,13 +137,13 @@ module.exports = function(grunt) {
 		karma: {
 			unit: {
 				options: {
-					configFile: 'test/karma.conf.js',
+					configFile: 'config/karma.conf.js',
 					singleRun: true
 				}
 			},
 			e2e: {
 				options: {
-					configFile: 'test/karma-e2e.conf.js',
+					configFile: 'config/karma-e2e.conf.js',
 					singleRun: true
 				}
 			},
@@ -510,12 +510,6 @@ module.exports = function(grunt) {
 						],
 						dest: '<%= yeoman.dist %>/css'
 					},
-					/*{
-						expand: true,
-						cwd:'<%= yeoman.app %>/components/jquery',
-						src: ['jquery.min.js'],
-						dest: '<%= yeoman.dist %>/js/vendor'
-					},*/
 					{
 						expand: true,
 						cwd:'<%= yeoman.app %>/components/json3/libs',
