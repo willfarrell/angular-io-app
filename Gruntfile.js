@@ -137,7 +137,7 @@ module.exports = function(grunt) {
 		karma: {
 			unit: {
 				options: {
-					configFile: 'config/karma.conf.js',
+					configFile: 'config/karma-unit.conf.js',
 					singleRun: true
 				}
 			},
@@ -289,7 +289,8 @@ module.exports = function(grunt) {
 					'./files/build/favicon/icon-64.png',
 					'./files/build/favicon/icon-128.png',
 					'./files/build/favicon/icon-256.png',
-					'-colors', '256', 'files/build/favicon.ico']
+					'-colors', '256', 'files/build/favicon.ico'
+				]
 			},
 			// fluidicon
 			'fluidicon':{
@@ -931,11 +932,7 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('test', [
 		'lint',
-		'karma:test'
-	]);
-	
-	grunt.registerTask('e2e', [
-		'lint',
+		'karma:unit',
 		'karma:e2e'
 	]);
 	
@@ -999,10 +996,7 @@ module.exports = function(grunt) {
 	]);
 	// seperate web and api for deploymen
 	grunt.registerTask('deploy', [
-		'lint',
-		
-		'karma:unit',
-		'karma:e2e',
+		'test',
 		
 		'build',
 		//'icon_convert',

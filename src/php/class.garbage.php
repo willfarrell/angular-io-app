@@ -31,14 +31,14 @@ class Garbage extends Core {
 	
 	function missing($fct, $table, $table_id) {
 		// will not catch a start = 1
-		$missing_query = "select start, stop from (
-				select m.$table_id + 1 as start,
-					(select min($table_id) - 1 from $table as x where x.$table_id > m.$table_id) as stop
-				from $table as m
-					left outer join $table as r on m.$table_id = r.$table_id - 1
-				where r.$table_id is null
-			) as x
-			where stop is not null;";
+		$missing_query = "SELECT start, stop FROM (
+				SELECT m.$table_id + 1 AS start,
+					(SELECT min($table_id) - 1 FROM $table AS x WHERE x.$table_id > m.$table_id) AS stop
+				FROM $table AS m
+					LEFT OUTER JOIN $table AS r ON m.$table_id = r.$table_id - 1
+				WHERE r.$table_id IS NULL
+			) AS x
+			WHERE stop IS NOT NULL;";
 		$missing = $this->db->query($missing_query);
 		
 		while($missing && $item = $this->db->fetch_array($missing)) {

@@ -10,7 +10,7 @@ describe('E2E: Account Settings', function() {
 		browser().navigateTo('/');
 		browser().navigateTo('#/sign/out');
 		browser().navigateTo('#/sign/in');
-		sleep(0.1);
+		
 		input('signin.email').enter(email);
 		input('signin.password').enter(pass);
 		element('[data-ng-view] [data-ng-disabled]').click();
@@ -22,7 +22,6 @@ describe('E2E: Account Settings', function() {
 	
 	it('should update account', function() {
 		browser().navigateTo('#/settings/account');
-		sleep(0.1);
 		
 		// to be done
 		expect(element('[data-ng-model="accessibility.settings.accessibility"]').attr('checked')).not().toBeDefined();
@@ -30,13 +29,11 @@ describe('E2E: Account Settings', function() {
 		
 		browser().navigateTo('#/');
 		browser().navigateTo('#/settings/account');
-		sleep(0.1);
 		expect(element('[data-ng-model="accessibility.settings.accessibility"]').attr('checked')).toBeDefined();
 	});
 	
 	it('should update email', function() {
 		browser().navigateTo('#/settings/email');
-		sleep(0.1);
 		
 		expect(element('[data-ng-view] [data-ng-disabled]').attr('disabled')).toBeDefined();
 		input('email.user_email').enter(new_email);
@@ -52,7 +49,6 @@ describe('E2E: Account Settings', function() {
 	
 	it('should update password', function() {
 		browser().navigateTo('#/settings/password');
-		sleep(0.1);
 		
 		expect(element('[data-ng-view] [data-ng-disabled]').attr('disabled')).toBeDefined();
 		input('password.old_password').enter(pass);
@@ -69,7 +65,6 @@ describe('E2E: Account Settings', function() {
 	
 	it('should update notifications', function() {
 		browser().navigateTo('#/settings/notifications');
-		sleep(0.1);
 		
 		expect(element('[data-ng-model="notify.new_message.email"]').attr('checked')).not().toBeDefined();
 		input('notify.new_message.email').check();
@@ -84,7 +79,6 @@ describe('E2E: Account Settings', function() {
 	
 	it('should update security', function() {
 		browser().navigateTo('#/settings/security');
-		sleep(0.1);
 		
 		// set totp (requires phone) > sign in with totp > turn off
 		
@@ -94,7 +88,6 @@ describe('E2E: Account Settings', function() {
 	
 	it('should update user profile', function() {
 		browser().navigateTo('#/settings/profile');
-		sleep(0.1);
 		
 		input('user.user_name_first').enter('karma');
 		input('user.user_name_last').enter('amrak');
@@ -107,7 +100,6 @@ describe('E2E: Account Settings', function() {
 		
 		browser().navigateTo('#/');
 		browser().navigateTo('#/settings/profile');
-		sleep(0.1);
 		
 		expect(input('user.user_name_first').val()).toBe('karma');
 		expect(input('user.user_name_first').val()).toBe('karma');
