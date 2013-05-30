@@ -19,7 +19,8 @@
 	<!--<link rel="stylesheet" href="components/font-awesome/build/fontawesome.css">--><!-- doesn't catch var icons -->
 	<link rel="stylesheet" href="components/angular-io/src/styles/accessibility.css">
 	<link rel="stylesheet" href="styles/angular-io.css">
-	<link rel="stylesheet" href="styles/angular-io-onboard.css">
+	<link rel="stylesheet" href="styles/onboard.css">
+	<link rel="stylesheet" href="styles/pricing.css">
 
 	<link rel="stylesheet" href="components/angular-modernizr/src/styles/forms-reveal.text.css">
 	<link rel="stylesheet" href="components/angular-modernizr/src/styles/forms-placeholder.css">
@@ -110,6 +111,13 @@
 <div data-ng-include="'view/partials/alert.html'"></div>
 <!-- !End Plugin Modals & Partials -->
 
+<script src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript">
+  // This identifies your website in the createToken call below
+  Stripe.setPublishableKey('pk_test_OyueOpB15tDO1HFkmEBSOWJS');
+  // ...
+</script>
+
 <script src="components/angular-io/src/scripts/ie.js"></script>
 
 <!--[if lt IE 8]>
@@ -166,6 +174,7 @@
 <script src="scripts/controllers/security.js"></script>
 <script src="scripts/controllers/user.js"></script>
 <script src="scripts/controllers/company.js"></script>
+<script src="scripts/controllers/billing.js"></script>
 
 <script src="scripts/controllers/dashboard.js"></script>
 <script src="scripts/controllers/contact.js"></script>

@@ -41,6 +41,7 @@ require_once 'php/api.filepicker.php';	// plugin
 
 
 //-- Add-ons --//
+require_once 'php/api.billing.php';
 require_once 'php/api.contact.php';		// plugin
 
 // REST API
@@ -56,6 +57,7 @@ $r->addAPIClass('Contact'); // replace with message???
 $r->addAPIClass('User');
 $r->addAPIClass('Company');
 $r->addAPIClass('Location');
+$r->addAPIClass('Billing');
 
 $r->addAPIClass('Filepicker');
 

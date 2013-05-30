@@ -1,2 +1,5 @@
-# Virtual Hosts
-# To be copied into /usr/
+<VirtualHost *:8888>
+    ServerAdmin will@angulario.com
+    DocumentRoot "~/Sites/angular-io-app"
+    ServerName app.angular
+</VirtualHost>
