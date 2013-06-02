@@ -35,7 +35,7 @@ function(config, $rootScope, $timeout, $locale, $cookies, $http, $window, $locat
 			// clear global alerts and errors on page change
 			$rootScope.alerts = [];
 			$rootScope.errors = {};
-	});
+		});
 
 	// referral param
 	// requires $location & $cookies

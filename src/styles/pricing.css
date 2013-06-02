@@ -1,0 +1,67 @@
+/* 3. Pricing
+------------------------------------------------------------------ */
+#pricing-table {
+  color: #000;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+ margin:0 auto 20px; }
+
+#pricing-table tbody td, #pricing-table tbody th, #pricing-table tfoot td {
+  border-top: 1px solid #CCC; }
+
+#pricing-table tbody th {
+  padding: 5px 10px;
+  text-align: left; }
+
+#pricing-table tbody td {
+  padding: 5px 20px;
+  vertical-align: middle;
+  text-align: center; }
+
+#pricing-table thead th {
+  padding: 20px 10px; }
+
+#pricing-table tfoot td {
+  padding: 20px; }
+
+.plan-pack {
+  background: #FFF;
+  width: 150px;
+  border: 1px solid #CCC;
+}
+
+.plan-pack:hover {
+  background-color: #F7F7F6; }
+
+.plan-pack.active {
+  border: 6px solid #000; }
+
+.plan-feature {
+  width: 190px;
+  text-align: left; }
+
+#pricing-table th small {
+  display: block;
+  font-weight: normal;
+  color: #666;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+#pricing-table button {
+  padding: 4px 20px; }
+
+#pricing-details {
+  overflow: hidden; }
+
+#pricing-details ul {
+  width: 450px;
+  float: left; }
+
+#pricing-details ul {
+  margin-right: 40px; }
+
+#pricing-details ul:last-child, #pricing-details ul.last {
+  margin: 0; }
+
+#pricing-details ul li {
+  /* 	margin: 0 0 40px 0; */ }

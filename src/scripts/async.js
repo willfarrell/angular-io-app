@@ -1,13 +1,4 @@
-/*global $script:true, Modernizr:true */
-
-// alternative - http://www.pinlady.net/PluginDetect/IE/
-// IE version, undefined if not IE. Used for HTML5 polyfills.
-var IE = /*@cc_on!@*/!1;
-if (IE) {
-	IE = parseFloat((/MSIE[\s]*([\d\.]+)/).exec(navigator.appVersion)[1]);
-	// Check if chromeframe, reset IE var if so
-	if(IE < 10 && (/chromeframe/).test(navigator.appVersion)) { IE = 0; }
-}
+/*global $script:true, Modernizr:true, Stripe:true */
 
 //(function() {
 console.group('Async Load');
@@ -20,9 +11,9 @@ $script('//beacon.errorception.com/5113b3e6bedd207c2b000400.js');
 // Google Analytics
 /*
 var _gaq=[
-  ['_setAccount','UA-XXXXXX-X'],
-  //['_setDomainName', '.angulario.com'],
-  ['_trackPageview'],['_trackPageLoadTime']
+	['_setAccount','UA-XXXXXX-X'],
+	//['_setDomainName', '.angulario.com'],
+	['_trackPageview'],['_trackPageLoadTime']
 ];
 $script('//google-analytics.com/ga.js');
 */
@@ -34,6 +25,12 @@ var _kmk = _kmk || 'foo';
 $script('//i.kissmetrics.com/i.js');
 $script('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
 */
+
+// Stripe
+$script('https://js.stripe.com/v2/', function() {
+	Stripe.setPublishableKey('pk_test_OyueOpB15tDO1HFkmEBSOWJS');
+});
+
 
 var min_js = '.min.js',
 	srcDir = 'js/',
@@ -85,11 +82,11 @@ function checkTypeOf(obj_list) {
 
 // Dependency of bootstrap()
 function hasModule(moduleName) {
-  try {
-	return angular.module(moduleName);
-  } catch (e) {
-	return 0;
-  }
+	try {
+		return angular.module(moduleName);
+	} catch (e) {
+		return 0;
+	}
 }
 
 function bootstrap() {
@@ -108,7 +105,7 @@ function bootstrap() {
 			console.log('Angular Bootstrapping Now');
 			console.groupEnd();
 			angular.bootstrap(document, ['app']);
-	}
+		}
 }
 
 function countFallback() {
@@ -192,6 +189,5 @@ $script.ready(['Modernizr', 'Angular', 'App'], function() {
 	modernizrFallback(Modernizr);
 	countFallback();
 });
-
 
 //}());
