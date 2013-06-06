@@ -1,5 +1,14 @@
-<VirtualHost *:8888>
-    ServerAdmin will@angulario.com
-    DocumentRoot "~/Sites/angular-io-app"
+<VirtualHost *>
+    ServerName test.angular
+    DocumentRoot __DIR__
+</VirtualHost>
+
+<VirtualHost *>
     ServerName app.angular
+    DocumentRoot __DIR__/src
+</VirtualHost>
+
+<VirtualHost *>
+    ServerName built.app.angular
+    DocumentRoot __DIR__/dist
 </VirtualHost>
