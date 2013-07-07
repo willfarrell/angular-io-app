@@ -1,3 +1,71 @@
+<form name="form" class="form-horizontal" data-ng-controller="BillingCtrl">
+	<fieldset><legend>Billing</legend></fieldset>
+	
+	
+	
+	<hr>
+	
+	<div class="control-group">
+		<label class="control-label">Choose Plan</label>
+		<div class="controls">
+			<select type="text" name="plan" data-ng-model="plan.id" required>
+				<option value="free">$0/m Free</option>
+				<option value="beta">$250 Beta (for one year)</option>
+			</select>
+		</div>
+	</div>
+	{{plan}}
+	<!--<div class="control-group">
+		<label class="control-label">Plan Add-ons</label>
+		<div class="controls">
+			<input type="text" name="card-number" class="input-mini"  data-ng-model="plan.users" required> Additional Users
+		</div>
+		<br>
+		<div class="controls">
+			
+		</div>
+	</div>-->
+	
+	
+	<div data-ng-hide="plan.id = 'free'">
+	
+	<div class="alert-white alert-danger" data-ng-show="errors.length">
+		<strong>Error:</strong> {{errors.stripe}}
+	</div>
+	<hr>
+	
+	<div class="control-group">
+		<label class="control-label" for="number">Card Number</label>
+		<div class="controls">
+			<input type="text" name="card-number" class="input-large" placeholder="XXXX XXXX XXXX XXXX" data-input-mask"9999 9999 9999 9999" data-ng-model="stripe['number']" required>
+		</div>
+	</div>
+	
+	
+	<div class="control-group">
+		<label class="control-label" for="cvc">CVC Number</label>
+		<div class="controls">
+			<input type="text" name="card-cvc" class="input-mini" placeholder="NNN" data-ng-model="stripe['cvc']" required>
+		</div>
+	</div>
+	
+	
+	<div class="control-group">
+		<label class="control-label" for="exp">Expiration Date (mm/yyyy)</label>
+		<div class="controls">
+			<input type="text" class="input-mini" placeholder="MM" data-ng-model="stripe['exp-month']" required> / <input type="text" class="input-mini" placeholder="YYYY" data-ng-model="stripe['exp-year']" required>
+		</div>
+	</div>
+	</div>
+	<hr>
+
+	<div class="control-group">
+		<div class="controls">
+			<button class="btn" data-ng-click="saveCC()" data-ng-disabled="form.$invalid">Save</button><!--  data-require-change="{{stripe}}" -->
+		</div>
+	</div>
+</form>
+<!--
 <form name="form" class="form-horizontal" data-ng-controller="StripeCtrl">
 	<fieldset><legend>Billing</legend></fieldset>
 	<hr>
@@ -123,9 +191,9 @@
 	<hr>
 
 	<div class="control-group">
-	<div class="controls">
-		<button class="btn" data-ng-click="updateNotifications()" data-require-change="{{notify}}" data-ng-disabled="form.$invalid">Save changes</button>
+		<div class="controls">
+			<button class="btn" data-ng-click="updateNotifications()" data-require-change="{{notify}}" data-ng-disabled="form.$invalid">Save changes</button>
 		</div>
 	</div>
 
-</form>
+</form>-->

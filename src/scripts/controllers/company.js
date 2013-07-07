@@ -273,12 +273,12 @@ function CompanyCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 	$scope.deleteLocation = function(id) {
 		console.log('deleteLocation(', id, ')');
 		if (confirm('Are you sure you want to delete your account? After clicking `OK`, this action cannot be undone.')) {
-		$rest.http({
-				method:'delete', // get,head,post,put,delete,jsonp
-				url: $rest.server+'location/'+id
-			}, function(data){
-				delete $scope.locations[id];
-			});
+			$rest.http({
+					method:'delete', // get,head,post,put,delete,jsonp
+					url: $rest.server+'location/'+id
+				}, function(data){
+					delete $scope.locations[id];
+				});
 		}
 		/*$http(http_config)
 			.success(function(data) {
@@ -321,7 +321,8 @@ function CompanyCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 		console.log(user);
 		if (!user) {
 			user = {
-				'user_level':0			};
+				'user_level':0
+			};
 		}
 		user.user_level = user.user_level.toString(); // for select option
 		$scope.user = user;

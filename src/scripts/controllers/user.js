@@ -128,9 +128,9 @@ function UserCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 			$rest.http({
 					method:'get',
 					url: $rest.server+'account/unique/'+encodeURIComponent(user_username)
-				}, function(data){
-					console.log('*******');
-				});
+				}/*, function(data){
+					// do nothing with return, auto handeled with errors
+				}*/);
 
 			/*$http.get('/account/unique/'+encodeURIComponent(user_username))
 				.success(function(data) {

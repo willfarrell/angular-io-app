@@ -3,7 +3,6 @@
 
 function OnboardCtrl($rootScope, $scope, $cookies, $rest, $routeParams, $session) {
 	console.log('OnboardCtrl (', $scope.$id, ') ', $routeParams.page);
-	$scope.errors = {};
 
 	if (!$routeParams.page || $routeParams.page === 'start') { $scope.href('/onboard/'+$rootScope.settings.onboard.start); }
 	$scope.page_url = 'view/onboard/'+encodeURIComponent($routeParams.page)+'.html';
@@ -16,7 +15,7 @@ function OnboardCtrl($rootScope, $scope, $cookies, $rest, $routeParams, $session
 		var after = false;	// apple after class
 		for (var i = 0, l = elements.length; i < l; i++ ) {
 			elements[ i ].className = '';
-			elements[ i ].firstChild.innerHTML = i;	// badge value
+			elements[ i ].firstChild.innerHTML = i+1;	// badge value
 
 			if (elements[ i ].href.indexOf('#/onboard/'+page) !== -1) {	// current page
 				if (action === 'skip') {	// go to next page

@@ -12,6 +12,18 @@
 		</div>
 	</div>
 	<!--<![endif]-->
+	
+	<div class="control-group" data-ng-class="{error: (errors.user_username)}" data-ui-if="settings.account.user_username">
+		<label class="control-label" for="user_username">Username</label>
+		<div class="controls">
+			<input type="text" class="input-block-level" name="user_username" placeholder="" data-ng-model="user.user_username" data-ng-minlength="3" data-ng-maxlength="14" data-ng-pattern="/^[\w-]*$/" data-ng-change="check.user_username(user.user_username)" data-field-error="user_username" required>
+			<span class="help-block error" data-ng-show="form.user_username.$error.pattern">only alphanumeric characters and underscores allowed</span>
+			<span class="help-block error" data-ng-show="form.user_username.$error.minlength">too short</span>
+			<span class="help-block error" data-ng-show="form.user_username.$error.maxlength">too long</span>
+			<span class="help-block error" data-ng-show="errors.user_username">{{errors.user_username}}</span>
+		</div>
+	</div>
+
 	<div class="control-group" data-ng-class="{error: (errors.user_name_first)}">
 	<label class="control-label" for="user_name_first">First Name</label>
 	<div class="controls">

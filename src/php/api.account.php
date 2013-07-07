@@ -175,7 +175,7 @@ class Account extends Core {
 			}
 		}
 
-		$return["errors"]['signin'] = "Sign in information invalid.";
+		$return["errors"]['password'] = "Sign in information invalid.";
 		return $return;
 	}
 

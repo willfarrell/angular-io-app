@@ -118,10 +118,10 @@ class Session {
 		//$this->cookie["lang"] 			= '';
 		$this->cookie["user_ID"] 		= 0;
 		$this->cookie["user_email"] 	= '';
-		$this->cookie["user_level"] 	= null;
-		$this->cookie["remember"] 		= null;
+		$this->cookie["user_level"] 	= 0;
+		$this->cookie["remember"] 		= 0;
 		$this->cookie["company_ID"] 	= 0;
-		$this->cookie["totp_secret"] 	= null;
+		$this->cookie["totp_secret"] 	= '';
 		$this->cookie["timestamp"] 		= $_SERVER['REQUEST_TIME'] + COOKIE_EXPIRE;
 		return $this->cookie;
 	}

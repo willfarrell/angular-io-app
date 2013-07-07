@@ -467,7 +467,8 @@ angular.module('io.modules')
 		scope: {
 			userId: '@',
 			companyId: '@',
-			query: '@'
+			query: '@',
+			placeholder: '@' // for preventing placeholder value
 		},
 		templateUrl: config.tpl['list'],
 		//require: 'ngModel',
@@ -538,6 +539,9 @@ angular.module('io.modules')
 			scope.$watch('user', function(value) {
 				//console.log(value);
 				scope.api = attrs.follow;
+				if (scope.query === scope.placeholder) {
+					scope.query = '';
+				}
 				if (attrs.follow === 'search' || attrs.follow === 'suggestions') {
 					scope.search(attrs.follow, scope.query);
 				} else {
@@ -548,6 +552,9 @@ angular.module('io.modules')
 			scope.$watch('query', function(value) {
 				//console.log(value);
 				scope.api = attrs.follow;
+				if (scope.query === scope.placeholder) {
+					scope.query = '';
+				}
 				if (attrs.follow === 'search' || attrs.follow === 'suggestions') {
 					scope.search(attrs.follow, scope.query);
 				} else {

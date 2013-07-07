@@ -231,7 +231,7 @@ class User extends Core {
 		if (isset($request_data['user_username']) && $request_data['user_username']) {
 			$account = new Account;
 			$user_name_errors = $account->get_unique($request_data['user_username']);
-			if (is_array($user_name_errors)) $return = $user_name_errors;
+			if (is_array($user_name_errors)) { $return = $user_name_errors; }
 		}
 
 		//$request_data['company_ID'] = $this->session->cookie["company_ID"];
@@ -240,6 +240,8 @@ class User extends Core {
 		$this->filter->set_group_rules('users');
 		if(!$this->filter->run()) {
 			$return["errors"] = array_merge($return, $this->filter->get_errors());
+		}
+		if (isset($return["errors"])) {
 			return $return;
 		}
 		$request_data = $this->filter->get_request_data();

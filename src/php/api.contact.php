@@ -1,6 +1,7 @@
 <?php
 
 require_once 'class.filter.php';
+require_once 'class.notify.php';
 
 class Contact extends Core {
 
@@ -28,11 +29,45 @@ class Contact extends Core {
 
 		$request_data['name'] = isset($request_data['name']) ? $request_data['name'] : '';
 		
-		$email = new Email;
+		//$notify = new Notify;
 		
-		$email->send(EMAIL_ADMIN_EMAIL, 'Contact', 'Name:'.$request_data['name'].'\n'.'From:'.$request_data['email'].'\n'.$request_data['message']);
+		$this->email(EMAIL_ADMIN_EMAIL, 'Contact', 'Name:'.$request_data['name'].'\n'.'From:'.$request_data['email'].'\n'.$request_data['message']);
 
 		return $return;
+	}
+	
+	// from class.notify.php
+	private function email($email, $subject, $message) {
+		$sent = false;
+		
+		if (!$sent && EMAIL_MAILGUN_APIKEY) {
+			exec("curl -s --user api:".EMAIL_MAILGUN_APIKEY." \
+					https://api.mailgun.net/v2/".EMAIL_MAILGUN_DOMAIN."/messages \
+					-F from=".escapeshellarg(NOTIFY_FROM_NAME." <".NOTIFY_FROM_EMAIL.">")." \
+					-F to=$email\
+					-F subject=".escapeshellarg($subject)." \
+					-F text=".escapeshellarg($message)."",
+					$output, $return
+			);
+			
+			// confirm sent
+			$output = json_decode(implode("", $output), true);
+			if ($output['message'] == 'Queued. Thank you.') {
+				$sent = true;
+			}
+		}
+		
+		if (!$sent && EMAIL_AWS_APIKEY) {
+			
+		} 
+		
+		if (!$sent) {
+			$headers = 	"From: ".NOTIFY_FROM_NAME." <".NOTIFY_FROM_EMAIL.">\r\n" .
+						"Reply-To: ".NOTIFY_FROM_EMAIL."\r\n";
+			$sent = mail($email, $subject, $message, $headers);
+		}
+		
+		return $sent;
 	}
 }
 
