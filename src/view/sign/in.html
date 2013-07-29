@@ -1,4 +1,4 @@
-<div class="pull-center">
+<div class="pull-center" data-ng-show="!session.user.user_ID">
 	<form class="well" name="form">
 		<fieldset><legend>Sign In</legend></fieldset>
 
@@ -12,13 +12,13 @@
 			<input type="password" name="password" class="input-block-level" placeholder="Password" data-ng-model="signin.password" data-field-error="password" required>
 			<span class="help-block error" data-ng-show="errors.password">{{errors.password}}</span>
 		</div>
-		<!--
+		
 		<div class="control-group">
 			<label class="checkbox">
 				<input type="checkbox" data-ng-model="signin.remember"> Remember me
 			</label>
 		</div>
-		-->
+		
 		<button class="btn btn-success" data-ng-click="account_signin()" data-ng-disabled="form.$invalid">Sign In</button>
 
 	</form>

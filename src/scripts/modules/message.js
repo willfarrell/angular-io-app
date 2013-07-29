@@ -6,12 +6,14 @@ angular.module('io.modules')
 	var $scope = {};
 
 	$scope.unread = 0;
+	
 	$scope.init = function() {
 		$scope.alerts = [];
 		// modal params
 		$scope.to_name = '';
 		$scope.compose = {};
 	};
+	
 	$scope.open = function(user_ID, to_name, message) {
 		$scope.init();
 		// reset compose
@@ -22,9 +24,11 @@ angular.module('io.modules')
 		$scope.to_name = to_name;
 		//angular.element(document.querySelector('#messageModal')).modal('show');
 	};
+	
 	$scope.close = function() {
 		//angular.element(document.querySelector('#messageModal')).modal('hide');
 	};
+	
 	$scope.updateUnreadCount = function() {
 		console.log('updateUnreadCount()');
 
@@ -48,6 +52,7 @@ angular.module('io.modules')
 				//$rootScope.http_error();
 			});*/
 	};
+	
 	$scope.send = function() {
 		console.log('send()');
 
@@ -75,9 +80,12 @@ angular.module('io.modules')
 				//$rootScope.http_error();
 			});*/
 	};
+	
 	$rootScope.$on('session', function(value) {
+		console.log('session change', value);
 		if (value) { $scope.updateUnreadCount(); }
 	});
+	
 	return $scope;
 }])
 
@@ -152,6 +160,7 @@ angular.module('io.modules')
 				//$rootScope.http_error();
 			});*/
 	};
+	
 	$scope.send = function() {
 		$scope.thread.push({
 			user_from_ID:$session.user.user_ID,
@@ -163,10 +172,12 @@ angular.module('io.modules')
 			$scope.scrollBottom();
 		}, 100);
 	};
+	
 	$scope.scrollBottom = function(){
 		var t = document.getElementById('thread');
 		t.scrollTop = t.scrollHeight;
 	};
+	
 	$session.require_signin(function() {
 		$scope.loadMessages();
 		if ($routeParams.user_ID) {

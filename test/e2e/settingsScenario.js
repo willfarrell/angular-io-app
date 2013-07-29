@@ -47,6 +47,10 @@ describe('E2E: Account Settings', function() {
 		element('[data-ng-view] [data-ng-disabled]').click();
 	});
 	
+	describe('Should confirm email', function() {
+	
+	});
+	
 	it('should update password', function() {
 		browser().navigateTo('#/settings/password');
 		
@@ -73,7 +77,7 @@ describe('E2E: Account Settings', function() {
 		
 		browser().navigateTo('#/');
 		browser().navigateTo('#/settings/notifications');
-		sleep(0.1);
+		
 		expect(element('[data-ng-model="notify.new_message.email"]').attr('checked')).toBeDefined();
 	});
 	
@@ -88,6 +92,10 @@ describe('E2E: Account Settings', function() {
 	
 	it('should update user profile', function() {
 		browser().navigateTo('#/settings/profile');
+		
+		// username
+		//input('user.user_username').enter('karma');
+		//expect(element('.alert-fixed-top').text()).toContain('Saved'); // check if unique works
 		
 		input('user.user_name_first').enter('karma');
 		input('user.user_name_last').enter('amrak');

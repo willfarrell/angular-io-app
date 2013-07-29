@@ -2,75 +2,103 @@
 
 // RENAME this file. php/inc.config.sample.php -> php/inc.config.php
 
+/*
+
+All ini_set should be placed in php.ini and removed from this doc
+
+*/
+
+/*
+$localhost = ($_SERVER &&
+	($_SERVER["REMOTE_ADDR"] === "127.0.0.1"
+	|| strpos($_SERVER["HTTP_HOST"], "localhost") !== false
+	|| strpos($_SERVER["HTTP_HOST"], "192.168") !== false)
+	);
+*/
+
+
 // CORS
 //header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, X-Requested-With, X-Access-Token, X-PINGOTHER");
 
-error_reporting(E_ALL|E_STRICT);
+// DEV / DEBUGING
+error_reporting(E_ALL); // 0 or E_ALL
+define("CONSOLE_FILE", FALSE);
+define("CONSOLE_FIREPHP", FALSE);
+define("CONSOLE_CHROMEPHP", FALSE);
 
 ignore_user_abort(true); // Sets whether a client disconnect should cause a script to be aborted.
-set_time_limit(30); // number of seconds a script is allowed to run - If set to zero, no time limit is imposed.
+set_time_limit(60); // number of seconds a script is allowed to run - If set to zero, no time limit is imposed.
+//ini_set('max_execution_time', 86400);
 
 // Set server default time, it's a life saver. seriously
 date_default_timezone_set('UTC');
 
-$localhost = ($_SERVER &&
-	($_SERVER['REMOTE_ADDR'] == '127.0.0.1'
-	|| strpos($_SERVER['REMOTE_ADDR'], '192.168') !== false
-	|| strpos($_SERVER['HTTP_HOST'], 'localhost') !== false
-	|| strpos($_SERVER['HTTP_HOST'], '192.168') !== false));
+// Overwrite if used with cloud flare
+$_SERVER['REMOTE_ADDR'] = getenv("HTTP_CF_CONNECTING_IP")
+	? getenv("HTTP_CF_CONNECTING_IP")
+	: getenv("HTTP_X_FORWARDED_FOR")
+		? getenv("HTTP_X_FORWARDED_FOR")
+		: getenv("REMOTE_ADDR");
 
-//-- Session --//
-// Cookie Variables
-//if (!defined("SESSION_EXPIRE")) 		define("SESSION_EXPIRE", 	60); // 1min	how frequently to rotate session id ** not active
-if (!defined("COOKIE_EXPIRE")) 			define("COOKIE_EXPIRE", 	60*60*2); // 2h
-if (!defined("COOKIE_EXPIRE_REMEMBER")) define("COOKIE_EXPIRE_REMEMBER", 	60*60*24*14); // 2 weeks
-if (!defined("COOKIE_PATH")) 			define("COOKIE_PATH", 		"/");
-if (!defined("COOKIE_DOMAIN")) 			define("COOKIE_DOMAIN", 	getenv('HTTP_HOST'));//(getenv('HTTP_HOST') != 'localhost') ? getenv('HTTP_HOST') : NULL);
-if (!defined("COOKIE_SECURE")) 			define("COOKIE_SECURE", 	(getenv("HTTPS") == "on"));
-if (!defined("COOKIE_HTTPONLY")) 		define("COOKIE_HTTPONLY", 	true);
+//-- Session Class --//
+define("SESSION_EXPIRE", 86400*30); // max session length from last server interaction. Requires "remember" at login
+ini_set('session.use_cookies', 1);
+ini_set('session.use_only_cookies', 1);
+ini_set("session.name", "PHPSESSID");
+ini_set("session.cookie_lifetime", 60*60*24*30); // gets overwritten when "remember" is not checked
+ini_set("session.cookie_path", "/");
+ini_set("session.cookie_domain", ""); // getenv("HTTP_HOST")
+ini_set("session.cookie_secure", (getenv("HTTPS") == "on"));
+ini_set("session.cookie_httponly", TRUE);
+if (in_array('sha512', hash_algos())) {
+	ini_set('session.hash_function', 'sha512');
+}
+ini_set('session.hash_bits_per_character', 5);
 
-//-- Password --//
-if (!defined("PASSWORD_HASH")) 		define("PASSWORD_HASH", 	"scrypt");	// PBKDF2, bcrypt, scrypt
-if (!defined("PASSWORD_SALT")) 		define("PASSWORD_SALT", 	'');		// Added to password (Stored in Code - same for all)
-//if (!defined("PASSWORD_PEPPER")) 	define("PASSWORD_PEPPER", 	FALSE);		// Added to password (Stored in DB)
-//if (!defined("PASSWORD_CAYENNE")) define("PASSWORD_CAYENNE", 	FALSE);		// Added to password (Stored in File)
+//define("REQUIRE_EMAIL_CONFIRM", FALSE);
+
+//-- Password Class --//
+define("PASSWORD_RESET_LENGTH", 3600);	// The time one has to reset their password in seconds (1 hour)
+
+//-- Password Hashing --//
+define("PASSWORD_HASH", 		"scrypt");	// PBKDF2, bcrypt, scrypt (recommended)
+define("PASSWORD_SALT", 		"");		// Added to password (Stored in Code - same for all)
+//define("PASSWORD_PEPPER", 	FALSE);		// Added to password (Stored in other DB/cache)
+//define("PASSWORD_CAYENNE",	FALSE);		// Added to password (Stored in File)
+//define("PASSWORD_NONCE", 		TRUE);		//
 
 // PBKDF2 - Require NIST compliance [https://github.com/P54l0m5h1k/PBKDF2-implementation-PHP]
-if (!defined("PBKDF2_SALT")) 		define("PBKDF2_SALT", 		'');
-if (!defined("PBKDF2_BINARY")) 		define("PBKDF2_BINARY", 	true);		// generate binary data, or base64 encoded string
-if (!defined("PBKDF2_ITERATIONS")) 	define("PBKDF2_ITERATIONS", 10000);		// how many iterations to perform 10,000+ (2012)
-if (!defined("PBKDF2_KEY_LENGTH")) 	define("PBKDF2_KEY_LENGTH", 32);		// key length
-if (!defined("PBKDF2_ALGORITHM")) 	define("PBKDF2_ALGORITHM", 	'sha512');	// hashing algorithm (sha-256, sha-512)
+define("PBKDF2_SALT", 		"");
+define("PBKDF2_BINARY", 	TRUE);		// generate binary data, or base64 encoded string
+define("PBKDF2_ITERATIONS", 10000);		// how many iterations to perform 10,000+ (2012)
+define("PBKDF2_KEY_LENGTH", 32);		// key length
+define("PBKDF2_ALGORITHM", 	"sha512");	// hashing algorithm (sha-256, sha-512)
 
 // bcrypt - easy to implement [https://gist.github.com/1053158]
-if (!defined("BCRYPT_WORK_FACTOR")) define("BCRYPT_WORK_FACTOR", 8);		// work_factor (4 - 31) [http://wildlyinaccurate.com/bcrypt-choosing-a-work-factor]
+define("BCRYPT_WORK_FACTOR",10);		// work_factor (4 - 31) [http://wildlyinaccurate.com/bcrypt-choosing-a-work-factor]
 
-//scrypt - longest to break (2012-10), requires extra work server side to implement [https://github.com/DomBlack/php-scrypt]
-if (!defined("SCRYPT_SALT")) 		define("SCRYPT_SALT", 		NULL);		// NULL to grenerate random
-if (!defined("SCRYPT_PEPPER")) 		define("SCRYPT_PEPPER", 	'');	//
-if (!defined("SCRYPT_SALT_LENGTH")) define("SCRYPT_SALT_LENGTH", 8);		// The length of the salt
-if (!defined("SCRYPT_KEY_LENGTH")) 	define("SCRYPT_KEY_LENGTH", 32);		// The key length
-if (!defined("SCRYPT_CPU")) 		define("SCRYPT_CPU", 		16384);		// The CPU difficultly (must be a power of 2,  > 1) pow(2,14)
-if (!defined("SCRYPT_MEMORY")) 		define("SCRYPT_MEMORY", 	8);			// The memory difficultly
-if (!defined("SCRYPT_PARALLEL")) 	define("SCRYPT_PARALLEL", 	1);			// The parallel difficultly
+// scrypt - longest to break (2012-10), requires extra work server side to implement [https://github.com/DomBlack/php-scrypt]
+define("SCRYPT_SALT", 		NULL);		// NULL to grenerate random
+define("SCRYPT_PEPPER", 	"");		//
+define("SCRYPT_SALT_LENGTH",8);			// The length of the salt
+define("SCRYPT_KEY_LENGTH", 32);		// The key length
+define("SCRYPT_CPU", 		16384);		// The CPU difficultly (must be a power of 2,  > 1) pow(2,14)
+define("SCRYPT_MEMORY", 	8);			// The memory difficultly
+define("SCRYPT_PARALLEL", 	1);			// The parallel difficultly
 
 
-//-- Database --//
-if ($localhost) {
-	define('DB_SERVER','localhost');
-	define('DB_NAME','_db');
-	define('DB_USER','_user');
-	define('DB_PASS','');
-} else {
-	define('DB_SERVER','localhost');
-	define('DB_NAME','_db');
-	define('DB_USER','_user');
-	define('DB_PASS','');
-}
+//-- Database Class --//
+define("DB_SERVER","localhost");
+define("DB_NAME","_db");
+define("DB_USER","_user");
+define("DB_PASS","");
 
+define("STRIPE_API_SECRET_KEY", "");
+//define("STRIPE_API_PUBLIC_KEY", ""); // in scripts/async.js
 
 //-- Notify --//
+// move to config.notify.json
 define('NOTIFY_FROM_NAME', "");
 define('NOTIFY_FROM_EMAIL', "");
 define('NOTIFY_FROM_NUMBER', "");	// assigned by SMS service
@@ -95,7 +123,9 @@ define('SMS_NEXMO_APISECRET', "");
 // twilio
 define('SMS_TWILIO_APIKEY', "");
 
+//-- Filepicker --//
 
+//-- AWS --//
 
 
 ?>

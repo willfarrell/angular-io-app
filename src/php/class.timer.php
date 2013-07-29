@@ -26,8 +26,8 @@ class Timers {
 		}*/
 	}
 
-	/*  start the timer  */
-	function start($id=NULL) {
+	/* start the timer */
+	public function start($id=NULL) {
 		if ($id==NULL) $id = $this->id;
 		if (isset($this->timers[$id])) {
 			$this->timers[$id]['count']++;
@@ -39,25 +39,25 @@ class Timers {
 		}
 
 		$this->timers[$id]['timer'][$this->timers[$id]['count']] = new Timer;
-	    $this->timers[$id]['timer'][$this->timers[$id]['count']]->start();
+		$this->timers[$id]['timer'][$this->timers[$id]['count']]->start();
 	}
 
-	/*  pause the timer  */
-	function pause($id=NULL) {
+	/* pause the timer */
+	public function pause($id=NULL) {
 		if ($id==NULL) $id = $this->id;
-	    $this->timers[$id]['timer'][$this->timers[$id]['count']]->pause();
+		$this->timers[$id]['timer'][$this->timers[$id]['count']]->pause();
 	}
 
-	/*  unpause the timer  */
-	function unpause($id=NULL) {
+	/* unpause the timer */
+	public function unpause($id=NULL) {
 		if ($id==NULL) $id = $this->id;
-	    $this->timers[$id]['timer'][$this->timers[$id]['count']]->unpause();
+		$this->timers[$id]['timer'][$this->timers[$id]['count']]->unpause();
 	}
 
-	/*  stop the timer  */
-	function stop($id=NULL) {
+	/* stop the timer */
+	public function stop($id=NULL) {
 		if ($id==NULL) $id = $this->id;
-	    $this->timers[$id]['timer'][$this->timers[$id]['count']]->stop();
+		$this->timers[$id]['timer'][$this->timers[$id]['count']]->stop();
 	}
 
 	function results($id=NULL) {
@@ -124,47 +124,47 @@ class Timer {
 
 	}
 
-	/*  start the timer  */
+	/* start the timer */
 	function start() {
-	    $this->start_time = $this->get_time();
-	    $this->pause_time = 0;
+		$this->start_time = $this->get_time();
+		$this->pause_time = 0;
 	}
 
-	/*  pause the timer  */
+	/* pause the timer */
 	function pause() {
-	    $this->pause_time = $this->get_time();
+		$this->pause_time = $this->get_time();
 	}
 
-	/*  unpause the timer  */
+	/* unpause the timer */
 	function unpause() {
-	    $this->start_time += ($this->get_time() - $this->pause_time);
-	    $this->pause_time = 0;
+		$this->start_time += ($this->get_time() - $this->pause_time);
+		$this->pause_time = 0;
 	}
 
-	/*  stop the timer  */
+	/* stop the timer */
 	function stop() {
-	    $this->stop_time = $this->get_time();
-	    //return $this->stop_time;
+		$this->stop_time = $this->get_time();
+		//return $this->stop_time;
 	}
 
-	/*  duration the timer  */
+	/* duration the timer */
 	function duration() {
-	    $this->duration = (isset($this->stop_time) ? $this->stop_time : 0) - $this->start_time;
-	    return $this->duration;
+		$this->duration = (isset($this->stop_time) ? $this->stop_time : 0) - $this->start_time;
+		return $this->duration;
 	}
 
-	/*  get the current timer value  */
-  	function get($decimals = 8) {
-	    return round(($this->get_time() - $this->start),$decimals);
+	/* get the current timer value */
+ 	function get($decimals = 8) {
+		return round(($this->get_time() - $this->start),$decimals);
 	}
 
-	/*  format the time in seconds  */
+	/* format the time in seconds */
 	function get_time() {
-	    list($usec,$sec) = explode(' ', microtime());
-	    return ((float)$usec + (float)$sec);
-    }
+		list($usec,$sec) = explode(' ', microtime());
+		return ((float)$usec + (float)$sec);
+	}
 }
 
-$timer = new Timers;
+//$timer = new Timers;
 
 ?>

@@ -64,13 +64,13 @@ form { margin:0; }
 /* image resize and crop */
 #resizecrop canvas, #resizecrop canvas:hover { 
     cursor: move;
-    cursor: grab;
+    /*cursor: grab;*/
     cursor: -moz-grab;
     cursor: -webkit-grab;
 }
 #resizecrop canvas:active { 
     cursor: move;
-    cursor: grabbing;
+    /*cursor: grabbing;*/
     cursor: -moz-grabbing;
     cursor: -webkit-grabbing;
 }

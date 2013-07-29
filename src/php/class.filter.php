@@ -1,8 +1,8 @@
 <?php
 
 /*
-  	http://codeigniter.com/user_guide/libraries/form_validation.html
-  	
+	http://codeigniter.com/user_guide/libraries/form_validation.html
+	
 	Rule			Param	Details
 	// validation - codeigniter //
 	required		No	Returns FALSE if the form element is empty.	 
@@ -31,7 +31,7 @@
 	// validation - custom //
 	valid_email_dns	No	Returns FALSE if the form element does not contain a valid email address or has no MX record.
 	valid_url 		No	Returns FALSE if the form element does not contain a valid URL.
-	*valid_mail_code	Yes	Returns FALSE if the form element does not contain a valid mail code for a given country.	valid_mail_code[CA]  country code
+	*valid_mail_code	Yes	Returns FALSE if the form element does not contain a valid mail code for a given country.	valid_mail_code[CA]country code
 	*valid_phone 	Yes	Returns FALSE if the form element does not contain a valid phone/fax number.	valid_phone[+] // + = international
 	
 	// sanitize - php functions //
@@ -131,69 +131,69 @@ class Filter {
 	
 	function __construct($rules = array()){
 		global $database;
-        $this->db = $database;
-        $this->tools = new filter_tools;
-        
-        $this->_config_rules = $rules;
-        
-        // copy sent params
-        if 		(isset($_GET) && count($_GET)) 		$this->_request_data = $_GET;
-        else if	(isset($_POST) && count($_POST)) 	$this->_request_data = $_POST;
-        else if (isset($_PUT) && count($_PUT)) 		$this->_request_data = $_PUT;
-        
-        // set default error messages
-        foreach ($this->_defaut_messages as $key => $value) {
-        	$this->set_message($key, $value);
-        }
-        
-    }
+		$this->db = $database;
+		$this->tools = new filter_tools;
+		
+		$this->_config_rules = $rules;
+		
+		// copy sent params
+		if 		(isset($_GET) && count($_GET)) 		$this->_request_data = $_GET;
+		else if	(isset($_POST) && count($_POST)) 	$this->_request_data = $_POST;
+		else if (isset($_PUT) && count($_PUT)) 		$this->_request_data = $_PUT;
+		
+		// set default error messages
+		foreach ($this->_defaut_messages as $key => $value) {
+			$this->set_message($key, $value);
+		}
+		
+	}
 	
 	function __destruct() {
-		  
-  	}
-  	
-  	function get_request_data($key = NULL) {
-  		if ($key != NULL) {
-  			return $this->_request_data[$key];
-  		} else {
-	  		return $this->_request_data;
-  		}
-  	}
-  	
-  	function set_request_data($request_data, $value = NULL) {
-  		if (is_array($request_data)) {
-  			$this->_request_data = $request_data;	
-  		} else {
-	  		$key = $request_data;
-	  		$this->_request_data[$key] = $value;
-	  		$request_data = array($key => $value);
-  		}
-  		
-  		// add function filter automatically
+		
+	}
+	
+	function get_request_data($key = NULL) {
+		if ($key != NULL) {
+			return $this->_request_data[$key];
+		} else {
+			return $this->_request_data;
+		}
+	}
+	
+	function set_request_data($request_data, $value = NULL) {
+		if (is_array($request_data)) {
+			$this->_request_data = $request_data;	
+		} else {
+			$key = $request_data;
+			$this->_request_data[$key] = $value;
+			$request_data = array($key => $value);
+		}
+		
+		// add function filter automatically
 		$trace = debug_backtrace();
 		if (isset($trace[1])) {
 			$name = strtolower("{$trace[1]['class']}_{$trace[1]['function']}");
 			
 			$this->tools->add_function_array($name, $request_data); // builds filter.function.php
 			$this->set_group_rules($name);
-        }
-  	}
-  	
-  	function get_error_array() {
-  		return $this->_error_array;
-  	}
-  	
-  	function get_errors($class = 'error') {
-  		$errors = array();
-  		foreach ($this->_field_data as $key => $value) {
-	  		if ($value['error']) $errors[$key] = $value['error'];
-	  		//if ($value['error']) $errors[$key] = array('label' => $value['label'], 'message' => $value['error']);
-  		}
-  		
-	  	return $errors;
-  	}
-  	
-  	/**
+		}
+	}
+	
+	function get_error_array() {
+		return $this->_error_array;
+	}
+	
+	function get_errors($class = 'error') {
+		$errors = array();
+		foreach ($this->_field_data as $key => $value) {
+			if ($value['error']) $errors[$key] = $value['error'];
+			//if ($value['error']) $errors[$key] = array('label' => $value['label'], 'message' => $value['error']);
+		}
+		
+		return $errors;
+	}
+	
+	/**
 	 * Set Rules for an array of keys
 	 *
 	 * This function takes an array of field names and validation
@@ -205,34 +205,34 @@ class Filter {
 	 * @param	bool
 	 * @return	void
 	 */
-  	function set_key_rules($keys, $rules, $pos = false) {
-  		if(!is_array($keys)) {
-	  		$keys = ($keys == '') ? array() : explode(",", $keys);
-  		}
-  		
+	function set_key_rules($keys, $rules, $pos = false) {
+		if(!is_array($keys)) {
+			$keys = ($keys == '') ? array() : explode(",", $keys);
+		}
+		
 		foreach ($keys as $key) {
 			$spacer = ($this->_field_data[$key]['rules'] == '') ? '' : '|';
 			$this->_field_data[$key]['rules'] = $pos ? $this->_field_data[$key]['rules'].$spacer.$rules : $rules.$spacer.$this->_field_data[$key]['rules'];
-  		}
-  	}
-  	
-  	function set_all_rules($rules, $pos = false) {
+		}
+	}
+	
+	function set_all_rules($rules, $pos = false) {
 		foreach ($this->_field_data as $key => $value) {
 			$spacer = ($value['rules'] == '') ? '' : '|';
 			$this->_field_data[$key]['rules'] = $pos ? $value['rules'].$spacer.$rules : $rules.$spacer.$value['rules'];
-  		}
-  	}
-  	
-  	/**
+		}
+	}
+	
+	/**
 	 * Set Rules from config groups
 	 *
 	 * @access	public
 	 * @param	mixed
 	 * @return	void
 	 */
-  	function set_group_rules($groups) {
-  		// Is there a validation rule for the particular group being accessed?
-  		if(!is_array($groups)) {
+	function set_group_rules($groups) {
+		// Is there a validation rule for the particular group being accessed?
+		if(!is_array($groups)) {
 			$groups = ($groups == '') ? array() : explode(",", $groups);
 		}
 		
@@ -242,9 +242,9 @@ class Filter {
 				$this->set_rules($this->_config_rules[$group]);
 			}
 		}	}
-  	
-  	
-  	// --------------------------------------------------------------------
+	
+	
+	// --------------------------------------------------------------------
 
 	/**
 	 * Set Rules
@@ -287,7 +287,7 @@ class Filter {
 		}
 
 		// No fields? Nothing to do...
-		if ( ! is_string($field) OR  ! is_string($rules) OR $field == '')
+		if ( ! is_string($field) OR! is_string($rules) OR $field == '')
 		{
 			return $this;
 		}
@@ -295,8 +295,8 @@ class Filter {
 		// If the field label wasn't passed we use the field name
 		$label = ($label == '') ? $field : $label;
 
-		// Is the field name an array?  We test for the existence of a bracket "[" in
-		// the field name to determine this.  If it is an array, we break it apart
+		// Is the field name an array?We test for the existence of a bracket "[" in
+		// the field name to determine this.If it is an array, we break it apart
 		// into its components so that we can fetch the corresponding POST data later
 		if (strpos($field, '[') !== FALSE AND preg_match_all('/\[(.*?)\]/', $field, $matches))
 		{
@@ -340,8 +340,8 @@ class Filter {
 	/**
 	 * Set Error Message
 	 *
-	 * Lets users set their own error messages on the fly.  Note:  The key
-	 * name has to match the  function name that it corresponds to.
+	 * Lets users set their own error messages on the fly.Note:The key
+	 * name has to match thefunction name that it corresponds to.
 	 *
 	 * @access	public
 	 * @param	string
@@ -453,8 +453,8 @@ class Filter {
 
 		return $str;
 	}
-  	
-  	// --------------------------------------------------------------------
+	
+	// --------------------------------------------------------------------
 
 	/**
 	 * Run the Validator
@@ -466,7 +466,7 @@ class Filter {
 	 */
 	public function run($groups = '')
 	{
-		// Do we even have any data to process?  Mm?
+		// Do we even have any data to process?Mm?
 		if (count($this->_request_data) == 0)
 		{
 			return FALSE;
@@ -476,7 +476,7 @@ class Filter {
 		// If not, we look to see if they were assigned via a config file
 		if (count($this->_field_data) == 0)
 		{
-			// No validation rules?  We're done...
+			// No validation rules?We're done...
 			if (count($this->_config_rules) == 0)
 			{
 				return FALSE;
@@ -845,7 +845,7 @@ class Filter {
 				
 			}
 
-			// Did the rule test negatively?  If so, grab the error.
+			// Did the rule test negatively?If so, grab the error.
 			if ($result === FALSE)
 			{
 				if ( ! isset($this->_error_messages[$rule]))
@@ -861,7 +861,7 @@ class Filter {
 				}
 
 				// Is the parameter we are inserting into the error message the name
-				// of another field?  If so we need to grab its "field label"
+				// of another field?If so we need to grab its "field label"
 				if (isset($this->_field_data[$param]) AND isset($this->_field_data[$param]['label']))
 				{
 					$param = $this->_translate_fieldname($this->_field_data[$param]['label']);
@@ -882,7 +882,7 @@ class Filter {
 			}
 		}
 	}
-  	
+	
 	// --------------------------------------------------------------------
 
 	/**
@@ -901,7 +901,7 @@ class Filter {
 			// Grab the variable
 			$line = substr($fieldname, 5);
 
-			// Were we able to translate the field name?  If not we use $line
+			// Were we able to translate the field name?If not we use $line
 			if (FALSE === ($fieldname = $this->CI->lang->line($line)))
 			{
 				return $line;
@@ -911,7 +911,7 @@ class Filter {
 		return $fieldname;
 	}
 	
-  	// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
 
 	/**
 	 * Required
@@ -949,7 +949,7 @@ class Filter {
 			return FALSE;
 		}
 
-		return  TRUE;
+		returnTRUE;
 	}
 
 	// --------------------------------------------------------------------
@@ -990,7 +990,7 @@ class Filter {
 		$r = $this->db->select($table, array($field => $str));
 		
 		return $this->db->num_rows($r) === 0;
-    }
+	}
 
 	// --------------------------------------------------------------------
 
@@ -1537,7 +1537,7 @@ class Filter {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Is a Natural number  (0,1,2,3, etc.)
+	 * Is a Natural number(0,1,2,3, etc.)
 	 *
 	 * @access	public
 	 * @param	string
@@ -1551,7 +1551,7 @@ class Filter {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Is a Natural number, but not a zero  (1,2,3, etc.)
+	 * Is a Natural number, but not a zero(1,2,3, etc.)
 	 *
 	 * @access	public
 	 * @param	string
@@ -1618,11 +1618,11 @@ class Filter {
 	{
 		return TRUE;
 		switch ($type) {
-	  		case "+":				// +1 (XXX) XXX-XXXX
-	  			return $this->match("/(\d)/", $str);
-	  		default:				// (XXX) XXX-XXXX
-	  			return $this->match("/(\d)/", $str);
-  		}
+			case "+":				// +1 (XXX) XXX-XXXX
+				return $this->match("/(\d)/", $str);
+			default:				// (XXX) XXX-XXXX
+				return $this->match("/(\d)/", $str);
+		}
 	}
 	
 	// --------------------------------------------------------------------
@@ -1720,7 +1720,7 @@ class Filter {
 	 */
 	public function encode_php_tags($str)
 	{
-		return str_replace(array('<?php', '<?PHP', '<?', '?>'),  array('&lt;?php', '&lt;?PHP', '&lt;?', '?&gt;'), $str);
+		return str_replace(array('<?php', '<?PHP', '<?', '?>'),array('&lt;?php', '&lt;?PHP', '&lt;?', '?&gt;'), $str);
 	}
 	
 	// --------------------------------------------------------------------

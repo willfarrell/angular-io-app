@@ -6,7 +6,13 @@ $filter_table = array (
     array (
       'field' => 'company_ID',
       'label' => 'Company ID',
-      'rules' => 'is_natural_no_zero|integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
+      'rules' => 'is_natural_no_zero|integer|max_length[10]|is_natural|greater_than_or_equal[0]|less_than_or_equal[4294967295]',
+    ),
+    'company_username' => 
+    array (
+      'field' => 'company_username',
+      'label' => 'Company Username',
+      'rules' => 'max_length[255]',
     ),
     'company_name' => 
     array (
@@ -32,59 +38,32 @@ $filter_table = array (
       'label' => 'Company Details',
       'rules' => 'max_length[65535]',
     ),
-    'location_default_ID' => 
-    array (
-      'field' => 'location_default_ID',
-      'label' => 'Location Default ID',
-      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
-    ),
     'user_default_ID' => 
     array (
       'field' => 'user_default_ID',
       'label' => 'User Default ID',
-      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
+      'rules' => 'integer|max_length[10]|is_natural|greater_than_or_equal[0]|less_than_or_equal[4294967295]',
+    ),
+    'location_default_ID' => 
+    array (
+      'field' => 'location_default_ID',
+      'label' => 'Location Default ID',
+      'rules' => 'integer|max_length[10]|is_natural|greater_than_or_equal[0]|less_than_or_equal[4294967295]',
     ),
     'timestamp_create' => 
     array (
       'field' => 'timestamp_create',
       'label' => 'Timestamp Create',
-      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
+      'rules' => 'integer|max_length[10]|is_natural|greater_than_or_equal[0]|less_than_or_equal[4294967295]',
     ),
     'timestamp_update' => 
     array (
       'field' => 'timestamp_update',
       'label' => 'Timestamp Update',
-      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
+      'rules' => 'integer|max_length[10]|is_natural|greater_than_or_equal[0]|less_than_or_equal[4294967295]',
     ),
   ),
-  'table_follow_user' => 
-  array (
-    'user_ID' => 
-    array (
-      'field' => 'user_ID',
-      'label' => 'User ID',
-      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
-    ),
-    'follow_ID' => 
-    array (
-      'field' => 'follow_ID',
-      'label' => 'Follow ID',
-      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
-    ),
-    'group_ID' => 
-    array (
-      'field' => 'group_ID',
-      'label' => 'Group ID',
-      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
-    ),
-    'timestamp' => 
-    array (
-      'field' => 'timestamp',
-      'label' => 'Timestamp',
-      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
-    ),
-  ),
-  'table_follow_user_groups' => 
+  'table_follow_groups' => 
   array (
     'group_ID' => 
     array (
@@ -102,12 +81,6 @@ $filter_table = array (
     array (
       'field' => 'group_count',
       'label' => 'Group Count',
-      'rules' => 'integer|max_length[6]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
-    ),
-    'user_ID' => 
-    array (
-      'field' => 'user_ID',
-      'label' => 'User ID',
       'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
     ),
     'group_color' => 
@@ -115,6 +88,51 @@ $filter_table = array (
       'field' => 'group_color',
       'label' => 'Group Color',
       'rules' => 'max_length[255]',
+    ),
+    'user_ID' => 
+    array (
+      'field' => 'user_ID',
+      'label' => 'User ID',
+      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
+    ),
+  ),
+  'table_follows' => 
+  array (
+    'user_ID' => 
+    array (
+      'field' => 'user_ID',
+      'label' => 'User ID',
+      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
+    ),
+    'company_ID' => 
+    array (
+      'field' => 'company_ID',
+      'label' => 'Company ID',
+      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
+    ),
+    'follow_user_ID' => 
+    array (
+      'field' => 'follow_user_ID',
+      'label' => 'Follow User ID',
+      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
+    ),
+    'follow_company_ID' => 
+    array (
+      'field' => 'follow_company_ID',
+      'label' => 'Follow Company ID',
+      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
+    ),
+    'group_ID' => 
+    array (
+      'field' => 'group_ID',
+      'label' => 'Group ID',
+      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
+    ),
+    'timestamp' => 
+    array (
+      'field' => 'timestamp',
+      'label' => 'Timestamp',
+      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
     ),
   ),
   'table_locations' => 
@@ -135,7 +153,13 @@ $filter_table = array (
     array (
       'field' => 'location_name',
       'label' => 'Location Name',
-      'rules' => 'max_length[65535]',
+      'rules' => 'max_length[255]',
+    ),
+    'location_phone' => 
+    array (
+      'field' => 'location_phone',
+      'label' => 'Location Phone',
+      'rules' => 'max_length[255]',
     ),
     'address_1' => 
     array (
@@ -153,7 +177,7 @@ $filter_table = array (
     array (
       'field' => 'city',
       'label' => 'City',
-      'rules' => 'max_length[65535]',
+      'rules' => 'max_length[255]',
     ),
     'region_code' => 
     array (
@@ -185,18 +209,6 @@ $filter_table = array (
       'label' => 'Longitude',
       'rules' => 'decimal[9,6]',
     ),
-    'location_phone' => 
-    array (
-      'field' => 'location_phone',
-      'label' => 'Location Phone',
-      'rules' => 'max_length[255]',
-    ),
-    'location_fax' => 
-    array (
-      'field' => 'location_fax',
-      'label' => 'Location Fax',
-      'rules' => 'max_length[255]',
-    ),
     'timestamp_create' => 
     array (
       'field' => 'timestamp_create',
@@ -207,57 +219,72 @@ $filter_table = array (
     array (
       'field' => 'timestamp_update',
       'label' => 'Timestamp Update',
-      'rules' => 'integer|max_length[11]|is_natural|greater_than_or_equal[0]|less_than_or_equal[4294967295]',
+      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
     ),
   ),
-  'table_password_blacklist' => 
+  'table_messages' => 
   array (
-    'password' => 
+    'user_key' => 
     array (
-      'field' => 'password',
-      'label' => 'Password',
+      'field' => 'user_key',
+      'label' => 'User Key',
       'rules' => 'max_length[255]',
     ),
-    'upper_count' => 
+    'user_to_ID' => 
     array (
-      'field' => 'upper_count',
-      'label' => 'Upper Count',
+      'field' => 'user_to_ID',
+      'label' => 'User To ID',
       'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
     ),
-    'lower_count' => 
+    'user_from_ID' => 
     array (
-      'field' => 'lower_count',
-      'label' => 'Lower Count',
-      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
-    ),
-    'number_count' => 
-    array (
-      'field' => 'number_count',
-      'label' => 'Number Count',
-      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
-    ),
-    'symbol_count' => 
-    array (
-      'field' => 'symbol_count',
-      'label' => 'Symbol Count',
-      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
-    ),
-    'special_count' => 
-    array (
-      'field' => 'special_count',
-      'label' => 'Special Count',
-      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
-    ),
-    'use_count' => 
-    array (
-      'field' => 'use_count',
-      'label' => 'Use Count',
+      'field' => 'user_from_ID',
+      'label' => 'User From ID',
       'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
     ),
     'timestamp' => 
     array (
       'field' => 'timestamp',
       'label' => 'Timestamp',
+      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
+    ),
+    'message' => 
+    array (
+      'field' => 'message',
+      'label' => 'Message',
+      'rules' => 'max_length[65535]',
+    ),
+    'read' => 
+    array (
+      'field' => 'read',
+      'label' => 'Read',
+      'rules' => 'integer|max_length[4]|greater_than_or_equal[-128]|less_than_or_equal[127]',
+    ),
+  ),
+  'table_notifications' => 
+  array (
+    'user_ID' => 
+    array (
+      'field' => 'user_ID',
+      'label' => 'User ID',
+      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
+    ),
+    'message' => 
+    array (
+      'field' => 'message',
+      'label' => 'Message',
+      'rules' => 'max_length[65535]',
+    ),
+    'timestamp' => 
+    array (
+      'field' => 'timestamp',
+      'label' => 'Timestamp',
+      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
+    ),
+    'read' => 
+    array (
+      'field' => 'read',
+      'label' => 'Read',
       'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
     ),
   ),
@@ -279,7 +306,7 @@ $filter_table = array (
     array (
       'field' => 'length',
       'label' => 'Length',
-      'rules' => 'integer|max_length[2]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
+      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
     ),
   ),
   'table_sessions' => 
@@ -338,32 +365,17 @@ $filter_table = array (
       'label' => 'Company ID',
       'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
     ),
+    'totp_secret' => 
+    array (
+      'field' => 'totp_secret',
+      'label' => 'Totp Secret',
+      'rules' => 'max_length[255]',
+    ),
     'timestamp' => 
     array (
       'field' => 'timestamp',
       'label' => 'Timestamp',
       'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
-    ),
-  ),
-  'table_sites' => 
-  array (
-    'site_ID' => 
-    array (
-      'field' => 'site_ID',
-      'label' => 'Site ID',
-      'rules' => 'is_natural_no_zero|integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
-    ),
-    'company_ID' => 
-    array (
-      'field' => 'company_ID',
-      'label' => 'Company ID',
-      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
-    ),
-    'site' => 
-    array (
-      'field' => 'site',
-      'label' => 'Site',
-      'rules' => 'max_length[255]',
     ),
   ),
   'table_user_confirm' => 
@@ -372,13 +384,13 @@ $filter_table = array (
     array (
       'field' => 'user_ID',
       'label' => 'User ID',
-      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
+      'rules' => 'integer|max_length[10]|is_natural|greater_than_or_equal[0]|less_than_or_equal[4294967295]',
     ),
     'hash' => 
     array (
       'field' => 'hash',
       'label' => 'Hash',
-      'rules' => 'max_length[65535]',
+      'rules' => 'max_length[255]',
     ),
   ),
   'table_user_reset' => 
@@ -387,13 +399,13 @@ $filter_table = array (
     array (
       'field' => 'user_ID',
       'label' => 'User ID',
-      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
+      'rules' => 'integer|max_length[10]|is_natural|greater_than_or_equal[0]|less_than_or_equal[4294967295]',
     ),
     'hash' => 
     array (
       'field' => 'hash',
       'label' => 'Hash',
-      'rules' => 'max_length[65535]',
+      'rules' => 'max_length[255]',
     ),
     'expire_timestamp' => 
     array (
@@ -408,25 +420,31 @@ $filter_table = array (
     array (
       'field' => 'user_ID',
       'label' => 'User ID',
-      'rules' => 'is_natural_no_zero|integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
+      'rules' => 'is_natural_no_zero|integer|max_length[10]|is_natural|greater_than_or_equal[0]|less_than_or_equal[4294967295]',
     ),
     'company_ID' => 
     array (
       'field' => 'company_ID',
       'label' => 'Company ID',
-      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
+      'rules' => 'integer|max_length[10]|is_natural|greater_than_or_equal[0]|less_than_or_equal[4294967295]',
     ),
     'user_level' => 
     array (
       'field' => 'user_level',
       'label' => 'User Level',
-      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
+      'rules' => 'integer|max_length[10]|is_natural|greater_than_or_equal[0]|less_than_or_equal[4294967295]',
+    ),
+    'user_email' => 
+    array (
+      'field' => 'user_email',
+      'label' => 'User Email',
+      'rules' => 'max_length[255]',
     ),
     'user_username' => 
     array (
       'field' => 'user_username',
-      'label' => 'User Name',
-      'rules' => 'max_length[65535]',
+      'label' => 'User Username',
+      'rules' => 'max_length[255]',
     ),
     'user_name_first' => 
     array (
@@ -440,11 +458,11 @@ $filter_table = array (
       'label' => 'User Name Last',
       'rules' => 'max_length[65535]',
     ),
-    'user_email' => 
+    'user_function' => 
     array (
-      'field' => 'user_email',
-      'label' => 'User Email',
-      'rules' => 'max_length[255]',
+      'field' => 'user_function',
+      'label' => 'User Function',
+      'rules' => 'max_length[65535]',
     ),
     'user_phone' => 
     array (
@@ -452,10 +470,28 @@ $filter_table = array (
       'label' => 'User Phone',
       'rules' => 'max_length[255]',
     ),
+    'user_url' => 
+    array (
+      'field' => 'user_url',
+      'label' => 'User Url',
+      'rules' => 'max_length[255]',
+    ),
     'user_details' => 
     array (
       'field' => 'user_details',
       'label' => 'User Details',
+      'rules' => 'max_length[65535]',
+    ),
+    'notify_json' => 
+    array (
+      'field' => 'notify_json',
+      'label' => 'Notify Json',
+      'rules' => 'max_length[65535]',
+    ),
+    'security_json' => 
+    array (
+      'field' => 'security_json',
+      'label' => 'Security Json',
       'rules' => 'max_length[65535]',
     ),
     'password' => 
@@ -468,7 +504,7 @@ $filter_table = array (
     array (
       'field' => 'password_timestamp',
       'label' => 'Password Timestamp',
-      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
+      'rules' => 'integer|max_length[10]|is_natural|greater_than_or_equal[0]|less_than_or_equal[4294967295]',
     ),
     'password_history' => 
     array (
@@ -480,25 +516,31 @@ $filter_table = array (
     array (
       'field' => 'referral_user_ID',
       'label' => 'Referral User ID',
-      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
+      'rules' => 'integer|max_length[10]|is_natural|greater_than_or_equal[0]|less_than_or_equal[4294967295]',
     ),
     'timestamp_create' => 
     array (
       'field' => 'timestamp_create',
       'label' => 'Timestamp Create',
-      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
+      'rules' => 'integer|max_length[10]|is_natural|greater_than_or_equal[0]|less_than_or_equal[4294967295]',
     ),
     'timestamp_confirm' => 
     array (
       'field' => 'timestamp_confirm',
       'label' => 'Timestamp Confirm',
-      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
+      'rules' => 'integer|max_length[10]|is_natural|greater_than_or_equal[0]|less_than_or_equal[4294967295]',
     ),
     'timestamp_update' => 
     array (
       'field' => 'timestamp_update',
       'label' => 'Timestamp Update',
-      'rules' => 'integer|max_length[11]|greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]',
+      'rules' => 'integer|max_length[10]|is_natural|greater_than_or_equal[0]|less_than_or_equal[4294967295]',
+    ),
+    'user_dob' => 
+    array (
+      'field' => 'user_dob',
+      'label' => 'User Dob',
+      'rules' => '',
     ),
   ),
 );

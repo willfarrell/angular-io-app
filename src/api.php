@@ -45,6 +45,8 @@ require_once 'php/api.billing.php';
 require_once 'php/api.contact.php';		// plugin
 
 // REST API
+//$session = new Session;
+
 $r = new Restler();
 $r->setSupportedFormats('JsonpFormat');
 //$r->setSupportedFormats('JsonFormat', 'JsFormat'); // , 'XmlFormat'

@@ -12,7 +12,7 @@ filter[_insert_filters_here_|_multi_filter_]
 
 */
 
-class filter_tools {
+class filter_tools{
 	var $debug;
     var $db;
 	var $db_array = array();
@@ -20,8 +20,7 @@ class filter_tools {
     /**
      * Constructor
      */
-    function __construct($debug = false)
-    {
+    function __construct($debug = false) {
     	global $database, $filter_function;
     	$this->debug = $debug;
 		$this->db = $database;
@@ -31,8 +30,7 @@ class filter_tools {
     /**
      * Destructor
      */
-    function __destruct()
-    {
+    function __destruct() {
     	
     }
 	

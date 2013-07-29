@@ -6,9 +6,9 @@
 	<hr>
 	
 	<div class="control-group">
-		<label class="control-label">Choose Plan</label>
+		<label class="control-label" for="plan">Choose Plan</label>
 		<div class="controls">
-			<select type="text" name="plan" data-ng-model="plan.id" required>
+			<select type="text" id="plan" name="plan" data-ng-model="plan.id" required>
 				<option value="free">$0/m Free</option>
 				<option value="beta">$250 Beta (for one year)</option>
 			</select>
@@ -35,9 +35,9 @@
 	<hr>
 	
 	<div class="control-group">
-		<label class="control-label" for="number">Card Number</label>
+		<label class="control-label" for="card-number">Card Number</label>
 		<div class="controls">
-			<input type="text" name="card-number" class="input-large" placeholder="XXXX XXXX XXXX XXXX" data-input-mask"9999 9999 9999 9999" data-ng-model="stripe['number']" required>
+			<input type="text" id="card-number" name="card-number" class="input-large" placeholder="XXXX XXXX XXXX XXXX" data-input-mask="9999 9999 9999 9999" data-ng-model="stripe['number']" required>
 		</div>
 	</div>
 	
@@ -45,7 +45,7 @@
 	<div class="control-group">
 		<label class="control-label" for="cvc">CVC Number</label>
 		<div class="controls">
-			<input type="text" name="card-cvc" class="input-mini" placeholder="NNN" data-ng-model="stripe['cvc']" required>
+			<input type="text" id="card-cvc" name="card-cvc" class="input-mini" placeholder="NNN" data-ng-model="stripe['cvc']" required>
 		</div>
 	</div>
 	
@@ -53,7 +53,7 @@
 	<div class="control-group">
 		<label class="control-label" for="exp">Expiration Date (mm/yyyy)</label>
 		<div class="controls">
-			<input type="text" class="input-mini" placeholder="MM" data-ng-model="stripe['exp-month']" required> / <input type="text" class="input-mini" placeholder="YYYY" data-ng-model="stripe['exp-year']" required>
+			<input type="text" id="exp" class="input-mini" placeholder="MM" data-ng-model="stripe['exp-month']" required> / <input type="text" class="input-mini" placeholder="YYYY" data-ng-model="stripe['exp-year']" required>
 		</div>
 	</div>
 	</div>

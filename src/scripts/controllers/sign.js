@@ -71,12 +71,7 @@ function SignCtrl($config, $rootScope, $scope, $cookies, $routeParams, $rest, $s
 		$rest.http({
 				method:'post',
 				url: $rest.server+'account/signin',
-				data: {
-					email:		$scope.signin.email,
-					password:	$scope.signin.password,
-					remember:	$scope.signin.remember
-					//ua:			navigator.userAgent.toLowerCase()
-				}
+				data: $scope.signin
 			}, function(data){
 				if (data.totp) {
 					$scope.action = 'totp';
@@ -188,9 +183,7 @@ function SignCtrl($config, $rootScope, $scope, $cookies, $routeParams, $rest, $s
 	//-- Sign Out --//
 	$scope.account_signout = function() {
 		console.log('account_signout()');
-		db.clear(); // clear localstorage
-		$rootScope.$emit('session', false);
-		$session.reset();
+		
 		if ($session.user.user_ID) {	// prevent multiple calls
 			$rest.http({
 					method:'get',
@@ -214,6 +207,10 @@ function SignCtrl($config, $rootScope, $scope, $cookies, $routeParams, $rest, $s
 		} else {
 			$rootScope.href('/sign/in');
 		}
+		
+		db.clear(); // clear localstorage
+		$rootScope.$emit('session', false);
+		$session.reset();
 	};
 	//-- End Sign Out --//
 	/*if ($routeParams.confirm_hash) {

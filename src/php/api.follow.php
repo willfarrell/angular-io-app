@@ -15,15 +15,15 @@ class Follow extends Core {
 
 	function __construct() {
 		parent::__construct();
-    }
+	}
 
-    function __destruct() {
-	    parent::__destruct();
-    }
-    
-    // search users
-    
-    function get_search($keyword = '') {
+	function __destruct() {
+		parent::__destruct();
+	}
+	
+	// search users
+	
+	function get_search($keyword = '') {
 		// Check permissions
 		if(!$this->permission->check()) {
 			return $this->permission->errorMessage();
@@ -67,8 +67,8 @@ class Follow extends Core {
 		return $return;
 	}
 	
-    // self only
-    function get_suggestions($keyword = '') {
+	// self only
+	function get_suggestions($keyword = '') {
 		// Check permissions
 		if(!$this->permission->check()) {
 			return $this->permission->errorMessage();

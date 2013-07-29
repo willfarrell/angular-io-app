@@ -141,6 +141,12 @@ $filter_function = array (
       'label' => 'New Password',
       'rules' => 'required',
     ),
+    'password' => 
+    array (
+      'field' => 'password',
+      'label' => 'Password',
+      'rules' => '',
+    ),
   ),
   'location_post' => 
   array (

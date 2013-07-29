@@ -289,7 +289,7 @@ module.exports = function(grunt) {
 					'./files/build/favicon/icon-64.png',
 					'./files/build/favicon/icon-128.png',
 					'./files/build/favicon/icon-256.png',
-					'-colors', '256', 'files/build/favicon.ico'
+					'files/build/favicon.ico'
 				]
 			},
 			// fluidicon
@@ -999,7 +999,7 @@ module.exports = function(grunt) {
 		'test',
 		
 		'build',
-		//'icon_convert',
+		//'icon_convert', // **
 		'copy:web',
 		'copy:api',
 		'phonegap'

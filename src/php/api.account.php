@@ -1,5 +1,7 @@
 <?php
 
+if (!defined("PASSWORD_RESET_LENGTH")) define("PASSWORD_RESET_LENGTH", 3600);
+
 class Account extends Core {
 	private $table = 'users';
 
@@ -162,11 +164,11 @@ class Account extends Core {
 		}
 		$request_data = $this->filter->get_request_data();
 		
-		//if ($request_data['remember'] == 'true') $remember = true;
-		//else  $remember = false;
+		// set non true values to 0
+		if ($request_data['remember'] != 1) $request_data['remember'] = 0;
 		//$this->redis->hset()
 
-		$login = $this->session->login($request_data['email'], $request_data['password'], isset($request_data['remember'])); // , $request_data['ua']
+		$login = $this->session->login($request_data['email'], $request_data['password'], $request_data['remember']); // , $request_data['ua']
 		if ($login) {
 			if ($this->session->cookie['totp_secret']) {
 				return array("totp" => true, "user_ID" => $this->session->cookie['user_ID']);
@@ -338,13 +340,15 @@ class Account extends Core {
 		$request_data = $this->filter->get_request_data();
 		
 		// reconfirm hash is still valid
-		$return = $this->reset_check_hash($request_data['hash']);
-		if (isset($return["alerts"])) return $return;
+		$alerts = $this->reset_check_hash($request_data['hash']);
+		if (isset($alerts["alerts"])) { return $alerts; }
 		
 		// check hash
 		$query = "SELECT * FROM user_reset WHERE hash = '{{hash}}' LIMIT 0,1";
 		$result = $this->db->query($query, array('hash' => $request_data['hash']));
-		if (!$result) return false; // user / pass combo not found
+		if (!$result) {
+			return false; // user / pass combo not found
+		}
 		$result = $this->db->fetch_assoc($result);
 		$user_ID = $result['user_ID'];
 		$expire_timestamp = $result['expire_timestamp'];

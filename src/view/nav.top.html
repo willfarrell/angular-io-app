@@ -1,4 +1,4 @@
-<div class="navbar navbar-fixed-top" data-ng-hide="session.user.user_ID">
+<div class="navbar navbar-fixed-top" data-ui-if="!session.user.user_ID">
 	<div class="navbar-inner">
 		<div class="container">
 			<div class="pull-left">
@@ -21,7 +21,7 @@
 		</div>
 	</div>
 </div>
-<div class="navbar navbar-fixed-top" data-ng-show="session.user.user_ID">
+<div class="navbar navbar-fixed-top" data-ui-if="session.user.user_ID">
 	<div class="navbar-inner">
 		<div class="container">
 			<div class="pull-left">
@@ -73,7 +73,7 @@
 					</ul>
 				</li>
 
-				<li class="dropdown" data-ng-show="session.user.user_level == 9">
+				<!--<li class="dropdown" data-ng-show="session.user.user_level == 9">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-wrench"></i></a>
 					<ul class="dropdown-menu">
 						<li class="nav-header">Session</li>
@@ -85,7 +85,7 @@
 						<li class="divider"></li>
 						<li class="nav-header">localStorage</li>
 					</ul>
-				</li>
+				</li>-->
 			</ul>
 		</div><!-- /container -->
 	</div>

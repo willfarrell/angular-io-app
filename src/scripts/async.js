@@ -8,6 +8,12 @@ console.group('Async Load');
 // //beacon.errorception.com/XXXXXX.js
 $script('//beacon.errorception.com/5113b3e6bedd207c2b000400.js');
 
+// Piwki
+/*
+
+$script('//server.com/script.js');
+*/
+
 // Google Analytics
 /*
 var _gaq=[
@@ -49,8 +55,8 @@ var min_js = '.min.js',
 		//Modernizr:	cdnHttp+'modernizr/2.6.2/modernizr'+min_js,
 	},
 	cdnFallbackSrc = {
-		//jQuery:cdnDir+'jquery.min.js',
-		//Bootstrap:cdnDir+'bootstrap.min.js',
+		//jQuery:	cdnDir+'jquery'+min_js,
+		//Bootstrap:cdnDir+'bootstrap'+min_js,
 		Angular:	cdnDir+'angular'+min_js
 		//Modernizr:	cdnDir+'modernizr'+min_js
 	},*/

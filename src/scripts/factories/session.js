@@ -27,6 +27,7 @@ angular.module('app.factories')
 	};
 	
 	$rootScope.$on('session', function(event, value){
+		console.log('$on.session(', event, value, ')');
 		$scope.active = (value);
 		$scope.save();
 	});

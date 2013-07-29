@@ -29,6 +29,7 @@ class Garbage extends Core {
 		$this->companies();
 	}
 	
+	// calls $this->{$fct}($ID) for each missing element of collection
 	function missing($fct, $table, $table_id) {
 		// will not catch a start = 1
 		$missing_query = "SELECT start, stop FROM (
@@ -52,7 +53,7 @@ class Garbage extends Core {
 	// clean sessions table
 	function session() {
 		echo "DELETING SESSIONS\n";
-		$this->db->query("DELETE FROM sessions WHERE (user_ID = 0 OR user_level = 0) AND timestamp < ".($_SERVER['REQUEST_TIME'] - 86400));
+		$this->db->query("DELETE FROM sessions WHERE timestamp < ".($_SERVER['REQUEST_TIME'] - SESSION_EXPIRE));
 	}
 	
 	// remove user data

@@ -1,3 +1,9 @@
+/*
+TODO
+- add referral check
+- reset password w/o signing up
+*/
+
 describe('E2E: Account Initalization', function() {
 	//var user = 'test@angualario.com',
 	//	pass = '12!@ASqwerty';
@@ -84,11 +90,7 @@ describe('E2E: Account Initalization', function() {
 			expect(browser().location().path()).toBe('/app');
 		});*/
 		
-		it('should confirm email', function() {
-			browser().navigateTo('#/settings/account');
-			
-			// confirm email - requires value from email
-		});
+		
 		
 		it('should signout', function() {
 			browser().navigateTo('#/sign/out');
@@ -96,4 +98,15 @@ describe('E2E: Account Initalization', function() {
 		});
 	});
 	
+	describe('Should reset password w/o signing in', function() {
+	
+	});
+	
+	describe('Should confirm email w/o signing in', function() {
+		it('should confirm email', function() {
+			//browser().navigateTo('#/settings/account');
+			
+			// confirm email - requires value from email
+		});
+	});
 });

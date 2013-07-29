@@ -1,14 +1,14 @@
 <VirtualHost *>
-    ServerName test.angular
+    ServerName root.angular
     DocumentRoot __DIR__
 </VirtualHost>
 
 <VirtualHost *>
-    ServerName app.angular
+    ServerName src.angular
     DocumentRoot __DIR__/src
 </VirtualHost>
 
 <VirtualHost *>
-    ServerName built.app.angular
+    ServerName app.angular
     DocumentRoot __DIR__/dist
 </VirtualHost>

@@ -22,6 +22,7 @@ class Password {
 		$this->config = json_decode(file_get_contents('json/config.password.json'), false); // object
 
 		// Dev
+		$this->console = new Console;
 		$this->timer = new Timers;
 	}
 
@@ -39,7 +40,7 @@ class Password {
 	
 	function get_errors($class = 'error') {
   		// array_walk($words, create_function('&$str', '$str = "<p>$str</p>";'));
-	  	return implode("<br>", $this->errors);
+	  	return implode("\n", $this->errors);
   	}
 	
 	function update($password, $email) {
@@ -69,7 +70,7 @@ class Password {
 		$this->timer->start('validate');
 		if ($this->length($password) && $this->charset($password)) {
 			$this->dictionary($password);
-			//$this->black_list($password); // passwords on the black list don't meet the OWASP requ, thus not needed to be run
+			$this->black_list($password); // passwords on the black list don't meet the OWASP requ, thus not needed to be run
 			
 			if ($this->getId()) {
 				$this->user_past_password($password);
@@ -77,6 +78,7 @@ class Password {
 			}
 		}
 		$this->timer->stop('validate');
+		$this->console->log($this->errors);
 		return count($this->errors) ? true : false;
 	}
 	
@@ -92,13 +94,14 @@ class Password {
 	 *	Checks if a password is long enough
 	 */
 	function length($password) {
-		$error = array();
 		$length = strlen($password);
 		
 		if ($length < $this->config->min_length) {
 			$this->errors["min_length"] = "Password too short, must be ".$this->config->min_length." or more";
+			$this->console->log("Password Length FAILED");
 			return false;
 		}
+		$this->console->log("Password Length PASSED");
 		return true;
 	}
 	
@@ -138,6 +141,7 @@ class Password {
 				}
 				if ($charset_identical) {
 					$this->errors["max_charset_identical"] = "Password cannot have ".$this->config->max_identical." or more identical characters";
+					$this->console->log("Password Charset Identical FAILED");
 					$return = false;
 				}
 			}
@@ -153,22 +157,27 @@ class Password {
 			$this->errors["min_charset_subset"] = "Password needs different types of characters";
 			if ($subsets['lower'] < $this->config->min_lower) {
 				$this->errors["min_charset_lower"] = "Password needs at least one lower case letter";
+				$this->console->log("Password Charset Uppercase Letter FAILED");
 				$return = false;
 			}
 			if ($subsets['upper'] < $this->config->min_upper) {
 				$this->errors["min_charset_upper"] = "Password needs at least one upper case letter";
+				$this->console->log("Password Charset Lowercase Letter FAILED");
 				$return = false;
 			}
 			if ($subsets['number'] < $this->config->min_number) {
 				$this->errors["min_charset_number"] = "Password needs at least one number";
+				$this->console->log("Password Charset Number FAILED");
 				$return = false;
 			}
 			if ($subsets['special'] < $this->config->min_special) {
 				$this->errors["min_charset_special"] = "Password needs an special character (!\"£$%&...)";
+				$this->console->log("Password Charset Special FAILED");
 				$return = false;
 			}
 			if ($subsets['other'] < $this->config->min_other) {
 				$this->errors["min_charset_other"] = true;
+				$this->console->log("Password Charset Other FAILED");
 				$return = false;
 			}
 		}
@@ -187,7 +196,12 @@ class Password {
 		$query = "SELECT word FROM password_dictionary"
 				." WHERE word IN (".implode(",", $words).") AND length > 2";
 		$r = $this->db->query($query);
-		if (!$r) return true;
+		if (!$r) {
+			$this->console->log("Password Dictionary PASSED");
+			return true;
+		}
+		$this->errors["dictionary"] = "Password is a dictionary word.";
+		$this->console->log("Password Dictionary FAILED");
 		return false;
 	}
 	
@@ -196,7 +210,12 @@ class Password {
 	 */
 	function black_list($password) {
 		$r = $this->db->select("password_blacklist", array("password" => $password));
-		if (!$r) return true;
+		if (!$r) {
+			$this->console->log("Password Black List PASSED");
+			return true;
+		}
+		$this->errors["black_list"] = "This password is on our password Black List.";
+		$this->console->log("Password Black List FAILED");
 		return false;
 	}
 	
@@ -204,10 +223,16 @@ class Password {
 	 *	Checks if a password has been used in the past for a user
 	 */
 	function user_past_password($password) {
-		if (!$this->getId() || !$this->getEmail()) return false;
+		if (!$this->getId() || !$this->getEmail()) {
+			$this->console->log("Password Used Already (No User ID or Email) FAILED");
+			return false;
+		}
 		
 		$r = $this->db->select("users", array("user_ID" => $this->getId()), array("password_history"));
-		if (!$r) return false;
+		if (!$r) {
+			$this->console->log("Password Used Already (No User) FAILED");
+			return false;
+		}
 		
 		$user = $this->db->fetch_assoc($r);
 		$history = explode(",", $user['password_history']);
@@ -215,10 +240,11 @@ class Password {
 		foreach ($history as $hash) {
 			if ($this->check($password, $hash, $this->getEmail())) {
 				$this->errors['user_past_password'] = "You have already used this password.  Please choose a new unique password.";
+				$this->console->log("Password Used Already FAILED");
 				return false;
 			}
 		}
-		
+		$this->console->log("Password Used Already PASSED");
 		return true;
 	}
 	
@@ -226,24 +252,36 @@ class Password {
 	 *	Checks if a password overlaps with a user inputed data
 	 */
 	function user_input_data($password) {
-		if (!$this->getId()) return false;
+		if (!$this->getId()) {
+			$this->console->log("Password Contain User Data (No User ID) FAILED");
+			return false;
+		}
 		$return = true;
 		$data = array("user_email", "user_username", "user_name_first", "user_name_last", "user_phone");
 		
-		
-		
 		$r = $this->db->select("users", array("user_ID" => $this->getId()), $data);
-		if (!$r) return false;
+		if (!$r) {
+			$this->console->log("Password Contain User Data (No User) FAILED");
+			return false;
+		}
 		
 		$user = $this->db->fetch_assoc($r);
+		$words = array();
 		foreach ($user as $key => $value) {
 			if (!strlen($value)) continue;
 			
 			if (!$this->password_similarity($password, $value)) {
-				$error["user_input_data"][$key] = true;
+				$words[] = $value;
 				$return = false;
 			}
 			
+		}
+		
+		if ($return) {
+			$this->console->log("Password Contain User Data PASSED");
+		} else {
+			$this->errors["user_input_data"] = "Too similar too ".implode(", ", $words).".";
+			$this->console->log("Password Contain User Data FAILED");
 		}
 		
 		return $return;
@@ -253,11 +291,14 @@ class Password {
 	 *	Checks the similarity of a string to the password
 	 */
 	private function password_similarity($password, $text) {
+		$return = true;
 		$str_array = preg_split("/[^a-z]/", strtolower($text));
 		
 		// string in password
 		foreach ($str_array as $str) {
-			if (strlen($str) > 2 && stripos($password, $str) === false) return false;
+			if (strlen($str) > 2 && stripos($password, $str) !== false) {
+				$return = false;
+			}
 		}
 		
 		/*
@@ -278,7 +319,7 @@ class Password {
 		if ($percent > 20) {
 			
 		}*/
-		return true;
+		return $return;
 	}
 	
 	/**

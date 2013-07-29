@@ -690,6 +690,16 @@ ServerSignature Off
 </IfModule>
 
 # ----------------------------------------------------------------------
+# Language locale fallback (en)
+# ----------------------------------------------------------------------
+
+<IfModule mod_rewrite.c>
+	RewriteCond %{REQUEST_URI} \.(json)$
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule ^i18n/.*/(.*)\.json$ i18n/en/$1.json
+</IfModule>
+
+# ----------------------------------------------------------------------
 # AngularJS locale fallback (en-us)
 # ----------------------------------------------------------------------
 

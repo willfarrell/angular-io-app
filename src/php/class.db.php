@@ -148,7 +148,7 @@ class MySQL
      */
     private function cleanArray($array)
     {
-        //print_r($array);
+        if (!is_array($array)) return array();
         $array = array_map('trim', $array);
         $array = array_map('stripslashes', $array);
         $array = array_map('mysql_real_escape_string', $array);
