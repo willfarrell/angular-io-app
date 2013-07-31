@@ -5,7 +5,7 @@ console.group('Async Load');
 
 //-- Error Detection and Tracking --//
 // http://errorception.com
-// //beacon.errorception.com/XXXXXX.js
+// '//beacon.errorception.com/XXXXXX.js'
 $script('//beacon.errorception.com/5113b3e6bedd207c2b000400.js');
 
 // Piwki
@@ -45,21 +45,16 @@ var min_js = '.min.js',
 	localSrc = {
 		Angular:	cdnDir+'angular'+min_js,
 		App:		srcDir+'app'+min_js,
+		//Bootstrap:	cdnDir+'bootstrap'+min_js,
 		Modernizr:	srcDir+'modernizr'+min_js
 	},
 // CDN
-	/*cdnSrc = {
+	cdnSrc = {
 		//jQuery:cdnHttp+'jquery/1.9.1/jquery'+min_js,
 		//Bootstrap:cdnHttp+'twitter-bootstrap/2.3.1/js/bootstrap'+min_js,
 		Angular:	cdnHttp+'angular.js/1.0.5/angular'+min_js
 		//Modernizr:	cdnHttp+'modernizr/2.6.2/modernizr'+min_js,
 	},
-	cdnFallbackSrc = {
-		//jQuery:	cdnDir+'jquery'+min_js,
-		//Bootstrap:cdnDir+'bootstrap'+min_js,
-		Angular:	cdnDir+'angular'+min_js
-		//Modernizr:	cdnDir+'modernizr'+min_js
-	},*/
 	fallbackCount = 1,
 	fallbackArray = [];
 
@@ -95,6 +90,7 @@ function hasModule(moduleName) {
 	}
 }
 
+// Check done before bootstrap
 function bootstrap() {
 	//console.log('bootstrap');
 	if (checkTypeOf([
@@ -114,12 +110,24 @@ function bootstrap() {
 		}
 }
 
+/**
+ * fallback CDN to local version
+ *
+ * @use $script.ready([], function() {}, fallback);
+ */
+function cdnFallback(depsNotFound) {
+	var i = depsNotFound.length;
+	while (i--) {
+		//console.log('cdnFallback '+depsNotFound[i]);
+		$script(localSrc[depsNotFound[i]], depsNotFound[i]);
+	}
+}
+
 function countFallback() {
 	console.log('countFallback '+fallbackCount);
 	fallbackCount--;
 	if (!fallbackCount) {
 		bootstrap();
-
 	}
 }
 
@@ -140,14 +148,6 @@ function modernizrFallback(id) {//, parent) {
 	}
 	console.groupEnd();
 }
-
-/*function cdnFallback(depsNotFound) {
-	var i = depsNotFound.length;
-	while (i--) {
-		//console.log('cdnFallback '+depsNotFound[i]);
-		$script(cdnFallbackSrc[depsNotFound[i]], depsNotFound[i]);
-	}
-}*/
 
 // js Frameworks & Libraries
 $script(localSrc.Modernizr, 'Modernizr', function() {
