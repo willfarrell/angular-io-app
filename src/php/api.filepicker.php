@@ -1,8 +1,10 @@
 <?php
 
-/*
-Do not add to this class, try to place all changes in FilepickerConfig class
-*/
+/**
+ * Do not add to this class, try to place all changes in FilepickerConfig class
+ *
+ * @access protected
+ */
 
 require_once 'php/lib.global.php'; // echoFile()
 require_once 'php/class.config.filepicker.php'; // app related routing and permissions
@@ -57,20 +59,36 @@ class Filepicker extends FilepickerConfig {
 	
 	// to do
 	// aws cors credentials
+	/**
+	 * Return CORS credentials
+	 *
+	 * @param string $action _
+	 * @param string $ID _
+	 *
+	 * @url GET cors/{action}/{ID}
+	 * @access protected
+	 */
 	function get_cors($action = '', $ID=NULL) {
 		if (!$action) $action = $this->action_default;
 		
 	}
 	
-	// to support drag and drop of url
+	/**
+	 * to support drag and drop of url *** revisit
+	 *
+	 * @param string $url URL of file to upload
+	 *
+	 * @url GET url/{url}
+	 * @access protected
+	 */
 	function get_url($url=NULL) {
 		//echo urldecode($url);
 		$ch = curl_init( urldecode($url) );
   
-		if ( strtolower($_SERVER['REQUEST_METHOD']) == 'post' ) {
+		/*if ( strtolower($_SERVER['REQUEST_METHOD']) == 'post' ) {
 		    curl_setopt( $ch, CURLOPT_POST, true );
 		    curl_setopt( $ch, CURLOPT_POSTFIELDS, $_POST );
-		}
+		}*/
 		  
 		/*if ( $_GET['send_cookies'] ) {
 		    $cookie = array();
@@ -110,6 +128,15 @@ class Filepicker extends FilepickerConfig {
 	}
 	
 	//-- View / Download --//
+	/**
+	 * List file(s)
+	 *
+	 * @param string $action _
+	 * @param string $ID _
+	 *
+	 * @url GET list/{action}/{ID}
+	 * @access protected
+	 */
 	function get_list($action = '', $ID=NULL) {
 		if (!$action) $action = $this->action_default;
 		$path = $this->makePath($action, $ID);
@@ -123,6 +150,17 @@ class Filepicker extends FilepickerConfig {
 	}
 	
 	// do not call from inside angularjs - call as a href
+	/**
+	 * Download file(s)
+	 *
+	 * @param string $action _
+	 * @param string $ID _
+	 * @param string $file File name
+	 *
+	 * @url GET download/{action}/{ID}
+	 * @url GET download/{action}/{ID}/{file}
+	 * @access protected
+	 */
 	function get_download($action = '', $ID = NULL, $file=NULL) {//$request_data=NULL) {
 		if (!$action) $action = $this->action_default;
 		$path = $this->makePath($action, $ID);

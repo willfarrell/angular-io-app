@@ -14,7 +14,7 @@ function UserCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 
 	$scope.loadUser = function(profile_ID) {
 		console.log('loadUser(', profile_ID, ')');
-		profile_ID = profile_ID || 0;
+		profile_ID = profile_ID || $rootScope.session.user.user_ID;
 
 		$rest.http({
 				method:'get',
@@ -22,24 +22,10 @@ function UserCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 			}, function(data){
 				$scope.user = data;
 			});
-
-		/*$http.get('/user/'+profile_ID)
-			.success(function(data) {
-				console.log('loadUser.get.success');
-				if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
-					$scope.user = data;
-				} else {
-					$scope.errors.user	= (data.errors) ? data.errors : {};
-				}
-			})
-			.error(function() {
-				console.log('loadUser.get.error');
-				$rootScope.http_error();
-			});*/
 	};
 	$scope.loadUserName = function(profile_name) {
 		console.log('loadUserName(', profile_name, ')');
-		profile_name = profile_name || '';
+		profile_name = profile_name || $rootScope.session.user.user_username;
 
 		$rest.http({
 				method:'get',
@@ -47,20 +33,6 @@ function UserCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 			}, function(data){
 				$scope.user = data;
 			});
-
-		/*$http.get('/user/name/'+profile_name)
-			.success(function(data) {
-				console.log('loadUser.get.success');
-				if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
-					$scope.user = data;
-				} else {
-					$scope.errors.user	= (data.errors) ? data.errors : {};
-				}
-			})
-			.error(function() {
-				console.log('loadUser.get.error');
-				$rootScope.http_error();
-			});*/
 	};
 
 	$scope.updateUser = function(callback) {
@@ -77,21 +49,6 @@ function UserCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 					$rootScope.alerts = [{'class':'success', 'label':'User Information:', 'message':'Saved'}];
 					if (callback) { callback(); }
 				});
-			/*$http.put('/user/', $scope.user)
-				.success(function(data) {
-					console.log('updateUser.put.success');
-					if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
-						$rootScope.updateSession();
-						console.log($session);
-						$rootScope.alerts = [{'class':'success', 'label':'User Information:', 'message':'Saved'}];
-					} else {
-						$scope.errors.user	= (data.errors) ? data.errors : {};
-					}
-				})
-				.error(function() {
-					console.log('updateUser.put.error');
-					$rootScope.http_error();
-				});*/
 		} else {	// create
 			/*
 			//$scope.user.user_ID = data;
@@ -131,17 +88,6 @@ function UserCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 				}/*, function(data){
 					// do nothing with return, auto handeled with errors
 				}*/);
-
-			/*$http.get('/account/unique/'+encodeURIComponent(user_username))
-				.success(function(data) {
-					if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
-					} else {
-						$scope.errors.user= (data.errors) ? data.errors : {};
-					}
-				})
-				.error(function() {
-					$rootScope.http_error();
-				});*/
 		} else {
 			/*
 			add in positive indicator
@@ -161,20 +107,6 @@ function UserCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 				$session.update();
 				$rootScope.alerts = [{'class':'success', 'label':'Change Email:', 'message':'Saved'}];
 			});
-
-		/*$http.put('/account/email_change/', $scope.email)
-			.success(function(data) {
-				if ($rootScope.checkHTTPReturn(data, {'errors':true})) {
-					$scope.email = {};
-					$rootScope.updateSession();
-					$rootScope.alerts = [{'class':'success', 'label':'Change Email:', 'message':'Saved'}];
-				} else {
-					$scope.errors.email		= (data.errors) ? data.errors : {};
-				}
-			})
-			.error(function() {
-				$rootScope.http_error();
-			});*/
 	};
 
 	$session.require_signin(function(){

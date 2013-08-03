@@ -2,9 +2,8 @@
 
 /**
  * Permissions Manager
- * AboutClass
  *
- * PHP Version 5.5
+ * PHP Version 5.4
  *
  * @category  N/A
  * @package   N/A
@@ -53,8 +52,7 @@ class Permission
 	/**
 	 * Constructor
 	 */
-	function __construct()
-	{
+	function __construct() {
 		global $database, $permission_tests;
 		$this->db = $database;
 		
@@ -65,8 +63,7 @@ class Permission
 	/**
 	 * Destructor
 	 */
-	function __destruct()
-	{
+	function __destruct() {
 		
 	}
 	
@@ -100,10 +97,15 @@ class Permission
 		return $label;
 	}
 	
+	// DELETE replced with 400 Error code via Auth
+	function getSignout() {
+		return $this->signout;
+	}
 	function errorMessage() {
 		
 		if ($this->signout) {
 			$return["session"] = "signout";
+			//throw new RestException(400, 'Session Expired');
 		} else {
 			$return = array(
 				"alerts" => array(
@@ -120,23 +122,29 @@ class Permission
 	
 	/**
 	 * 
-	 * check
+	 * check - from in called function
 	 *
 	 * @param array $args array of params to be used in tests
 	 *
 	 * @return true
 	 * @aceess puiblic
 	 */
-	function check($args = NULL) {
-		$allowed = true;
+	function check($args = NULL, $className = '', $methodName = '') {
+		$allowed = TRUE;
 		
-		// trace source
-		$trace = debug_backtrace();
-		if (!isset($trace[1])) return $allowed;	// trace failed
+		if (!$className || !$methodName) {
+			// trace source
+			$trace = debug_backtrace();
+			if (!isset($trace[1])) return FALSE;	// trace failed
+			
+			$source = strtolower("{$trace[1]['class']}_{$trace[1]['function']}");
+		} else {
+			$source = strtolower("{$className}_{$methodName}");
+		}
 		
-		$source = strtolower("{$trace[1]['class']}_{$trace[1]['function']}");
 		if ($args == NULL) {
-			$args = $trace[1]['args'];
+			$args = array();
+			if (isset($trace)) $args = $trace[1]['args'];
 			// $args = func_get_args();
 		}
 		
@@ -146,13 +154,17 @@ class Permission
 		$tests = explode("|", $this->tests[$source]);
 		if ($tests[0]) {
 			foreach($tests as $test_str) {
-				preg_match("/([\w-]*)\[?([^\[\]]*)\]?/", $test_str, $matches);
-						
-				$test = $matches[1];
+				preg_match("/(!?)([\w-]*)\[?([^\[\]]*)\]?/", $test_str, $matches);
+				
+				$test = $matches[2];
 				$params = explode(",", $matches[2]);
 				
 				if (method_exists($this, $test)) {
-					$allowed = ($allowed && $this->{$test}($args, $params));
+					$test_return = $this->{$test}($args, $params);
+					if ($matches[1] == '!') {
+						$test_return != $test_return;
+					}
+					$allowed = ($allowed && $test_return);
 				}
 			}
 		}

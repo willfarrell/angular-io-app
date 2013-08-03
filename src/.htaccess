@@ -430,17 +430,17 @@ RewriteRule ^.*$ http%{ENV:https}://%{SERVER_NAME}%{REQUEST_URI} [L,R=301]
 
 
 # ----------------------------------------------------------------------
-# SSL Setup - Best config as of 21 Mar 2013
+# SSL Setup - Best config as of 01 Aug 2013
 # ----------------------------------------------------------------------
 
+# Documentation at https://httpd.apache.org/docs/2.2/mod/mod_ssl.html
 # Check settings at ssllabs.com. A rating of A is the minimum a site should have.
 
-# SSLEngine on
-# SSLProtocol -ALL +SSLv3 +TLSv1 +TLSv1.1 +TLSv1.2
-# SSLHonorCipherOrder On
-# SSLCipherSuite ECDHE-RSA-AES128-SHA256:AES128-GCM-SHA256:RC4:HIGH:!MD5:!aNULL:!EDH
-# SSLCompression off
-
+#SSLEngine ON
+#SSLProtocol ALL +SSLv2
+#SSLHonorCipherOrder ON
+#SSLCipherSuite ECDHE-RSA-AES128-SHA256:AES128-GCM-SHA256:RC4:HIGH:!MD5:!aNULL:!EDH
+#SSLCompression OFF
 
 # ----------------------------------------------------------------------
 # Prevent 404 errors for non-existing redirected folders
@@ -575,7 +575,7 @@ AddCharset utf-8 .atom .css .js .json .rss .vtt .xml
 # Custom
 # ----------------------------------------------------------------------
 
-#Gzip
+# Gzip
 <ifmodule mod_deflate.c>
 	AddOutputFilterByType DEFLATE text/text text/html text/plain text/xml text/css application/x-javascript application/javascript text/javascript
 </ifmodule>
@@ -595,7 +595,7 @@ Header set Connection keep-alive
 #http://viralpatel.net/blogs/2009/02/compress-php-css-js-javascript-optimize-website-performance.html
 
 # ----------------------------------------------------------------------
-# Security Headers
+# Headers
 # ----------------------------------------------------------------------
 
 ServerSignature Off
@@ -603,10 +603,8 @@ ServerSignature Off
 #SecServerSignature "Microsoft-IIS/5.0" # causes 500 error
 
 <IfModule mod_headers.c>
+	
 	# HSTS
-	#SSLHonorCipherOrder On
-	#SSLCipherSuite ECDHE-RSA-AES128-SHA256:AES128-GCM-SHA256:RC4:HIGH:!MD5:!aNULL:!EDH
-	#SSLProtocol all -SSLv2
 	Header set Strict-Transport-Security "max-age=31536000; includeSubDomains"
 	
 	# Turn on IE8-IE9 XSS prevention tools
@@ -668,12 +666,12 @@ ServerSignature Off
 	RewriteCond %{REQUEST_URI} !(^api\.php|\.(gif|jpe?g|png|svg|svgz|ico|webp|ttf|woff|ttf|css|js|json|txt|xml|htm|html))$
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteRule . api.php [L]
+	RewriteRule . php.index.php [L]
 </IfModule>
 
 # Force filepicker to api - filenames in urls can cause routing issues
 <IfModule mod_rewrite.c>
-	RewriteRule ^filepicker/ api.php [L]
+	RewriteRule ^filepicker/ php.index.php [L]
 </IfModule>
 
 

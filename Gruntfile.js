@@ -17,7 +17,9 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON('package.json'),
 		bowerrc: grunt.file.readJSON('.bowerrc'),
 		jshintrc: grunt.file.readJSON('.jshintrc'),
-		watch: {
+		
+		//!-- Compiling --//
+		/*watch: {
 			coffee: {
 				files: ['<%= yeoman.app %>/scripts/*.coffee'],
 				tasks: ['coffee:dist']
@@ -40,10 +42,10 @@ module.exports = function(grunt) {
 				tasks: ['livereload']
 			},
 			karma: {
-				files: ['<%= yeoman.app %>/scripts/*.js', 'test/**/*.js'],
+				files: ['<%= yeoman.app %>/scripts/*.js', 'test/** /*.js'],
 				tasks: ['karma:unit:run']
 			}
-		},
+		},*/
 		/*connect: {
 			options: {
 				port: 9000
@@ -84,14 +86,7 @@ module.exports = function(grunt) {
 				url: 'http://localhost:<%= connect.options.port %>'
 			}
 		},
-		mocha: {
-			all: {
-				options: {
-					run: true,
-					urls: ['http://localhost:<%= connect.options.port %>/index.html']
-				}
-			}
-		},
+		
 		coffee: {
 			dist: {
 				files: {
@@ -125,7 +120,7 @@ module.exports = function(grunt) {
 			}
 		},*/
 		less: {
-			dev: {
+			setup: {
 				options: {
 					paths: ['<%= yeoman.app %>/styles/less/']
 				},
@@ -134,6 +129,8 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+		
+		//!-- Testing --//
 		karma: {
 			unit: {
 				options: {
@@ -151,6 +148,25 @@ module.exports = function(grunt) {
 				singleRun: false
 			}
 		},
+		/*mocha: {
+			all: {
+				options: {
+					run: true,
+					urls: ['http://localhost:<%= connect.options.port %>/index.html']
+				}
+			}
+		},*/
+		mochaTest: {
+			all: {
+				options: {
+					reporter: 'spec'
+					//globals: ['url']
+				},
+				src: ['test/api/account.js','!test/api/contact.js']
+			}
+		},
+		
+		//!-- Linting --//
 		clean: {
 			dist: ['.tmp', '<%= yeoman.dist %>/*'],
 			deploy: ['<%= yeoman.web %>', '<%= yeoman.api %>'],
@@ -206,6 +222,8 @@ module.exports = function(grunt) {
 				standard: 'Zend'
 			}
 		},
+		
+		//!-- Building Dist --//
 		// not used since Uglify task does concat,
 		// but still available if needed
 		/*concat: {
@@ -481,6 +499,34 @@ module.exports = function(grunt) {
 			}
 		},
 		copy: {
+			setup: {
+				files: [
+					// testing libs
+					{
+						src: '<%= bowerrc.directory %>/angular/angular.js',
+						dest: 'test/lib/angular.js'
+					},
+					{
+						src: '<%= bowerrc.directory %>/angular-mocks/angular-mocks.js',
+						dest: 'test/lib/angular-mocks.js'
+					},
+
+					// component files
+					{
+						expand: true,
+						flatten: true,
+						src: '<%= bowerrc.directory %>/open-dyslexic/**/*.{otf,eot,woff,ttf,svg}',
+						dest: '<%= yeoman.app %>/font/'
+					},
+					{
+						expand: true,
+						flatten: true,
+						src: '<%= bowerrc.directory %>/font-awesome/*.{otf,eot,woff,ttf,svg}',
+						dest: '<%= yeoman.app %>/font/'
+					}
+
+				]
+			},
 			dist: {
 				files: [
 					{
@@ -929,9 +975,16 @@ module.exports = function(grunt) {
 			done(code === 0);
 		});
 	});
-
+	
+	grunt.registerTask('setup', [
+		'copy:setup',
+		'less:setup',
+	]);
+	grunt.registerTask('update', ['setup']);
+	
 	grunt.registerTask('test', [
 		'lint',
+		'mochaTest:all',
 		'karma:unit',
 		'karma:e2e'
 	]);
@@ -999,7 +1052,7 @@ module.exports = function(grunt) {
 		'test',
 		
 		'build',
-		//'icon_convert', // **
+		'icon_convert',
 		'copy:web',
 		'copy:api',
 		'phonegap'
@@ -1047,8 +1100,7 @@ module.exports = function(grunt) {
 		//'htmllint',	// not the best for angular
 		//'csslint',
 		//'replace:jslint',
-		'jshint'
-		// PHP
+		'jshint',
 		//'phpcs'
 	]);
 

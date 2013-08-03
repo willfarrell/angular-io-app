@@ -56,15 +56,18 @@ module.exports = function(config) {
 			'karma-jasmine',
 			'karma-ng-scenario',
 			'karma-qunit',
+			
+			'karma-junit-reporter',
+			
 			'karma-chrome-launcher',
 			'karma-firefox-launcher',
-			//'karma-ie-launcher',
-			//'karma-opera-launcher',
+			//'karma-ie-launcher', // doesn't exist
+			//'karma-opera-launcher', // doesn't exist
 			'karma-phantomjs-launcher',
-			'karma-script-launcher',
-			//'karma-safari-launcher',
+			'karma-safari-launcher',
+			'karma-browserstack-launcher',
 			'karma-sauce-launcher',
-			'karma-junit-reporter'
+			'karma-script-launcher'
 		]
 	});
 };

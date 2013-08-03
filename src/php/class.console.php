@@ -1,29 +1,55 @@
 <?php
 
-/*
+/**
+ * Console - Debugging class
+ *
+ * FirePHP: http://www.firephp.org/
+ * - Chrome Extension: https://chrome.google.com/webstore/detail/firephp4chrome/gpgbmonepdpnacijbbdijfbecmgoojma
+ *
+ * ChromeLogger: chromelogger.com
+ * - Chrome Extension: https://chrome.google.com/webstore/detail/chrome-logger/noaneddfkdjfnfdakjjmocngnfkfehhd
+ *
+ * Use Case:
+ * $this->console->log("data");
+ * $this->console->info("data", 34);
+ * $this->console->warn("data", 34, [1,2,3,4]);
+ * $this->console->error("data");
+ *
+ */
 
-$this->console->log("data");
-$this->console->warn("data", 34, [1,2,3,4]);
-$this->console->error("data");
-*/
-
-require_once 'php/FirePHPCore/FirePHP.class.php';	// FirePHP debugging tool
-//require_once 'ChromePhp/ChromePhp.php';	// ChromeLogger Extension Required
+require_once 'php/vendor/firephp/firephp-core/lib/FirePHPCore/FirePHP.class.php';
+require_once 'php/vendor/ccampbell/chromephp/ChromePhp.php';
 
 if(!defined("CONSOLE_FILE"))		define("CONSOLE_FILE", FALSE);
 if(!defined("CONSOLE_FIREPHP"))		define("CONSOLE_FIREPHP", FALSE);
-if(!defined("CONSOLE_CHROMEPHP"))	define("CONSOLE_CHROMEPHP", FALSE);
+if(!defined("CONSOLE_CHROMELOGGER"))define("CONSOLE_CHROMELOGGER", FALSE);
 
 class Console {
+	/**
+	 * Collenction of console outputs
+	 *
+	 * @var array()
+	 */
+	private $_items = array();
 	
-	var $items = array();
-	var $FirePHP;
-	var $ChromePHP;
+	/**
+	 * FirePHP Object from returning debugging to the browser
+	 *
+	 * @var object
+	 */
+	private $FirePHP;
+	
+	/**
+	 * ChromeLogger Object from returning debugging to the browser
+	 *
+	 * @var object
+	 */
+	private $ChromeLogger;
 	
 	function __construct() {
 		// FirePHP - chrome plugin
 		if (CONSOLE_FIREPHP) $this->FirePHP = FirePHP::getInstance(true);
-		//if (CONSOLE_CHROMEPHP) $this->ChromePHP = ChromePHP::getInstance(true); // todo
+		//if (CONSOLE_ChromeLogger) $this->ChromeLogger = ChromeLogger::getInstance(true); // todo
 	}
 
 	function __destruct() {
@@ -44,24 +70,26 @@ class Console {
 	}
 	
 	private function add($type, $args) {
-		$this->items[] = array(
+		if (!in_array($type, array("log", "info", "warn", "error"))) { $type = "log"; }
+		
+		$this->_items[] = array(
 			"source" => $this->getSource(),
 			"type" => $type,
 			"data" => array()
 		);
 		foreach ($args as $item) {
 			$data = is_array($item) ? json_encode($item): (string)$item;
-			$this->items[count($this->items)-1]['data'][] = $data;
+			$this->_items[count($this->_items)-1]['data'][] = $data;
 			
 			// Browser Extensions
 			if (CONSOLE_FIREPHP) {
 				try {
-					$this->FirePHP->fb($data, FirePHP::INFO);
+					$this->FirePHP->{$type}($data);
 				} catch (Exception $e) {}
 			}
-			if (CONSOLE_CHROMEPHP) {
+			if (CONSOLE_ChromeLogger) {
 				try {
-					//$this->ChromePHP->fb($data, FirePHP::INFO); // todo
+					$this->ChromeLogger->{$type}($data);
 				} catch (Exception $e) {}
 			}
 		}
@@ -90,7 +118,7 @@ class Console {
 	private function format() {
 		$str = "";
 		$count = 1;
-		foreach ($this->items as $item) {
+		foreach ($this->_items as $item) {
 			$str .= ($count++).". ";
 			
 			switch ($item['type']) {

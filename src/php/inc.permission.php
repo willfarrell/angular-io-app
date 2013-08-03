@@ -5,9 +5,11 @@ This file is updated automatically as your applications is run.
 $permission_tests = array (
   'account_delete' => 'user_ID',
   'account_get_onboard_done' => 'user_ID',
+  'account_get_regen' => '',
   'account_get_session' => 'user_ID',
-  'account_post_signin' => '',
-  'account_post_signup' => '',
+  'account_get_signcheck' => '',
+  'account_post_signin' => '!user_ID',
+  'account_post_signup' => '!user_ID',
   'account_put_email_change' => 'user_ID',
   'account_put_password_change' => '',
   'company_get' => '',
@@ -35,6 +37,7 @@ $permission_tests = array (
   'message_get_list' => 'user_ID',
   'message_post' => 'user_ID',
   'message_unread' => 'user_ID',
+  'totp_getcode' => '',
   'user_get' => '',
   'user_get_notify' => 'user_ID',
   'user_get_security' => 'user_ID',
@@ -42,5 +45,7 @@ $permission_tests = array (
   'user_put_notify' => 'user_ID',
   'user_put_pgp' => 'user_ID',
   'user_search' => '',
+  'user_totpcheck' => 'user_ID',
+  'user_totpsecret' => 'user_ID',
 );
 ?>

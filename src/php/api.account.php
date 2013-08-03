@@ -1,10 +1,18 @@
 <?php
+/**
+ * Handle core Account level operations
+ */
+
+require_once 'php/class.session.php';
+require_once 'php/class.totp.php';
 
 if (!defined("PASSWORD_RESET_LENGTH")) define("PASSWORD_RESET_LENGTH", 3600);
 
 class Account extends Core {
-	private $table = 'users';
-
+	
+	/**
+	 * Constructs a Account object.
+	 */
 	function __construct() {
 		global $session;
 		parent::__construct();
@@ -12,22 +20,45 @@ class Account extends Core {
 		$this->session = $session;
 		$this->password = new Password;
 	}
-
+	
+	/**
+	 * Destructs a Account object.
+	 *
+	 * @return void
+	 */
 	function __destruct() {
 		parent::__destruct();
 	}
 	
-	// check if still signned in
+	/**
+	 * check if still signned in
+	 *
+	 * @url GET signcheck
+	 * @access public
+	 */
 	function get_signcheck() {
 		return USER_ID;
 	}
 
-	// change session ID
+	/**
+	 * change session ID
+	 *
+	 * @retrurn bool
+	 *
+	 * @url GET regen
+	 * @access public
+	 */
 	function get_regen() {
-		$this->session->update_id(true);
+		$this->session->regen_id(true);
+		return TRUE;
 	}
-	
-	// don't upgrade with global vars, use $this->session->cookie
+
+	/**
+	 * don't upgrade with global vars, use $this->session->cookie
+	 *
+	 * @url GET session
+	 * @access protected
+	 */
 	function get_session() {		
 		$return = array();
 		
@@ -78,14 +109,14 @@ class Account extends Core {
 	}
 	
 	/**
-     * 
-     * Check if a user_username is unique
-     *
-     * @param string $value query string
-     *
-     * @return true
-     * @aceess puiblic
-     */
+	 * Check if a user_username is unique
+	 *
+	 * @param string $value query string
+	 * @return array
+	 * 
+	 * @url GET unique/{value}
+	 * @aceess public
+	 */
 	function get_unique($value=NULL) {	// $type=NULL,
 		// for user_username only
 
@@ -95,8 +126,18 @@ class Account extends Core {
 			$return["errors"]["user_username"] = "Not unique";
 			return $return;
 		}
+		return TRUE;
 	}
 	
+	/**
+	 * Sign Up
+	 *
+	 * @param array $request_data POST data
+	 * @return array
+	 * 
+	 * @url POST signup
+	 * @aceess public
+	 */
 	function post_signup($request_data=NULL) {
 		$return = array();
 
@@ -120,13 +161,13 @@ class Account extends Core {
 			"user_email"   		  => $request_data["email"],
 			"user_level"		  => 9,
 			//"user_username"   		  => $request_data["user_username"],
-			"password"     		  => $password_hash,
-			"password_history"    => $password_hash,
+			"password"	 		  => $password_hash,
+			"password_history"	=> $password_hash,
 			'password_timestamp'  => $_SERVER['REQUEST_TIME'],
-			'referral_user_ID'    => $referral_user_ID,
+			'referral_user_ID'	=> $referral_user_ID,
 			//'timestamp_confirm'   => 0,
-			//'timestamp_create'    => $_SERVER['REQUEST_TIME'],
-			//'timestamp_update'    => $_SERVER['REQUEST_TIME'],
+			//'timestamp_create'	=> $_SERVER['REQUEST_TIME'],
+			//'timestamp_update'	=> $_SERVER['REQUEST_TIME'],
 		);
 		$user_ID = $this->db->insert('users', $user);
 		
@@ -140,9 +181,17 @@ class Account extends Core {
 		
 		//$return = array("alerts" => array(array('class' => 'success', 'label' => 'Account created!', 'message' => 'Check your email for an activation link.')));
 		
-		return $return;
+		return TRUE;
 	}
 	
+	/**
+	 * Resend confirmation email
+	 *
+	 * @return NULL
+	 * 
+	 * @url GET resend_confirm_email
+	 * @aceess protected
+	 */
 	function resend_confirm_email() {
 		$hash = substr(hash("sha512", USER_EMAIL.$_SERVER['REQUEST_TIME']), 0, 16);
 		
@@ -152,7 +201,15 @@ class Account extends Core {
 		$this->notify->send(USER_ID, 'signup_confirm_email', array("hash" => $hash), "email");
 	}
 
-	//
+	/**
+	 * Sign In
+	 *
+	 * @param array $request_data POST data
+	 * @return array
+	 * 
+	 * @url POST signin
+	 * @aceess public
+	 */
 	function post_signin($request_data=NULL) {
 		$return = array();
 
@@ -180,13 +237,63 @@ class Account extends Core {
 		$return["errors"]['password'] = "Sign in information invalid.";
 		return $return;
 	}
-
-	// /profile/hello/$id
+	
+	/**
+	 * check token based on service
+	 *
+	 * @param string $code Hash code
+	 * @return array
+	 * 
+	 * @url PUT totp/{code}
+	 * @aceess public
+	 */
+	function totpVerify($code='') {
+		$checkResult = false;
+		$totp = new TOTP;
+		
+		$service = 'google';
+		switch ($service) {
+			case 'google':
+				$checkResult = $totp->verifyCode(TOTP_SECRET, $code, 2);
+				break;
+			case 'authy':
+				
+				break;
+		}
+		
+		
+		if ($checkResult) {
+			return $this->get_session();
+		}
+	}
+	
+	//!-- Two Factor Authentication --//
+	// to build
+	
+	/**
+	 * Sign Out
+	 * 
+	 * @return bool
+	 *
+	 * @url GET signout
+	 * @aceess public
+	 */
 	function signout() {
 		$this->session->logout();
+		return TRUE;
 	}
 
-	//-- Confirm email address --//
+	/**
+	 * 
+	 * confirm email address from hash provided in email
+	 * send to user from `signup`, `resend_confirm_email`
+	 *
+	 * @param string $hash email hash
+	 * @return array
+	 * 
+	 * @url GET confirm_email/{hash}
+	 * @aceess public
+	 */
 	function confirm_email($hash=NULL) {
 		$return = array();
 
@@ -207,32 +314,21 @@ class Account extends Core {
 		return $return;
 	}
 	
-	// check token based on service
-	function put_totp($code='') {
-		$checkResult = false;
-		$totp = new TOTP;
-		
-		$service = 'google';
-		switch ($service) {
-			case 'google':
-				$checkResult = $totp->verifyCode(TOTP_SECRET, $code, 2);
-				break;
-			case 'authy':
-				
-				break;
-		}
-		
-		
-		if ($checkResult) {
-			return $this->get_session();
-		}
-	}
 	
+	
+	/**
+	 * change onboard bit in DB to complete
+	 *
+	 * @return bool
+	 * 
+	 * @url GET onboard_done
+	 * @aceess public
+	 */
 	function get_onboard_done() {
 		// Check permissions
-		if(!$this->permission->check()) {
+		/*if(!$this->permission->check()) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$this->db->update(
 			'users',
@@ -243,16 +339,22 @@ class Account extends Core {
 			array('user_ID' => USER_ID)
 		);
 		$this->session->update();
+		
+		return TRUE;
 	}
 	
-	//!-- Two Factor Authentication --//
-	// to build
-
-	//!-- One Time Passes --//
-	// to build
+	
 
 	//!-- Forgot password process --//
-	// Reset Step 1 - Send email to start process
+	/**
+	 * Reset Step 1 - Send email to start process
+	 *
+	 * @param string $email Email to reset password
+	 * @return array
+	 * 
+	 * @url GET reset_send
+	 * @aceess public
+	 */
 	function reset_send($email=NULL) {
 		$return = array();
 
@@ -283,11 +385,17 @@ class Account extends Core {
 		return $return;
 	}
 
-	// Reset Step 2 - Confirm request still valid
+	/**
+	 * Reset Step 2 - Confirm request still valid
+	 *
+	 * @param string $hash Hash from email sent
+	 * @return array
+	 * 
+	 * @url GET reset_check
+	 * @aceess public
+	 */
 	function reset_check($hash=NULL) {
 		$return = array();
-		
-		
 		
 		$return = $this->reset_check_hash($hash);
 		if (isset($return["alerts"])) return $return;
@@ -297,6 +405,7 @@ class Account extends Core {
 		// else return true
 		return $return;
 	}
+	
 	
 	private function reset_check_hash($hash=NULL) {
 		$return = array();
@@ -318,17 +427,32 @@ class Account extends Core {
 		return $return;
 	}
 
-	// Reset Step 3 - Confirm identity (2-step verification)
+	/**
+	 * Reset Step 3 - Confirm identity (2-step verification)
+	 *
+	 * @param array $request_data PUT data
+	 * @return array
+	 * 
+	 * @url PUT reset_verify
+	 * @aceess public
+	 */
 	function put_reset_verify($request_data=NULL) {
 		$return = array();
 		
 		//$reset_check = $this->reset_check($request_data['hash']);
 		//if (is_array($reset_check)) return $reset_check;
-
+		return $return;
 	}
 
-
-	// Reset Step 4 - Update password | Change password
+	/**
+	 * Reset Step 4 - Update password | Change password
+	 *
+	 * @param array $request_data PUT data
+	 * @return array
+	 * 
+	 * @url PUT reset_password
+	 * @aceess public
+	 */
 	function put_reset_password($request_data=NULL) {
 		$return = array();
 		
@@ -385,14 +509,23 @@ class Account extends Core {
 		return $return;
 	}
 	//-- End Forgot password process --//
-
+	
+	/**
+	 * Change password
+	 *
+	 * @param array $request_data PUT data
+	 * @return array
+	 * 
+	 * @url PUT password_change
+	 * @aceess public
+	 */
 	function put_password_change($request_data=NULL) {
 		$return = array();
 		
 		// Check permissions
-		if(!$this->permission->check($request_data)) {
+		/*if(!$this->permission->check($request_data)) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$user_ID = USER_ID;
 		
@@ -432,14 +565,23 @@ class Account extends Core {
 
 		return $return;
 	}
-
+	
+	/**
+	 * Change email
+	 *
+	 * @param array $request_data PUT data
+	 * @return array
+	 * 
+	 * @url PUT email_change
+	 * @aceess public
+	 */
 	function put_email_change($request_data=NULL) {
 		$return = array();
 		
 		// Check permissions
-		if(!$this->permission->check($request_data)) {
+		/*if(!$this->permission->check($request_data)) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$email = $request_data["user_email"];
 
@@ -477,19 +619,25 @@ class Account extends Core {
 
 		return $return;
 	}
-
-
+	
+	/**
+	 * Delete own account
+	 *
+	 * @return bool
+	 *
+	 * @url DELETE
+	 * @url GET delete
+	 * @access protected
+	 */
 	function delete() {
-		// Check permissions
-		if(!$this->permission->check()) {
-			return $this->permission->errorMessage();
-		};
 		
 		$this->db->delete('users',
 			array('user_ID' => USER_ID)
 		);
 		
 		//** add in hooks to delete entire footprint
+		
+		return TRUE;
 	}
 
 }

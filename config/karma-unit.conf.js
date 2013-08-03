@@ -27,7 +27,8 @@ module.exports = function(config) {
 			'src/scripts/**/*.js',
 			'src/components/angular-io/src/scripts/**/*.js',
 			
-			'test/unit/**/*.js'
+			//'test/unit/**/*.js'
+			'test/unit/**/api*.js'
 		],
 		
 		// list of files to exclude

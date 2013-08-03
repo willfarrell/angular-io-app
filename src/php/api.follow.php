@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @access protected
+ */
+ 
 /*
 
 GET 	/follow/user/1/__groups__ // make post?
@@ -25,9 +29,9 @@ class Follow extends Core {
 	
 	function get_search($keyword = '') {
 		// Check permissions
-		if(!$this->permission->check()) {
+		/*if(!$this->permission->check()) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$return = array();
 		
@@ -70,9 +74,9 @@ class Follow extends Core {
 	// self only
 	function get_suggestions($keyword = '') {
 		// Check permissions
-		if(!$this->permission->check()) {
+		/*if(!$this->permission->check()) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$return = array();
 		
@@ -122,9 +126,9 @@ class Follow extends Core {
 	
 	function get_referral() {
 		// Check permissions
-		if(!$this->permission->check()) {
+		/*if(!$this->permission->check()) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$return = array();
 		
@@ -148,9 +152,9 @@ class Follow extends Core {
 	
 	function get_referrals() {
 		// Check permissions
-		if(!$this->permission->check()) {
+		/*if(!$this->permission->check()) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 
 		$return = array();
 		
@@ -179,9 +183,9 @@ class Follow extends Core {
 		if (!$user_ID) $user_ID = USER_ID;
 		
 		// Check permissions
-		if(!$this->permission->check(array("user_ID" => $user_ID, "company_ID" => $company_ID))) {
+		/*if(!$this->permission->check(array("user_ID" => $user_ID, "company_ID" => $company_ID))) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$return = array();
 
@@ -213,9 +217,9 @@ class Follow extends Core {
 		if (!$user_ID) $user_ID = USER_ID;
 		
 		// Check permissions
-		if(!$this->permission->check(array("user_ID" => $user_ID, "company_ID" => $company_ID))) {
+		/*if(!$this->permission->check(array("user_ID" => $user_ID, "company_ID" => $company_ID))) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$return = array();
 		
@@ -246,9 +250,9 @@ class Follow extends Core {
 		if (!$user_ID) $user_ID = USER_ID;
 		
 		// Check permissions
-		if(!$this->permission->check(array("user_ID" => $user_ID, "company_ID" => $company_ID))) {
+		/*if(!$this->permission->check(array("user_ID" => $user_ID, "company_ID" => $company_ID))) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$return = array();
 		
@@ -280,9 +284,9 @@ class Follow extends Core {
 		$return = array();
 		
 		// Check permissions
-		if(!$this->permission->check(array("group_ID" => $group_ID))) {
+		/*if(!$this->permission->check(array("group_ID" => $group_ID))) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$db_where = array('user_ID' => USER_ID);
 		if ($group_ID != '') {
@@ -305,9 +309,9 @@ class Follow extends Core {
 	// make group
 	function post_group($request_data=NULL) { // $type='user'
 		// Check permissions
-		if(!$this->permission->check($request_data)) {
+		/*if(!$this->permission->check($request_data)) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$insert = array(
 			'user_ID' => USER_ID,
@@ -325,9 +329,9 @@ class Follow extends Core {
 		if (!$group_ID || $group_ID < 0) return;
 		
 		// Check permissions
-		if(!$this->permission->check(array("group_ID" => $group_ID))) {
+		/*if(!$this->permission->check(array("group_ID" => $group_ID))) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$this->db->delete('follow_groups', array('group_ID' => $group_ID));
 		$this->db->delete($this->table, array('group_ID' => $group_ID));
@@ -342,9 +346,9 @@ class Follow extends Core {
 		if (!$company_ID && !$user_ID) return;
 		
 		// Check permissions
-		if(!$this->permission->check(array("user_ID" => $user_ID, "company_ID" => $company_ID))) {
+		/*if(!$this->permission->check(array("user_ID" => $user_ID, "company_ID" => $company_ID))) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$return = array(
 			'user_ID' => (int) $user_ID,
@@ -396,9 +400,9 @@ class Follow extends Core {
 		if (!$company_ID && !$user_ID) return;
 		
 		// Check permissions
-		if(!$this->permission->check(array("user_ID" => $user_ID, "company_ID" => $company_ID))) {
+		/*if(!$this->permission->check(array("user_ID" => $user_ID, "company_ID" => $company_ID))) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$insert = array(
 			'user_ID' => USER_ID,
@@ -424,9 +428,9 @@ class Follow extends Core {
 		if (!$company_ID && !$user_ID) return;
 		
 		// Check permissions
-		if(!$this->permission->check(array("user_ID" => $user_ID, "company_ID" => $company_ID))) {
+		/*if(!$this->permission->check(array("user_ID" => $user_ID, "company_ID" => $company_ID))) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		if ($group_ID) {
 			$this->db->delete($this->table, array(

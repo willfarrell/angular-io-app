@@ -1,30 +1,53 @@
 <?php
 
+/**
+ * @access protected
+ */
+
 require_once 'class.filter.php';
 
 class User extends Core {
 	private $table = 'users';
-
+	
+	/**
+	 * Constructs a User object.
+	 */
 	function __construct() {
 		global $session;
 		parent::__construct();
 		
 		$this->session = $session;
 	}
-
+	
+	/**
+	 * Destructs a User object.
+	 *
+	 * @return void
+	 */
 	function __destruct() {
 		parent::__destruct();
 	}
 	
+	/**
+	 * Search for users
+	 *
+	 * @param string $keyword Query string
+	 * @param int $limit      Max number of results
+	 * @return array
+	 *
+	 * @url GET search/{keyword}	
+	 * @url GET search/{keyword}	/{limit}	
+	 * @access protected
+	 */
 	function search($keyword=NULL, $limit=NULL) {
 		if ($limit && !is_int($limit)) return;
 		if (!$limit) $limit = 10;
 		$return = array();
 		
 		// Check permissions
-		if(!$this->permission->check()) {
+		/*if(!$this->permission->check()) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$query = "SELECT user_ID, user_username, user_name_first, user_name_last, user_phone, user_function" //
 				." FROM users U"
@@ -40,15 +63,22 @@ class User extends Core {
 		return $return;
 	}
 	
-	/*
-	*/
-	function get_name($username=NULL) {
+	/**
+	 * Get user info by username
+	 *
+	 * @param string $username Username of user
+	 * @return array
+	 *
+	 * @url GET name/{user_username}	
+	 * @access protected
+	 */
+	function get_name($user_username=NULL) {
 		$return = array();
 		
 		// Check permissions
-		if(!$this->permission->check(array("user_username" => $username))) {
+		/*if(!$this->permission->check(array("user_username" => $user_username))) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		// add in user_username check
 		
@@ -56,8 +86,8 @@ class User extends Core {
 		
 		// check user_ID
 		$db_where = array();
-		if ($username) {
-			$db_where['user_username'] = $username;
+		if ($user_username) {
+			$db_where['user_username'] = $user_username;
 		} else {
 			return $return;
 		}
@@ -79,25 +109,43 @@ class User extends Core {
 		return $return;
 	}
 	
-	// notification privacy settings
+	/**
+	 * Notification settings for a user
+	 *
+	 * @return array
+	 *
+	 * @url GET notify
+	 * @access protected
+	 */
 	function get_notify() {
 		// Check permissions
-		if(!$this->permission->check()) {
+		/*if(!$this->permission->check()) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$r = $this->db->select("users", array("user_ID"=>USER_ID), array("notify_json"));
 		if ($r) {
 			$json = $this->db->fetch_assoc($r);
 			return json_decode($json['notify_json'], true);
 		}
+		
+		throw new RestException(400, 'Error');
 	}
 	
+	/**
+	 * Notification settings for a user
+	 *
+	 * @param array $request_data PUT data
+	 * @return array
+	 *
+	 * @url PUT notify
+	 * @access protected
+	 */
 	function put_notify($request_data=array()) {
 		// Check permissions
-		if(!$this->permission->check()) {
+		/*if(!$this->permission->check()) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		// strip out serverside only vars
 		$ignore = file_get_contents('json/notify.templates.en.json');
@@ -114,12 +162,19 @@ class User extends Core {
 		//echo $this->db->last_query;
 	}
 	
-	// security settings
+	/**
+	 * Security settings for a user
+	 *
+	 * @return array
+	 *
+	 * @url GET security
+	 * @access protected
+	 */
 	function get_security() {
 		// Check permissions
-		if(!$this->permission->check()) {
+		/*if(!$this->permission->check()) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$r = $this->db->select("users", array("user_ID"=>USER_ID), array("security_json"));
 		if ($r) {
@@ -128,12 +183,56 @@ class User extends Core {
 		}
 	}
 	
-	// test pgp email
+	/**
+	 * Create new secret.
+	 * 16 characters, randomly chosen from the allowed base32 characters.
+	 *
+	 * @param string $service Future feature
+	 * @return string
+	 *
+	 * @url GET totp/{service}
+     * @access protected
+	 */
+	function totpSecret($service=NULL) {
+		$totp = new TOTP;
+		$secret = $totp->createSecret();
+		//$qrCodeUrl = $ga->getQRCodeGoogleUrl('Angular.io', $secret);
+		//$oneCode = $ga->getCode($secret);
+		
+		return $secret;
+	}
+	
+	/**
+     * Check if the code is correct. This will accept codes starting
+     * from $discrepancy*30sec ago to $discrepancy*30sec from now
+     *
+     * @param string $secret
+     * @param string $code
+     * @return bool
+     *
+     * @url PUT totp/{secret}/{code}
+     * @access protected
+     */
+	function totpCheck($secret='', $code='') {
+		$totp = new TOTP;
+		$checkResult = $totp->verifyCode($secret, $code, 2);
+		return $checkResult;
+	}
+	
+	/**
+	 * Test emailing a PGP encrypted email to a user
+	 *
+	 * @param array $request_data PUT data
+	 * @return array
+	 *
+	 * @url PUT pgp
+	 * @access protected
+	 */
 	function put_pgp($request_data=NULL) {
 		// Check permissions
-		if(!$this->permission->check($request_data)) {
+		/*if(!$this->permission->check($request_data)) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		//if (!$request_data['key']) $request_data['key'] = ''; ///****** filter needed here
 		$this->filter->set_request_data($request_data);
@@ -148,11 +247,20 @@ class User extends Core {
 		$this->notify->email->encrypt($request_data['key'], USER_EMAIL, $subject, $message);
 	}
 	
+	/**
+	 * Security settings for a user
+	 *
+	 * @param array $request_data PUT data
+	 * @return array
+	 *
+	 * @url PUT security
+	 * @access protected
+	 */
 	function put_security($request_data=array()) {
 		// Check permissions
-		if(!$this->permission->check($request_data)) {
+		/*if(!$this->permission->check($request_data)) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		if (isset($request_data['totp']) && $request_data['totp']['service'] == "0") {
 			unset($request_data['totp']);
@@ -161,17 +269,22 @@ class User extends Core {
 		$this->db->update("users", array("security_json" => json_encode($request_data)), array("user_ID"=>USER_ID));
 	}
 	
-	/*
-	get a list of users for a company
-	session company only (privacy)
-	*/
+	/**
+	 * Get user details by User ID
+	 * 
+	 * @param int $user_ID User ID
+	 * @return array
+	 *
+	 * @url GET {user_ID}
+	 * @access protected
+	 */
 	function get($user_ID=NULL) {
 		$return = array();
 		
 		// Check permissions
-		if(!$this->permission->check(array("user_ID" => $user_ID))) {
+		/*if(!$this->permission->check(array("user_ID" => $user_ID))) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		// check user_ID
 		$db_where = array();
@@ -200,7 +313,15 @@ class User extends Core {
 		return $return;
 	}
 
-	// update user
+	/**
+	 * update user details
+	 * 
+	 * @param array $request_data PUT data
+	 * @return NULL
+	 *
+	 * @url PUT
+	 * @access protected
+	 */
 	function put($request_data=NULL) {
 		$return = array();
 		$params = array(
@@ -221,9 +342,9 @@ class User extends Core {
 		}
 		
 		// Check permissions
-		if(!$this->permission->check($request_data)) {
+		/*if(!$this->permission->check($request_data)) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		//unset($request_data['user_email']);	// incase it was passed - angular passes disabled fields
 		

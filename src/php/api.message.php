@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @access protected
+ */
 
 class Message extends Core {
 	private $table = "messages";
@@ -16,11 +19,17 @@ class Message extends Core {
 		return implode('-', $this->db->sort(USER_ID, $user_ID));
 	}
 	
+	/**
+	 * Get unread count
+	 *
+	 * @url GET unread
+	 * @access protected
+	 */
 	function unread() {
 		// Check permissions
-		if(!$this->permission->check()) {
+		/*if(!$this->permission->check()) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$count = 0;
 		
@@ -31,7 +40,6 @@ class Message extends Core {
 				." AND `timestamp` = (SELECT MAX(timestamp) FROM messages WHERE user_key = M.user_key LIMIT 0,1)"
 				." AND `read` = 0"
 				." GROUP BY user_key ORDER BY timestamp DESC";
-		
 		
 		$where = array(
 			'user_ID' => USER_ID
@@ -45,11 +53,17 @@ class Message extends Core {
 		return $count;
 	}
 	
-    function get_list() {
-    	// Check permissions
-		if(!$this->permission->check()) {
+	/**
+	 * Get a list of all messages
+	 *
+	 * @url GET list
+	 * @access protected
+	 */
+	function get_list() {
+		// Check permissions
+		/*if(!$this->permission->check()) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$return = array();
 		
@@ -83,11 +97,18 @@ class Message extends Core {
 		return $return;
 	}
 	
+	/**
+	 * Get list of messages with a user by ID
+	 *
+	 * @param int $user_ID User ID
+	 * 
+	 * @access protected
+	 */
 	function get($user_ID=NULL) {
 		// Check permissions
-		if(!$this->permission->check(array("user_ID" => $user_ID))) {
+		/*if(!$this->permission->check(array("user_ID" => $user_ID))) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$return = array();
 		$user_key = $this->user_key($user_ID);
@@ -121,12 +142,19 @@ class Message extends Core {
 		
 		return $return;
 	}
-
-    function post($request_data=NULL) {
+	
+	/**
+	 * Send message to a user
+	 *
+	 * @param array $request_data POST data
+	 * 
+	 * @access protected
+	 */
+	function post($request_data=NULL) {
 		// Check permissions
-		if(!$this->permission->check($request_data)) {
+		/*if(!$this->permission->check($request_data)) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$insert = array(
 			'user_key' => $this->user_key($request_data['user_ID']),
@@ -135,27 +163,35 @@ class Message extends Core {
 			'message' => strip_tags($request_data['message']),
 			'timestamp' => $_SERVER['REQUEST_TIME'],
 		);
-    	$this->db->insert($this->table, $insert);
-    	
-    	$this->notify->send($request_data['user_ID'], 'new_message', array(), "email,sms,push");
-    }
-
-    function delete($user_ID=NULL, $timestamp=NULL) {
-    	// Check permissions
-		if(!$this->permission->check(array("user_ID" => $user_ID))) {
-			return $this->permission->errorMessage();
-		};
+		$this->db->insert($this->table, $insert);
 		
-    	$user_key = $this->user_key($user_ID);
-    	
-    	$where = array(
+		$this->notify->send($request_data['user_ID'], 'new_message', array(), "email,sms,push");
+	}
+	
+	/**
+	 * Delete a message sent to a user
+	 *
+	 * @param int $user_ID User ID
+	 * @param int $timestamp Timestamp of message
+	 * 
+	 * @access protected
+	 */
+	function delete($user_ID=NULL, $timestamp=NULL) {
+		// Check permissions
+		/*if(!$this->permission->check(array("user_ID" => $user_ID))) {
+			return $this->permission->errorMessage();
+		};*/
+		
+		$user_key = $this->user_key($user_ID);
+		
+		$where = array(
 			'user_key' => $user_key,
 			'user_to_ID' => USER_ID,
 			'timestamp' => $timestamp,
 		);
 		
-    	$this->db->delete($this->table, $where);
-    }
+		$this->db->delete($this->table, $where);
+	}
 }
 
 ?>

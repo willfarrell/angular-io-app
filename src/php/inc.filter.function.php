@@ -24,6 +24,12 @@ $filter_function = array (
       'label' => 'Referral',
       'rules' => '',
     ),
+    'remember' => 
+    array (
+      'field' => 'remember',
+      'label' => 'Remember',
+      'rules' => '',
+    ),
   ),
   'account_post_signin' => 
   array (
@@ -76,7 +82,7 @@ $filter_function = array (
     array (
       'field' => 'user_email',
       'label' => 'User Email',
-      'rules' => '',
+      'rules' => 'valid_email|valid_email_dns',
     ),
     'user_phone' => 
     array (
@@ -109,7 +115,7 @@ $filter_function = array (
     array (
       'field' => 'email',
       'label' => 'Email',
-      'rules' => '',
+      'rules' => 'required|valid_email|valid_email_dns',
     ),
   ),
   'account_put_password_change' => 
@@ -235,7 +241,7 @@ $filter_function = array (
     array (
       'field' => 'user_email',
       'label' => 'User Email',
-      'rules' => '',
+      'rules' => 'valid_email|valid_email_dns',
     ),
     'user_name_first' => 
     array (
@@ -298,7 +304,7 @@ $filter_function = array (
     array (
       'field' => 'user_email',
       'label' => 'User Email',
-      'rules' => '',
+      'rules' => 'valid_email|valid_email_dns',
     ),
     'user_phone' => 
     array (
@@ -415,19 +421,19 @@ $filter_function = array (
     array (
       'field' => 'name',
       'label' => 'Name',
-      'rules' => '',
+      'rules' => 'required',
     ),
     'email' => 
     array (
       'field' => 'email',
       'label' => 'Email',
-      'rules' => '',
+      'rules' => 'required|valid_email|valid_email_dns',
     ),
     'message' => 
     array (
       'field' => 'message',
       'label' => 'Message',
-      'rules' => '',
+      'rules' => 'required',
     ),
   ),
 );

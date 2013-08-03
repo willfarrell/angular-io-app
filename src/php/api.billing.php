@@ -1,8 +1,14 @@
 <?php
 
-// Billing using Stripe
-// https://stripe.com/docs/tutorials/subscriptions
-require_once 'stripe-php/lib/Stripe.php';
+/**
+ * Billing using Stripe
+ * https://stripe.com/docs/tutorials/subscriptions
+ *
+ * All methods in this class are protected
+ * @access protected
+ */
+
+require_once 'vendor/stripe/stripe-php/lib/Stripe.php';
 
 class Billing extends Core {
 
@@ -28,9 +34,9 @@ class Billing extends Core {
 	function post_customer($request_data) {
 		
 		// permission
-		if(!$this->permission->check($request_data)) {
+		/*if(!$this->permission->check($request_data)) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		// validation
 		$this->filter->set_request_data($request_data);
@@ -53,9 +59,9 @@ class Billing extends Core {
 	function put_charge($request_data) {
 		
 		// permission
-		if(!$this->permission->check($request_data)) {
+		/*if(!$this->permission->check($request_data)) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		// validation
 		$this->filter->set_request_data($request_data);
@@ -85,9 +91,9 @@ class Billing extends Core {
 	function put_subscribe($request_data) {
 		
 		// permission
-		if(!$this->permission->check($request_data)) {
+		/*if(!$this->permission->check($request_data)) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		// validation
 		$this->filter->set_request_data($request_data);
@@ -110,9 +116,9 @@ class Billing extends Core {
 	
 	function delete_subscribe($plan_ID) {
 		// permission
-		if(!$this->permission->check(array("plan_ID" => $plan_ID))) {
+		/*if(!$this->permission->check(array("plan_ID" => $plan_ID))) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		// validation
 		$this->filter->set_request_data($request_data);

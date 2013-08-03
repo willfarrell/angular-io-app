@@ -19,7 +19,7 @@ describe('E2E: Account Initalization', function() {
 		
 	});
 	
-	describe('Delete test User', function() {
+	/*describe('Delete test User', function() {
 		it('should redirect to sign in', function() {
 			browser().navigateTo('#/sign/out');
 			browser().navigateTo('#/');
@@ -39,6 +39,7 @@ describe('E2E: Account Initalization', function() {
 			input('signin.email').enter(email);
 			input('signin.password').enter(new_pass);
 			element('[data-ng-view] .btn').click();
+			sleep(1);
 			expect(browser().location().path()).toBe('/');
 		});
 		
@@ -46,11 +47,12 @@ describe('E2E: Account Initalization', function() {
 			browser().navigateTo('#/settings/account');
 			confirmOK();
 			element('[data-ng-view] .btn-danger').click();
+			pause();
 			// auto sign out
 			expect(browser().location().path()).toContain('/sign/in');
 		});
 		
-	});
+	});*/
 	
 	describe('Initial sign up and onboard process', function() {
 		
@@ -67,11 +69,12 @@ describe('E2E: Account Initalization', function() {
 			browser().navigateTo('#/onboard/user');
 			input('user.user_name_first').enter('karma');
 			element('[data-ng-view] [data-ng-disabled]').click();
-			
+			sleep(1);
+			pause();
 			// company
 			expect(browser().location().path()).toBe('/onboard/company');
 			browser().navigateTo('#/onboard/company/skip');
-			
+			pause();
 			expect(browser().location().path()).toBe('/app');
 		});
 		

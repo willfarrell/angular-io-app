@@ -24,13 +24,19 @@ require_once 'php/class.core.php';		// api classes are extended from this
 require_once 'php/class.session.php';	// User session
 
 // https://github.com/Luracast/Restler
-require_once 'php/vendor/luracast/restler/vendor/Luracast/restler.php'; // Change made in Restler.php : generateMap() : } elseif (Defaults::$autoRoutingEnabled) {
-//use Luracast\Restler\Restler;
+require_once 'php/vendor/luracast/restler/vendor/restler.php'; // $path = is_array($path) ? $path[0] : $path; // added to line 161 in autoloader
+use Luracast\Restler\Defaults;
+use Luracast\Restler\Restler;
+
+require_once 'php/restler.auth.php';
+//require_once 'php/restler.rateLimit.php';
+
 //Defaults::$smartAutoRouting = false;
+//Defaults::$throttle = 20; //time in milliseconds for bandwidth throttling
+//Defaults::$useUrlBasedVersioning = true;
 
 // Include API Classes
 require_once 'php/api.account.php';
-	require_once 'php/api.totp.php';
 require_once 'php/api.user.php';
 	require_once 'php/api.message.php';	// plugin
 	require_once 'php/api.follow.php';	// plugin
@@ -47,13 +53,14 @@ require_once 'php/api.contact.php';		// plugin
 // REST API
 //$session = new Session;
 
-$r = new Restler();
-$r->setSupportedFormats('JsonpFormat');
-//$r->setSupportedFormats('JsonFormat', 'JsFormat'); // , 'XmlFormat'
+$r = new Restler(); // true for production
+//$r->setAPIVersion(2);
+$r->setSupportedFormats('JsonFormat', 'JsFormat', 'XmlFormat');
+$r->addAuthenticationClass('Auth');
+//$r->addFilterClass('RateLimit');
 
 // services
 $r->addAPIClass('Account');
-$r->addAPIClass('TOTP');
 $r->addAPIClass('Contact'); // replace with message???
 
 $r->addAPIClass('User');
@@ -67,28 +74,5 @@ $r->addAPIClass('Follow');
 $r->addAPIClass('Message');
 
 $r->handle();
-
-/*
-RESTler source code change to support METHOD_
-
-if (preg_match_all(
-    '/^(GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)/i',
-    $methodUrl, $matches)
-) {
-    $httpMethod = strtoupper($matches[0][0]);
-    $methodUrl = substr($methodUrl, strlen($httpMethod));
-} else if (preg_match_all(
-	'/^(GET|POST|PUT|DELETE|HEAD|OPTIONS)_?/i',
-    $methodUrl, $matches)
-) {
-	//echo "<pre>$methodUrl\n";print_r($matches);
-    $httpMethod = strtoupper($matches[1][0]);
-    $methodUrl = substr($methodUrl, strlen($matches[0][0]));
-    //echo "$methodUrl\n";
-} else {
-    $httpMethod = 'GET';
-}
-
-*/
 
 ?>

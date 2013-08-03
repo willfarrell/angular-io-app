@@ -154,30 +154,6 @@ function SignCtrl($config, $rootScope, $scope, $cookies, $routeParams, $rest, $s
 				//$scope.refresh();
 				$rootScope.redirect();
 			});
-
-		/*$http.put('/account/totp/'+code)
-			.success(function(data) {
-				console.log('account_totp.put.success');
-				if ($rootScope.checkHTTPReturn(data) && data) {
-					$session = syncVar(data, $session);
-					//if ($session != {})
-					$session.account.remember = $scope.signin.remember;
-					console.log($session);
-					$rootScope.saveSession();
-					$scope.signin = {};	// clear form
-
-					//$scope.signin_callbacks(); // runs all callbacks that were set by siblings
-					// refresh page
-					//$scope.refresh();
-					$rootScope.redirect();
-				} else {
-					$scope.errors.totp = 'Verification Failed';
-				}
-			})
-			.error(function() {
-				console.log('account_totp.put.success');
-				$rootScope.http_error();
-			});*/
 	};
 
 	//-- Sign Out --//

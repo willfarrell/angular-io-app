@@ -1,19 +1,52 @@
 <?php
 
+/**
+ * Contact - contact form for support
+ * all messages get sent to one address
+ *
+ * PHP version 5.4
+ *
+ * @category  PHP
+ * @package   PHP_CodeSniffer
+ * @author    will Farrell <iam@willfarrell.ca>
+ * @copyright 2000-2013 Farrell Labs
+ * @license   http://angulario.com
+ * @version   0.0.1
+ * @link      http://angulario.com
+ */
+ 
 require_once 'class.filter.php';
 require_once 'class.notify.php';
 
-class Contact extends Core {
+if(!defined("EMAIL_ADMIN_EMAIL")) define("EMAIL_ADMIN_EMAIL", '');
 
+class Contact extends Core {
+	
+	/**
+	 * Constructs a Contact object.
+	 */
 	function __construct() {
 		parent::__construct();
 	}
-
+	
+	/**
+	 * Destructs a Contact object.
+	 *
+	 * @return void
+	 */
 	function __destruct() {
 		parent::__destruct();
 	}
 
-
+	/**
+	 * check if still signned in
+	 *
+	 * @param array $request_data POST array
+	 *
+	 * @return array
+	 *
+	 * @access public
+	 */
 	function post($request_data=NULL) {
 		$return = array();
 
@@ -33,10 +66,18 @@ class Contact extends Core {
 		
 		$this->email(EMAIL_ADMIN_EMAIL, 'Contact', 'Name:'.$request_data['name'].'\n'.'From:'.$request_data['email'].'\n'.$request_data['message']);
 
-		return $return;
+		return TRUE;
 	}
 	
-	// from class.notify.php
+	/**
+	 * This is a copy of Email from class.notify.php
+	 *
+	 * @param string $email Email of recipient
+	 * @param string $subject Email subject
+	 * @param string $message Email body
+	 *
+	 * @return bool
+	 */
 	private function email($email, $subject, $message) {
 		$sent = false;
 		

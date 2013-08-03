@@ -12,3 +12,11 @@
     ServerName app.angular
     DocumentRoot __DIR__/dist
 </VirtualHost>
+
+<VirtualHost *>
+    ServerName test.angular
+    DocumentRoot __DIR__/src
+    <Directory __DIR__/src>
+        DirectoryIndex runner.html
+    </Directory>
+</VirtualHost>

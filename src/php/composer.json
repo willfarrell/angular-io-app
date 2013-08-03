@@ -1,0 +1,26 @@
+{
+	"name": "farrell/angular.io",
+	"version": "0.1.5",
+	"type": "project",
+	"keywords": [
+		"angularjs"
+	],
+	"homepage": "http://angulario.com",
+	"license": "(MIT or GPL-3.0+)",
+	"authors": [
+		{
+			"name": "will Farrell",
+			"email": "iam@willfarrell.ca",
+			"homepage": "willfarrell.ca",
+			"role": "Sr. Engineer"
+		}
+	],
+	"support": {},
+	"require": {
+		"ccampbell/chromephp": "4.0.x",
+		"firephp/firephp-core": "0.4.x",
+		"luracast/restler": "3.0.0",
+		"stripe/stripe-php": "1.7.x"
+	},
+	"autoload": {}
+}

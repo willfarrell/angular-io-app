@@ -29,20 +29,6 @@ function SecurityCtrl($rootScope, $scope, $rest) {
 					}
 				}
 			});
-
-		/*$http.get('/user/security')
-			.success(function(data) {
-				console.log('loadSecurity.get.success');
-				if ($rootScope.checkHTTPReturn(data)) {
-					if (data !== '') {
-						$scope.security = data;
-					}
-					console.log($scope.security);
-				}
-			})
-			.error(function(){
-				console.log('loadSecurity.get.error');
-			});*/
 	};
 
 	$scope.updateSecurity = function() {
@@ -56,17 +42,6 @@ function SecurityCtrl($rootScope, $scope, $rest) {
 			}, function(data){
 				$rootScope.alerts = [{'class':'success', 'label':'Security:', 'message':'Saved'}];
 			});
-
-		/*$http.put('/user/security', $scope.security)
-			.success(function(data) {
-				console.log('updateSecurity.put.success');
-				if ($rootScope.checkHTTPReturn(data)) {
-					$rootScope.alerts = [{'class':'success', 'label':'Security:', 'message':'Saved'}];
-					}
-				})
-				.error(function(){
-					console.log('updateSecurity.put.error');
-				});*/
 	};
 
 	$scope.loadTOTPService = function() {
@@ -74,23 +49,10 @@ function SecurityCtrl($rootScope, $scope, $rest) {
 
 		$rest.http({
 				method:'get',
-				url: $rest.server+'totp/'+$scope.security.totp.service
+				url: $rest.server+'user/totp/'+$scope.security.totp.service
 			}, function(data){
 				$scope.security.totp.secret = JSON.parse(data);
 			});
-
-		/*$http.get('/totp/'+$scope.security.totp.service)
-			.success(function(data) {
-				console.log('loadTOTPService.get.success');
-				if ($rootScope.checkHTTPReturn(data)) {
-					if (data) {
-						$scope.security.totp.secret = JSON.parse(data);
-					}
-				}
-			})
-			.error(function(){
-				console.log('loadTOTPService.get.error');
-			});*/
 	};
 
 	$scope.checkTOTP = function(code) {
@@ -99,21 +61,10 @@ function SecurityCtrl($rootScope, $scope, $rest) {
 
 		$rest.http({
 				method:'put',
-				url: $rest.server+'totp/'+$scope.security.totp.secret+'/'+code
+				url: $rest.server+'user/totp/'+$scope.security.totp.secret+'/'+code
 			}, function(data){
 				$scope.test_code_return = data;
 			});
-
-		/*$http.put('/totp/'+$scope.security.totp.secret+'/'+code)
-			.success(function(data) {
-				console.log('checkTOTP.put.success');
-				if ($rootScope.checkHTTPReturn(data)) {
-					$scope.test_code_return = data;
-				}
-			})
-			.error(function(){
-				console.log('checkTOTP.put.error');
-			});*/
 	};
 
 	$scope.testPGP = function(email) {
@@ -124,16 +75,6 @@ function SecurityCtrl($rootScope, $scope, $rest) {
 				url: $rest.server+'user/pgp/',
 				data: email
 			});
-
-		/*$http.put('/user/pgp/', email)
-			.success(function(data) {
-				console.log('testPGP.put.success');
-				if ($rootScope.checkHTTPReturn(data)) {
-				}
-			})
-			.error(function(){
-				console.log('testPGP.put.error');
-			});*/
 	};
 
 	$scope.loadSecurity();

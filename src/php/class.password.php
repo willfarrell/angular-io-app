@@ -1,6 +1,17 @@
 <?php
 
-// Class Password
+/**
+ *
+ * Password
+ *
+ * Used to generate and confirm password hashes. Also
+ * includes additional checks to ensure password entered
+ * is secure.
+ *
+ * Requires:
+ * - php-scrypt (https://github.com/DomBlack/php-scrypt)
+ *
+ */
 
 require_once "inc.config.php";
 require_once 'class.db.php';
@@ -343,10 +354,10 @@ class Password {
 			$return = $this->bcrypt_hash($password, BCRYPT_WORK_FACTOR);
 		} else if (PASSWORD_HASH == 'scrypt') {
 			$return = $this->scrypt_hash($password, SCRYPT_SALT, SCRYPT_PEPPER, SCRYPT_CPU, SCRYPT_MEMORY, SCRYPT_PARALLEL, SCRYPT_KEY_LENGTH);
-	    }
+		}
 
-	    $this->timer->stop('hash');
-	    return $return;
+		$this->timer->stop('hash');
+		return $return;
 	}
 	
 	/**
@@ -360,13 +371,13 @@ class Password {
 		if (PASSWORD_HASH == 'PBKDF2') {
 			$return = $this->pbkdf2_check($password, $hash, PBKDF2_SALT, PBKDF2_BINARY, PBKDF2_ITERATIONS, PBKDF2_KEY_LENGTH, PBKDF2_ALGORITHM);
 		} else if (PASSWORD_HASH == 'bcrypt') {
-		    $return = $this->bcrypt_check($password, $hash);
+			$return = $this->bcrypt_check($password, $hash);
 		} else if (PASSWORD_HASH == 'scrypt') {
 			$return = $this->scrypt_check($password, $hash, SCRYPT_PEPPER, SCRYPT_KEY_LENGTH);
 		}
 
 		$this->timer->stop('hash_check');
-	    return $return;
+		return $return;
 	}
 
 	/**
@@ -374,10 +385,10 @@ class Password {
 	 * @src https://github.com/P54l0m5h1k/PBKDF2-implementation-PHP/blob/master/crypt.php
 	 * @static
 	 * @param string $password   - defined password
-	 * @param string $salt       - defined salt
-	 * @param bool   $binary     - generate binary data, or base64 encoded string
-	 * @param int    $iterations - how many iterations to perform
-	 * @param int    $keylength  - key length
+	 * @param string $salt	   - defined salt
+	 * @param bool   $binary	 - generate binary data, or base64 encoded string
+	 * @param int	$iterations - how many iterations to perform
+	 * @param int	$keylength  - key length
 	 * @param string $algorithm  - hashing algorithm
 	 * @return bool|string
 	 */
@@ -399,83 +410,85 @@ class Password {
 	}
 
 	private static function bcrypt_hash($password, $work_factor = 8) {
-	    if (version_compare(PHP_VERSION, '5.3') < 0) throw new Exception('Bcrypt requires PHP 5.3 or above');
+		if (version_compare(PHP_VERSION, '5.3') < 0) throw new Exception('Bcrypt requires PHP 5.3 or above');
 
-	    if (! function_exists('openssl_random_pseudo_bytes')) {
-	        throw new Exception('Bcrypt requires openssl PHP extension');
-	    }
+		if (! function_exists('openssl_random_pseudo_bytes')) {
+			throw new Exception('Bcrypt requires openssl PHP extension');
+		}
 
-	    if ($work_factor < 4 || $work_factor > 31) $work_factor = 8;
-	    $salt =
-	        '$2a$' . str_pad($work_factor, 2, '0', STR_PAD_LEFT) . '$' .
-	        substr(
-	            strtr(base64_encode(openssl_random_pseudo_bytes(16)), '+', '.'),
-	            0, 22
-	        );
-	    return crypt($password, $salt);
+		if ($work_factor < 4 || $work_factor > 31) $work_factor = 8;
+		$salt =
+			'$2a$' . str_pad($work_factor, 2, '0', STR_PAD_LEFT) . '$' .
+			substr(
+				strtr(base64_encode(openssl_random_pseudo_bytes(16)), '+', '.'),
+				0, 22
+			);
+		return crypt($password, $salt);
 	}
 
 	private static function bcrypt_check($password, $hash) {
-	    if (version_compare(PHP_VERSION, '5.3') < 0) throw new Exception('Bcrypt requires PHP 5.3 or above');
+		if (version_compare(PHP_VERSION, '5.3') < 0) throw new Exception('Bcrypt requires PHP 5.3 or above');
 
-	    return crypt($password, $hash) == $hash;
+		return crypt($password, $hash) == $hash;
 	}
 
 	/**
-     * Create a password hash
-     *
-     * @src https://github.com/DomBlack/php-scrypt/blob/master/scrypt.php
-     * @param string $password The clear text password
-     * @param string $salt     The salt to use, or null to generate a random one
-     * @param int    $N        The CPU difficultly (must be a power of 2,  > 1)
-     * @param int    $r        The memory difficultly
-     * @param int    $p        The parallel difficultly
-     *
-     * @return string The hashed password
-     */
-    private static function scrypt_hash($password, $salt = false, $pepper = '', $N = 16384, $r = 8, $p = 1, $key_length = 32, $salt_length = 8) {
-        if ($salt === false) {
-            $salt = '';
-		        $possibleChars = '0123456789abcdefghijklmnopqrstuvwxyz';
-		        $noOfChars = strlen($possibleChars) - 1;
+	 * Create a password hash
+	 *
+	 * @src https://github.com/DomBlack/php-scrypt/blob/master/scrypt.php
+	 * @param string $password The clear text password
+	 * @param string $salt     The salt to use, or null to generate a random one
+	 * @param int	$N         The CPU difficultly (must be a power of 2,  > 1)
+	 * @param int	$r         The memory difficultly
+	 * @param int	$p         The parallel difficultly
+	 *
+	 * @return string The hashed password
+	 */
+	private static function scrypt_hash($password, $salt = false, $pepper = '', $N = 16384, $r = 8, $p = 1, $key_length = 32, $salt_length = 8) {
+		if ($salt === false) {
+			$salt = '';
+				$possibleChars = '0123456789abcdefghijklmnopqrstuvwxyz';
+				$noOfChars = strlen($possibleChars) - 1;
 
-		        for ($i = 0; $i < $salt_length; $i++) {
-		            $salt .= $possibleChars[mt_rand(0, $noOfChars)];
-		        }
-        } else {
-            //Remove dollar signs from the salt, as we use that as a separator.
-            $salt = str_replace('$', '', $salt);
-        }
+				for ($i = 0; $i < $salt_length; $i++) {
+					$salt .= $possibleChars[mt_rand(0, $noOfChars)];
+				}
+		} else {
+			//Remove dollar signs from the salt, as we use that as a separator.
+			$salt = str_replace('$', '', $salt);
+		}
 
-        $hash = scrypt($password, $pepper.$salt, $N, $r, $p, $key_length);
+		$hash = scrypt($password, $pepper.$salt, $N, $r, $p, $key_length);
 
-        return $N.'$'.$r.'$'.$p.'$'.$salt.'$'.$hash;
-    }
+		return $N.'$'.$r.'$'.$p.'$'.$salt.'$'.$hash;
+	}
 
-    /**
-     * Check a clear text password against a hash
-     *
-     * @src https://github.com/DomBlack/php-scrypt/blob/master/scrypt.php
-     * @param string $password The clear text password
-     * @param string $hash     The hashed password
-     *
-     * @return boolean If the clear text matches
-     */
-    private static function scrypt_check($password, $hash, $pepper = '', $key_length = 32) {
-        list($N, $r, $p, $salt, $hash) = explode('$', $hash);
+	/**
+	 * Check a clear text password against a hash
+	 *
+	 * @src https://github.com/DomBlack/php-scrypt/blob/master/scrypt.php
+	 * @param string $password   The clear text password
+	 * @param string $hash	   The hashed password
+	 * @param string $pepper	 A little extra to be added to the salt
+	 * @param string $key_length Length of the scrypt key
+	 *
+	 * @return boolean If the clear text matches
+	 */
+	private static function scrypt_check($password, $hash, $pepper = '', $key_length = 32) {
+		list($N, $r, $p, $salt, $hash) = explode('$', $hash);
 
-        return scrypt(
-            $password, $pepper.$salt,
-            $N, $r, $p,
-            self::$key_length
-        ) == $hash;
-    }
+		return scrypt(
+			$password, $pepper.$salt,
+			$N, $r, $p,
+			self::$key_length
+		) == $hash;
+	}
 
 	/**
 	 * encryption
 	 * @src https://github.com/P54l0m5h1k/PBKDF2-implementation-PHP/blob/master/crypt.php
-	 * @param mixed  $msg    - message/data
-	 * @param string $k      - encryption key
+	 * @param mixed  $msg	- message/data
+	 * @param string $k	  - encryption key
 	 * @param bool   $binary - base64 encode result
 	 * @return bool|string   - iv+ciphertext+mac
 	 */
@@ -494,8 +507,8 @@ class Password {
 	/**
 	 * decryption
 	 * @src https://github.com/P54l0m5h1k/PBKDF2-implementation-PHP/blob/master/crypt.php
-	 * @param string $msg    - output from encrypt()
-	 * @param string $k      - encryption key
+	 * @param string $msg	- output from encrypt()
+	 * @param string $k	  - encryption key
 	 * @param bool   $binary - base64 decode msg
 	 * @return bool|string   - original data
 	 */

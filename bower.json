@@ -1,6 +1,10 @@
 {
 	"name":"Angular.io App",
 	"version":"0.1.7",
+	"ignore": [
+		".jshintrc",
+		"**/*.txt"
+	],
 	"dependencies":{
 		"modernizr":null,
 		"html5-mobile-boilerplate":null,
@@ -13,7 +17,12 @@
 		"angular-io":null,
 		"marked":null,
 		"font-awesome":null,
-		"bootstrap":"~2.3.2",
+		"bootstrap":null,
 		"script.js":null
+	},
+	"devDependencies": {
+		"angular-mocks":null,
+		"angular-scenario":null,
+		"angular":null
 	}
 }

@@ -1,7 +1,20 @@
 <?php
+
 /**
- *	Session
+ * Session - maintains a users session while using the app
+ *
+ * PHP version 5.4
+ *
+ * @category  PHP
+ * @package   PHP_CodeSniffer
+ * @author    will Farrell <iam@willfarrell.ca>
+ * @copyright 2000-2013 Farrell Labs
+ * @license   http://angulario.com
+ * @version   0.0.1
+ * @link      http://angulario.com
  */
+
+$_SERVER['HTTP_USER_AGENT'] = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
 
 require_once "inc.config.php";
 require_once "class.db.php";
@@ -26,11 +39,31 @@ ini_set('session.hash_bits_per_character', 5);
 */
 
 class Session extends Core {
+	/**
+	 * All session vars related to the Session 
+	 * ID stored in the cookie
+	 *
+	 * @var array()
+	 */
 	public $cookie = array();
-	private $params;
+	
+	/**
+	 * Session ini parameters
+	 *
+	 * @var array()
+	 */
+	private $params = array();
+	
+	/**
+	 * Default DB table for the class
+	 *
+	 * @var string
+	 */
 	private $table = 'sessions';
 	
-	// Class constructor
+	/**
+	 * Constructs a Session object.
+	 */
 	function __construct(){
 		parent::__construct();
 		//$this->cache = new Cache('session:');
@@ -74,12 +107,22 @@ class Session extends Core {
 		$this->set();
 		$this->make_defined();
 	}
-
+	
+	/**
+	 * Destructs a Session object.
+	 *
+	 * @return void
+	 */
 	function __destruct() {
 		session_write_close();
 		parent::__destruct();
 	}
 	
+	/**
+	 * Creates a blank session array
+	 *
+	 * @return array
+	 */
 	private function create() {
 		$this->cookie = array();
 		$this->cookie[session_name()]	= session_id();
@@ -96,13 +139,24 @@ class Session extends Core {
 		
 		return $this->cookie;
 	}
-
-	private function regen_id() {
+	
+	/**
+	 * Regenerate session ID
+	 * Called from api.account.php
+	 *
+	 * @return void
+	 */
+	public function regen_id() {
 		$this->del();
 		session_set_cookie_params($this->cookie["remember"] ? $this->params["lifetime"] : 0);
 		session_regenerate_id();
 	}
 	
+	/**
+	 * Save session array to DB
+	 *
+	 * @return void
+	 */
 	private function set($timestamp = 0) {
 		$this->cookie[session_name()] = session_id();
 		//$this->redis->hmset(session_id(), $cookie);
@@ -111,32 +165,51 @@ class Session extends Core {
 		}
 		$this->set_cookie($this->cookie["remember"] ? ($_SERVER['REQUEST_TIME'] + $this->params["lifetime"]) : 0);
 	}
-
+	
+	/**
+	 * Get session array to DB
+	 *
+	 * @return array
+	 */
 	private function get() {
 		//return $this->redis->hgetall(session_id());
 		$r = $this->db->select($this->table, array(session_name() => session_id()));
 		if ($r) { return $this->db->fetch_assoc($r); }
-		$this->create();
-		return null;
+		return $this->create();
 	}
-
+	
+	/**
+	 * Delete session array to DB
+	 *
+	 * @return void
+	 */
 	private function del() {
 		//$this->redis->del(session_id());
 		$this->db->delete($this->table, array(session_name() => session_id()));
 	}
 	
-	private function clean() {
-		//$this->redis->del(session_id());
-		$this->db->delete($this->table, array(session_name() => session_id()));
-	}
-
+	/**
+	 * Converts session array params into
+	 * global defined vars
+	 *
+	 * @return void
+	 */
 	private function make_defined() {
 		foreach ($this->cookie as $key => $value) {
 			if (!defined(strtoupper($key))) { define(strtoupper($key), $value); }
 		}
 	}
 	
-	// Accessed from Account->post_signin
+	/**
+	 * Performs login - checks password & email
+	 * Called from Account::post_signin
+	 *
+	 * @param string $email Email address
+	 * @param string $password Password
+	 * @param bool   $remember Toggle remembering session
+	 *
+	 * @return int
+	 */
 	public function login($email, $password, $remember = 0) {
 		$query = "SELECT * FROM users WHERE user_email = '{{user_email}}' OR user_username = '{{user_email}}' LIMIT 0,1";
 		$result = $this->db->query($query, array('user_email' => $email));
@@ -171,7 +244,12 @@ class Session extends Core {
 		return $r['user_ID'];
 	}
 	
-	// // Accessed from Account->post_signout
+	/**
+	 * Performs logout - removes session
+	 * Called from Account::post_signout
+	 *
+	 * @return void
+	 */
 	public function logout() {
 		$this->create();
 		$this->del();
@@ -180,7 +258,13 @@ class Session extends Core {
 	}
 	
 
-	//-- Helper Fucntions --//
+	/**
+	 * Set a session cookie
+	 *
+	 * @param bool $remeber Toggle remembering session
+	 *
+	 * @return void
+	 */
 	private function set_cookie($remember = FALSE) {
 		session_set_cookie_params(
 			$remember ? $this->params["lifetime"] : 0,
@@ -200,7 +284,12 @@ class Session extends Core {
 			$this->params["httponly"]
 		);
 	}
-
+	
+	/**
+	 * Unset a session cookie
+	 *
+	 * @return void
+	 */
 	private function unset_cookie() {
 		session_set_cookie_params(1);
 		setcookie(session_name(), "", 1);

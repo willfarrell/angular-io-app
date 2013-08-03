@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @access protected
+ */
 
 require_once 'class.db.php';
 
@@ -17,15 +20,27 @@ class Company extends Core {
 		parent::__destruct();
 	}
 	
+	/**
+	 * Search for companies
+	 *
+	 * @param string $keyword Query string
+	 * @param int $limit      Max number of results
+	 * @return array
+	 *
+	 * @url GET search
+	 * @url GET search/{keyword}	
+	 * @url GET search/{keyword}	/{limit}	
+	 * @access protected
+	 */
 	function search($keyword=NULL, $limit=NULL) {
 		if ($limit && !is_int($limit)) return;
 		if (!$limit) $limit = 10;
 		$return = array();
 		
 		// Check permissions
-		if(!$this->permission->check()) {
+		/*if(!$this->permission->check()) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$query = "SELECT company_ID, company_name, company_url, company_phone" //
 				." FROM companies C"
@@ -41,17 +56,22 @@ class Company extends Core {
 	}
 	
 	/**
-	 *	get a list of users for a company
-	 *	session company only (privacy)
+	 * get a list of users or user for a company
 	 *
+	 * @param int $user_ID
+	 * @return array
+	 *
+	 * @url GET user
+	 * @url GET user/{user_ID}	
+	 * @access protected
 	 */
 	function get_user($user_ID=NULL) {
 		$return = array();
 		
 		// Check permissions
-		if(!$this->permission->check(array("user_ID" => $user_ID))) {
+		/*if(!$this->permission->check(array("user_ID" => $user_ID))) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$db_where = array('company_ID' => COMPANY_ID);
 		if (!is_null($user_ID)) {
@@ -77,7 +97,15 @@ class Company extends Core {
 		return $return;
 	}
 
-	// new user
+	/**
+	 * Add new user to ones company
+	 *
+	 * @param array $request_data POST data
+	 * @return array
+	 *
+	 * @url POST user
+	 * @access protected
+	 */
 	function post_user($request_data=NULL) {
 		$return = array();
 		$params = array(
@@ -96,9 +124,9 @@ class Company extends Core {
 		}
 		
 		// Check permissions
-		if(!$this->permission->check($request_data)) {
+		/*if(!$this->permission->check($request_data)) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$this->filter->set_request_data($request_data);
 		$this->filter->set_group_rules('users');
@@ -135,6 +163,15 @@ class Company extends Core {
 		return $user_ID;
 	}
 	
+	/**
+	 * user user of ones company
+	 *
+	 * @param array $request_data PUT data
+	 * @return array
+	 *
+	 * @url PUT user
+	 * @access protected
+	 */
 	function put_user($request_data=NULL) {
 		$return = array();
 		$params = array(
@@ -154,9 +191,9 @@ class Company extends Core {
 		}
 		
 		// Check permissions
-		if(!$this->permission->check($request_data)) {
+		/*if(!$this->permission->check($request_data)) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$this->filter->set_request_data($request_data);
 		$this->filter->set_group_rules('users');
@@ -186,13 +223,22 @@ class Company extends Core {
 		
 	}
 	
+	/**
+	 * Get company info by username
+	 *
+	 * @param string $username Username of user
+	 * @return array
+	 *
+	 * @url GET name/{username}
+	 * @access protected
+	 */
 	function get_name($username=NULL) {
 		$return = array();
 		
 		// Check permissions
-		if(!$this->permission->check(array("company_username" => $username))) {
+		/*if(!$this->permission->check(array("company_username" => $username))) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		// add in user_username check
 		
@@ -261,18 +307,22 @@ class Company extends Core {
 		return $return;
 	}
 	
-	/*
-	 *	get a company details
-	 *
+	/**
+	 * Get company details by Company ID
+	 * 
+	 * @param int $company_ID Company ID
+	 * @return array
+	 * 
+	 * @access protected
 	 */
 	function get($company_ID=NULL) {
 		$return = array();
 		$company_ID = !$company_ID ? COMPANY_ID: $company_ID;
 		
 		// Check permissions
-		if(!$this->permission->check(array("company_ID" => $company_ID))) {
+		/*if(!$this->permission->check(array("company_ID" => $company_ID))) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 
 		$results = $this->db->select('companies',
 			array('company_ID' => $company_ID),
@@ -326,10 +376,14 @@ class Company extends Core {
 		return $return;
 	}
 
-	/*
-	create company detials for signup
-	session company only (privacy)
-	*/
+	/**
+	 * Create a new company during onboard
+	 * 
+	 * @param array $request_data POST data
+	 * @return NULL
+	 * 
+	 * @access protected
+	 */
 	function post($request_data=NULL) {
 		$params = array(
 			"company_username",
@@ -344,9 +398,9 @@ class Company extends Core {
 		}
 		
 		// Check permissions
-		if(!$this->permission->check($request_data)) {
+		/*if(!$this->permission->check($request_data)) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		// validate and sanitize
 		/*$this->filter->set_request_data($request_data);
@@ -379,7 +433,15 @@ class Company extends Core {
 		
 		return $company_ID;
 	}
-
+	
+	/**
+	 * update company details
+	 * 
+	 * @param array $request_data PUT data
+	 * @return NULL
+	 * 
+	 * @access protected
+	 */
 	function put($request_data=NULL) {
 		$alerts = array();
 		$params = array(
@@ -398,9 +460,9 @@ class Company extends Core {
 		}
 		
 		// Check permissions
-		if(!$this->permission->check($request_data)) {
+		/*if(!$this->permission->check($request_data)) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		// company //
 		$company = array(
@@ -415,8 +477,6 @@ class Company extends Core {
 			//'timestamp_create' 		=> $_SERVER['REQUEST_TIME'],
 			'timestamp_update' 		=> $_SERVER['REQUEST_TIME'],
 		);
-
-
 
 		$this->db->insert_update('companies', $company, $company);
 

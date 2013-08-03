@@ -16,9 +16,9 @@ class Location extends Core {
 	*/
 	function get($location_ID=NULL) {
 		// Check permissions
-		if(!$this->permission->check(array("location_ID" => $location_ID))) {
+		/*if(!$this->permission->check(array("location_ID" => $location_ID))) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$return = array();
 
@@ -64,9 +64,9 @@ class Location extends Core {
 		$request_data['company_ID'] = COMPANY_ID;
 		
 		// Check permissions
-		if(!$this->permission->check($request_data)) {
+		/*if(!$this->permission->check($request_data)) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$this->filter->set_request_data($request_data);
 		$this->filter->set_group_rules('locations');
@@ -147,9 +147,9 @@ class Location extends Core {
 		$request_data['company_ID'] = COMPANY_ID;
 		
 		// Check permissions
-		if(!$this->permission->check($request_data)) {
+		/*if(!$this->permission->check($request_data)) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$this->filter->set_request_data($request_data);
 		$this->filter->set_group_rules('locations');
@@ -208,9 +208,9 @@ class Location extends Core {
 
 	function delete($location_ID=NULL) {
 		// Check permissions
-		if(!$this->permission->check(array("location_ID" => $location_ID))) {
+		/*if(!$this->permission->check(array("location_ID" => $location_ID))) {
 			return $this->permission->errorMessage();
-		};
+		};*/
 		
 		$this->db->delete('locations', array('company_ID' => COMPANY_ID, 'location_ID' => $location_ID));
 	}

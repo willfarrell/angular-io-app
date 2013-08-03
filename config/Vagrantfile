@@ -1,0 +1,2 @@
+
+config.vm.provision :shell, :path => "docker-init-provision.sh"

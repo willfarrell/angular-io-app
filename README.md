@@ -26,9 +26,9 @@ tar -zxvf master && rm master
 cp -rf willfarrell-angular-io-.../* ./ && rm -rf willfarrell-angular-io-...
 ```
 
-Finally, install npm and bower dependencies:
+Finally, install dependencies:
 ```
-npm install && bower install --dev
+sh scripts/setup.sh
 ```
 
 Build project:
