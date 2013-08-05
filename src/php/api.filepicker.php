@@ -1,7 +1,18 @@
 <?php
 
 /**
+ * Filepicker - Handle file uploads and downloads
  * Do not add to this class, try to place all changes in FilepickerConfig class
+ *
+ * PHP version 5.4
+ *
+ * @category  PHP
+ * @package   Angular.io
+ * @author    will Farrell <iam@willfarrell.ca>
+ * @copyright 2000-2013 Farrell Labs
+ * @license   http://angulario.com
+ * @version   0.0.1
+ * @link      http://angulario.com
  *
  * @access protected
  */
@@ -12,27 +23,46 @@ require_once 'php/class.zip.php'; // zip folder
 
 class Filepicker extends FilepickerConfig {
 	
+	/**
+	 * Constructs a Filepicker object.
+	 */
 	function __construct() {
 		parent::__construct();
 		
 		ini_set('memory_limit', '-1');
 	}
-
+	
+	/**
+	 * Destructs a Filepicker object.
+	 *
+	 * @return void
+	 */
 	function __destruct() {
 		parent::__destruct();
 	}
 	
+	/**
+	 * Create File size string
+	 *
+	 * @param string $bytes
+	 * @param int $decimals Number of decimal places
+	 * @return string
+	 */
 	private function filesize_format($bytes, $decimals = 2) {
-	  	$sz = 'BKMGTPEZY';
-	  	$factor = floor((strlen($bytes) - 1) / 3);
-	  	$size = $bytes / pow(1024, $factor);
+		$sz = 'BKMGTPEZY';
+		$factor = floor((strlen($bytes) - 1) / 3);
+		$size = $bytes / pow(1024, $factor);
 		$str = sprintf("%.{$decimals}f", $size) . " " . @$sz[$factor];
 		if ($factor) $str .= "B";
 		return $str;
 	}
 	
-	
-	
+	/**
+	 * List files
+	 *
+	 * @param string $path Dir of files
+	 * @return array
+	 */
 	private function listFiles($path) {
 		$files = array();
 		if (!is_dir($path)) return array();
@@ -64,19 +94,21 @@ class Filepicker extends FilepickerConfig {
 	 *
 	 * @param string $action _
 	 * @param string $ID _
+	 * @return bool
 	 *
 	 * @url GET cors/{action}/{ID}
 	 * @access protected
 	 */
 	function get_cors($action = '', $ID=NULL) {
 		if (!$action) $action = $this->action_default;
-		
+		return FALSE;
 	}
 	
 	/**
 	 * to support drag and drop of url *** revisit
 	 *
 	 * @param string $url URL of file to upload
+	 * @return string
 	 *
 	 * @url GET url/{url}
 	 * @access protected
@@ -133,6 +165,7 @@ class Filepicker extends FilepickerConfig {
 	 *
 	 * @param string $action _
 	 * @param string $ID _
+	 * @return array
 	 *
 	 * @url GET list/{action}/{ID}
 	 * @access protected
@@ -156,6 +189,7 @@ class Filepicker extends FilepickerConfig {
 	 * @param string $action _
 	 * @param string $ID _
 	 * @param string $file File name
+	 * @return void
 	 *
 	 * @url GET download/{action}/{ID}
 	 * @url GET download/{action}/{ID}/{file}
@@ -196,7 +230,16 @@ class Filepicker extends FilepickerConfig {
 	}
 	
 	//-- Upload --//
-	// upload from computer
+	/**
+	 * Upload from computer
+	 *
+	 * @param string $action
+	 * @param int $ID
+	 * @return array
+	 *
+	 * @url POST computer/{action}/{ID}
+	 * @access protected
+	 */
 	function post_computer($action = '', $ID=NULL) {
 		if (!$action) $action = $this->action_default;
 		$path = $this->makePath($action, $ID);
@@ -213,6 +256,15 @@ class Filepicker extends FilepickerConfig {
 	}
 	
 	//-- Services --//
+	/**
+	 * Download file from url
+	 *
+	 * @param string $url _
+	 * @param string $file _
+	 * @param string $user
+	 * @param string $pass
+	 * @return void
+	 */
 	private function download($url, $file, $user = NULL, $pass = NULL) {
 		// refactor to private function - add server user:pass, ftp, webdev options
 		$url = str_replace(" ","%20", $url);
@@ -230,7 +282,17 @@ class Filepicker extends FilepickerConfig {
 		fclose($fp);
 	}
 	
-	// upload via url
+	/**
+	 * Upload from url
+	 *
+	 * @param string $action
+	 * @param int $ID
+	 * @param array $request_data POST data
+	 * @return array
+	 *
+	 * @url POST computer/{action}/{ID}
+	 * @access protected
+	 */
 	function post_url($action = '', $ID=NULL, $request_data=NULL) {
 		if (!$action) $action = $this->action_default;
 		$path = $this->makePath($action, $ID);
@@ -290,7 +352,7 @@ class Filepicker extends FilepickerConfig {
 	}
 	
 	// pick ftp file to upload
-	function post_ftp($action = '', $ID=NULL, $request_data=NULL) {
+	/*function post_ftp($action = '', $ID=NULL, $request_data=NULL) {
 		if (!$action) $action = $this->action_default;
 		$path = $this->makePath($action, $ID);
 		
@@ -309,7 +371,7 @@ class Filepicker extends FilepickerConfig {
 	// put a file onto ftp server
 	function put_ftp() {
 		
-	}
+	}*/
 	
 	/*
 	// to do
@@ -389,7 +451,18 @@ class Filepicker extends FilepickerConfig {
 			ftp_close($conn_id);
 	}*/
 	
-	
+	/**
+	 * delete file
+	 *
+	 * @param string $action
+	 * @param int    $ID
+	 * @param string $file
+	 * @return void
+	 *
+	 * @url DELETE {action}/{ID}/{file}
+	 * @url GET delete/{action}/{ID}/{file}
+	 * @access protected
+	 */
 	function delete($action = '', $ID=NULL, $file=NULL) {
 		if (!$action) $action = $this->action_default;
 		$path = $this->makePath($action, $ID);

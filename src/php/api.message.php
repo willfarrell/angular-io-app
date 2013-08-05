@@ -6,21 +6,37 @@
 
 class Message extends Core {
 	private $table = "messages";
-
+	
+	/**
+	 * Constructs a Message object.
+	 */
 	function __construct() {
 		parent::__construct();
 	}
-
+	
+	/**
+	 * Destructs a Message object.
+	 *
+	 * @return void
+	 */
 	function __destruct() {
 		parent::__destruct();
 	}
 	
+	/**
+	 * Create a key between two users
+	 *
+	 * @param int $user_ID Other user ID
+	 * @return string
+	 */
 	private function user_key($user_ID) {
 		return implode('-', $this->db->sort(USER_ID, $user_ID));
 	}
 	
 	/**
 	 * Get unread count
+	 *
+	 * @return int
 	 *
 	 * @url GET unread
 	 * @access protected
@@ -56,14 +72,12 @@ class Message extends Core {
 	/**
 	 * Get a list of all messages
 	 *
+	 * @return array
+	 *
 	 * @url GET list
 	 * @access protected
 	 */
 	function get_list() {
-		// Check permissions
-		/*if(!$this->permission->check()) {
-			return $this->permission->errorMessage();
-		};*/
 		
 		$return = array();
 		
@@ -101,7 +115,9 @@ class Message extends Core {
 	 * Get list of messages with a user by ID
 	 *
 	 * @param int $user_ID User ID
-	 * 
+	 * @return array
+	 *
+	 * @url GET {user_ID}
 	 * @access protected
 	 */
 	function get($user_ID=NULL) {
@@ -147,14 +163,12 @@ class Message extends Core {
 	 * Send message to a user
 	 *
 	 * @param array $request_data POST data
-	 * 
+	 * @return bool
+	 *
+	 * @url POST
 	 * @access protected
 	 */
 	function post($request_data=NULL) {
-		// Check permissions
-		/*if(!$this->permission->check($request_data)) {
-			return $this->permission->errorMessage();
-		};*/
 		
 		$insert = array(
 			'user_key' => $this->user_key($request_data['user_ID']),
@@ -166,6 +180,8 @@ class Message extends Core {
 		$this->db->insert($this->table, $insert);
 		
 		$this->notify->send($request_data['user_ID'], 'new_message', array(), "email,sms,push");
+		
+		return TRUE;
 	}
 	
 	/**
@@ -173,14 +189,13 @@ class Message extends Core {
 	 *
 	 * @param int $user_ID User ID
 	 * @param int $timestamp Timestamp of message
-	 * 
+	 * @return bool
+	 *
+	 * @url GET delete/{user_ID}/{timestamp}
+	 * @url DELETE {user_ID}/{timestamp}
 	 * @access protected
 	 */
 	function delete($user_ID=NULL, $timestamp=NULL) {
-		// Check permissions
-		/*if(!$this->permission->check(array("user_ID" => $user_ID))) {
-			return $this->permission->errorMessage();
-		};*/
 		
 		$user_key = $this->user_key($user_ID);
 		
@@ -191,6 +206,8 @@ class Message extends Core {
 		);
 		
 		$this->db->delete($this->table, $where);
+		
+		return TRUE;
 	}
 }
 

@@ -84,7 +84,7 @@ function UserCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 
 			$rest.http({
 					method:'get',
-					url: $rest.server+'account/unique/'+encodeURIComponent(user_username)
+					url: $rest.server+'user/unique/'+encodeURIComponent(user_username)
 				}/*, function(data){
 					// do nothing with return, auto handeled with errors
 				}*/);

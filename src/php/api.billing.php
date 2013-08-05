@@ -38,13 +38,15 @@ class Billing extends Core {
 			return $this->permission->errorMessage();
 		};*/
 		
-		// validation
+		/*// validation
 		$this->filter->set_request_data($request_data);
 		if(!$this->filter->run()) {
 			$return["errors"] = $this->filter->get_errors('error');
 			return $return;
 		}
-		$request_data = $this->filter->get_request_data();
+		$request_data = $this->filter->get_request_data();*/
+		$request_data = $this->filter->run($request_data);
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
 		
 		$c = Stripe_Customer::create(array(
 			"card" => $request_data['stripeToken'],
@@ -63,13 +65,15 @@ class Billing extends Core {
 			return $this->permission->errorMessage();
 		};*/
 		
-		// validation
+		/*// validation
 		$this->filter->set_request_data($request_data);
 		if(!$this->filter->run()) {
 			$return["errors"] = $this->filter->get_errors('error');
 			return $return;
 		}
-		$request_data = $this->filter->get_request_data();
+		$request_data = $this->filter->get_request_data();*/
+		$request_data = $this->filter->run($request_data);
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
 		
 		$result = $this->db->select('customers', array('user_ID' => USER_ID));
 		if (!$result) { return array('errors' => array('strip-customer' => 'No customer ID')); }
@@ -95,13 +99,15 @@ class Billing extends Core {
 			return $this->permission->errorMessage();
 		};*/
 		
-		// validation
+		/*// validation
 		$this->filter->set_request_data($request_data);
 		if(!$this->filter->run()) {
 			$return["errors"] = $this->filter->get_errors('error');
 			return $return;
 		}
-		$request_data = $this->filter->get_request_data();
+		$request_data = $this->filter->get_request_data();*/
+		$request_data = $this->filter->run($request_data);
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
 		
 		$result = $this->db->select('customers', array('user_ID' => USER_ID));
 		if (!$result) { return array('errors' => array('strip-customer' => 'No customer ID')); }
@@ -120,13 +126,15 @@ class Billing extends Core {
 			return $this->permission->errorMessage();
 		};*/
 		
-		// validation
+		/*// validation
 		$this->filter->set_request_data($request_data);
 		if(!$this->filter->run()) {
 			$return["errors"] = $this->filter->get_errors('error');
 			return $return;
 		}
-		$request_data = $this->filter->get_request_data();
+		$request_data = $this->filter->get_request_data();*/
+		$request_data = $this->filter->run(array("plan_ID" => $plan_ID));
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
 		
 		$result = $this->db->select('customers', array('user_ID' => USER_ID));
 		if (!$result) { return array('errors' => array('strip-customer' => 'No customer ID')); }

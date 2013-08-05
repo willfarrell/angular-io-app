@@ -9,13 +9,16 @@ require_once 'class.console.php';	// debugging
 require_once 'class.timer.php';		// benchmarking
 
 class Core {
-
+	
+	/**
+	 * Constructs a Core object.
+	 */
 	function __construct() {
-		global $database, $filter;
+		global $database;
 		$this->db			= $database; //new MySQL;
 		//$this->cache		= new Cache;
 		
-		$this->filter		= $filter;
+		$this->filter		= new Filter;
 		//$this->filter		= new Filter;
 		$this->permission	= new Permission;
 		$this->notify		= new Notify;
@@ -24,7 +27,12 @@ class Core {
 		$this->console		= new Console;
 		$this->timer		= new Timers;
 	}
-
+	
+	/**
+	 * Destructs a Core object.
+	 *
+	 * @return void
+	 */
 	function __destruct() {
 		
 	}
@@ -35,9 +43,7 @@ class Core {
 	 *
 	 * @param object $results	   MySQL Results Object
 	 * @param array $ignore	   Array of fields to ignore, or false to not cast
-	 *
 	 * @return object $result Array
-	 * @aceess	public
 	 */
 	function __cleanArrayTypes($array, $ignore = array()) {
 		// cast numbers

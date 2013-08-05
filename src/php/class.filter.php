@@ -1,98 +1,111 @@
 <?php
 
-/*
-	http://codeigniter.com/user_guide/libraries/form_validation.html
-	
-	Rule			Param	Details
-	// validation - codeigniter //
-	required		No	Returns FALSE if the form element is empty.	 
-	matches			Yes	Returns FALSE if the form element does not match the one in the parameter.	matches[form_item]
-	is_unique		Yes	Returns FALSE if the form element is not unique to the table and field name in the parameter.	is_unique[table.field]
-	min_length		Yes	Returns FALSE if the form element is shorter then the parameter value.	min_length[6]
-	max_length		Yes	Returns FALSE if the form element is longer then the parameter value.	max_length[12]
-	exact_length	Yes	Returns FALSE if the form element is not exactly the parameter value.	exact_length[8]
-	greater_than	Yes	Returns FALSE if the form element is less than the parameter value or not numeric.	greater_than[8]
-	greater_than_or_equal	Yes	Returns FALSE if the form element is less than the parameter value or not numeric.	greater_than[8]
-	less_than		Yes	Returns FALSE if the form element is greater than the parameter value or not numeric.	less_than[8]
-	less_than_or_equal		Yes	Returns FALSE if the form element is greater than the parameter value or not numeric.	less_than[8]
-	alpha			No	Returns FALSE if the form element contains anything other than alphabetical characters.	 
-	alpha_numeric	No	Returns FALSE if the form element contains anything other than alpha-numeric characters.	 
-	alpha_dash		No	Returns FALSE if the form element contains anything other than alpha-numeric characters, underscores or dashes.	 
-	numeric			No	Returns FALSE if the form element contains anything other than numeric characters.	 
-	integer			No	Returns FALSE if the form element contains anything other than an integer.	 
-	decimal			Yes	Returns FALSE if the form element is not exactly the parameter value.	decimal[] 
-	boolean			No	Returns FALSE if the form element contains anything other than a boolean.
-	is_natural		No	Returns FALSE if the form element contains anything other than a natural number: 0, 1, 2, 3, etc.	 
-	is_natural_no_zero	No	Returns FALSE if the form element contains anything other than a natural number, but not zero: 1, 2, 3, etc.	 
-	valid_email		No	Returns FALSE if the form element does not contain a valid email address.	 
-	valid_emails	No	Returns FALSE if any value provided in a comma separated list is not a valid email.	 
-	valid_ip		No	Returns FALSE if the supplied IP is not valid. Accepts an optional parameter of "IPv4" or "IPv6" to specify an IP format.	 
-	valid_base64	No	Returns FALSE if the supplied string contains anything other than valid Base64 characters.
-	// validation - custom //
-	valid_email_dns	No	Returns FALSE if the form element does not contain a valid email address or has no MX record.
-	valid_url 		No	Returns FALSE if the form element does not contain a valid URL.
-	*valid_mail_code	Yes	Returns FALSE if the form element does not contain a valid mail code for a given country.	valid_mail_code[CA]country code
-	*valid_phone 	Yes	Returns FALSE if the form element does not contain a valid phone/fax number.	valid_phone[+] // + = international
-	
-	// sanitize - php functions //
-	trim			No		
-	strip_tags		Yes		strip_tags[whitelist,a,b,i]
-	// sanitize - custom //
-	cast_boolean	No	converts popular boolean strings into boolean (true/false,1/0,yes/no,on/off)
-	prep_url		No	Adds "http://" to URLs if missing.
-	encode_php_tags	No	Converts PHP tags to entities.
-	*sanitize_string	No	filter_var($str, FILTER_SANITIZE_STRING)
-*/
+/**
+ * Filter - Validate & sanitize inputs
+ *
+ * PHP Version 5.4
+ *
+ * @category  N/A
+ * @package   N/A
+ * @author	will Farrell <will.farrell@gmail.com>
+ * @copyright 2000 - 2013 willFarrell.ca
+ * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @version   GIT: <git_id>
+ * @link	  http://willFarrell.ca
+ */
 
-/*
-USE CASE
+/**
+TODO
+- add password hook
+- is_json?
 
-require_once('fct/class.filter.php');
+Use Case:
 
-
-
-// no groups, single var
-$this->filter->set_request_data('keyword', $keyword);
-$this->filter->set_rules('keyword', 'trim');
-if(!$this->filter->run()) {
-	$return["errors"] = $this->filter->get_errors();
-	$return["alerts"] = $this->filter->get_alerts('error');
-	return $return;
-}
-$keyword = $this->filter->get_request_data('keyword');
-
-
-
-// with groups and array of inputs
-$this->filter->set_request_data($request_data);
-$this->filter->set_group_rules('group_a,group_b');
-$this->filter->set_key_rules(array('key_a', 'key_2'), 'required');
-$this->filter->set_all_rules('trim|sanitize_string', true);	// apply to all
-
-if(!$this->filter->run()) {
-	$return["errors"] = $this->filter->get_errors();
-	return $return;
-}
-$request_data = $this->filter->get_request_data();
-
-
+$request_data = $this->filter->run($request_data);
+if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
 
 */
 
-require_once 'class.filter.tools.php';
-include_once 'inc.filter.input.php';	// custom filter groups ie password
-include_once 'inc.filter.table.php';	// for table field filters (generated file) ie add 'filter[exact_length[7]]' in field comment area
-include_once 'inc.filter.function.php';	// for non-db filters
+/*
 
-class Filter {
-	var $form = array();
+# Validation Rules
+Rules are `|` seperated. A `!` can be place infrom of a rule to inverse it. ie !required
+
+Rule				  Param	Details
+field[table.field]		Yes	Returns FALSE if all table field generated rules return FALSE.
+
+required				No	Returns FALSE if the input is empty.
+
+matches[string]			Yes	Returns FALSE if the input does not match the one in the parameter.
+regex_match[/regex/]	Yes	Returns FALSE if the input does not match the regex in the parameter.
+
+is_unique[table.field]	Yes	Returns FALSE if the input is not unique to the table and field name in the parameter.
 	
-	// rule messages
-	protected $_request_data		= array();
-	protected $_field_data			= array();	// params about a field
-	protected $_config_rules		= array();
-	protected $_defaut_messages 	= array(
-		// CI_Form_validation rules
+min_length[#]			Yes	Returns FALSE if the input is shorter then the parameter value.
+max_length[#]			Yes	Returns FALSE if the input is longer then the parameter value.
+exact_length[#]			Yes	Returns FALSE if the input is not exactly the parameter value.
+
+boolean					No	Returns FALSE if the input contains anything other than a boolean.
+alpha					No	Returns FALSE if the input contains anything other than alphabetical characters.	
+alpha_numeric			No	Returns FALSE if the input contains anything other than alpha-numeric characters. 
+alpha_dash				No	Returns FALSE if the input contains anything other than alpha-numeric characters, underscores or dashes.
+numeric					No	Returns FALSE if the input contains anything other than numeric characters.
+integer					No	Returns FALSE if the input contains anything other than an integer.
+//decimal[]				Yes	Returns FALSE if the input is not exactly the parameter value.
+//json					No
+
+greater_than[#.#]		Yes	Returns FALSE if the input is less than the parameter value or not numeric.
+greater_than_or_equal[#.#]Yes	Returns FALSE if the input is less than the parameter value or not numeric.
+less_than[#]			Yes	Returns FALSE if the input is lesser than the parameter value or not numeric.
+less_than_or_equal[#]	Yes	Returns FALSE if the input is greater than the parameter value or not numeric.
+
+is_natural				No	Returns FALSE if the input contains anything other than a natural number: 0, 1, 2, 3, etc.
+is_natural_no_zero		No	Returns FALSE if the input contains anything other than a natural number, but not zero: 1, 2, 3, etc. 
+
+email					No	Returns valid_email|valid_email_dns
+valid_email				No	Returns FALSE if the input does not contain a valid email address.
+valid_emails			No	Returns FALSE if any value provided in a comma separated list is not a valid email.
+valid_email_dns			No	Returns FALSE if the input does not contain a valid email address or has no MX record.
+
+valid_url 				No	Returns FALSE if the input does not contain a valid URL.
+valid_ip[ipv4]			No	Returns FALSE if the supplied IP is not valid. Accepts an optional parameter of "IPv4" or "IPv6" to specify an IP format.
+//valid_base64			No	Returns FALSE if the supplied string contains anything other than valid Base64 characters.
+
+//valid_mail_code[CA]Yes	Returns FALSE if the input does not contain a valid mail code for a given country.
+//valid_phone[+] 		Yes	Returns FALSE if the input does not contain a valid phone/fax number. + = international
+password				No	Returns FALSE if the input does not meet min password strength set by json/config.password.json.
+
+# Sanitize Filters
+Filter				  Param	Details
+trim					No	Removes whitespace from start&end of string
+cast_boolean			No	Converts popular boolean strings into boolean (true/false,1/0,yes/no,on/off)
+prep_url				No	Adds "http://" to URLs if missing.
+strip_tags[<a><b><i>]	Yes	Strips HTML tags from string, param holds whitelist
+//xss_clean				No	
+encode_php_tags			No	Converts PHP tags to entities.
+sanitize_string			No	Runs filter_var($str, FILTER_SANITIZE_STRING)
+//cast_int				No	Converts input to int
+
+*/
+
+require_once 'class.db.php';
+require_once 'class.password.php';
+
+include_once 'inc.filter.rules.php';
+include_once 'inc.filter.tables.php';
+
+class Filter
+{
+	private $_rules = array();
+	private $_tables = array();
+	
+	private $_inputs = array();
+	private $_errors = array();
+	private $_debug = FALSE;
+	
+	private $_metadata; // tmp $metadata holder
+	
+	private $_default_messages = array(
 		'required' 				=> 'is empty',
 		'matches' 				=> 'does not match',
 		'is_unique' 			=> 'is already taken',
@@ -123,792 +136,478 @@ class Filter {
 		'valid_mail_code' 		=> 'is not a valid mail code',
 		'valid_phone' 			=> 'is not a valid phone number',
 	);
-	protected $_error_array			= array();
-	protected $_error_messages		= array();
-	protected $_error_prefix		= '<p>';
-	protected $_error_suffix		= '</p>';
-	protected $_safe_form_data		= FALSE;
 	
-	function __construct($rules = array()){
-		global $database;
+	/**
+	 * Constructor
+	 */
+	function __construct($args = array()) {
+		global $database, $filter_rules, $filter_tables;
 		$this->db = $database;
-		$this->tools = new filter_tools;
 		
-		$this->_config_rules = $rules;
+		$this->_inputs = $args;
+		$this->password = new Password;
 		
-		// copy sent params
-		if 		(isset($_GET) && count($_GET)) 		$this->_request_data = $_GET;
-		else if	(isset($_POST) && count($_POST)) 	$this->_request_data = $_POST;
-		else if (isset($_PUT) && count($_PUT)) 		$this->_request_data = $_PUT;
+		if (!$filter_rules) $this->_rules = array();
+		else $this->_rules = $filter_rules;
 		
-		// set default error messages
-		foreach ($this->_defaut_messages as $key => $value) {
-			$this->set_message($key, $value);
-		}
-		
+		if (!$filter_tables) $this->build_table_array();
+		else $this->_tables = $filter_tables;
 	}
-	
+
+	/**
+	 * Destructor
+	 */
 	function __destruct() {
 		
 	}
 	
-	function get_request_data($key = NULL) {
-		if ($key != NULL) {
-			return $this->_request_data[$key];
-		} else {
-			return $this->_request_data;
-		}
+	public function hasErrors() {
+		return sizeof($this->_errors);
 	}
 	
-	function set_request_data($request_data, $value = NULL) {
-		if (is_array($request_data)) {
-			$this->_request_data = $request_data;	
-		} else {
-			$key = $request_data;
-			$this->_request_data[$key] = $value;
-			$request_data = array($key => $value);
-		}
+	public function getErrorsReturn() {
+		return array("errors" => $this->getErrors());
+	}
+	
+	public function getErrors() {
+		return $this->_errors;
+	}
+	
+	/*public function getSanatized() {
+		return $this->_inputs;
+	}*/
+	
+	/**
+	 * Sanitize inputs
+	 *
+	 * @param array $args array of params to be used in tests
+	 * @param string $className
+	 * @param string $methodName
+	 * @return array
+	 */
+	/*public function sanatize($args, $className = '', $methodName = '') {
 		
-		// add function filter automatically
-		$trace = debug_backtrace();
-		if (isset($trace[1])) {
-			$name = strtolower("{$trace[1]['class']}_{$trace[1]['function']}");
+		if (!$className || !$methodName) {
+			// trace source
+			$trace = debug_backtrace();
+			if (!isset($trace[1])) return FALSE; // trace failed
 			
-			$this->tools->add_function_array($name, $request_data); // builds filter.function.php
-			$this->set_group_rules($name);
-		}
-	}
-	
-	function get_error_array() {
-		return $this->_error_array;
-	}
-	
-	function get_errors($class = 'error') {
-		$errors = array();
-		foreach ($this->_field_data as $key => $value) {
-			if ($value['error']) $errors[$key] = $value['error'];
-			//if ($value['error']) $errors[$key] = array('label' => $value['label'], 'message' => $value['error']);
+			$source = "{$trace[1]['class']}::{$trace[1]['function']}";
+		} else {
+			$source = "{$className}::{$methodName}";
 		}
 		
-		return $errors;
-	}
+		if ($args == NULL) {
+			$args = array();
+			if (isset($trace)) $args = $trace[1]['args'];
+			// $args = func_get_args();
+		}
+		
+		// add class_function to config file
+		$this->add_function_array($source, $this->_inputs);
+		
+		foreach($this->_rules[$source] as $param => $metadata) {
+			$this->_inputs[$param] = $this->parseFilters($this->_inputs[$param], $metadata);
+		}
+		
+		return $this->_inputs;
+	}*/
+
+	/**
+	 * Validate inputs to ensure meet rule parameters
+	 *
+	 * @param array $args array of params to be used in tests
+	 * @param string $className
+	 * @param string $methodName
+	 * @return bool
+	 */
+	/*public function validate($args, $className = '', $methodName = '') {
+		if (!$className || !$methodName) {
+			// trace source
+			$trace = debug_backtrace();
+			if (!isset($trace[1])) return FALSE; // trace failed
+			
+			$source = "{$trace[1]['class']}::{$trace[1]['function']}";
+		} else {
+			$source = "{$className}::{$methodName}";
+		}
+		
+		if ($args == NULL) {
+			$args = array();
+			if (isset($trace)) $args = $trace[1]['args'];
+			// $args = func_get_args();
+		}
+		
+		// add class_function to config file
+		$this->add_function_array($source, $this->_inputs);
+		
+		$allowed = TRUE;
+		foreach($this->_rules[$source] as $param => $metadata) {
+			$allowed = ($allowed && $this->parseRules($this->_inputs[$param], $metadata));
+		}
+		return $allowed;
+	}*/
 	
 	/**
-	 * Set Rules for an array of keys
+	 * Check inputs to ensure meet rule parameters
 	 *
-	 * This function takes an array of field names and validation
-	 * rules as input, validates the info, and stores it
-	 *
-	 * @access	public
-	 * @param	mixed
-	 * @param	string
-	 * @param	bool
-	 * @return	void
+	 * @param array $args array of params to be used in tests
+	 * @param string $className
+	 * @param string $methodName
+	 * @return bool
 	 */
-	function set_key_rules($keys, $rules, $pos = false) {
-		if(!is_array($keys)) {
-			$keys = ($keys == '') ? array() : explode(",", $keys);
+	public function run($args, $className = '', $methodName = '') {
+		$this->_inputs = $args;
+		if (!$className || !$methodName) {
+			// trace source
+			$trace = debug_backtrace();
+			if (!isset($trace[1])) return FALSE; // trace failed
+			
+			$source = "{$trace[1]['class']}::{$trace[1]['function']}";
+		} else {
+			$source = "{$className}::{$methodName}";
 		}
 		
-		foreach ($keys as $key) {
-			$spacer = ($this->_field_data[$key]['rules'] == '') ? '' : '|';
-			$this->_field_data[$key]['rules'] = $pos ? $this->_field_data[$key]['rules'].$spacer.$rules : $rules.$spacer.$this->_field_data[$key]['rules'];
-		}
-	}
-	
-	function set_all_rules($rules, $pos = false) {
-		foreach ($this->_field_data as $key => $value) {
-			$spacer = ($value['rules'] == '') ? '' : '|';
-			$this->_field_data[$key]['rules'] = $pos ? $value['rules'].$spacer.$rules : $rules.$spacer.$value['rules'];
-		}
-	}
-	
-	/**
-	 * Set Rules from config groups
-	 *
-	 * @access	public
-	 * @param	mixed
-	 * @return	void
-	 */
-	function set_group_rules($groups) {
-		// Is there a validation rule for the particular group being accessed?
-		if(!is_array($groups)) {
-			$groups = ($groups == '') ? array() : explode(",", $groups);
+		if ($args == NULL) {
+			$args = array();
+			if (isset($trace)) $args = $trace[1]['args'];
+			// $args = func_get_args();
 		}
 		
-		foreach($groups as $group) {
-			if ($groups != '' AND isset($this->_config_rules[$group]))
-			{
-				$this->set_rules($this->_config_rules[$group]);
+		// add class_function to config file
+		$this->add_function_array($source, $this->_inputs);
+		
+		foreach($this->_rules[$source] as $param => $metadata) {
+			if (!isset($this->_inputs[$param])) {
+				$this->_inputs[$param] = null;
 			}
-		}	}
-	
-	
-	// --------------------------------------------------------------------
-
-	/**
-	 * Set Rules
-	 *
-	 * This function takes an array of field names and validation
-	 * rules as input, validates the info, and stores it
-	 *
-	 * @access	public
-	 * @param	mixed
-	 * @param	string
-	 * @return	void
-	 */
-	public function set_rules($field, $label = '', $rules = '')
-	{
-		// No reason to set rules if we have no POST data
-		if (count($this->_request_data) == 0)
-		{
-			return $this;
+			
+			$this->parseRules($this->_inputs[$param], $metadata);
+			$this->_inputs[$param] = $this->parseFilters($this->_inputs[$param], $metadata);
 		}
-
-		// If an array was passed via the first parameter instead of indidual string
-		// values we cycle through it and recursively call this function.
-		if (is_array($field))
-		{
-			foreach ($field as $row)
-			{
-				// Houston, we have a problem...
-				if ( ! isset($row['field']) OR ! isset($row['rules']))
-				{
-					continue;
+		return $this->_inputs;
+	}
+	
+	/**
+	 * Parse a string of rules
+	 *
+	 * @param string $value
+	 * @param string $rules
+	 * @return BOOL
+	 */
+	private function parseRules($value, $metadata) {
+		$this->_metadata = $metadata;
+		
+		$allowed = TRUE;
+		$rules = explode("|", $metadata['rules']);
+		if ($rules[0]) {
+			foreach($rules as $rule) {
+				preg_match("/(!?)([\w-]*)\[?([^\[\]]*)\]?/", $rule, $matches);
+							
+				$test = $matches[2];
+				$params = $matches[3];
+				
+				if (method_exists($this, $test)) {
+					if ($params != '') {
+						$return = $this->{$test}($value, $params);
+					} else {
+						$return = $this->{$test}($value);
+					}
+					
+					if ($matches[1] == '!') {
+						$return = !$return;
+					}
+					if (!$return) {
+						if (isset($this->_default_messages[$test])) {
+							$this->_errors[$metadata['field']] = $metadata['label'].' '.$this->_default_messages[$test];
+						} else if ($test == 'password') {
+							$this->_errors[$metadata['field']] = $this->password->getErrors();
+						} else if (in_array($test, array("email", "field"))) {
+							// recursively called rules
+						} else {
+							echo "_default_messages for $test missing!!!";
+						}
+					}
+					$allowed = ($allowed && $return);
 				}
-
-				// If the field label wasn't passed we use the field name
-				$label = ( ! isset($row['label'])) ? $row['field'] : $row['label'];
-
-				// Here we go!
-				$this->set_rules($row['field'], $label, $row['rules']);
-			}
-			return $this;
-		}
-
-		// No fields? Nothing to do...
-		if ( ! is_string($field) OR! is_string($rules) OR $field == '')
-		{
-			return $this;
-		}
-
-		// If the field label wasn't passed we use the field name
-		$label = ($label == '') ? $field : $label;
-
-		// Is the field name an array?We test for the existence of a bracket "[" in
-		// the field name to determine this.If it is an array, we break it apart
-		// into its components so that we can fetch the corresponding POST data later
-		if (strpos($field, '[') !== FALSE AND preg_match_all('/\[(.*?)\]/', $field, $matches))
-		{
-			// Note: Due to a bug in current() that affects some versions
-			// of PHP we can not pass function call directly into it
-			$x = explode('[', $field);
-			$indexes[] = current($x);
-
-			for ($i = 0; $i < count($matches['0']); $i++)
-			{
-				if ($matches['1'][$i] != '')
-				{
-					$indexes[] = $matches['1'][$i];
-				}
-			}
-
-			$is_array = TRUE;
-		}
-		else
-		{
-			$indexes	= array();
-			$is_array	= FALSE;
-		}
-
-		// Build our master array
-		$this->_field_data[$field] = array(
-			'field'				=> $field,
-			'label'				=> $label,
-			'rules'				=> $rules,
-			'is_array'			=> $is_array,
-			'keys'				=> $indexes,
-			'postdata'			=> NULL,
-			'error'				=> ''
-		);
-
-		return $this;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Set Error Message
-	 *
-	 * Lets users set their own error messages on the fly.Note:The key
-	 * name has to match thefunction name that it corresponds to.
-	 *
-	 * @access	public
-	 * @param	string
-	 * @param	string
-	 * @return	string
-	 */
-	public function set_message($lang, $val = '')
-	{
-		if ( ! is_array($lang))
-		{
-			$lang = array($lang => $val);
-		}
-
-		$this->_error_messages = array_merge($this->_error_messages, $lang);
-
-		return $this;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Set The Error Delimiter
-	 *
-	 * Permits a prefix/suffix to be added to each error message
-	 *
-	 * @access	public
-	 * @param	string
-	 * @param	string
-	 * @return	void
-	 */
-	public function set_error_delimiters($prefix = '<p>', $suffix = '</p>')
-	{
-		$this->_error_prefix = $prefix;
-		$this->_error_suffix = $suffix;
-
-		return $this;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Get Error Message
-	 *
-	 * Gets the error message associated with a particular field
-	 *
-	 * @access	public
-	 * @param	string	the field name
-	 * @return	void
-	 */
-	public function error($field = '', $prefix = '', $suffix = '')
-	{
-		if ( ! isset($this->_field_data[$field]['error']) OR $this->_field_data[$field]['error'] == '')
-		{
-			return '';
-		}
-
-		if ($prefix == '')
-		{
-			$prefix = $this->_error_prefix;
-		}
-
-		if ($suffix == '')
-		{
-			$suffix = $this->_error_suffix;
-		}
-
-		return $prefix.$this->_field_data[$field]['error'].$suffix;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Error String
-	 *
-	 * Returns the error messages as a string, wrapped in the error delimiters
-	 *
-	 * @access	public
-	 * @param	string
-	 * @param	string
-	 * @return	str
-	 */
-	public function error_string($prefix = '', $suffix = '')
-	{
-		// No errrors, validation passes!
-		if (count($this->_error_array) === 0)
-		{
-			return '';
-		}
-
-		if ($prefix == '')
-		{
-			$prefix = $this->_error_prefix;
-		}
-
-		if ($suffix == '')
-		{
-			$suffix = $this->_error_suffix;
-		}
-
-		// Generate the error string
-		$str = '';
-		foreach ($this->_error_array as $val)
-		{
-			if ($val != '')
-			{
-				$str .= $prefix.$val.$suffix."\n";
 			}
 		}
-
-		return $str;
+		return $allowed;
 	}
 	
-	// --------------------------------------------------------------------
+	/**
+	 * Parse a string of filters and apply
+	 *
+	 * @param string $value
+	 * @param string $rules
+	 * @return BOOL
+	 */
+	private function parseFilters($value, $metadata) {
+		$this->_metadata = $metadata;
+		
+		$rules = explode("|", $metadata['filters']);
+		if ($rules[0]) {
+			foreach($rules as $rule) {
+				preg_match("/([\w-]*)\[?([^\[\]]*)\]?/", $rule, $matches); // (!?) is not needed for filter
+							
+				$test = $matches[1];
+				$params = $matches[2];
+				
+				if (method_exists($this, $test)) {
+					if ($params != '') {
+						$return = $this->{$test}($value, $params);
+					} else {
+						$return = $this->{$test}($value);
+					}
+				} else if (function_exists($test)) {
+					
+					if ($params != '') {
+						$value = $test($value, $params);
+					} else {
+						$value = $test($value);
+					}
+				}
+			}
+		}
+		return $value;
+	}
+	
+	/**
+	 * Adds a new Class::Function to rules list
+	 *
+	 * @param string $name
+	 * @param array $args Function inputs
+	 * @return void
+	 */
+	private function add_function_array($name, $args = array()) {
+		if (!$name) return FALSE;
+		
+		$regenerate = false;
+		if (!isset($this->_rules[$name])) {
+			$this->_rules[$name] = array();
+		}
+		
+		foreach ($args as $key => $value) {
+			if (!isset($this->_rules[$name][$key])) {
+				$this->_rules[$name][$key] = array(
+					'field' => $key,
+					'label' => $this->build_label($key),
+					'rules' => '',
+					'filters' => '',
+				);
+				$regenerate = true;
+			}
+		}
+		
+		if ($regenerate) $this->build_function_array($this->_rules);
+	}
+	
+	/**
+	 * Exports an array to a file
+	 *
+	 * @param array $arr Array to output
+	 * @param string $var_name Var name to be to be set to the array
+	 * @param string $file Output file path
+	 * @return array
+	 */
+	private function build_function_array($arr, $var_name = 'filter_rules', $file = 'php/inc.filter.rules.php') {
+		ksort($arr);
+		foreach($arr as $key => $value) {
+			ksort($arr[$key]);
+		}
+		ob_start();
+		var_export($arr);
+		$result = ob_get_clean();
+		
+		file_put_contents($file, "<?php\n\$$var_name = ".$result.";\n?>");
+		return $arr;
+	}
+	
+	/**
+	 * Creates a label from function name
+	 * ie aaaBbb_ccc -> Aaa Bbb Ccc
+	 *
+	 * @param string $field
+	 * @return string
+	 */
+	private function build_label($field) {
+		$label = str_replace("_", " ", $field); // aaaBbb_ccc -> aaaBbb ccc
+		$label = preg_replace("/([A-Z])/", " $1", $label); // aaaBbb -> aaa Bbb ccc
+		$label = ucwords($label); // aaa Bbb -> Aaa Bbb Ccc
+		return $label;
+	}
+	
+	//-- Generate inc.filter.tables.php --//
+	private function build_table_array() {
+		// collect data
+		$this->get_tables();
+		
+		//print_r($this->db_array);
+
+		$types = array(); // for debug
+		
+		$filter_table = array();
+		
+		foreach($this->db_array as $table => $fields) {
+			$this->_tables[$table] = array();	// return output
+			//print_r($fields);
+			foreach($fields as $field_name => $field) {
+				//print_r($field);
+				// filters by type
+				$types[] = $field['type'];
+				$types = array_unique($types);
+				
+				$params = array();
+				
+				// get params from comments
+				preg_match("/filter\[([\w\|\[\]]*)]/", $field['Comment'], $matches);
+				
+				if (isset($matches[1]))
+					$params[] = $matches[1];
+				
+				if ($field['Key'] == 'PRI' && $field['Extra'] == 'auto_increment')
+					$params[] = 'is_natural_no_zero';
+				
+				
+				switch ($field['type']) {
+					// numbers
+					case 'tinyint': // The signed range is –128 to 127. The unsigned range is 0 to 255. 
+						$params[] = "integer|max_length[".$field['size']."]";
+						$params[] = ($field['unsigned'])
+							? "is_natural|greater_than_or_equal[0]|less_than_or_equal[255]"
+							: "greater_than_or_equal[-128]|less_than_or_equal[127]";
+						break;
+					case 'smallint': // The signed range is –32768 to 32767. The unsigned range is 0 to 65535 
+						$params[] = "integer|max_length[".$field['size']."]";
+						$params[] = ($field['unsigned'])
+							? "is_natural|greater_than_or_equal[0]|less_than_or_equal[65535]"
+							: "greater_than[-32768]|less_than_or_equal[32767]";
+						break;
+					case 'mediumint': // The signed range is –8388608 to 8388607. The unsigned range is 0 to 16777215  
+						$params[] = "integer|max_length[".$field['size']."]";
+						$params[] = ($field['unsigned'])
+							? "is_natural|greater_than_or_equal[0]|less_than_or_equal[16777215]"
+							: "greater_than_or_equal[-8388608]|less_than_or_equal[8388607]";
+						break;
+					case 'int' : // The signed range is –2147483648 to 2147483647. The unsigned range is 0 to 4294967295 
+						$params[] = "integer|max_length[".$field['size']."]";
+						$params[] = ($field['unsigned'])
+							? "is_natural|greater_than_or_equal[0]|less_than_or_equal[4294967295]"
+							: "greater_than_or_equal[-2147483648]|less_than_or_equal[2147483647]";
+						break;
+					case 'bigint': //The signed range is –9223372036854775808 to 9223372036854775807. The unsigned range is 0 to 18446744073709551615  
+						$params[] = "integer|max_length[".$field['size']."]";
+						$params[] = ($field['unsigned'])
+							? "is_natural|greater_than_or_equal[0]|less_than_or_equal[18446744073709551615]"
+							: "greater_than_or_equal[-9223372036854775808]|less_than_or_equal[9223372036854775807]";
+						break;
+					case 'decimal' :
+						$params[] = "decimal[".$field['size']."]";
+						break;
+					
+					// strings
+					case 'char':	// The range of Length is 1 to 255 characters. Trailing spaces are removed when the value is retrieved. CHAR values are sorted and compared in case-insensitive fashion according to the default character set unless the BINARY keyword is given 
+						$params[] = "max_length[255]";
+						break;
+					case 'varchar':	// The range of Length is 1 to 255 characters. VARCHAR values are sorted and compared in case-insensitive fashion unless the BINARY keyword is given 
+						$params[] = "max_length[255]";
+						break;
+					case 'tinyblob' : // A BLOB or TEXT column with a maximum length of 255 (2^8 - 1) characters 
+						$params[] = "max_length[255]";
+						break;
+					case 'blob' : // A BLOB or TEXT column with a maximum length of 65535 (2^16 - 1) characters 
+						$params[] = "max_length[65535]";
+						break;
+					case 'mediumblob' : // A BLOB or TEXT column with a maximum length of 16777215 (2^24 - 1) characters  
+						$params[] = "max_length[16777215]";
+						break;
+					case 'longblob' : // A BLOB or TEXT column with a maximum length of 4294967295 (2^32 - 1) characters 
+						$params[] = "max_length[4294967295]";
+						break;
+					case 'tinytext' : // A BLOB or TEXT column with a maximum length of 255 (2^8 - 1) characters 
+						$params[] = "max_length[255]";
+						break;
+					case 'text' : // A BLOB or TEXT column with a maximum length of 65535 (2^16 - 1) characters 
+						$params[] = "max_length[65535]";
+						break;
+					case 'mediumtext' : // A BLOB or TEXT column with a maximum length of 16777215 (2^24 - 1) characters 
+						$params[] = "max_length[16777215]";
+						break;
+					case 'longtext' : // A BLOB or TEXT column with a maximum length of 4294967295 (2^32 - 1) characters 
+						$params[] = "max_length[4294967295]";
+						break;
+				}
+				
+				$this->_tables[$table][$field_name] = implode('|', $params);
+			}
+		}
+		
+		if ($this->_debug) print_r($types);
+		
+		$this->_tables = $this->build_function_array($this->_tables, 'filter_tables', 'php/inc.filter.tables.php');
+		
+		return $this->_tables;
+	}
+	
+	// call to generate $db_array
+	private function get_tables($db_name = DB_NAME) {
+		$query = "SHOW FULL TABLES FROM $db_name";
+		
+		if ($result = $this->db->query($query)) {
+			
+			while($table = $this->db->fetch_array($result)) {
+				$this_array[$table[0]] = array();
+				$this->get_table_fields($table[0]);
+			}
+		}
+		
+		return $this->db_array;
+	}
+	
+	private function get_table_fields($table = '') {
+		$query = "SHOW FULL COLUMNS FROM $table";
+
+		if ($result = $this->db->query($query)) {
+			if ($this->_debug) echo "\n$table\n";
+			while($fields = $this->db->fetch_assoc($result)) {
+				//print_r($fields);
+				$name = $fields['Field'];
+				$this->db_array[$table][$name] = $fields;
+				
+				if ($this->_debug) echo "{$fields['Field']}\t{$fields['Type']}\t{$fields['Comment']}\n";
+				preg_match("/^(\w*)\(?([\d,]*)?\)?\s?(unsigned)?\s?(zerofill)?/", $fields['Type'], $matches);
+				//print_r($matches);
+				$this->db_array[$table][$name]['type'] = $matches[1];
+				$this->db_array[$table][$name]['size'] = $matches[2];
+				$this->db_array[$table][$name]['unsigned'] = isset($matches[3]);
+				$this->db_array[$table][$name]['zerofill'] = isset($matches[4]);
+				// print_flags
+				//echo base_convert ( $row->flags ,10 , 2);
+				//print_r($this->db_array[$table][$name]);
+			}
+		}
+		return $this->db_array[$table];
+	}
+	
+	// ********************************************************************
 
 	/**
-	 * Run the Validator
-	 *
-	 * This function does all the work.
+	 * Field - recursive rules based on DB
 	 *
 	 * @access	public
+	 * @param	string
 	 * @return	bool
 	 */
-	public function run($groups = '')
-	{
-		// Do we even have any data to process?Mm?
-		if (count($this->_request_data) == 0)
-		{
-			return FALSE;
+	public function field($str, $arg) {
+		list($table, $field) = explode(".", $arg);
+		$return = TRUE;
+		if(isset($this->_tables[$table]) && isset($this->_tables[$table][$field])) {
+			$metadata = $this->_metadata;
+			$metadata['rules'] = $this->_tables[$table][$field];
+			$metadata['filters'] = '';
+			$return = $this->parseRules($str, $metadata);
 		}
-
-		// Does the _field_data array containing the validation rules exist?
-		// If not, we look to see if they were assigned via a config file
-		if (count($this->_field_data) == 0)
-		{
-			// No validation rules?We're done...
-			if (count($this->_config_rules) == 0)
-			{
-				return FALSE;
-			}
-
-			// Is there a validation rule for the particular group being accessed?
-			$groups = ($groups == '') ? '' : explode(",", $groups);
-			
-			if (is_array($groups))
-			{
-				foreach($groups as $group) {
-					if ($groups != '' AND isset($this->_config_rules[$group]))
-					{
-						$this->set_rules($this->_config_rules[$group]);
-					}
-				}
-			}
-			else
-			{
-				$this->set_rules($this->_config_rules);
-			}
-
-			// We're we able to set the rules correctly?
-			if (count($this->_field_data) == 0)
-			{
-				//log_message('debug', "Unable to find validation rules");
-				return FALSE;
-			}
-		}
-
-		// Load the language file containing error messages
-		//$this->CI->lang->load('form_validation');
-
-		// Cycle through the rules for each field, match the
-		// corresponding $_POST item and test for errors
-		foreach ($this->_field_data as $field => $row)
-		{
-			// Fetch the data from the corresponding $_POST array and cache it in the _field_data array.
-			// Depending on whether the field name is an array or a string will determine where we get it from.
-			
-			if ($row['is_array'] == TRUE)
-			{
-				$this->_field_data[$field]['postdata'] = $this->_reduce_array($this->_request_data, $row['keys']);
-			}
-			else
-			{
-				if (isset($this->_request_data[$field]) AND $this->_request_data[$field] != "")
-				{
-					$this->_field_data[$field]['postdata'] = $this->_request_data[$field];
-				}
-			}
-
-			$this->_execute($row, explode('|', $row['rules']), $this->_field_data[$field]['postdata']);
-		}
-
-		// Did we end up with any errors?
-		$total_errors = count($this->_error_array);
-
-		if ($total_errors > 0)
-		{
-			$this->_safe_form_data = TRUE;
-		}
-
-		// Now we need to re-set the POST data with the new, processed data
-		$this->_reset_post_array();
-
-		// No errors, validation passes!
-		if ($total_errors == 0)
-		{
-			return TRUE;
-		}
-
-		// Validation fails
-		return FALSE;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Traverse a multidimensional $this->_request_data array index until the data is found
-	 *
-	 * @access	private
-	 * @param	array
-	 * @param	array
-	 * @param	integer
-	 * @return	mixed
-	 */
-	protected function _reduce_array($array, $keys, $i = 0)
-	{
-		if (is_array($array))
-		{
-			if (isset($keys[$i]))
-			{
-				if (isset($array[$keys[$i]]))
-				{
-					$array = $this->_reduce_array($array[$keys[$i]], $keys, ($i+1));
-				}
-				else
-				{
-					return NULL;
-				}
-			}
-			else
-			{
-				return $array;
-			}
-		}
-
-		return $array;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Re-populate the _POST array with our finalized and processed data
-	 *
-	 * @access	private
-	 * @return	null
-	 */
-	protected function _reset_post_array()
-	{
-		foreach ($this->_field_data as $field => $row)
-		{
-			if ( ! is_null($row['postdata']))
-			{
-				if ($row['is_array'] == FALSE)
-				{
-					if (isset($this->_request_data[$row['field']]))
-					{
-						$this->_request_data[$row['field']] = $this->prep_for_form($row['postdata']);
-					}
-				}
-				else
-				{
-					// start with a reference
-					$post_ref =& $this->_request_data;
-
-					// before we assign values, make a reference to the right POST key
-					if (count($row['keys']) == 1)
-					{
-						$post_ref =& $post_ref[current($row['keys'])];
-					}
-					else
-					{
-						foreach ($row['keys'] as $val)
-						{
-							$post_ref =& $post_ref[$val];
-						}
-					}
-
-					if (is_array($row['postdata']))
-					{
-						$array = array();
-						foreach ($row['postdata'] as $k => $v)
-						{
-							$array[$k] = $this->prep_for_form($v);
-						}
-
-						$post_ref = $array;
-					}
-					else
-					{
-						$post_ref = $this->prep_for_form($row['postdata']);
-					}
-				}
-			}
-		}
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Executes the Validation routines
-	 *
-	 * @access	private
-	 * @param	array
-	 * @param	array
-	 * @param	mixed
-	 * @param	integer
-	 * @return	mixed
-	 */
-	protected function _execute($row, $rules, $postdata = NULL, $cycles = 0)
-	{
-		// If the $this->_request_data data is an array we will run a recursive call
-		if (is_array($postdata))
-		{
-			foreach ($postdata as $key => $val)
-			{
-				$this->_execute($row, $rules, $val, $cycles);
-				$cycles++;
-			}
-
-			return;
-		}
-
-		// --------------------------------------------------------------------
-
-		// If the field is blank, but NOT required, no further tests are necessary
-		$callback = FALSE;
-		if ( ! in_array('required', $rules) AND is_null($postdata))
-		{
-			// Before we bail out, does the rule contain a callback?
-			if (preg_match("/(callback_\w+(\[.*?\])?)/", implode(' ', $rules), $match))
-			{
-				$callback = TRUE;
-				$rules = (array('1' => $match[1]));
-			}
-			else
-			{
-				return;
-			}
-		}
-		
-		// --------------------------------------------------------------------
-
-		// Isset Test. Typically this rule will only apply to checkboxes.
-		if (is_null($postdata) AND $callback == FALSE)
-		{
-			if (in_array('isset', $rules, TRUE) OR in_array('required', $rules))
-			{
-				// Set the message type
-				$type = (in_array('required', $rules)) ? 'required' : 'isset';
-
-				if ( ! isset($this->_error_messages[$type]))
-				{
-					/*if (FALSE === ($line = $this->CI->lang->line($type)))
-					{*/
-						$line = 'The field was not set';
-					/*}*/
-				}
-				else
-				{
-					$line = $this->_error_messages[$type];
-				}
-
-				// Build the error message
-				$message = sprintf($line, $this->_translate_fieldname($row['label']));
-
-				// Save the error message
-				$this->_field_data[$row['field']]['error'] = $message;
-
-				if ( ! isset($this->_error_array[$row['field']]))
-				{
-					$this->_error_array[$row['field']] = $message;
-				}
-			}
-
-			return;
-		}
-
-		// --------------------------------------------------------------------
-
-		// Cycle through each rule and run it
-		foreach ($rules As $rule)
-		{
-			$_in_array = FALSE;
-
-			// We set the $postdata variable with the current data in our master array so that
-			// each cycle of the loop is dealing with the processed data from the last cycle
-			if ($row['is_array'] == TRUE AND is_array($this->_field_data[$row['field']]['postdata']))
-			{
-				// We shouldn't need this safety, but just in case there isn't an array index
-				// associated with this cycle we'll bail out
-				if ( ! isset($this->_field_data[$row['field']]['postdata'][$cycles]))
-				{
-					continue;
-				}
-
-				$postdata = $this->_field_data[$row['field']]['postdata'][$cycles];
-				$_in_array = TRUE;
-			}
-			else
-			{
-				$postdata = $this->_field_data[$row['field']]['postdata'];
-			}
-
-			// --------------------------------------------------------------------
-
-			// Is the rule a callback?
-			$callback = FALSE;
-			if (substr($rule, 0, 9) == 'callback_')
-			{
-				$rule = substr($rule, 9);
-				$callback = TRUE;
-			}
-
-			// Strip the parameter (if exists) from the rule
-			// Rules can contain a parameter: max_length[5]
-			$param = FALSE;
-			if (preg_match("/(.*?)\[(.*)\]/", $rule, $match))
-			{
-				$rule	= $match[1];
-				$param	= $match[2];
-			}
-
-			// Call the function that corresponds to the rule
-			if ($callback === TRUE)
-			{
-				
-				// Run the function and grab the result
-				$result = $this->$rule($postdata, $param);
-
-				// Re-assign the result to the master data array
-				if ($_in_array == TRUE)
-				{
-					$this->_field_data[$row['field']]['postdata'][$cycles] = (is_bool($result)) ? $postdata : $result;
-				}
-				else
-				{
-					$this->_field_data[$row['field']]['postdata'] = (is_bool($result)) ? $postdata : $result;
-				}
-
-				// If the field isn't required and we just processed a callback we'll move on...
-				if ( ! in_array('required', $rules, TRUE) AND $result !== FALSE)
-				{
-					continue;
-				}
-			}
-			else
-			{
-				if ( ! method_exists($this, $rule))
-				{
-					// If our own wrapper function doesn't exist we see if a native PHP function does.
-					// Users can use any native PHP function call that has one param. Now two, $value must be the first param
-					if (function_exists($rule))
-					{
-						if ($param) $result = $rule($postdata, $param);
-						else $result = $rule($postdata);
-
-						if ($_in_array == TRUE)
-						{
-							$this->_field_data[$row['field']]['postdata'][$cycles] = (is_bool($result)) ? $postdata : $result;
-						}
-						else
-						{
-							$this->_field_data[$row['field']]['postdata'] = (is_bool($result)) ? $postdata : $result;
-						}
-					}
-					else if ($rule == '') {
-						
-					}
-					else
-					{
-						//log_message('debug', "Unable to find validation rule: ".$rule);
-						echo "Unable to find validation rule: ".$rule;
-					}
-
-					continue;
-				}
-
-				$result = $this->$rule($postdata, $param);
-				if ($_in_array == TRUE)
-				{
-					$this->_field_data[$row['field']]['postdata'][$cycles] = (is_bool($result)) ? $postdata : $result;
-				}
-				else
-				{
-					$this->_field_data[$row['field']]['postdata'] = (is_bool($result)) ? $postdata : $result;
-				}
-				
-				// spaecial case
-				if ($rule == 'cast_boolean') {
-					$this->_field_data[$row['field']]['postdata'] = $result;
-					$result = "";
-				}
-				
-			}
-
-			// Did the rule test negatively?If so, grab the error.
-			if ($result === FALSE)
-			{
-				if ( ! isset($this->_error_messages[$rule]))
-				{
-					//if (FALSE === ($line = $this->CI->lang->line($rule)))
-					//{
-						$line = 'Unable to access an error message corresponding to your field name.';
-					//}
-				}
-				else
-				{
-					$line = $this->_error_messages[$rule];
-				}
-
-				// Is the parameter we are inserting into the error message the name
-				// of another field?If so we need to grab its "field label"
-				if (isset($this->_field_data[$param]) AND isset($this->_field_data[$param]['label']))
-				{
-					$param = $this->_translate_fieldname($this->_field_data[$param]['label']);
-				}
-
-				// Build the error message
-				$message = sprintf($line, $this->_translate_fieldname($row['label']), $param);
-
-				// Save the error message
-				$this->_field_data[$row['field']]['error'] = $message;
-
-				if ( ! isset($this->_error_array[$row['field']]))
-				{
-					$this->_error_array[$row['field']] = $message;
-				}
-
-				return;
-			}
-		}
-	}
-	
-	// --------------------------------------------------------------------
-
-	/**
-	 * Translate a field name
-	 *
-	 * @access	private
-	 * @param	string	the field name
-	 * @return	string
-	 */
-	protected function _translate_fieldname($fieldname)
-	{
-		// Do we need to translate the field name?
-		// We look for the prefix lang: to determine this
-		if (substr($fieldname, 0, 5) == 'lang:')
-		{
-			// Grab the variable
-			$line = substr($fieldname, 5);
-
-			// Were we able to translate the field name?If not we use $line
-			if (FALSE === ($fieldname = $this->CI->lang->line($line)))
-			{
-				return $line;
-			}
-		}
-
-		return $fieldname;
+		return $return;
 	}
 	
 	// --------------------------------------------------------------------
@@ -949,7 +648,7 @@ class Filter {
 			return FALSE;
 		}
 
-		returnTRUE;
+		return TRUE;
 	}
 
 	// --------------------------------------------------------------------
@@ -964,12 +663,12 @@ class Filter {
 	 */
 	public function matches($str, $field)
 	{
-		if ( ! isset($this->_request_data[$field]))
+		if ( ! isset($this->_inputs[$field]))
 		{
 			return FALSE;
 		}
 
-		$field = $this->_request_data[$field];
+		$field = $this->_inputs[$field];
 
 		return ($str !== $field) ? FALSE : TRUE;
 	}
@@ -1068,6 +767,252 @@ class Filter {
 	}
 
 	// --------------------------------------------------------------------
+	
+	/**
+	 * Boolean
+	 *
+	 * @access	public
+	 * @param	string
+	 * @return	bool
+	 */
+	public function boolean($str)
+	{
+		return filter_var($str, FILTER_VALIDATE_BOOLEAN);
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Alpha
+	 *
+	 * @access	public
+	 * @param	string
+	 * @return	bool
+	 */
+	public function alpha($str)
+	{
+		return ( ! preg_match("/^([a-z])+$/i", $str)) ? FALSE : TRUE;
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Alpha-numeric
+	 *
+	 * @access	public
+	 * @param	string
+	 * @return	bool
+	 */
+	public function alpha_numeric($str)
+	{
+		return ( ! preg_match("/^([a-z0-9])+$/i", $str)) ? FALSE : TRUE;
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Alpha-numeric with underscores and dashes
+	 *
+	 * @access	public
+	 * @param	string
+	 * @return	bool
+	 */
+	public function alpha_dash($str)
+	{
+		return ( ! preg_match("/^([-a-z0-9_-])+$/i", $str)) ? FALSE : TRUE;
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Numeric
+	 *
+	 * @access	public
+	 * @param	string
+	 * @return	bool
+	 */
+	public function numeric($str)
+	{
+		return (bool)preg_match( '/^[\-+]?[0-9]*\.?[0-9]+$/', $str);
+
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Is Numeric
+	 *
+	 * @access	public
+	 * @param	string
+	 * @return	bool
+	 */
+	/*public function is_numeric($str)
+	{
+		return ( ! is_numeric($str)) ? FALSE : TRUE;
+	}*/
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Integer
+	 *
+	 * @access	public
+	 * @param	string
+	 * @return	bool
+	 */
+	public function integer($str)
+	{
+		return (bool) preg_match('/^[\-+]?[0-9]+$/', $str);
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Decimal number
+	 *
+	 * @access	public
+	 * @param	string
+	 * @return	bool
+	 */
+	/*public function decimal($str, $total = 0, $decimal = 0)
+	{
+		if ($total && $decimal) {
+			$diff = $total - $decimal;
+			return (bool) preg_match('/^[\-+]?[0-9]{0,'.$diff.'}\.[0-9]{0,'.$decimal.'}$/', $str);
+		} else {
+			return (bool) preg_match('/^[\-+]?[0-9]+\.[0-9]+$/', $str);
+		}
+	}*/
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Greather than
+	 *
+	 * @access	public
+	 * @param	string
+	 * @return	bool
+	 */
+	public function greater_than($str, $min)
+	{
+		if ( ! is_numeric($str))
+		{
+			return FALSE;
+		}
+		return $str > $min;
+	}
+	
+	// --------------------------------------------------------------------
+
+	/**
+	 * Greather than
+	 *
+	 * @access	public
+	 * @param	string
+	 * @return	bool
+	 */
+	public function greater_than_or_equal($str, $min)
+	{
+		if ( ! is_numeric($str))
+		{
+			return FALSE;
+		}
+		return $str >= $min;
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Less than
+	 *
+	 * @access	public
+	 * @param	string
+	 * @return	bool
+	 */
+	public function less_than($str, $max)
+	{
+		if ( ! is_numeric($str))
+		{
+			return FALSE;
+		}
+		return $str < $max;
+	}
+	// --------------------------------------------------------------------
+
+	/**
+	 * Less than
+	 *
+	 * @access	public
+	 * @param	string
+	 * @return	bool
+	 */
+	public function less_than_or_equal($str, $max)
+	{
+		if ( ! is_numeric($str))
+		{
+			return FALSE;
+		}
+		return $str <= $max;
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Is a Natural number(0,1,2,3, etc.)
+	 *
+	 * @access	public
+	 * @param	string
+	 * @return	bool
+	 */
+	public function is_natural($str)
+	{
+		return (bool) preg_match( '/^[0-9]+$/', $str);
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Is a Natural number, but not a zero(1,2,3, etc.)
+	 *
+	 * @access	public
+	 * @param	string
+	 * @return	bool
+	 */
+	public function is_natural_no_zero($str)
+	{
+		if ( ! preg_match( '/^[0-9]+$/', $str))
+		{
+			return FALSE;
+		}
+
+		if ($str == 0)
+		{
+			return FALSE;
+		}
+
+		return TRUE;
+	}
+
+	
+	// --------------------------------------------------------------------
+
+	/**
+	 * Email
+	 *
+	 * @access	public
+	 * @param	string
+	 * @return	bool
+	 */
+	public function email($str)
+	{
+		$metadata = $this->_metadata;
+		$metadata['rules'] = 'valid_email|valid_email_dns';
+		$metadata['filters'] = '';
+		return $this->parseRules($str, $metadata);
+	}
+
+	
+	// --------------------------------------------------------------------
 
 	/**
 	 * Valid Email
@@ -1078,36 +1023,13 @@ class Filter {
 	 */
 	public function valid_email($str)
 	{
-		return filter_var($str, FILTER_VALIDATE_EMAIL);
+		//return filter_var($str, FILTER_VALIDATE_EMAIL);
 		// practical implementation of RFC 2822
 		return ( ! preg_match("/[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9][a-z0-9-]*[a-z0-9]/ix", $str)) ? FALSE : TRUE;
 		// old php version
 		return ( ! preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/ix", $str)) ? FALSE : TRUE;
 		// CI version
 		return ( ! preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,7}$/ix", $str)) ? FALSE : TRUE;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Valid Email DNS
-	 * 
-	 * Checks teh MX record of an email domain
-	 *
-	 * @access	public
-	 * @param	string
-	 * @return	bool
-	 */
-	public function valid_email_dns($str)
-	{
-		if ($this->valid_email($str)) {
-			$host = substr($str, strpos($str, "@")+1);
-			// return checkdnsrr($host, "MX");
-			if (getmxrr($host, $mxhosts) || !count($mxhosts) || $mxhosts[0] == NULL || $mxhosts[0] == '0.0.0.0') {
-				return TRUE;
-			}
-		}
-		return FALSE;
 	}
 
 	// --------------------------------------------------------------------
@@ -1138,6 +1060,29 @@ class Filter {
 	}
 
 	// --------------------------------------------------------------------
+
+	/**
+	 * Valid Email DNS
+	 * 
+	 * Checks teh MX record of an email domain
+	 *
+	 * @access	public
+	 * @param	string
+	 * @return	bool
+	 */
+	public function valid_email_dns($str)
+	{
+		if ($this->valid_email($str)) {
+			$host = substr($str, strpos($str, "@")+1);
+			// return checkdnsrr($host, "MX");
+			if (getmxrr($host, $mxhosts) || !count($mxhosts) || $mxhosts[0] == NULL || $mxhosts[0] == '0.0.0.0') {
+				return TRUE;
+			}
+		}
+		return FALSE;
+	}
+
+	// --------------------------------------------------------------------
 	
 	/**
 	 * Valid URL
@@ -1152,7 +1097,11 @@ class Filter {
 	 */
 	public function valid_url($str)
 	{
-		return filter_var($str, FILTER_VALIDATE_URL);
+		//return filter_var($str, FILTER_VALIDATE_URL);
+		
+		return ( ! preg_match("/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/ix", $str)) ? FALSE : TRUE;
+		
+		return ( ! preg_match("/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(:[0-9]+)?|(?:ww‌​w.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?‌​(?:[\w]*))?)/ix", $str)) ? FALSE : TRUE;
 	}
 
 	// --------------------------------------------------------------------
@@ -1324,6 +1273,88 @@ class Filter {
 	// --------------------------------------------------------------------
 
 	/**
+	 * Valid Base64
+	 *
+	 * Tests a string for characters outside of the Base64 alphabet
+	 * as defined by RFC 2045 http://www.faqs.org/rfcs/rfc2045
+	 *
+	 * @access	public
+	 * @param	string
+	 * @return	bool
+	 */
+	/*public function valid_base64($str)
+	{
+		return (bool) ! preg_match('/[^a-zA-Z0-9\/\+=]/', $str);
+	}*/
+	
+	
+	// --------------------------------------------------------------------
+
+	/**
+	 * Strong Password
+	 *
+	 * @access	public
+	 * @param	string
+	 * @param	string
+	 * @return	bool
+	 */
+	public function password($str)
+	{
+		return $this->password->validate($str);
+	}
+	
+	// --------------------------------------------------------------------
+
+	/**
+	 * Valid Mail Code
+	 *
+	 * @access	public
+	 * @param	string
+	 * @param	string
+	 * @return	bool
+	 */
+	/*public function valid_mail_code($str, $country_code)
+	{
+		return TRUE;
+	}*/
+	
+	// --------------------------------------------------------------------
+
+	/**
+	 * Valid Phone Number
+	 *
+	 * @access	public
+	 * @param	string
+	 * @param	string
+	 * @return	bool
+	 */
+	/*public function valid_phone($str, $type)
+	{
+		return TRUE;
+		switch ($type) {
+			case "+":				// +1 (XXX) XXX-XXXX
+				return $this->match("/(\d)/", $str);
+			default:				// (XXX) XXX-XXXX
+				return $this->match("/(\d)/", $str);
+		}
+	}*/
+	
+	// ********************************************************************
+
+	/**
+	 * Trim
+	 *
+	 * @access	public
+	 * @param	string
+	 * @return	bool
+	 */
+	public function trim($str)
+	{
+		return trim($str);
+	}
+	
+	// --------------------------------------------------------------------
+	/**
 	 * Boolean
 	 *
 	 * @access	public
@@ -1333,7 +1364,7 @@ class Filter {
 	public function cast_boolean($str)
 	{
 		
-		switch ($str) {
+		switch (strtolower($str)) {
 			case "true": 	return TRUE; break;
 			case "false": 	return FALSE; break;
 			case "1": 		return TRUE; break;
@@ -1346,317 +1377,6 @@ class Filter {
 		}
 	}
 	
-	/**
-	 * Boolean
-	 *
-	 * @access	public
-	 * @param	string
-	 * @return	bool
-	 */
-	public function boolean($str)
-	{
-		return (bool) is_bool($str);
-		//return filter_var($str, FILTER_VALIDATE_BOOLEAN);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Alpha
-	 *
-	 * @access	public
-	 * @param	string
-	 * @return	bool
-	 */
-	public function alpha($str)
-	{
-		return ( ! preg_match("/^([a-z])+$/i", $str)) ? FALSE : TRUE;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Alpha-numeric
-	 *
-	 * @access	public
-	 * @param	string
-	 * @return	bool
-	 */
-	public function alpha_numeric($str)
-	{
-		return ( ! preg_match("/^([a-z0-9])+$/i", $str)) ? FALSE : TRUE;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Alpha-numeric with underscores and dashes
-	 *
-	 * @access	public
-	 * @param	string
-	 * @return	bool
-	 */
-	public function alpha_dash($str)
-	{
-		return ( ! preg_match("/^([-a-z0-9_-])+$/i", $str)) ? FALSE : TRUE;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Numeric
-	 *
-	 * @access	public
-	 * @param	string
-	 * @return	bool
-	 */
-	public function numeric($str)
-	{
-		return (bool)preg_match( '/^[\-+]?[0-9]*\.?[0-9]+$/', $str);
-
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Is Numeric
-	 *
-	 * @access	public
-	 * @param	string
-	 * @return	bool
-	 */
-	public function is_numeric($str)
-	{
-		return ( ! is_numeric($str)) ? FALSE : TRUE;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Integer
-	 *
-	 * @access	public
-	 * @param	string
-	 * @return	bool
-	 */
-	public function integer($str)
-	{
-		return (bool) preg_match('/^[\-+]?[0-9]+$/', $str);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Decimal number
-	 *
-	 * @access	public
-	 * @param	string
-	 * @return	bool
-	 */
-	public function decimal($str, $total = 0, $decimal = 0)
-	{
-		if ($total && $decimal) {
-			$diff = $total - $decimal;
-			return (bool) preg_match('/^[\-+]?[0-9]{0,'.$diff.'}\.[0-9]{0,'.$decimal.'}$/', $str);
-		} else {
-			return (bool) preg_match('/^[\-+]?[0-9]+\.[0-9]+$/', $str);
-		}
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Greather than
-	 *
-	 * @access	public
-	 * @param	string
-	 * @return	bool
-	 */
-	public function greater_than($str, $min)
-	{
-		if ( ! is_numeric($str))
-		{
-			return FALSE;
-		}
-		return $str > $min;
-	}
-	
-	// --------------------------------------------------------------------
-
-	/**
-	 * Greather than
-	 *
-	 * @access	public
-	 * @param	string
-	 * @return	bool
-	 */
-	public function greater_than_or_equal($str, $min)
-	{
-		if ( ! is_numeric($str))
-		{
-			return FALSE;
-		}
-		return $str >= $min;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Less than
-	 *
-	 * @access	public
-	 * @param	string
-	 * @return	bool
-	 */
-	public function less_than($str, $max)
-	{
-		if ( ! is_numeric($str))
-		{
-			return FALSE;
-		}
-		return $str < $max;
-	}
-	// --------------------------------------------------------------------
-
-	/**
-	 * Less than
-	 *
-	 * @access	public
-	 * @param	string
-	 * @return	bool
-	 */
-	public function less_than_or_equal($str, $max)
-	{
-		if ( ! is_numeric($str))
-		{
-			return FALSE;
-		}
-		return $str <= $max;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Is a Natural number(0,1,2,3, etc.)
-	 *
-	 * @access	public
-	 * @param	string
-	 * @return	bool
-	 */
-	public function is_natural($str)
-	{
-		return (bool) preg_match( '/^[0-9]+$/', $str);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Is a Natural number, but not a zero(1,2,3, etc.)
-	 *
-	 * @access	public
-	 * @param	string
-	 * @return	bool
-	 */
-	public function is_natural_no_zero($str)
-	{
-		if ( ! preg_match( '/^[0-9]+$/', $str))
-		{
-			return FALSE;
-		}
-
-		if ($str == 0)
-		{
-			return FALSE;
-		}
-
-		return TRUE;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Valid Base64
-	 *
-	 * Tests a string for characters outside of the Base64 alphabet
-	 * as defined by RFC 2045 http://www.faqs.org/rfcs/rfc2045
-	 *
-	 * @access	public
-	 * @param	string
-	 * @return	bool
-	 */
-	public function valid_base64($str)
-	{
-		return (bool) ! preg_match('/[^a-zA-Z0-9\/\+=]/', $str);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Valid Mail Code
-	 *
-	 * @access	public
-	 * @param	string
-	 * @param	string
-	 * @return	bool
-	 */
-	public function valid_mail_code($str, $country_code)
-	{
-		return TRUE;
-	}
-	
-	// --------------------------------------------------------------------
-
-	/**
-	 * Valid Phone Number
-	 *
-	 * @access	public
-	 * @param	string
-	 * @param	string
-	 * @return	bool
-	 */
-	public function valid_phone($str, $type)
-	{
-		return TRUE;
-		switch ($type) {
-			case "+":				// +1 (XXX) XXX-XXXX
-				return $this->match("/(\d)/", $str);
-			default:				// (XXX) XXX-XXXX
-				return $this->match("/(\d)/", $str);
-		}
-	}
-	
-	// --------------------------------------------------------------------
-
-	/**
-	 * Prep data for form
-	 *
-	 * This function allows HTML to be safely shown in a form.
-	 * Special characters are converted.
-	 *
-	 * @access	public
-	 * @param	string
-	 * @return	string
-	 */
-	public function prep_for_form($data = '')
-	{
-		if (is_array($data))
-		{
-			foreach ($data as $key => $val)
-			{
-				$data[$key] = $this->prep_for_form($val);
-			}
-
-			return $data;
-		}
-
-		if ($this->_safe_form_data == FALSE OR $data === '')
-		{
-			return $data;
-		}
-
-		return str_replace(array("'", '"', '<', '>'), array("&#39;", "&quot;", '&lt;', '&gt;'), stripslashes($data));
-	}
-
 	// --------------------------------------------------------------------
 
 	/**
@@ -1684,16 +1404,16 @@ class Filter {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Strip Image Tags
+	 * Strip Tags
 	 *
 	 * @access	public
 	 * @param	string
 	 * @return	string
 	 */
-	/*public function strip_image_tags($str)
+	public function strip_tags($str, $tags = '')
 	{
-		return $this->CI->input->strip_image_tags($str);
-	}*/
+		return strip_tags($str, $tags);
+	}
 
 	// --------------------------------------------------------------------
 
@@ -1706,7 +1426,7 @@ class Filter {
 	 */
 	/*public function xss_clean($str)
 	{
-		return $this->CI->security->xss_clean($str);
+		return $this->security->xss_clean($str);
 	}*/
 
 	// --------------------------------------------------------------------
@@ -1737,13 +1457,5 @@ class Filter {
 		return filter_var($str, FILTER_SANITIZE_STRING);
 	}
 }
-
-
-$filter_tools = new filter_tools;
-if (!isset($filter_input)) $filter_input = array();
-if (!isset($filter_table)) $filter_table = $filter_tools->build_table_array();
-if (!isset($filter_function)) $filter_function = $filter_tools->build_function_array();
-
-$filter = new Filter(array_merge($filter_input, $filter_table, $filter_function));
 
 ?>

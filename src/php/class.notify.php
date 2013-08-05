@@ -1,5 +1,52 @@
 <?php
 
+/**
+ * Notify - Handle all external notifications
+ *
+ * PHP version 5.4
+ *
+ * @category  PHP
+ * @package   Angular.io
+ * @author    will Farrell <iam@willfarrell.ca>
+ * @copyright 2000-2013 Farrell Labs
+ * @license   http://angulario.com
+ * @version   0.0.1
+ * @link      http://angulario.com
+ */
+ 
+require_once 'class.pgp.php';
+
+/*
+
+//-- Notify Class --//
+// move to config.notify.json
+define("NOTIFY_FROM_NAME", 	"");
+define("NOTIFY_FROM_EMAIL", "");
+define("NOTIFY_FROM_NUMBER","");	// assigned by SMS service
+define("NOTIFY_FROM_URL", 	"http://app.angulario.com/");
+
+//-- Email --//
+define("EMAIL_ADMIN_EMAIL",	"");
+define("EMAIL_ADDRESS",		""); // Address is required to help keep stay out of the spam folder
+define("EMAIL_SIGNATURE",	"\n\nKind Regards,\n\nNAME\nEMAIL\nURL");
+define("EMAIL_FOOTER",		"\n\n".EMAIL_ADDRESS."\nUpdate preferences at: {{global:site_url}}#/settings/notifications\n\nThis action was requested from {{_SERVER:REMOTE_ADDR}}.");
+// AWS SES
+define("EMAIL_AWS_APIKEY", 	"");
+// mailgun
+//define("EMAIL_MAILGUN_APIKEY", "");
+//define("EMAIL_MAILGUN_DOMAIN", "");
+
+
+//-- SMS --//
+// AWS SNS
+define("SMS_AWS_APIKEY", 	"");
+// nexmo
+define("SMS_NEXMO_APIKEY", 	"");
+define("SMS_NEXMO_APISECRET", "");
+// twilio
+define("SMS_TWILIO_APIKEY", "");
+
+*/
 
 class Notify {
 	
@@ -25,7 +72,10 @@ class Notify {
 
 	public $templates = array();
 	public $defaults = array();
-
+	
+	/**
+	 * Constructs a Notify object.
+	 */
 	function __construct() {
 		global $database;
 		$this->db = $database;
@@ -44,11 +94,25 @@ class Notify {
 		$defaults = file_get_contents('json/config.notify.server.json');
 		$this->defaults = array_merge($this->defaults, json_decode($defaults, true));
 	}
-
+	
+	/**
+	 * Destructs a Notify object.
+	 *
+	 * @return void
+	 */
 	function __destruct() {
 		
 	}
 	
+	/**
+	 * Send a notification
+	 *
+	 * @param int $user_ID
+	 * @param int $message_ID Template ID
+	 * @param array $args Params in inject into template
+	 * @param string $types Methods of notifying
+	 * @return bool
+	 */
 	public function send($user_ID, $message_ID, $args = array(), $types = "email") {
 		$types = explode(",", $types);
 		
@@ -66,7 +130,7 @@ class Notify {
 		$select[] = "notify_json";
 		$select[] = "security_json";
 		$to = $this->db->select("users", array("user_ID" => $user_ID), $select);
-		if (!$to) return;
+		if (!$to) return FALSE;
 		$to = $this->db->fetch_assoc($to);
 		$this->vars['to'] = $to;
 		
@@ -112,12 +176,13 @@ class Notify {
 		}
 		
 		if (in_array("email", $types) && $notify['email']) {
-			if (array_key_exists('email', $security_json) && $security_json['email']['key']) {
+			if (array_key_exists('email', $security_json) && $security_json['email']['enable'] && $security_json['email']['public_key']) {
 				//$this->email->encrypt($security_json['email']['key'], $to['user_email'], $subject, $message);
-				$sent = $sent && $this->pgp($security_json['email']['key'], $to['user_email'], $subject, $message);
-			} else {
-				$sent = $sent && $this->email($to['user_email'], $subject, $message);
+				$pgp = new PGP;
+				//$message = $pgp->encryptString($security_json['email']['public_key'], $message);
 			}
+			$sent = $sent && $this->email($to['user_email'], $subject, $message);
+			
 		}
 		
 		if (in_array("sms", $types) && $notify['sms']) {
@@ -133,12 +198,13 @@ class Notify {
 		return $sent;
 	}
 	
-	// for non-regestered users
-	public function sendEmail($user_email, $message_ID, $args = array()) {
-		list($message, $subject) = $this->compile($message_ID, $args);
-		$this->email($user_email, $subject, $message);
-	}
-	
+	/**
+	 * Compile a message for sending
+	 *
+	 * @param int $message_ID Template ID
+	 * @param array $args Params in inject into template
+	 * @return string
+	 */
 	public function compile($message_ID, $args = array()) {
 		if (!isset($this->templates[$message_ID])) return array("", "");
 		
@@ -156,6 +222,15 @@ class Notify {
 		return array($message, $subject);
 	}
 	
+	/**
+	 * Helper function for compiling a message
+	 * replaces key-value pairs in a template
+	 *
+	 * @param string $str Source string
+	 * @param string $group Collention of args name
+	 * @param array $tags Params in inject into template
+	 * @return string
+	 */
 	private function replace_tags($str, $group = '', $tags = array()) {
 		foreach ($tags as $key => $value) {
 			if ($group) $key = $group.":".$key;
@@ -167,11 +242,19 @@ class Notify {
 	}
 	
 	
-	// Services
-	private function email($email, $subject, $message) {
+	//-- Services --//
+	/**
+	 * Send an email
+	 *
+	 * @param string $email
+	 * @param string $subject
+	 * @param string $message
+	 * @return bool
+	 */
+	public function email($email, $subject, $message) {
 		$sent = false;
 		
-		if (!$sent && EMAIL_MAILGUN_APIKEY) {
+		if (!$sent && defined("EMAIL_MAILGUN_APIKEY")) {
 			exec("curl -s --user api:".EMAIL_MAILGUN_APIKEY." \
 					https://api.mailgun.net/v2/".EMAIL_MAILGUN_DOMAIN."/messages \
 					-F from=".escapeshellarg(NOTIFY_FROM_NAME." <".NOTIFY_FROM_EMAIL.">")." \
@@ -188,7 +271,7 @@ class Notify {
 			}
 		}
 		
-		if (!$sent && EMAIL_AWS_APIKEY) {
+		if (!$sent && defined("EMAIL_AWS_APIKEY")) {
 			
 		} 
 		
@@ -201,83 +284,33 @@ class Notify {
 		return $sent;
 	}
 	
-	private function pgp($pubkey, $email, $subject, $message) {
-		putenv("GNUPGHOME=/var/www/.gnupg");
-		
-		$pgp_message = (null);
-		//$gpg = new gnupg();
-		$res = gnupg_init();
-		$rtv = gnupg_import($res, $pubkey);
-		gnupg_addencryptkey($res,$rtv['fingerprint']);
-		$pgp_message = gnupg_encrypt($res, $message);
-		if ($pgp_message) {
-			return $this->email($email, $subject, $pgp_message);
-		} else {
-			return $this->email($email, $subject, $message);
-		}
+	// for non-regestered users
+	/**
+	 * Send a message to a non-registered user
+	 * ie, newsletter
+	 *
+	 * @param string $email
+	 * @param int $message_ID Message template ID
+	 * @param array $args Params to inject into message
+	 * @return bool
+	 */
+	public function emailNonUser($user_email, $message_ID, $args = array()) {
+		list($message, $subject) = $this->compile($message_ID, $args);
+		return $this->email($user_email, $subject, $message);
 	}
 	
-	// PGP encrypt message
-	// import key - http://www.centos.org/docs/4/html/rhel-sbs-en-4/s1-gnupg-import.html - gpg --import public.key
-	// rename key user_ID
-	
-	/*function encrypt($pubkey, $recipient, $email, $subject, $message) {
-		// http://www.pantz.org/software/php/pgpemailwithphp.html
-		$dir = "files/pgp";
+	/**
+	 * Send an email to site admin
+	 * use for debug or contact page
+	 *
+	 * @param string $subject
+	 * @param string $message
+	 * @return bool
+	 */
+	public function emailHome($subject, $message) {
+		return $this->email($this->admin_email, $subject, $message);
+	}
 		
-		//Tell gnupg where the key ring is. Home dir of user web server is running as.
-		putenv("GNUPGHOME=/var/www/.gnupg");
-		
-		// make temp key
-		//$tempkey = tempnam("files/pgp", "newkey-");
-		$tempkey = "newkey-".md5(time().rand());
-		
-		$fp = fopen($dir.'/'.$tempkey, "w");
-		fwrite($fp, $pubkey);
-		fclose($fp);
-		
-		system("gpg --import $dir/$tempkey && ", $result);
-		unlink($dir.'/'.$tempkey);
-		
-		//create a unique file name
-		//$infile = tempnam("/tmp", "message-");
-		$infile = "message-".md5(time().rand());
-		$outfile = $infile.".asc";
-		
-		//write form variables to email
-		$fp = fopen($dir.'/'.$infile, "w");
-		fwrite($fp, $message);
-		fclose($fp);
-		
-		//set up the gnupg command. Note: Remember to put E-mail address on the gpg keyring. --pgp2 --pgp6 --pgp7 
-		//$command = "gpg --no-default-keyring --keyring $tempkey --armor --local-user '' --recipient 'willfarrell <will.farrell@gmail.com>' --output $outfile --trust-model always --verbose --encrypt $infile";
-		$command = "gpg --armor --recipient '$recipient <$email>' --armor --output $dir/$outfile --yes --always-trust --verbose --encrypt $dir/$infile";
-		echo "$command\n\n";
-		
-		//execute the gnupg command
-		exec($command, $result);
-		var_dump($result);
-		//delete the unencrypted temp file
-		//unlink($dir.'/'.$infile);
-		
-		if (file_exists($dir.'/'.$outfile)) {
-			$fp = fopen($dir.'/'.$outfile, "r");
-			
-			if($fp && filesize($dir.'/'.$outfile) != 0) {
-				//read the encrypted file
-				$pgp_message = fread ($fp, filesize ($dir.'/'.$outfile));
-				//delete the encrypted file
-				unlink($dir.'/'.$outfile);
-			
-				//send the email
-				$this->send($email, $subject, $pgp_message);
-			}
-		} else {
-			//$this->send($email, $subject, $message);
-		}
-		
-	}*/
-	
 	/*
 	- AWS SNS-SMS
 	- http://www.twilio.com/sms
@@ -287,7 +320,7 @@ class Notify {
 	private function sms($to, $message) {
 		$sent = false;
 		
-		if (!$sent && SMS_NEXMO_APIKEY) {
+		if (!$sent && defined("SMS_NEXMO_APIKEY")) {
 			// https://www.nexmo.com/documentation/index.html#txt
 			exec("curl -s \
 					http://rest.nexmo.com/sms/json \
@@ -306,7 +339,7 @@ class Notify {
 			}*/
 		}
 		
-		if (!$sent && SMS_TWILIO_APIKEY) {
+		if (!$sent && defined("SMS_TWILIO_APIKEY")) {
 			// http://www.twilio.com/docs/api/rest/sending-sms
 			exec("curl -s\
 					https://api.twilio.com/2010-04-01/Accounts/".SMS_TWILIO_APIKEY."/SMS/Messages \
@@ -323,7 +356,7 @@ class Notify {
 			}*/
 		}
 		
-		if (!$sent && SMS_AWS_APIKEY) {
+		if (!$sent && defined("SMS_AWS_APIKEY")) {
 			// http://aws.amazon.com/sns/
 		}
 		

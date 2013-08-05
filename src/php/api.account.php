@@ -1,6 +1,17 @@
 <?php
+
 /**
- * Handle core Account level operations
+ * Account - Handle core Account level operations
+ *
+ * PHP version 5.4
+ *
+ * @category  PHP
+ * @package   Angular.io
+ * @author    will Farrell <iam@willfarrell.ca>
+ * @copyright 2000-2013 Farrell Labs
+ * @license   http://angulario.com
+ * @version   0.0.1
+ * @link      http://angulario.com
  */
 
 require_once 'php/class.session.php';
@@ -48,13 +59,15 @@ class Account extends Core {
 	 * @url GET regen
 	 * @access public
 	 */
-	function get_regen() {
+	/*function get_regen() {
 		$this->session->regen_id(true);
 		return TRUE;
-	}
+	}*/
 
 	/**
 	 * don't upgrade with global vars, use $this->session->cookie
+	 *
+	 * @return array
 	 *
 	 * @url GET session
 	 * @access protected
@@ -109,31 +122,10 @@ class Account extends Core {
 	}
 	
 	/**
-	 * Check if a user_username is unique
-	 *
-	 * @param string $value query string
-	 * @return array
-	 * 
-	 * @url GET unique/{value}
-	 * @aceess public
-	 */
-	function get_unique($value=NULL) {	// $type=NULL,
-		// for user_username only
-
-		$query = "SELECT * FROM users WHERE user_username = '{{user_username}}' && user_ID != '{{user_ID}}' LIMIT 0,1";
-		$result = $this->db->query($query, array('user_username' => strtolower($value), 'user_ID' => USER_ID));
-		if ($result) {
-			$return["errors"]["user_username"] = "Not unique";
-			return $return;
-		}
-		return TRUE;
-	}
-	
-	/**
 	 * Sign Up
 	 *
 	 * @param array $request_data POST data
-	 * @return array
+	 * @return array|bool
 	 * 
 	 * @url POST signup
 	 * @aceess public
@@ -141,14 +133,22 @@ class Account extends Core {
 	function post_signup($request_data=NULL) {
 		$return = array();
 
-		// validate and sanitize
+		/*// validate and sanitize
 		$this->filter->set_request_data($request_data);
-		$this->filter->set_group_rules('table_users');
+		//$this->filter->set_group_rules('table_users');
 		if(!$this->filter->run()) {
 			$return["errors"] = $this->filter->get_errors('error');
-			return $return;
 		}
-		$request_data = $this->filter->get_request_data();
+		$request_data = $this->filter->get_request_data();*/
+		$request_data = $this->filter->run($request_data);
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
+		
+		/*// validate password
+		if (isset($request_data['password']) && $this->password->validate($request_data['password'])) {
+			$return["errors"]["password"] = $this->password->get_errors();
+		}
+		
+		if (isset($return["errors"])) { return $return; }*/
 		
 		$email = $request_data["email"];
 
@@ -161,10 +161,15 @@ class Account extends Core {
 			"user_email"   		  => $request_data["email"],
 			"user_level"		  => 9,
 			//"user_username"   		  => $request_data["user_username"],
+			
+			//'notify_json'	=> '{}',
+			//'security_json'	=> '{}',
+			
 			"password"	 		  => $password_hash,
 			"password_history"	=> $password_hash,
 			'password_timestamp'  => $_SERVER['REQUEST_TIME'],
 			'referral_user_ID'	=> $referral_user_ID,
+			
 			//'timestamp_confirm'   => 0,
 			//'timestamp_create'	=> $_SERVER['REQUEST_TIME'],
 			//'timestamp_update'	=> $_SERVER['REQUEST_TIME'],
@@ -172,7 +177,7 @@ class Account extends Core {
 		$user_ID = $this->db->insert('users', $user);
 		
 		// send confirm email
-		$hash = substr(hash("sha512", $email.$_SERVER['REQUEST_TIME']), 0, 16);
+		$hash = $this->makeHash($email);
 	
 		$insert = array('user_ID' => $user_ID, 'hash' => $hash);
 		$this->db->insert_update('user_confirm', $insert, $insert);
@@ -182,23 +187,6 @@ class Account extends Core {
 		//$return = array("alerts" => array(array('class' => 'success', 'label' => 'Account created!', 'message' => 'Check your email for an activation link.')));
 		
 		return TRUE;
-	}
-	
-	/**
-	 * Resend confirmation email
-	 *
-	 * @return NULL
-	 * 
-	 * @url GET resend_confirm_email
-	 * @aceess protected
-	 */
-	function resend_confirm_email() {
-		$hash = substr(hash("sha512", USER_EMAIL.$_SERVER['REQUEST_TIME']), 0, 16);
-		
-		$insert = array('user_ID' => USER_ID, 'hash' => $hash);
-		$this->db->insert_update('user_confirm', $insert, $insert);
-
-		$this->notify->send(USER_ID, 'signup_confirm_email', array("hash" => $hash), "email");
 	}
 
 	/**
@@ -214,12 +202,14 @@ class Account extends Core {
 		$return = array();
 
 		// validate and sanitize
-		$this->filter->set_request_data($request_data);
+		/*$this->filter->set_request_data($request_data);
 		if(!$this->filter->run()) {
 			$return["errors"] = $this->filter->get_errors('error');
 			return $return;
 		}
-		$request_data = $this->filter->get_request_data();
+		$request_data = $this->filter->get_request_data();*/
+		$request_data = $this->filter->run($request_data);
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
 		
 		// set non true values to 0
 		if ($request_data['remember'] != 1) $request_data['remember'] = 0;
@@ -242,29 +232,31 @@ class Account extends Core {
 	 * check token based on service
 	 *
 	 * @param string $code Hash code
-	 * @return array
+	 * @return array|bool
 	 * 
-	 * @url PUT totp/{code}
+	 * @url PUT totp/verify/{code}
 	 * @aceess public
 	 */
-	function totpVerify($code='') {
-		$checkResult = false;
+	function totpVerify($code) {
+		$checkResult = FALSE;
+		
+		// verify code
 		$totp = new TOTP;
 		
 		$service = 'google';
 		switch ($service) {
 			case 'google':
-				$checkResult = $totp->verifyCode(TOTP_SECRET, $code, 2);
+				$checkResult = $totp->verifyCode(TOTP_SECRET, $code);
 				break;
 			case 'authy':
 				
 				break;
 		}
 		
-		
 		if ($checkResult) {
 			return $this->get_session();
 		}
+		return $checkResult;
 	}
 	
 	//!-- Two Factor Authentication --//
@@ -282,14 +274,33 @@ class Account extends Core {
 		$this->session->logout();
 		return TRUE;
 	}
+	
+	/**
+	 * Resend confirmation email
+	 *
+	 * @return NULL
+	 * 
+	 * @url GET resend_confirm_email
+	 * @aceess protected
+	 */
+	function resend_confirm_email() {
+		$hash = $this->makeHash(USER_EMAIL);
+		
+		$insert = array('user_ID' => USER_ID, 'hash' => $hash);
+		$this->db->insert_update('user_confirm', $insert, $insert);
 
+		$this->notify->send(USER_ID, 'signup_confirm_email', array("hash" => $hash), "email");
+		
+		return TRUE;
+	}
+	
 	/**
 	 * 
 	 * confirm email address from hash provided in email
 	 * send to user from `signup`, `resend_confirm_email`
 	 *
 	 * @param string $hash email hash
-	 * @return array
+	 * @return array|bool
 	 * 
 	 * @url GET confirm_email/{hash}
 	 * @aceess public
@@ -311,10 +322,8 @@ class Account extends Core {
 			$return["alerts"][] = array("class" => "error", "label" => "Error:", "message"=>"Confirmation code invalid.");
 			$return["errors"]["confirm_code"] = "Confirmation code invalid.";
 		}
-		return $return;
+		return TRUE;
 	}
-	
-	
 	
 	/**
 	 * change onboard bit in DB to complete
@@ -325,10 +334,6 @@ class Account extends Core {
 	 * @aceess public
 	 */
 	function get_onboard_done() {
-		// Check permissions
-		/*if(!$this->permission->check()) {
-			return $this->permission->errorMessage();
-		};*/
 		
 		$this->db->update(
 			'users',
@@ -338,7 +343,6 @@ class Account extends Core {
 			),
 			array('user_ID' => USER_ID)
 		);
-		$this->session->update();
 		
 		return TRUE;
 	}
@@ -350,27 +354,31 @@ class Account extends Core {
 	 * Reset Step 1 - Send email to start process
 	 *
 	 * @param string $email Email to reset password
-	 * @return array
+	 * @return array|bool
 	 * 
 	 * @url GET reset_send
+	 * @url GET reset_send/{email}
 	 * @aceess public
 	 */
-	function reset_send($email=NULL) {
+	function reset_send($email = NULL) {
 		$return = array();
-
-		$this->filter->set_request_data('email', $email);
+		if (is_null($email)) $email = USER_EMAIL;
+		
+		/*$this->filter->set_request_data('email', $email);
 		if(!$this->filter->run('email')) {
 			$return["alerts"] = $this->filter->get_errors();
 			return $return;
 		}
-		$email = $this->filter->get_request_data('email');
+		$email = $this->filter->get_request_data('email');*/
+		$request_data = $this->filter->run(array("email" => $email));
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
 
 		$result = $this->db->select('users', array('user_email' => $email));
 		if ($result) { // user exists
 			$user = $this->db->fetch_assoc($result);
 			$expire_timestamp = $_SERVER['REQUEST_TIME']+PASSWORD_RESET_LENGTH;
 			
-			$hash = substr(hash("sha512", $email.$_SERVER['REQUEST_TIME']), 0, 16);
+			$hash = $this->makeHash($email);
 			
 			$this->notify->send($user['user_ID'], 'password_reset_request', array("hash" => $hash), "email");
 			
@@ -378,20 +386,20 @@ class Account extends Core {
 			//$this->redis->hmset($hash, array('hash' => $hash, 'user_ID' => $user['user_ID'], 'expire_timestamp' => $expire_timestamp));
 			$this->db->insert_update('user_reset', $insert, $insert);
 		} else {  // not a user
-			$this->notify->sendEmail($email, 'password_reset_request_fail', array());
+			$this->notify->emailNonUser($email, 'password_reset_request_fail', array());
 		}
 
 		//$return["alerts"][] = array("class" => "info", "message"=>"We have sent an email to $email with further instructions.");
-		return $return;
+		return TRUE;
 	}
 
 	/**
 	 * Reset Step 2 - Confirm request still valid
 	 *
 	 * @param string $hash Hash from email sent
-	 * @return array
+	 * @return array|bool
 	 * 
-	 * @url GET reset_check
+	 * @url GET reset_check/{hash}
 	 * @aceess public
 	 */
 	function reset_check($hash=NULL) {
@@ -403,10 +411,15 @@ class Account extends Core {
 		// ** add check if addition security is enabled
 		// $return['security']
 		// else return true
-		return $return;
+		return TRUE;
 	}
 	
-	
+	/**
+	 * Check rest password hash code validity
+	 *
+	 * @param string $hash
+	 * @return array
+	 */
 	private function reset_check_hash($hash=NULL) {
 		$return = array();
 
@@ -431,7 +444,7 @@ class Account extends Core {
 	 * Reset Step 3 - Confirm identity (2-step verification)
 	 *
 	 * @param array $request_data PUT data
-	 * @return array
+	 * @return array|bool
 	 * 
 	 * @url PUT reset_verify
 	 * @aceess public
@@ -441,14 +454,14 @@ class Account extends Core {
 		
 		//$reset_check = $this->reset_check($request_data['hash']);
 		//if (is_array($reset_check)) return $reset_check;
-		return $return;
+		return TRUE;
 	}
 
 	/**
 	 * Reset Step 4 - Update password | Change password
 	 *
 	 * @param array $request_data PUT data
-	 * @return array
+	 * @return array|bool
 	 * 
 	 * @url PUT reset_password
 	 * @aceess public
@@ -456,12 +469,14 @@ class Account extends Core {
 	function put_reset_password($request_data=NULL) {
 		$return = array();
 		
-		$this->filter->set_request_data($request_data);
+		/*$this->filter->set_request_data($request_data);
 		if(!$this->filter->run()) {
 			$return["errors"] = $this->filter->get_errors();
 			return $return;
 		}
-		$request_data = $this->filter->get_request_data();
+		$request_data = $this->filter->get_request_data();*/
+		$request_data = $this->filter->run($request_data);
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
 		
 		// reconfirm hash is still valid
 		$alerts = $this->reset_check_hash($request_data['hash']);
@@ -471,17 +486,13 @@ class Account extends Core {
 		$query = "SELECT * FROM user_reset WHERE hash = '{{hash}}' LIMIT 0,1";
 		$result = $this->db->query($query, array('hash' => $request_data['hash']));
 		if (!$result) {
-			return false; // user / pass combo not found
+			return FALSE; // user / pass combo not found
 		}
 		$result = $this->db->fetch_assoc($result);
 		$user_ID = $result['user_ID'];
 		$expire_timestamp = $result['expire_timestamp'];
 		
-		// validate password
-		if ($this->password->validate($request_data['new_password'])) {
-			$return["errors"]["new_password"] = $this->password->get_errors();
-			return $return;
-		}
+		
 		
 		// get user email
 		$result = $this->db->select('users', array('user_ID' => $user_ID));
@@ -506,7 +517,7 @@ class Account extends Core {
 			$this->db->update('users', array('timestamp_confirm' => $_SERVER['REQUEST_TIME']), array('user_ID' => USER_ID));
 		}
 		
-		return $return;
+		return TRUE;
 	}
 	//-- End Forgot password process --//
 	
@@ -514,36 +525,31 @@ class Account extends Core {
 	 * Change password
 	 *
 	 * @param array $request_data PUT data
-	 * @return array
+	 * @return array|bool
 	 * 
 	 * @url PUT password_change
-	 * @aceess public
+	 * @aceess protected
 	 */
 	function put_password_change($request_data=NULL) {
 		$return = array();
 		
-		// Check permissions
-		/*if(!$this->permission->check($request_data)) {
-			return $this->permission->errorMessage();
-		};*/
-		
-		$user_ID = USER_ID;
-		
-		$this->filter->set_request_data($request_data);
+		/*$this->filter->set_request_data($request_data);
 		if(!$this->filter->run()) {
 			$return["errors"] = $this->filter->get_errors();
 			return $return;
 		}
-		$request_data = $this->filter->get_request_data();
+		$request_data = $this->filter->get_request_data();*/
+		$request_data = $this->filter->run($request_data);
+		if ($this->filter->hasErrors()) { $return = $this->filter->getErrorsReturn(); }
 		
-		// validate password
+		/*// validate password
 		if ($this->password->validate($request_data['new_password'])) {
 			$return["errors"]["new_password"] = $this->password->get_errors();
-		}
-
+		}*/
+		
 		$query = "SELECT password FROM users WHERE user_ID = '{{user_ID}}' LIMIT 0,1";
-		$result = $this->db->query($query, array('user_ID' => $user_ID));
-		if (!$result) return false; // will not fire
+		$result = $this->db->query($query, array('user_ID' => USER_ID));
+		if (!$result) return FALSE; // will not fire
 
 		$r = $this->db->fetch_assoc($result);
 
@@ -551,37 +557,27 @@ class Account extends Core {
 			$return["errors"]["old_password"] = "Your current password does not match.";
 		}
 		
-		if (count($return)) {	// return errors
-			return $return;
-		}
+		if (isset($return["errors"])) { return $return; }
 		
-		if ($user_ID) {
-			$this->password->update($request_data['new_password'], USER_EMAIL);
+		$this->password->update($request_data['new_password'], USER_EMAIL);
 
-			// mail user confirming a password change
-			$this->notify->send($user_ID, 'password_changed_notification', array(), "email");
+		// mail user confirming a password change
+		$this->notify->send(USER_ID, 'password_changed_notification', array(), "email");
 
-		}
-
-		return $return;
+		return TRUE;
 	}
 	
 	/**
 	 * Change email
 	 *
 	 * @param array $request_data PUT data
-	 * @return array
+	 * @return array|bool
 	 * 
 	 * @url PUT email_change
 	 * @aceess public
 	 */
 	function put_email_change($request_data=NULL) {
 		$return = array();
-		
-		// Check permissions
-		/*if(!$this->permission->check($request_data)) {
-			return $this->permission->errorMessage();
-		};*/
 		
 		$email = $request_data["user_email"];
 
@@ -607,17 +603,17 @@ class Account extends Core {
 		$this->password->update($request_data['password'], $email);
 		
 		// update session
-		$this->session->update();	// update user_email into session
+		$this->session->update(array("user_email" => $email));	// update user_email into session
 		
 		// confirm email
-		$hash = substr(hash("sha512", $email.$_SERVER['REQUEST_TIME']), 0, 16);
+		$hash = $this->makeHash($email);
 		
 		$insert = array('user_ID' => USER_ID, 'hash' => $hash);
 		$this->db->insert_update('user_confirm', $insert, $insert);
 
 		$this->notify->send(USER_ID, 'email_changed_notification', array("hash" => $hash), "email");
 
-		return $return;
+		return TRUE;
 	}
 	
 	/**
@@ -639,7 +635,10 @@ class Account extends Core {
 		
 		return TRUE;
 	}
-
+	
+	private function makeHash($email) {
+		return substr(hash("sha512", $email.$_SERVER['REQUEST_TIME'].rand(0,9999)), 0, 16);
+	}
 }
 
 ?>

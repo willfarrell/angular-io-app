@@ -25,8 +25,15 @@ class Follow extends Core {
 		parent::__destruct();
 	}
 	
-	// search users
-	
+	/**
+	 * Search users
+	 * 
+	 * @param string $keyword
+	 * @return array
+	 *
+	 * @url GET search
+	 * @url GET search/{keyword}
+	 */
 	function get_search($keyword = '') {
 		// Check permissions
 		/*if(!$this->permission->check()) {
@@ -34,6 +41,12 @@ class Follow extends Core {
 		};*/
 		
 		$return = array();
+		
+		if (strlen($keyword)) {
+			$db_where = " AND (user_username LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%@')";
+		} else {
+			$db_where = '';
+		}
 		
 		$limit = 10;
 		
@@ -55,7 +68,7 @@ class Follow extends Core {
 						." LEFT JOIN ".$this->table." FU ON (UF.user_ID = FU.follow_user_ID AND UF.follow_user_ID = FU.user_ID)"
 						
 						." WHERE (UF.user_ID = '{{user_ID}}' OR UF.user_ID IS NULL)"
-						." AND (user_username LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%@')"
+						." $db_where"
 						." GROUP BY U.user_ID"
 						." LIMIT 0,$limit";
 
@@ -71,14 +84,24 @@ class Follow extends Core {
 		return $return;
 	}
 	
-	// self only
+	/**
+	 * Get follow suggestions
+	 * 
+	 * @param string $keyword
+	 * @return array
+	 *
+	 * @url GET suggestions
+	 * @url GET suggestions/{keyword}
+	 */
 	function get_suggestions($keyword = '') {
-		// Check permissions
-		/*if(!$this->permission->check()) {
-			return $this->permission->errorMessage();
-		};*/
 		
 		$return = array();
+		
+		if (strlen($keyword)) {
+			$db_where = " AND (user_username LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%@')";
+		} else {
+			$db_where = '';
+		}
 		
 		$limit = 10;
 		
@@ -95,7 +118,7 @@ class Follow extends Core {
 					." FROM companies C"
 					." LEFT JOIN ".$this->table." CF ON CF.follow_company_ID = C.company_ID AND CF.company_ID = '{{company_ID}}'"
 					." WHERE C.company_ID != '{{company_ID}}' AND CF.follow_company_ID IS NULL"
-					." AND (user_username LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%@')"
+					." $db_where"
 					." GROUP BY C.company_ID"
 					." ORDER BY RAND()"
 					." LIMIT 0,$limit";
@@ -106,7 +129,7 @@ class Follow extends Core {
 					." FROM users U"
 					." LEFT JOIN ".$this->table." UF ON UF.follow_user_ID = U.user_ID AND UF.user_ID = '{{user_ID}}'"
 					." WHERE U.user_ID != '{{user_ID}}' AND U.timestamp_create != 0 AND UF.follow_user_ID IS NULL"
-					." AND (user_username LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%@')"
+					." $db_where"
 					." GROUP BY U.user_ID"
 					." ORDER BY RAND()"
 					." LIMIT 0,$limit";
@@ -124,11 +147,15 @@ class Follow extends Core {
 		return $return;
 	}
 	
+	/**
+	 * Get referred user
+	 * 
+	 * @return array
+	 *
+	 * @url GET referral
+	 * @access protected
+	 */
 	function get_referral() {
-		// Check permissions
-		/*if(!$this->permission->check()) {
-			return $this->permission->errorMessage();
-		};*/
 		
 		$return = array();
 		
@@ -150,11 +177,15 @@ class Follow extends Core {
 		return $return;
 	}
 	
+	/**
+	 * Get user referrals
+	 * 
+	 * @return array
+	 *
+	 * @url GET referrals
+	 * @access protected
+	 */
 	function get_referrals() {
-		// Check permissions
-		/*if(!$this->permission->check()) {
-			return $this->permission->errorMessage();
-		};*/
 
 		$return = array();
 		
@@ -175,17 +206,29 @@ class Follow extends Core {
 		return $return;
 	}
 
-	//Followers lists (who is following you)
+	/**
+	 * Followers lists - Get who is following a user
+	 * 
+	 * @param int $company_ID
+	 * @param int $user_ID
+	 * @param string $keyword
+	 * @return array
+	 *
+	 * @url GET ers
+	 * @url GET ers/{company_ID}/{user_ID}
+	 * @url GET ers/{company_ID}/{user_ID}/{keyword}
+	 * @access protected
+	 */
 	function get_ers($company_ID = 0, $user_ID = 0, $keyword = '') { // $type='user'
 		$company_ID = preg_replace( '/[^0-9]+/', '', $company_ID);
 		$user_ID = preg_replace( '/[^0-9]+/', '', $user_ID);
 		if (!$company_ID) $company_ID = COMPANY_ID;
 		if (!$user_ID) $user_ID = USER_ID;
-		
-		// Check permissions
-		/*if(!$this->permission->check(array("user_ID" => $user_ID, "company_ID" => $company_ID))) {
-			return $this->permission->errorMessage();
-		};*/
+		if (strlen($keyword)) {
+			$db_where = " AND (user_username LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%@')";
+		} else {
+			$db_where = '';
+		}
 		
 		$return = array();
 
@@ -194,7 +237,7 @@ class Follow extends Core {
 				." LEFT JOIN ".$this->table." UF ON UF.user_ID = FU.follow_user_ID AND UF.follow_user_ID = FU.user_ID"
 				." LEFT JOIN users U ON U.user_ID = FU.user_ID"
 				." WHERE FU.follow_user_ID = '{{follow_user_ID}}'"
-				." AND (user_username LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%@')"
+				." $db_where"
 				." GROUP BY FU.user_ID, FU.follow_user_ID";
 		$followers = $this->db->query($query, array('follow_user_ID' => $user_ID, 'keyword' => $keyword));
 		if ($followers) {
@@ -209,25 +252,36 @@ class Follow extends Core {
 		return $return;
 	}
 
-	// Following list (who you're following)
+	/**
+	 * Following lists - Get who a user is following
+	 * 
+	 * @param int $company_ID
+	 * @param int $user_ID
+	 * @param string $keyword
+	 * @return array
+	 *
+	 * @url GET ing
+	 * @url GET ing/{company_ID}/{user_ID}
+	 * @url GET ing/{company_ID}/{user_ID}/{keyword}
+	 * @access protected
+	 */
 	function get_ing($company_ID = 0, $user_ID = 0, $keyword = '') { // $type='user'
 		$company_ID = preg_replace( '/[^0-9]+/', '', $company_ID);
 		$user_ID = preg_replace( '/[^0-9]+/', '', $user_ID);
 		if (!$company_ID) $company_ID = COMPANY_ID;
 		if (!$user_ID) $user_ID = USER_ID;
-		
-		// Check permissions
-		/*if(!$this->permission->check(array("user_ID" => $user_ID, "company_ID" => $company_ID))) {
-			return $this->permission->errorMessage();
-		};*/
-		
+		if (strlen($keyword)) {
+			$db_where = " AND (user_username LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%@')";
+		} else {
+			$db_where = '';
+		}
 		$return = array();
 		
 		$query = "SELECT U.user_ID, U.company_ID, user_username, CONCAT(user_name_first, ' ', user_name_last) AS name, GROUP_CONCAT(group_ID) AS groups" //
 				." FROM ".$this->table." FU"
 				." LEFT JOIN users U ON U.user_ID = FU.follow_user_ID"
 				." WHERE FU.user_ID = '{{user_ID}}'"
-				." AND (user_username LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%@')"
+				." $db_where"
 				." GROUP BY FU.user_ID, FU.follow_user_ID";
 		$followings = $this->db->query($query, array('user_ID' => $user_ID, 'keyword' => $keyword));
 		if ($followings) {
@@ -242,17 +296,29 @@ class Follow extends Core {
 		return $return;
 	}
 	
-	//mutual following - aka friends
+	/**
+	 * Friends lists - Mutual following
+	 * 
+	 * @param int $company_ID
+	 * @param int $user_ID
+	 * @param string $keyword
+	 * @return array
+	 *
+	 * @url GET friends
+	 * @url GET friends/{company_ID}/{user_ID}
+	 * @url GET friends/{company_ID}/{user_ID}/{keyword}
+	 * @access protected
+	 */
 	function get_friends($company_ID = 0, $user_ID = 0, $keyword = '') { // $type='user'
 		$company_ID = preg_replace( '/[^0-9]+/', '', $company_ID);
 		$user_ID = preg_replace( '/[^0-9]+/', '', $user_ID);
 		if (!$company_ID) $company_ID = COMPANY_ID;
 		if (!$user_ID) $user_ID = USER_ID;
-		
-		// Check permissions
-		/*if(!$this->permission->check(array("user_ID" => $user_ID, "company_ID" => $company_ID))) {
-			return $this->permission->errorMessage();
-		};*/
+		if (strlen($keyword)) {
+			$db_where = " AND (user_username LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%@')";
+		} else {
+			$db_where = '';
+		}
 		
 		$return = array();
 		
@@ -261,7 +327,7 @@ class Follow extends Core {
 				." LEFT JOIN ".$this->table." FU ON (UF.user_ID = FU.follow_user_ID AND UF.follow_user_ID = FU.user_ID)"
 				." LEFT JOIN users U ON U.user_ID = FU.user_ID"
 				." WHERE UF.user_ID = '{{user_ID}}' AND FU.user_ID IS NOT NULL"
-				." AND (user_username LIKE '%{{keyword}}%' OR user_name_first LIKE '%{{keyword}}%' OR user_name_last LIKE '%{{keyword}}%' OR user_email LIKE '%{{keyword}}%@')"
+				." $db_where"
 				." GROUP BY FU.user_ID, FU.follow_user_ID";
 				
 		$followings = $this->db->query($query, array('user_ID' => $user_ID, 'keyword' => $keyword));
@@ -279,6 +345,16 @@ class Follow extends Core {
 	}
 
 	//-- Group Management --//
+	/**
+	 * Get group or list of groups
+	 * 
+	 * @param int $group_ID
+	 * @return array
+	 *
+	 * @url GET group
+	 * @url GET group/{group_ID}
+	 * @access protected
+	 */
 	function get_group($group_ID=NULL) { // $type='user'
 		$group_ID = preg_replace( '/[^0-9]+/', '', $group_ID);
 		$return = array();
@@ -296,7 +372,7 @@ class Follow extends Core {
 		$results = $this->db->select('follow_groups', $db_where);
 		if ($results) {
 			while($group = $this->db->fetch_assoc($results)) {
-				$return[$group['group_ID']] = $group;
+				$return[] = $group; //$group['group_ID']
 			}
 			if ($group_ID != '') {
 				$return = $return[$group_ID];
@@ -306,32 +382,40 @@ class Follow extends Core {
 		return $return;
 	}
 
-	// make group
+	/**
+	 * Make new group
+	 * 
+	 * @param array $request_data POST data
+	 * @return int
+	 *
+	 * @url POST group
+	 * @access protected
+	 */
 	function post_group($request_data=NULL) { // $type='user'
-		// Check permissions
-		/*if(!$this->permission->check($request_data)) {
-			return $this->permission->errorMessage();
-		};*/
 		
 		$insert = array(
 			'user_ID' => USER_ID,
 			'group_name' => $request_data['group_name'],
-			'group_color' => $request_data['color'],
+			//'group_color' => $request_data['color'],
 		);
 		$group_ID = $this->db->insert('follow_groups', $insert, $insert);
 
 		return $group_ID;
 	}
 
-	// remove group
+	/**
+	 * delete group
+	 * 
+	 * @param int $group_ID
+	 * @return int
+	 *
+	 * @url GET group/delete/{group_ID}
+	 * @url DELETE group/{group_ID}
+	 * @access protected
+	 */
 	function delete_group($group_ID=NULL) {
 		$group_ID = preg_replace( '/[^0-9]+/', '', $group_ID);
-		if (!$group_ID || $group_ID < 0) return;
-		
-		// Check permissions
-		/*if(!$this->permission->check(array("group_ID" => $group_ID))) {
-			return $this->permission->errorMessage();
-		};*/
+		if (!$group_ID || $group_ID < 0) return FALSE;
 		
 		$this->db->delete('follow_groups', array('group_ID' => $group_ID));
 		$this->db->delete($this->table, array('group_ID' => $group_ID));
@@ -340,15 +424,20 @@ class Follow extends Core {
 	}
 	
 	//-- Follow Functions --//
+	/**
+	 * Get follow status on ID
+	 * 
+	 * @param int $company_ID
+	 * @param int $user_ID
+	 * @return array
+	 *
+	 * @url GET {company_ID}/{user_ID}
+	 * @access protected
+	 */
 	function get($company_ID = 0, $user_ID = 0) {
 		$company_ID = preg_replace( '/[^0-9]+/', '', $company_ID);
 		$user_ID = preg_replace( '/[^0-9]+/', '', $user_ID);
-		if (!$company_ID && !$user_ID) return;
-		
-		// Check permissions
-		/*if(!$this->permission->check(array("user_ID" => $user_ID, "company_ID" => $company_ID))) {
-			return $this->permission->errorMessage();
-		};*/
+		if (!$company_ID && !$user_ID) return FALSE;
 		
 		$return = array(
 			'user_ID' => (int) $user_ID,
@@ -393,16 +482,23 @@ class Follow extends Core {
 		return $return;
 	}
 	
+	/**
+	 * Follow a new ID
+	 * 
+	 * @param int $company_ID
+	 * @param int $user_ID
+	 * @param int $group_ID Group to add new follow to
+	 * @return bool
+	 *
+	 * @url PUT {company_ID}/{user_ID}
+	 * @url PUT {company_ID}/{user_ID}/{group_ID}
+	 * @access protected
+	 */
 	function put($company_ID = 0, $user_ID = 0, $group_ID=0) {
 		$company_ID = preg_replace( '/[^0-9]+/', '', $company_ID);
 		$user_ID = preg_replace( '/[^0-9]+/', '', $user_ID);
 		$group_ID = preg_replace( '/[^0-9]+/', '', $group_ID);
-		if (!$company_ID && !$user_ID) return;
-		
-		// Check permissions
-		/*if(!$this->permission->check(array("user_ID" => $user_ID, "company_ID" => $company_ID))) {
-			return $this->permission->errorMessage();
-		};*/
+		if (!$company_ID && !$user_ID) return FALSE;
 		
 		$insert = array(
 			'user_ID' => USER_ID,
@@ -415,22 +511,28 @@ class Follow extends Core {
 		
 		$this->db->insert_update($this->table, $insert, $insert);
 		
-		
 		$this->notify->send($user_ID, 'new_follow', array(), "email,sms,push");
 		
-		return;
+		return TRUE;
 	}
 	
+	/**
+	 * unfollow an ID
+	 * 
+	 * @param int $company_ID
+	 * @param int $user_ID
+	 * @param int $group_ID Group to add new follow to
+	 * @return bool
+	 *
+	 * @url GET delete/{company_ID}/{user_ID}/{group_ID}
+	 * @url DELETE {company_ID}/{user_ID}/{group_ID}
+	 * @access protected
+	 */
 	function delete($company_ID = 0, $user_ID = 0, $group_ID=0) {
 		$company_ID = preg_replace( '/[^0-9]+/', '', $company_ID);
 		$user_ID = preg_replace( '/[^0-9]+/', '', $user_ID);
 		$group_ID = preg_replace( '/[^0-9]+/', '', $group_ID);
-		if (!$company_ID && !$user_ID) return;
-		
-		// Check permissions
-		/*if(!$this->permission->check(array("user_ID" => $user_ID, "company_ID" => $company_ID))) {
-			return $this->permission->errorMessage();
-		};*/
+		if (!$company_ID && !$user_ID) return FALSE;
 		
 		if ($group_ID) {
 			$this->db->delete($this->table, array(
@@ -449,7 +551,7 @@ class Follow extends Core {
 			));
 		}
 		//echo $this->db->last_query;
-		return;
+		return TRUE;
 	}
 }
 

@@ -6,7 +6,7 @@
  * PHP version 5.4
  *
  * @category  PHP
- * @package   PHP_CodeSniffer
+ * @package   Angular.io
  * @author    will Farrell <iam@willfarrell.ca>
  * @copyright 2000-2013 Farrell Labs
  * @license   http://angulario.com
@@ -157,7 +157,7 @@ class Session extends Core {
 	 *
 	 * @return void
 	 */
-	private function set($timestamp = 0) {
+	private function set() {
 		$this->cookie[session_name()] = session_id();
 		//$this->redis->hmset(session_id(), $cookie);
 		if ($this->cookie['user_ID']) {
@@ -242,6 +242,21 @@ class Session extends Core {
 		$this->make_defined();
 		
 		return $r['user_ID'];
+	}
+	
+	/**
+	 * Update session from DB
+	 *
+	 * @param array $arr Cookie key-value pairs
+	 * @return void
+	 */
+	public function update($arr = array()) {
+		foreach ($arr as $key => $value) {
+			$this->cookie[$key] = $value;
+		}
+		$this->cookie["timestamp"] 	= $_SERVER['REQUEST_TIME'];
+		
+		$this->set();
 	}
 	
 	/**

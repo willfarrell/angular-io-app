@@ -1,21 +1,39 @@
 <?php
 
 /**
+ * Account - Handle core Account level operations
+ *
+ * PHP version 5.4
+ *
+ * @category  PHP
+ * @package   Angular.io
+ * @author    will Farrell <iam@willfarrell.ca>
+ * @copyright 2000-2013 Farrell Labs
+ * @license   http://angulario.com
+ * @version   0.0.1
+ * @link      http://angulario.com
+ *
  * @access protected
  */
 
-require_once 'class.db.php';
-
 class Company extends Core {
 	private $table = 'companies';
-
+	
+	/**
+	 * Constructs a Company object.
+	 */
 	function __construct() {
 		global $session;
 		parent::__construct();
 		
 		$this->session = $session;
 	}
-
+	
+	/**
+	 * Destructs a Company object.
+	 *
+	 * @return void
+	 */
 	function __destruct() {
 		parent::__destruct();
 	}
@@ -28,8 +46,8 @@ class Company extends Core {
 	 * @return array
 	 *
 	 * @url GET search
-	 * @url GET search/{keyword}	
-	 * @url GET search/{keyword}	/{limit}	
+	 * @url GET search/{keyword}
+	 * @url GET search/{keyword}/{limit}
 	 * @access protected
 	 */
 	function search($keyword=NULL, $limit=NULL) {
@@ -37,10 +55,7 @@ class Company extends Core {
 		if (!$limit) $limit = 10;
 		$return = array();
 		
-		// Check permissions
-		/*if(!$this->permission->check()) {
-			return $this->permission->errorMessage();
-		};*/
+		$this->console->log("test");
 		
 		$query = "SELECT company_ID, company_name, company_url, company_phone" //
 				." FROM companies C"
@@ -128,13 +143,15 @@ class Company extends Core {
 			return $this->permission->errorMessage();
 		};*/
 		
-		$this->filter->set_request_data($request_data);
+		/*$this->filter->set_request_data($request_data);
 		$this->filter->set_group_rules('users');
 		if(!$this->filter->run()) {
 			$return["errors"] = $this->filter->get_errors();
 			return $return;
 		}
-		$request_data = $this->filter->get_request_data();
+		$request_data = $this->filter->get_request_data();*/
+		$request_data = $this->filter->run($request_data);
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
 		
 		$user = array(
 			'company_ID' => COMPANY_ID,
@@ -190,18 +207,15 @@ class Company extends Core {
 			$request_data[$key] = isset($request_data[$key]) ? $request_data[$key] : NULL;
 		}
 		
-		// Check permissions
-		/*if(!$this->permission->check($request_data)) {
-			return $this->permission->errorMessage();
-		};*/
-		
-		$this->filter->set_request_data($request_data);
+		/*$this->filter->set_request_data($request_data);
 		$this->filter->set_group_rules('users');
 		if(!$this->filter->run()) {
 			$return["errors"] = $this->filter->get_errors();
 			return $return;
 		}
-		$request_data = $this->filter->get_request_data();
+		$request_data = $this->filter->get_request_data();*/
+		$request_data = $this->filter->run($request_data);
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
 		
 		
 		// update
@@ -235,10 +249,8 @@ class Company extends Core {
 	function get_name($username=NULL) {
 		$return = array();
 		
-		// Check permissions
-		/*if(!$this->permission->check(array("company_username" => $username))) {
-			return $this->permission->errorMessage();
-		};*/
+		$request_data = $this->filter->run(array("company_username" => $username));
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
 		
 		// add in user_username check
 		
@@ -312,18 +324,15 @@ class Company extends Core {
 	 * 
 	 * @param int $company_ID Company ID
 	 * @return array
-	 * 
+	 *
+	 * @url GET
+	 * @url GET {company_ID}
 	 * @access protected
 	 */
 	function get($company_ID=NULL) {
 		$return = array();
 		$company_ID = !$company_ID ? COMPANY_ID: $company_ID;
 		
-		// Check permissions
-		/*if(!$this->permission->check(array("company_ID" => $company_ID))) {
-			return $this->permission->errorMessage();
-		};*/
-
 		$results = $this->db->select('companies',
 			array('company_ID' => $company_ID),
 			array('company_ID','company_username', 'company_name','company_url','company_phone','company_details','user_default_ID','location_default_ID')
@@ -381,7 +390,8 @@ class Company extends Core {
 	 * 
 	 * @param array $request_data POST data
 	 * @return NULL
-	 * 
+	 *
+	 * @url POST
 	 * @access protected
 	 */
 	function post($request_data=NULL) {
@@ -397,11 +407,6 @@ class Company extends Core {
 			$request_data[$key] = isset($request_data[$key]) ? $request_data[$key] : NULL;
 		}
 		
-		// Check permissions
-		/*if(!$this->permission->check($request_data)) {
-			return $this->permission->errorMessage();
-		};*/
-		
 		// validate and sanitize
 		/*$this->filter->set_request_data($request_data);
 		$this->filter->set_group_rules('companies,locations,users');
@@ -412,7 +417,9 @@ class Company extends Core {
 			return $return;
 		}
 		$request_data = $this->filter->get_request_data();*/
-
+		$request_data = $this->filter->run($request_data);
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
+		
 		// company //
 		$company = array(
 			"company_username"		=> $request_data["company_username"],
@@ -429,7 +436,7 @@ class Company extends Core {
 		// add to user
 		$this->db->update('users', array('company_ID' => $company_ID), array('user_ID' => USER_ID));
 		
-		$this->session->update();	// add company_ID into session
+		$this->session->update(array("company_ID" => $company_ID));	// add company_ID into session
 		
 		return $company_ID;
 	}
@@ -439,7 +446,8 @@ class Company extends Core {
 	 * 
 	 * @param array $request_data PUT data
 	 * @return NULL
-	 * 
+	 *
+	 * @url PUT
 	 * @access protected
 	 */
 	function put($request_data=NULL) {
@@ -459,10 +467,8 @@ class Company extends Core {
 			$request_data[$key] = isset($request_data[$key]) ? $request_data[$key] : NULL;
 		}
 		
-		// Check permissions
-		/*if(!$this->permission->check($request_data)) {
-			return $this->permission->errorMessage();
-		};*/
+		$request_data = $this->filter->run($request_data);
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
 		
 		// company //
 		$company = array(
@@ -480,7 +486,7 @@ class Company extends Core {
 
 		$this->db->insert_update('companies', $company, $company);
 
-		return;
+		return TRUE;
 	}
 
 }

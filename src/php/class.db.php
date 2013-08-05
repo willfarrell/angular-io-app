@@ -77,6 +77,7 @@ class MySQL
      */
     public function _close()
     {
+         if (!is_resource($this->connection_mysql)) return null;
          mysql_close($this->connection_mysql);
     }
 
@@ -110,6 +111,7 @@ class MySQL
      */
     private function _run($query)
     {
+        if (!is_resource($this->connection_mysql)) return null;
         $return = mysql_query($query, $this->connection_mysql);
         $this->last_query = $query;
         //echo $query;

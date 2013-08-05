@@ -1,24 +1,49 @@
 <?php
 
-class Location extends Core {
+/**
+ * Location - REST for a company location
+ *
+ * PHP version 5.4
+ *
+ * @category  PHP
+ * @package   Angular.io
+ * @author    will Farrell <iam@willfarrell.ca>
+ * @copyright 2000-2013 Farrell Labs
+ * @license   http://angulario.com
+ * @version   0.0.1
+ * @link      http://angulario.com
+ *
+ * @access protected
+ */
 
+class Location extends Core {
+	
+	/**
+	 * Constructs a Location object.
+	 */
 	function __construct(){
 		parent::__construct();
-    }
-
+	}
+	
+	/**
+	 * Destructs a Location object.
+	 *
+	 * @return void
+	 */
 	function __destruct() {
 		parent::__destruct();
-  	}
+	}
 
-  	/*
-	get a list of locations for a company
-	session company only (privacy)
-	*/
+	/**
+	 * get a list of locations for a company
+	 *
+	 * @param int $location_ID Location ID
+	 * @return array
+	 *
+	 * @url GET {location_ID}
+	 * @access protected
+	 */
 	function get($location_ID=NULL) {
-		// Check permissions
-		/*if(!$this->permission->check(array("location_ID" => $location_ID))) {
-			return $this->permission->errorMessage();
-		};*/
 		
 		$return = array();
 
@@ -41,7 +66,16 @@ class Location extends Core {
 
 		return $return;
 	}
-
+	
+	/**
+	 * add a location to a company
+	 *
+	 * @param array $request_data POST data
+	 * @return int
+	 *
+	 * @url POST
+	 * @access protected
+	 */
 	function post($request_data=NULL) {
 		$return = array();
 		$params = array(
@@ -63,18 +97,15 @@ class Location extends Core {
 		
 		$request_data['company_ID'] = COMPANY_ID;
 		
-		// Check permissions
-		/*if(!$this->permission->check($request_data)) {
-			return $this->permission->errorMessage();
-		};*/
-		
-		$this->filter->set_request_data($request_data);
+		/*$this->filter->set_request_data($request_data);
 		$this->filter->set_group_rules('locations');
 		if(!$this->filter->run()) {
 			$return["alerts"] = $this->filter->get_errors();
 			return $return;
 		}
-		$request_data = $this->filter->get_request_data();
+		$request_data = $this->filter->get_request_data();*/
+		$request_data = $this->filter->run($request_data);
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
 
 		// location //
 		$request_data["latitude"] 	= 0;
@@ -122,7 +153,15 @@ class Location extends Core {
 		return $location_ID;
 	}
 
-	// update location
+	/**
+	 * update a location for a company
+	 *
+	 * @param array $request_data PUT data
+	 * @return bool
+	 *
+	 * @url PUT
+	 * @access protected
+	 */
 	function put($request_data=NULL) {
 		$return = array();
 		$params = array(
@@ -146,20 +185,15 @@ class Location extends Core {
 		
 		$request_data['company_ID'] = COMPANY_ID;
 		
-		// Check permissions
-		/*if(!$this->permission->check($request_data)) {
-			return $this->permission->errorMessage();
-		};*/
-		
-		$this->filter->set_request_data($request_data);
+		/*$this->filter->set_request_data($request_data);
 		$this->filter->set_group_rules('locations');
 		if(!$this->filter->run()) {
 			$return["alerts"] = $this->filter->get_errors();
 			return $return;
 		}
-		$request_data = $this->filter->get_request_data();
-		
-		$this->permission->check($request_data);
+		$request_data = $this->filter->get_request_data();*/
+		$request_data = $this->filter->run($request_data);
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
 		
 		// location //
 		$request_data["latitude"] 	= 0;
@@ -203,16 +237,22 @@ class Location extends Core {
 			);
 		}
 		
-		return;
+		return TRUE;
 	}
-
+	
+	/**
+	 * delete a location for a company
+	 *
+	 * @param int $location_ID Location ID
+	 * @return bool
+	 *
+	 * @url GET {location_ID}
+	 * @url DELETE {location_ID}
+	 * @access protected
+	 */
 	function delete($location_ID=NULL) {
-		// Check permissions
-		/*if(!$this->permission->check(array("location_ID" => $location_ID))) {
-			return $this->permission->errorMessage();
-		};*/
-		
 		$this->db->delete('locations', array('company_ID' => COMPANY_ID, 'location_ID' => $location_ID));
+		return TRUE;
 	}
 
 }

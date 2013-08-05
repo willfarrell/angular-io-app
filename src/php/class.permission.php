@@ -24,7 +24,20 @@ if(!$this->permission->check($request_data)) {
 	return $this->permission->errorMessage();
 };
 
- */
+*/
+
+
+/*
+
+# Permission Tests
+A `!` can be place infrom of a rule to inverse it. ie !required
+
+Test		Details
+user_ID		
+user_level	
+company_ID	
+
+*/
 
 require_once 'class.db.php';
 include_once "inc.permission.php";
@@ -48,13 +61,15 @@ class Permission
 	private $tests = array();
 	private $signout = false;	// signout flag set by test that that check session
 	//private $access = false;	// access flag set by test that that check a users access
-	
+	private $_inputs = array();
 	/**
 	 * Constructor
 	 */
-	function __construct() {
+	function __construct($args = array()) {
 		global $database, $permission_tests;
 		$this->db = $database;
+		
+		$this->_inputs = $args;
 		
 		if (!$permission_tests) $this->tests = array();
 		else $this->tests = $permission_tests;
@@ -67,41 +82,13 @@ class Permission
 		
 	}
 	
-	// mailtain inc.permission.php
-	private function add_function_array($name = "") {
-		$regenerate = false;
-		if ($name) {
-			if (!isset($this->tests[$name])) {
-				$this->tests[$name] = "";
-				$regenerate = true;
-			}
-		}
-		
-		if ($regenerate) $this->build_function_array();
-	}
 	
-	private function build_function_array($file = 'php/inc.permission.php') {
-		
-		ob_start();
-		ksort($this->tests); // reorder list
-		var_export($this->tests);
-		$result = ob_get_clean();
-		
-		file_put_contents($file, "<?php\n/*\nThis file is updated automatically as your applications is run.\n*/\n\$permission_tests = ".$result.";\n?>");
-		return $this->tests;
-	}
-	
-	private function build_label($field) {
-		$label = str_replace("_", " ", $field);
-		$label = ucwords($label);
-		return $label;
-	}
 	
 	// DELETE replced with 400 Error code via Auth
 	function getSignout() {
 		return $this->signout;
 	}
-	function errorMessage() {
+	function getErrors() {
 		
 		if ($this->signout) {
 			$return["session"] = "signout";
@@ -129,7 +116,7 @@ class Permission
 	 * @return true
 	 * @aceess puiblic
 	 */
-	function check($args = NULL, $className = '', $methodName = '') {
+	function check($args, $className = '', $methodName = '') {
 		$allowed = TRUE;
 		
 		if (!$className || !$methodName) {
@@ -137,9 +124,9 @@ class Permission
 			$trace = debug_backtrace();
 			if (!isset($trace[1])) return FALSE;	// trace failed
 			
-			$source = strtolower("{$trace[1]['class']}_{$trace[1]['function']}");
+			$source = "{$trace[1]['class']}::{$trace[1]['function']}";
 		} else {
-			$source = strtolower("{$className}_{$methodName}");
+			$source = "{$className}::{$methodName}";
 		}
 		
 		if ($args == NULL) {
@@ -172,6 +159,37 @@ class Permission
 		return $allowed;
 	}
 	
+	// mailtain inc.permission.php
+	private function add_function_array($name = "") {
+		$regenerate = false;
+		if ($name) {
+			if (!isset($this->tests[$name])) {
+				$this->tests[$name] = "";
+				$regenerate = true;
+			}
+		}
+		
+		if ($regenerate) $this->build_function_array();
+	}
+	
+	private function build_function_array($file = 'php/inc.permission.php') {
+		
+		ob_start();
+		ksort($this->tests); // reorder list
+		var_export($this->tests);
+		$result = ob_get_clean();
+		
+		file_put_contents($file, "<?php\n/*\nThis file is updated automatically as your applications is run.\n*/\n\$permission_tests = ".$result.";\n?>");
+		return $this->tests;
+	}
+	
+	private function build_label($field) {
+		$label = str_replace("_", " ", $field);
+		$label = ucwords($label);
+		return $label;
+	}
+	
+	//-- functions to assist tests --//
 	private function in_param($value, $params) {
 		$allowed = false;
 		foreach($params as $param) {

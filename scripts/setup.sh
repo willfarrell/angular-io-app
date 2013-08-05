@@ -13,4 +13,8 @@ grunt setup
 
 # Setup virtual Env (docker)
 # TO DO!!!
-
+cd src
+rm -rf docker
+git clone https://github.com/dotcloud/docker.git
+vagrant init
+vagrant up

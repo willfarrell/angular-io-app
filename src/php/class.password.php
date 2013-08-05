@@ -13,8 +13,10 @@
  *
  */
 
-require_once "inc.config.php";
+require_once 'inc.config.php';
 require_once 'class.db.php';
+require_once 'class.console.php';
+require_once 'class.timer.php';
 
 class Password {
 	private $db;
@@ -22,7 +24,10 @@ class Password {
 	
 	private $user_ID = 0;
 	private $user_email = '';
-
+	
+	/**
+	 * Constructs a Password object.
+	 */
 	function __construct($user_ID = 0, $user_email = '') {
 		global $database;
 		$this->db = $database;
@@ -30,30 +35,68 @@ class Password {
 		$this->user_ID = $user_ID;
 		$this->user_email = $user_email;
 		
-		$this->config = json_decode(file_get_contents('json/config.password.json'), false); // object
+		$this->config = json_decode(file_get_contents(dirname(__FILE__).'/../json/config.password.json'), false); // object
 
 		// Dev
 		$this->console = new Console;
 		$this->timer = new Timers;
 	}
-
+	
+	/**
+	 * Destructs a Password object.
+	 *
+	 * @return void
+	 */
 	function __destruct() {
 		
 	}
 	
+	/**
+	 * Get User ID
+	 *
+	 * @return int
+	 */
 	private function getId() {
 		return (USER_ID) ? USER_ID : $this->user_ID;
 	}
 	
+	/**
+	 * Get User Email
+	 *
+	 * @return string
+	 */
 	private function getEmail() {
 		return (USER_EMAIL) ? USER_EMAIL : $this->user_email;
 	}
 	
-	function get_errors($class = 'error') {
+	/**
+	 * Has Errors
+	 *
+	 * @return int
+	 */
+	function hasErrors() {
+  		// array_walk($words, create_function('&$str', '$str = "<p>$str</p>";'));
+	  	return sizeof($this->errors);
+  	}
+  	
+	/**
+	 * Get Errors
+	 *
+	 * @return string
+	 */
+	function getErrors() {
   		// array_walk($words, create_function('&$str', '$str = "<p>$str</p>";'));
 	  	return implode("\n", $this->errors);
   	}
 	
+	/**
+	 * Update Password
+	 * Add old password to history
+	 *
+	 * @param string $password New password
+	 * @param string $email
+	 * @return string
+	 */
 	function update($password, $email) {
 		$password_hash = $this->hash($password, $email);
 		$query = "UPDATE users SET"
@@ -73,10 +116,12 @@ class Password {
 	}
 	
 	/**
-	 *	Runs validation checks a password
+	 * Runs validation checks a password
+	 *
+	 * @param string $password Password
+	 * @return bool
 	 */
 	function validate($password) {
-		$return = true;
 		
 		$this->timer->start('validate');
 		if ($this->length($password) && $this->charset($password)) {
@@ -90,19 +135,25 @@ class Password {
 		}
 		$this->timer->stop('validate');
 		$this->console->log($this->errors);
-		return count($this->errors) ? true : false;
+		return sizeof($this->errors) ? false : true;
 	}
 	
 	/**
-	 *	Determine a password strength
+	 * Determine a password strength
+	 *
+	 * @param string $password Password
+	 * @return bool
 	 */
 	function entropy($password) {
 		// https://tech.dropbox.com/2012/04/zxcvbn-realistic-password-strength-estimation/
-		
+		return true;
 	}
 	
 	/**
-	 *	Checks if a password is long enough
+	 * Checks if a password is long enough
+	 *
+	 * @param string $password Password
+	 * @return bool
 	 */
 	function length($password) {
 		$length = strlen($password);
@@ -117,7 +168,10 @@ class Password {
 	}
 	
 	/**
-	 *	Checks if a password has charset diversity
+	 * Checks if a password has charset diversity
+	 *
+	 * @param string $password Password
+	 * @return bool
 	 */
 	function charset($password) {
 		$return = true;
@@ -197,7 +251,10 @@ class Password {
 	}
 	
 	/**
-	 *	Checks if a password overlaps with a dictionary word
+	 * Checks if a password overlaps with a dictionary word
+	 *
+	 * @param string $password Password
+	 * @return bool
 	 */
 	function dictionary($password) {
 		$words = preg_split("/[^a-z]/", strtolower($password));
@@ -217,7 +274,10 @@ class Password {
 	}
 	
 	/**
-	 *	Checks if a password is on the black list - a list of most popular passwords
+	 * Checks if a password is on the black list - a list of most popular passwords
+	 *
+	 * @param string $password Password
+	 * @return bool
 	 */
 	function black_list($password) {
 		$r = $this->db->select("password_blacklist", array("password" => $password));
@@ -231,7 +291,10 @@ class Password {
 	}
 	
 	/**
-	 *	Checks if a password has been used in the past for a user
+	 * Checks if a password has been used in the past for a user
+	 *
+	 * @param string $password Password
+	 * @return bool
 	 */
 	function user_past_password($password) {
 		if (!$this->getId() || !$this->getEmail()) {
@@ -260,7 +323,10 @@ class Password {
 	}
 	
 	/**
-	 *	Checks if a password overlaps with a user inputed data
+	 * Checks if a password overlaps with a user inputed data
+	 *
+	 * @param string $password Password
+	 * @return bool
 	 */
 	function user_input_data($password) {
 		if (!$this->getId()) {
@@ -299,7 +365,10 @@ class Password {
 	}
 	
 	/**
-	 *	Checks the similarity of a string to the password
+	 * Checks the similarity of a string to the password
+	 *
+	 * @param string $password Password
+	 * @return bool
 	 */
 	private function password_similarity($password, $text) {
 		$return = true;
@@ -334,14 +403,22 @@ class Password {
 	}
 	
 	/**
-	 *	salting a password
+	 * Salting a password
+	 *
+	 * @param string $password Password
+	 * @param string $email
+	 * @return string
 	 */
 	private function salt($password, $email = '') {
 		return $password.$email.PASSWORD_SALT;
 	}
 	
 	/**
-	 *	hashing a password
+	 * hashing a password
+	 *
+	 * @param string $password Password
+	 * @param string $email
+	 * @return string
 	 */
 	function hash($password, $email = '') {
 		$this->timer->start('hash');
@@ -361,7 +438,12 @@ class Password {
 	}
 	
 	/**
-	 *	checking a password against a hash
+	 * checking a password against a hash
+	 *
+	 * @param string $password Password
+	 * @param string $hash Hash of stored password
+	 * @param string $email
+	 * @return bool
 	 */
 	function check($password, $hash, $email = '') {
 		$this->timer->start('hash_check');

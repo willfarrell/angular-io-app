@@ -133,7 +133,7 @@ function SignCtrl($config, $rootScope, $scope, $cookies, $routeParams, $rest, $s
 
 		$rest.http({
 				method:'put',
-				url: $rest.server+'account/totp/'+code,
+				url: $rest.server+'account/totp/verify/'+code,
 				data: {
 					email:		$scope.signin.email,
 					password:	$scope.signin.password,

@@ -162,7 +162,17 @@ module.exports = function(grunt) {
 					reporter: 'spec'
 					//globals: ['url']
 				},
-				src: ['test/api/account.js','!test/api/contact.js']
+				src: ['test/api/*.js','!test/api/_template_.js','!test/api/contact.js']
+			}
+		},
+		phpunit: {
+			classes: {
+				dir: 'test/phpunit/'
+			},
+			options: {
+				bin: 'src/php/vendor/bin/phpunit',
+				bootstrap: 'test/phpunit/bootstrap.php',
+				colors: true
 			}
 		},
 		
@@ -957,12 +967,15 @@ module.exports = function(grunt) {
 				//changefreq: 'daily'
 				//priority: '0.5'
 			}
-		}/*,
-		bower: {
-			dir: '<%= yeoman.app %>/components',
-			//rjsConfig: '<%= yeoman.app %>/scripts/main.js',
-			indent: '	'
-		}*/
+		},
+		shell: {
+			setup: {
+				//command: 'sh scripts/setup.sh'
+			},
+			update: {
+				//command: 'sh scripts/update.sh'
+			}
+		}
 	});
 	
 	grunt.renameTask('regarde', 'watch');
@@ -984,6 +997,7 @@ module.exports = function(grunt) {
 	
 	grunt.registerTask('test', [
 		'lint',
+		'phpunit',
 		'mochaTest:all',
 		'karma:unit',
 		'karma:e2e'

@@ -15,10 +15,17 @@
  * $this->console->warn("data", 34, [1,2,3,4]);
  * $this->console->error("data");
  *
+ * @category  PHP
+ * @package   Angular.io
+ * @author    will Farrell <iam@willfarrell.ca>
+ * @copyright 2000-2013 Farrell Labs
+ * @license   http://angulario.com
+ * @version   0.0.1
+ * @link      http://angulario.com
  */
 
-require_once 'php/vendor/firephp/firephp-core/lib/FirePHPCore/FirePHP.class.php';
-require_once 'php/vendor/ccampbell/chromephp/ChromePhp.php';
+require_once dirname(__FILE__).'/vendor/firephp/firephp-core/lib/FirePHPCore/FirePHP.class.php';
+require_once dirname(__FILE__).'/vendor/ccampbell/chromephp/ChromePhp.php';
 
 if(!defined("CONSOLE_FILE"))		define("CONSOLE_FILE", FALSE);
 if(!defined("CONSOLE_FIREPHP"))		define("CONSOLE_FIREPHP", FALSE);
@@ -41,6 +48,7 @@ class Console {
 	
 	/**
 	 * ChromeLogger Object from returning debugging to the browser
+	 * NOT USED
 	 *
 	 * @var object
 	 */
@@ -49,7 +57,6 @@ class Console {
 	function __construct() {
 		// FirePHP - chrome plugin
 		if (CONSOLE_FIREPHP) $this->FirePHP = FirePHP::getInstance(true);
-		//if (CONSOLE_ChromeLogger) $this->ChromeLogger = ChromeLogger::getInstance(true); // todo
 	}
 
 	function __destruct() {
@@ -87,9 +94,31 @@ class Console {
 					$this->FirePHP->{$type}($data);
 				} catch (Exception $e) {}
 			}
-			if (CONSOLE_ChromeLogger) {
+			if (CONSOLE_CHROMELOGGER) {
 				try {
-					$this->ChromeLogger->{$type}($data);
+					switch($type) {
+						case "log":
+							ChromePhp::log($data);
+							break;
+						case "info":
+							ChromePhp::info($data);
+							break;
+						case "warn":
+							ChromePhp::warn($data);
+							break;
+						case "error":
+							ChromePhp::error($data);
+							break;
+						case "group":
+							ChromePhp::group($data);
+							break;
+						case "groupCollapsed":
+							ChromePhp::groupCollapsed($data);
+							break;
+						case "groupEnd":
+							ChromePhp::groupEnd($data);
+							break;
+					}
 				} catch (Exception $e) {}
 			}
 		}

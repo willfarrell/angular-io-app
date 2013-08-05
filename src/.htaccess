@@ -663,15 +663,15 @@ ServerSignature Off
 
 # Redirect all requests through index.php
 <IfModule mod_rewrite.c>
-	RewriteCond %{REQUEST_URI} !(^api\.php|\.(gif|jpe?g|png|svg|svgz|ico|webp|ttf|woff|ttf|css|js|json|txt|xml|htm|html))$
+	RewriteCond %{REQUEST_URI} !(^index\.php|\.(gif|jpe?g|png|svg|svgz|ico|webp|ttf|woff|ttf|css|js|json|txt|xml|htm|html))$
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteRule . php.index.php [L]
+	RewriteRule . index.php [L]
 </IfModule>
 
 # Force filepicker to api - filenames in urls can cause routing issues
 <IfModule mod_rewrite.c>
-	RewriteRule ^filepicker/ php.index.php [L]
+	RewriteRule ^filepicker/ index.php [L]
 </IfModule>
 
 

@@ -59,19 +59,60 @@
 		</div>
 	</div>
 
-	<!--<hr>
+	<hr>
 	<div class="control-group">
-		<b>Email Encryption</b>
+		<b>Email Encryption (PGP/GPG) - In Development</b>
 	</div>
-
+	
+	<div class="control-group" data-ng-class="{error: (errors.keyserver)}">
+		<label class="control-label" for="keyserver">Keyserver</label>
+		<div class="controls">
+			<div class="input-prepend input-append">
+				<span class="add-on">hkp://</span>
+				<input type="text" id="keyserver" name="keyserver" class="input-block-level" placeholder="" data-ng-model="security.email.keyserver" data-field-error="keyserver"/>
+				<div class="btn-group">
+					<button class="btn dropdown-toggle" data-toggle="dropdown">
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li data-ng-repeat="keyserver in keyservers"><a href="" data-ng-click="security.email.keyserver = keyserver">hkp://{{keyserver}}</a></li>
+					</ul>
+				</div>
+			</div>
+			<span class="help-block error" data-ng-show="errors.keyserver">{{errors.keyserver}}</span>
+		</div>
+	</div>
+	
+	<div class="control-group">
+		<div class="controls">
+			<button class="btn input-block-level" data-ng-click="testPGP(security.email.keyserver)" data-ng-disabled="!security.email.keyserver">Fetch Public Key &amp; Test</button>
+		</div>
+	</div>
+	
+	<div class="control-group" data-ng-show="security.email.keyID">
+		<label class="control-label" for="keyID">Enable</label>
+		<div class="controls">
+			<label class="checkbox">
+				<input type="checkbox" id="keyID" name="keyID" data-ng-model="security.email.enable"> {{session.user.user_first_name}} {{session.user.user_last_name}} &lt;{{session.user.user_email}}&gt; - {{security.email.keyID}}
+			</label>
+			<span class="help-block">If enabled, all emails will be encrypted using your public key shown below.</span>
+		</div>
+	</div>
+	
+	<div class="control-group" data-ng-show="security.email.public_key">
+		<label class="control-label" for="public_key">Public Key</label>
+		<div class="controls">
+			<textarea id="public_key" name="public_key" class="input-block-level" data-ng-model="security.email.public_key" rows="6" data-ng-minlength="1" data-field-error="public_key" disabled></textarea>
+		</div>
+	</div>
+	
 	<!--<div class="control-group">
 		<label class="control-label" for="">Recipient Name</label>
 		<div class="controls">
 			<input type="text" class="input-block-level" name="recipient" placeholder="" data-ng-model="security.email.recipient" />
 		</div>
-	</div>--
-
-	<div class="control-group">
+	</div>-->
+	<!--<div class="control-group">
 		<label class="control-label" for="pgpkey">PGP/GPG Public Key</label>
 		<div class="controls">
 			<textarea name="message" class="input-block-level" data-ng-model="security.email.key" rows="6" data-ng-minlength="1" data-field-error="pgpkey" disabled></textarea>
@@ -88,7 +129,12 @@
 	<div class="control-group">
 		<b>Multi-Factor Authentication</b>
 	</div>-->
-
+	
+	<hr>
+	<div class="control-group">
+		<b>Two Factor Authentication - In Development</b>
+	</div>
+	
 	<hr>
 	<div class="control-group">
 		<div class="controls">

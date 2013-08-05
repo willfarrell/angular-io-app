@@ -84,13 +84,13 @@ angular.module('app.factories')
 			});
 	};
 
-	$scope.regen = function() {
+	/*$scope.regen = function() {
 		console.log('regenSession()');
 		$http.get('account/regen')
 			.success(function(data) {
 				console.log('regenSession.get.success');
 			});
-	};
+	};*/
 
 	$scope.check = function(callback) {
 		console.log('checkSession(', callback, ')');

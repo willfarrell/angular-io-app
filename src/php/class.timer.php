@@ -7,26 +7,42 @@ Add a timer for nested events
 If negative min value, you forgot to place a stop call
 
 */
+
 class Timers {
 	var $id = "";
 	var $timers = array();
 	var $counter = 0;
-
+	
+	/**
+	 * Constructs a Timers object.
+	 */
 	function __construct($id="") {
 		$this->id = $id;
 	}
-
+	
+	/**
+	 * Destructs a Timers object.
+	 *
+	 * @return void
+	 */
 	function __destruct() {
 		// print to log files
-		/*$data = json_encode($this->results_all());
-		if ($data != "[]") {
-			$file = $_SERVER['DOCUMENT_ROOT'].'/timers.txt';
-			file_put_contents($file, "\n".$_SERVER['REQUEST_TIME']." (".date('r', $_SERVER['REQUEST_TIME']).")\n", FILE_APPEND);
-			file_put_contents($file, $data, FILE_APPEND);
-		}*/
+		if (TIMERS_FILE) {
+			$data = json_encode($this->results_all());
+			if ($data != "[]") {
+				$file = $_SERVER['DOCUMENT_ROOT'].'/timers.txt';
+				file_put_contents($file, "\n".$_SERVER['REQUEST_TIME']." (".date('r', $_SERVER['REQUEST_TIME']).")\n", FILE_APPEND);
+				file_put_contents($file, $data, FILE_APPEND);
+			}
+		}
 	}
 
-	/* start the timer */
+	/**
+	 * start the timer
+	 *
+	 * @param string $id
+	 * @return void
+	 */
 	public function start($id=NULL) {
 		if ($id==NULL) $id = $this->id;
 		if (isset($this->timers[$id])) {
@@ -42,24 +58,45 @@ class Timers {
 		$this->timers[$id]['timer'][$this->timers[$id]['count']]->start();
 	}
 
-	/* pause the timer */
+	/**
+	 * pause the timer
+	 *
+	 * @param string $id
+	 * @return void
+	 */
 	public function pause($id=NULL) {
 		if ($id==NULL) $id = $this->id;
 		$this->timers[$id]['timer'][$this->timers[$id]['count']]->pause();
 	}
 
-	/* unpause the timer */
+	/**
+	 * unpause the timer
+	 *
+	 * @param string $id
+	 * @return void
+	 */
 	public function unpause($id=NULL) {
 		if ($id==NULL) $id = $this->id;
 		$this->timers[$id]['timer'][$this->timers[$id]['count']]->unpause();
 	}
 
-	/* stop the timer */
+	/**
+	 * stop the timer
+	 *
+	 * @param string $id
+	 * @return void
+	 */
 	public function stop($id=NULL) {
 		if ($id==NULL) $id = $this->id;
 		$this->timers[$id]['timer'][$this->timers[$id]['count']]->stop();
 	}
-
+	
+	/**
+	 * return results for an id
+	 *
+	 * @param string $id
+	 * @return array
+	 */
 	function results($id=NULL) {
 		if ($id==NULL) $id = $this->id;
 
@@ -77,7 +114,12 @@ class Timers {
 		
 		return $return;
 	}
-
+	
+	/**
+	 * return all ID results
+	 *
+	 * @return array
+	 */
 	function results_all() {
 		$results = array();
 		foreach ($this->timers as $key => $value) {
@@ -86,6 +128,12 @@ class Timers {
 		return $results;
 	}
 	
+	/**
+	 * return all ID results as string
+	 *
+	 * @param string $id
+	 * @return string
+	 */
 	function print_results($id = NULL) {
 		if ($id) $results = $this->results($id);
 		else $results = $this->results_all();
@@ -102,11 +150,22 @@ class Timers {
 		}
 	}
 
+	/**
+	 * clear id
+	 *
+	 * @param string $id
+	 * @return void
+	 */
 	function clear($id=NULL) {
 		if ($id==NULL) $id = $this->id;
 		unset($this->timers[$id]);
 	}
-
+	
+	/**
+	 * clear all ids
+	 *
+	 * @return void
+	 */
 	function clear_all() {
 		unset($this->timers);
 	}
@@ -116,55 +175,73 @@ class Timers {
 // duration added by will Farrell
 class Timer {
 
-	function __construct() {
-
-	}
-
-	function __destruct() {
-
-	}
-
-	/* start the timer */
+	/**
+	 * start the timer
+	 *
+	 * @return void
+	 */
 	function start() {
 		$this->start_time = $this->get_time();
 		$this->pause_time = 0;
 	}
 
-	/* pause the timer */
+	/**
+	 * pause the timer
+	 *
+	 * @return void
+	 */
 	function pause() {
 		$this->pause_time = $this->get_time();
 	}
 
-	/* unpause the timer */
+	/**
+	 * unpause the timer
+	 *
+	 * @return void
+	 */
 	function unpause() {
 		$this->start_time += ($this->get_time() - $this->pause_time);
 		$this->pause_time = 0;
 	}
 
-	/* stop the timer */
+	/**
+	 * stop the timer
+	 *
+	 * @return void
+	 */
 	function stop() {
 		$this->stop_time = $this->get_time();
 		//return $this->stop_time;
 	}
 
-	/* duration the timer */
+	/**
+	 * duration the timer
+	 *
+	 * @return decimal
+	 */
 	function duration() {
 		$this->duration = (isset($this->stop_time) ? $this->stop_time : 0) - $this->start_time;
 		return $this->duration;
 	}
 
-	/* get the current timer value */
+	/**
+	 * get the current timer value
+	 *
+	 * @return decimal
+	 */
  	function get($decimals = 8) {
 		return round(($this->get_time() - $this->start),$decimals);
 	}
 
-	/* format the time in seconds */
+	/**
+	 * format the time in seconds
+	 *
+	 * @return int
+	 */
 	function get_time() {
 		list($usec,$sec) = explode(' ', microtime());
 		return ((float)$usec + (float)$sec);
 	}
 }
-
-//$timer = new Timers;
 
 ?>

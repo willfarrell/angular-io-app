@@ -1,5 +1,5 @@
 
-function SecurityCtrl($rootScope, $scope, $rest) {
+function SecurityCtrl($rootScope, $scope, $rest, $http) {
 	console.log('SecurityCtrl (', $scope.$id, ')');
 	$scope.services = [
 		{
@@ -10,8 +10,28 @@ function SecurityCtrl($rootScope, $scope, $rest) {
 			'android'	:'https://m.google.com/authenticator',
 			'bb'		:'https://m.google.com/authenticator'
 		}
-	];
-	$scope.security = {};
+	]; // config.totpservices.json
+	
+	// load in keyservers
+	$scope.keyservers = [];
+	$http.get('json/config.keyservers.json')
+		.success(function(data){
+			$scope.keyservers = data;
+			$rootScope.json.keyservers = data;
+		});
+	
+	$scope.security = {
+		/*
+		totp: {
+			service:"google",
+			secret:"shhhhh"
+		},
+		email: {
+			keyserver:"keys.gnupg.net"
+			publickey:""
+		}
+		*/
+	};
 	//$scope.security.totp = config.security.totp;
 
 	$scope.loadSecurity = function() {
@@ -49,7 +69,7 @@ function SecurityCtrl($rootScope, $scope, $rest) {
 
 		$rest.http({
 				method:'get',
-				url: $rest.server+'user/totp/'+$scope.security.totp.service
+				url: $rest.server+'user/totp/generate/'+$scope.security.totp.service
 			}, function(data){
 				$scope.security.totp.secret = JSON.parse(data);
 			});
@@ -61,23 +81,36 @@ function SecurityCtrl($rootScope, $scope, $rest) {
 
 		$rest.http({
 				method:'put',
-				url: $rest.server+'user/totp/'+$scope.security.totp.secret+'/'+code
+				url: $rest.server+'user/totp/check/'+$scope.security.totp.secret+'/'+code
 			}, function(data){
 				$scope.test_code_return = data;
 			});
 	};
 
-	$scope.testPGP = function(email) {
-		console.log('testPGP(', email, ')');
+	$scope.testPGP = function(keyserver) {
+		console.log('testPGP(',keyserver, ')');
 
 		$rest.http({
 				method:'put',
 				url: $rest.server+'user/pgp/',
-				data: email
+				data: {keyserver:keyserver}
+			}, function(data) {
+				if (data) {
+					for (var i in data) {
+						if (data.hasOwnProperty(i)) {
+							$scope.security.email[i] = data[i];
+						}
+					}
+				}
+				$rootScope.alerts.push({
+					'class':'info',
+					'label':'Encrypted Email Sent:',
+					'message':'Please confirm you can decrypt our encrypted test message before enabling this feature.'
+				});
 			});
 	};
 
 	$scope.loadSecurity();
 	//$session.require_signin();
 }
-SecurityCtrl.$inject = ['$rootScope', '$scope', '$rest'];
+SecurityCtrl.$inject = ['$rootScope', '$scope', '$rest', '$http'];
