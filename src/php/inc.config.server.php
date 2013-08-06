@@ -1,11 +1,16 @@
 <?php
-
-// RENAME this file. php/inc.config.sample.php -> php/inc.config.php
-
-/*
+/**
 
 All ini_set should be placed in php.ini and removed from this doc
 
+Resources:
+scrypt - https://github.com/DomBlack/php-scrypt
+
+PECL:
+pecl install gnupg # class.notify.php
+pecl install scrypt # class.password.php
+
+# geoip tidy
 */
 
 /*
@@ -15,8 +20,6 @@ $localhost = ($_SERVER &&
 	|| strpos($_SERVER["HTTP_HOST"], "192.168") !== false)
 	);
 */
-
-
 // CORS
 //header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, X-Requested-With, X-Access-Token, X-PINGOTHER");
@@ -25,14 +28,15 @@ header("Access-Control-Allow-Headers: Content-Type, X-Requested-With, X-Access-T
 error_reporting(E_ALL); // 0 or E_ALL
 define("CONSOLE_FILE", FALSE);
 define("CONSOLE_FIREPHP", FALSE);
-define("CONSOLE_CHROMEPHP", FALSE);
+define("CONSOLE_CHROMELOGGER", TRUE);
+define("TIMERS_FILE", FALSE);
 
 ignore_user_abort(true); // Sets whether a client disconnect should cause a script to be aborted.
 set_time_limit(60); // number of seconds a script is allowed to run - If set to zero, no time limit is imposed.
 //ini_set('max_execution_time', 86400);
 
-// Set server default time, it's a life saver. seriously
-date_default_timezone_set('UTC');
+// Set server default time to UTC, it's a life saver. seriously
+date_default_timezone_set("UTC");
 
 // Overwrite if used with cloud flare
 $_SERVER['REMOTE_ADDR'] = getenv("HTTP_CF_CONNECTING_IP")
@@ -62,7 +66,7 @@ ini_set('session.hash_bits_per_character', 5);
 define("PASSWORD_RESET_LENGTH", 3600);	// The time one has to reset their password in seconds (1 hour)
 
 //-- Password Hashing --//
-define("PASSWORD_HASH", 		"scrypt");	// PBKDF2, bcrypt, scrypt (recommended)
+define("PASSWORD_HASH", 		"bcrypt");	// PBKDF2, bcrypt, scrypt (recommended)
 define("PASSWORD_SALT", 		"");		// Added to password (Stored in Code - same for all)
 //define("PASSWORD_PEPPER", 	FALSE);		// Added to password (Stored in other DB/cache)
 //define("PASSWORD_CAYENNE",	FALSE);		// Added to password (Stored in File)
@@ -90,38 +94,41 @@ define("SCRYPT_PARALLEL", 	1);			// The parallel difficultly
 
 //-- Database Class --//
 define("DB_SERVER","localhost");
-define("DB_NAME","_db");
-define("DB_USER","_user");
-define("DB_PASS","");
+define("DB_NAME","angular_db");
+define("DB_USER","angular_user");
+define("DB_PASS","angular1234");
 
 define("STRIPE_API_SECRET_KEY", "");
 //define("STRIPE_API_PUBLIC_KEY", ""); // in scripts/async.js
 
-//-- Notify --//
+//-- Notify Class --//
 // move to config.notify.json
-define('NOTIFY_FROM_NAME', "");
-define('NOTIFY_FROM_EMAIL', "");
-define('NOTIFY_FROM_NUMBER', "");	// assigned by SMS service
-define('NOTIFY_FROM_URL', "http://app.angulario.com/");	// end with '/'
+define("NOTIFY_FROM_NAME", 	"Angular.io");
+define("NOTIFY_FROM_EMAIL", "will.farrell@gmail.com");
+define("NOTIFY_FROM_NUMBER","");	// assigned by SMS service
+define("NOTIFY_FROM_URL", 	"http://app.angulario.com/");
 
 //-- Email --//
-define('EMAIL_ADMIN_EMAIL',"");
-define('EMAIL_SIGNATURE',"");
+define("EMAIL_ADMIN_EMAIL",	"will.farrell@gmail.com");//"will@angular.io");
+define("EMAIL_ADDRESS",		"1 Young St., Toronto, Ontario, Canada, M5E 2A3"); // Address is required to help keep stay out of the spam folder
+define("EMAIL_SIGNATURE",	"\n\nKind Regards,\n\nwill Farrell\nwill@angulario.com\nhttps://angulario.com");
+define("EMAIL_FOOTER",		"\n\n".EMAIL_ADDRESS."\nUpdate preferences at: {{global:site_url}}#/settings/notifications\n\nThis action was requested from {{_SERVER:REMOTE_ADDR}}.");
 // AWS SES
-define('EMAIL_AWS_APIKEY', "");
+define("EMAIL_AWS_APIKEY", 	"");
 // mailgun
-define('EMAIL_MAILGUN_APIKEY', "");
-define('EMAIL_MAILGUN_DOMAIN', "");
+//define("EMAIL_MAILGUN_APIKEY", "key-1d6to8lo6755xglfknbkhs4nzai4xo-4");
+//define("EMAIL_MAILGUN_DOMAIN", "angulario.mailgun.org");
 
 
 //-- SMS --//
 // AWS SNS
-define('SMS_AWS_APIKEY', "");
+define("SMS_AWS_APIKEY", 	"");
 // nexmo
-define('SMS_NEXMO_APIKEY', "");
-define('SMS_NEXMO_APISECRET', "");
+define("SMS_NEXMO_APIKEY", 	"");
+define("SMS_NEXMO_APISECRET", "");
 // twilio
-define('SMS_TWILIO_APIKEY', "");
+define("SMS_TWILIO_APIKEY", "");
+
 
 //-- Filepicker --//
 

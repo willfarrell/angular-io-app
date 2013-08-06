@@ -52,10 +52,10 @@ class Notify {
 	
 	// refactor into json settings
 	public $admin_email = EMAIL_ADMIN_EMAIL;
-	private $signature = EMAIL_SIGNATURE;
-	private $footer = EMAIL_FOOTER;
+	private $_signature = EMAIL_SIGNATURE;
+	private $_footer = EMAIL_FOOTER;
 	
-	private $vars = array(
+	private $_vars = array(
 		"global" => array(	// order is important for nested vars
 			"signature"	=> EMAIL_SIGNATURE,
 			"footer"	=> EMAIL_FOOTER,
@@ -80,18 +80,19 @@ class Notify {
 		global $database;
 		$this->db = $database;
 		
-		$this->vars["_SERVER"]["REMOTE_ADDR"] = $_SERVER['REMOTE_ADDR'];
+		// Do not place $this->_vars["_SERVER"] = $_SERVER; // Open secuirty issues
+		$this->_vars["_SERVER"]["REMOTE_ADDR"] = $_SERVER['REMOTE_ADDR'];
 		
 		// include messages
-		$templates = file_get_contents('json/notify.templates.en.json');
+		$templates = file_get_contents(dirname(__FILE__).'/../json/notify.templates.en.json');
 		$this->templates = json_decode($templates, true);
 		
 		// default notification types
-		$defaults = file_get_contents('json/config.notify.client.json');
+		$defaults = file_get_contents(dirname(__FILE__).'/../json/config.notify.client.json');
 		$this->defaults = json_decode($defaults, true);
 		
 		// these defaults should overwrite any user set ones. (todo)**
-		$defaults = file_get_contents('json/config.notify.server.json');
+		$defaults = file_get_contents(dirname(__FILE__).'/../json/config.notify.server.json');
 		$this->defaults = array_merge($this->defaults, json_decode($defaults, true));
 	}
 	
@@ -108,7 +109,7 @@ class Notify {
 	 * Send a notification
 	 *
 	 * @param int $user_ID
-	 * @param int $message_ID Template ID
+	 * @param string $message_ID Template ID
 	 * @param array $args Params in inject into template
 	 * @param string $types Methods of notifying
 	 * @return bool
@@ -121,7 +122,7 @@ class Notify {
 		$from = $this->db->select("users", array("user_ID" => USER_ID), $select);
 		if ($from) {
 			$from = $this->db->fetch_assoc($from);
-			$this->vars['from'] = $from;
+			$this->_vars['from'] = $from;
 		} else {
 			$from = array();
 		}
@@ -132,7 +133,7 @@ class Notify {
 		$to = $this->db->select("users", array("user_ID" => $user_ID), $select);
 		if (!$to) return FALSE;
 		$to = $this->db->fetch_assoc($to);
-		$this->vars['to'] = $to;
+		$this->_vars['to'] = $to;
 		
 		// privacy defaults
 		$notify = (isset($this->defaults[$message_ID])) ? $this->defaults[$message_ID] : array();
@@ -201,7 +202,7 @@ class Notify {
 	/**
 	 * Compile a message for sending
 	 *
-	 * @param int $message_ID Template ID
+	 * @param string $message_ID Template ID
 	 * @param array $args Params in inject into template
 	 * @return string
 	 */
@@ -212,7 +213,7 @@ class Notify {
 		$subject = $this->templates[$message_ID]['subject'];
 		$message = $this->templates[$message_ID]['message'];
 		
-		foreach ($this->vars as $key => $value) {
+		foreach ($this->_vars as $key => $value) {
 			$message = $this->replace_tags($message, $key, 	$value);
 		}
 		$message = $this->replace_tags($message, 'args', 	$args);
@@ -231,12 +232,13 @@ class Notify {
 	 * @param array $tags Params in inject into template
 	 * @return string
 	 */
-	private function replace_tags($str, $group = '', $tags = array()) {
+	public function replace_tags($str, $group = '', $tags = array()) {
 		foreach ($tags as $key => $value) {
 			if ($group) $key = $group.":".$key;
 			//echo $key."\n";
 			if (is_array($value)) continue;
-			$str = preg_replace("/{{".$key."}}/i", $value, $str);
+			$str = str_ireplace("{{".$key."}}", $value, $str);
+			//$str = preg_replace("/{{".$key."}}/i", $value, $str);
 		}
 		return $str;
 	}
@@ -317,7 +319,7 @@ class Notify {
 	- https://www.nexmo.com/
 	- http://www.smushbox.com/
 	*/
-	private function sms($to, $message) {
+	public function sms($to, $message) {
 		$sent = false;
 		
 		if (!$sent && defined("SMS_NEXMO_APIKEY")) {
@@ -367,7 +369,7 @@ class Notify {
 	/*
 	- http://urbanairship.com/
 	*/
-	private function push($to, $message) {
+	public function push($to, $message) {
 		// https://docs.urbanairship.com/display/DOCS/Getting+Started
 		return true;
 	}
@@ -375,11 +377,11 @@ class Notify {
 	/*
 	facebook, twiter, linkedin
 	*/
-	private function social($to, $message) {
+	public function social($to, $message) {
 		return true;
 	}
 	
-	private function web($user_ID, $message) {
+	public function web($user_ID, $message) {
 		/*$this->db->insert('notifications', array(
 			"user_ID" => $user_ID,
 			"message" => $message,
@@ -393,7 +395,7 @@ class Notify {
 	/*
 	- http://www.efaxdeveloper.com/developer/faq
 	*/
-	private function fax($to, $message) {
+	public function fax($to, $message) {
 		return true;
 	}
 }

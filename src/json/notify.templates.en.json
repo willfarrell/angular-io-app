@@ -1,4 +1,8 @@
 {
+	"phpunit_test": {
+		"subject": "PHPUnit Test",
+		"message": "a{{args:b}}c{{args:b}}"
+	},
 	"signup_confirm_email": {
 		"subject": "Action - Confirm Your Email",
 		"message": "You (or someone else) entered this email address when creating an account at {{global:site_name}}.\n\nIf you did not create an account, you can ignore this message.\n\nTo confirm your email, please proceed to\n {{global:site_url}}#/sign/confirm/{{args:hash}}\n\nor enter {{args:hash}} when requested after login.{{global:signature}}{{global:footer}}"

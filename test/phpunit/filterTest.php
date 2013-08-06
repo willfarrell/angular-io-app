@@ -3,7 +3,7 @@
 // php src/php/vendor/phpunit/phpunit/phpunit.php test/phpunit/validateTest.php
 
 //require "src/php/vendor/phpunit/phpunit/phpunit.php";
-require "src/php/class.filter.php";
+require_once "src/php/class.filter.php";
 
 class ValidateTest extends PHPUnit_Framework_TestCase
 {

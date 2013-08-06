@@ -3,6 +3,7 @@
 # $ sh scripts/setup.sh # Run to generate
 node_modules/*
 src/components/*
+src/php/inc.config.php
 src/php/vendor/*
 
 # VM

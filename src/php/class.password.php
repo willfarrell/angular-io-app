@@ -18,6 +18,34 @@ require_once 'class.db.php';
 require_once 'class.console.php';
 require_once 'class.timer.php';
 
+if(!defined("PASSWORD_RESET_LENGTH"))	define("PASSWORD_RESET_LENGTH", 3600);	// The time one has to reset their password in seconds (1 hour)
+
+//-- Password Hashing --//
+if(!defined("PASSWORD_HASH"))			define("PASSWORD_HASH",		"bcrypt");	// PBKDF2, bcrypt, scrypt (recommended)
+if(!defined("PASSWORD_SALT"))			define("PASSWORD_SALT",		"");		// Added to password (Stored in Code - same for all)
+//if(!defined("PASSWORD_PEPPER"))		define("PASSWORD_PEPPER",	FALSE);		// Added to password (Stored in other DB/cache)
+//if(!defined("PASSWORD_CAYENNE"))		define("PASSWORD_CAYENNE",	FALSE);		// Added to password (Stored in File)
+//if(!defined("PASSWORD_NONCE"))		define("PASSWORD_NONCE",	TRUE);		//
+
+// PBKDF2 - Require NIST compliance [https://github.com/P54l0m5h1k/PBKDF2-implementation-PHP]
+if(!defined("PBKDF2_SALT"))				define("PBKDF2_SALT",		"");
+if(!defined("PBKDF2_BINARY"))			define("PBKDF2_BINARY",		TRUE);		// generate binary data, or base64 encoded string
+if(!defined("PBKDF2_ITERATIONS"))		define("PBKDF2_ITERATIONS",	10000);		// how many iterations to perform 10,000+ (2012)
+if(!defined("PBKDF2_KEY_LENGTH"))		define("PBKDF2_KEY_LENGTH",	32);		// key length
+if(!defined("PBKDF2_ALGORITHM"))		define("PBKDF2_ALGORITHM",	"sha512");	// hashing algorithm (sha-256, sha-512)
+
+// bcrypt - easy to implement [https://gist.github.com/1053158]
+if(!defined("BCRYPT_WORK_FACTOR"))		define("BCRYPT_WORK_FACTOR",10);		// work_factor (4 - 31) [http://wildlyinaccurate.com/bcrypt-choosing-a-work-factor]
+
+// scrypt - longest to break (2013-08), requires extra work server side to implement [https://github.com/DomBlack/php-scrypt]
+if(!defined("SCRYPT_SALT"))				define("SCRYPT_SALT",		NULL);		// NULL to grenerate random
+if(!defined("SCRYPT_PEPPER"))			define("SCRYPT_PEPPER",		"");		//
+if(!defined("SCRYPT_SALT_LENGTH"))		define("SCRYPT_SALT_LENGTH",8);			// The length of the salt
+if(!defined("SCRYPT_KEY_LENGTH"))		define("SCRYPT_KEY_LENGTH",	32);		// The key length
+if(!defined("SCRYPT_CPU"))				define("SCRYPT_CPU",		16384);		// The CPU difficultly (must be a power of 2,  > 1) pow(2,14)
+if(!defined("SCRYPT_MEMORY"))			define("SCRYPT_MEMORY",		8);			// The memory difficultly
+if(!defined("SCRYPT_PARALLEL"))			define("SCRYPT_PARALLEL",	1);			// The parallel difficultly
+
 class Password {
 	private $db;
 	private $errors = array();
@@ -466,8 +494,8 @@ class Password {
 	 * generate pbkdf2 hash
 	 * @src https://github.com/P54l0m5h1k/PBKDF2-implementation-PHP/blob/master/crypt.php
 	 * @static
-	 * @param string $password   - defined password
-	 * @param string $salt	   - defined salt
+	 * @param string $password   -		defined password
+	 * @param string $salt	   -		defined salt
 	 * @param bool   $binary	 - generate binary data, or base64 encoded string
 	 * @param int	$iterations - how many iterations to perform
 	 * @param int	$keylength  - key length
