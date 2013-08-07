@@ -1,7 +1,7 @@
 module.exports = function(config) {
 	config.set({
 		basePath: '..',
-		urlRoot: '/__e2e/',
+		urlRoot: '/src/',
 		hostname: 'localhost',
 
 		frameworks: ['ng-scenario'],
@@ -56,13 +56,11 @@ module.exports = function(config) {
 			'karma-jasmine',
 			'karma-ng-scenario',
 			'karma-qunit',
-			
 			'karma-junit-reporter',
-			
 			'karma-chrome-launcher',
 			'karma-firefox-launcher',
-			//'karma-ie-launcher', // doesn't exist
-			//'karma-opera-launcher', // doesn't exist
+			//'karma-ie-launcher',
+			//'karma-opera-launcher',
 			'karma-phantomjs-launcher',
 			'karma-safari-launcher',
 			'karma-browserstack-launcher',

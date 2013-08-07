@@ -30,7 +30,7 @@ function deleteUser(done) {
 }
 	
 describe('Plugin Message (MySQL)', function() {
-	var timestamp; // for delete
+	var hash; // for delete
 	
 	it('should sign up', function(done){ signup(done,0); });
 	it('should sign in', function(done){ signin(done,0); });
@@ -69,14 +69,14 @@ describe('Plugin Message (MySQL)', function() {
 		.end(function(err,res) {
 			if (err) { throw err; }
 			
-			timestamp = res.body.thread[0].timestamp;
+			hash = res.body.thread[0].hash;
 			res.body.thread.should.have.lengthOf(1);
 			done();
 		});
 	});
 	
 	it('should delete the message', function(done){
-		request.get(url+'message/delete/'+user_ID[0]+'/'+timestamp)
+		request.get(url+'message/delete/'+hash)
 		.end(function(err,res) {
 			if (err) { throw err; }
 			
@@ -93,7 +93,7 @@ describe('Plugin Message (MySQL)', function() {
 		})
 		.end(function(err,res) {
 			if (err) { throw err; }
-			console.log(res.text);
+			
 			res.body.should.equal(true);
 			done();
 		});
@@ -107,7 +107,7 @@ describe('Plugin Message (MySQL)', function() {
 		.end(function(err,res) {
 			if (err) { throw err; }
 			
-			res.body.should.equal(1);
+			(res.body).should.be.within(1, 99);
 			done();
 		});
 	});

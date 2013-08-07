@@ -169,9 +169,10 @@ class Message extends Core {
 	 * @access protected
 	 */
 	function post($request_data=NULL) {
-		
+		$user_key = $this->user_key($request_data['user_ID']);
 		$insert = array(
-			'user_key' => $this->user_key($request_data['user_ID']),
+			'user_key' => $user_key,
+			'hash' => hash('sha512', $user_key.$request_data['message'].$_SERVER['REQUEST_TIME']),
 			'user_from_ID' => USER_ID,
 			'user_to_ID' => $request_data['user_ID'],
 			'message' => strip_tags($request_data['message']),
@@ -187,25 +188,21 @@ class Message extends Core {
 	/**
 	 * Delete a message sent to a user
 	 *
-	 * @param int $user_ID User ID
-	 * @param int $timestamp Timestamp of message
+	 * @param string $hash Hash
 	 * @return bool
 	 *
-	 * @url GET delete/{user_ID}/{timestamp}
-	 * @url DELETE {user_ID}/{timestamp}
+	 * @url GET delete/{hash}
+	 * @url DELETE {hash}
 	 * @access protected
 	 */
-	function delete($user_ID=NULL, $timestamp=NULL) {
-		
-		$user_key = $this->user_key($user_ID);
-		
+	function delete($hash=NULL) {
+		$query = "DELETE FROM {$this->table} WHERE (user_to_ID = '{{user_ID}}' OR user_from_ID = '{{user_ID}}') AND hash = '{{hash}}'";
 		$where = array(
-			'user_key' => $user_key,
-			'user_to_ID' => USER_ID,
-			'timestamp' => $timestamp,
+			'hash' => $hash,
+			'user_ID' => USER_ID
 		);
 		
-		$this->db->delete($this->table, $where);
+		$this->db->query($query, $where);
 		
 		return TRUE;
 	}

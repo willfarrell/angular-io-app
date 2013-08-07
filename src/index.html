@@ -72,21 +72,6 @@
 		</div>
 	</div>
 	<![endif]-->
-	<div class="alert-fixed-top appCache alert-no-close" data-ng-show="appCache.percent">
-		<div class="container">
-			<div class="alert alert-info">
-				<table width="100%"><tr><td>
-					<strong>New Version</strong>
-				</td><td class="auto-span">
-					<div class="progress" data-ng-class="{false: 'progress-striped active'}[appCache.percent == 100]">
-						<div class="bar" data-ng-style="{width: appCache.percent+'%'}"><!--{{appCache.loaded}} / {{appCache.total}}--></div>
-					</div>
-				</td><td>
-					<button class="btn btn-mini btn-primary pull-right" onclick="window.location.reload()" data-ng-disabled="appCache.percent != 100"><i class="icon-refresh"></i> Reload</button>
-				</td></tr></table>
-			</div>
-		</div>
-	</div>
 	<div class="alert-fixed-top">
 		<div class="container">
 			<div class="alert alert-{{alert.class}}" data-ng-repeat="alert in alerts">
@@ -107,6 +92,7 @@
 </div>
 
 <!-- !Plugin Modals & Partials -> to be repace by directives -->
+<div data-ng-include="'view/partials/appcache.html'"></div>
 <div data-ng-include="'view/partials/filepicker.html'"></div>
 <div data-ng-include="'view/partials/message.html'"></div>
 <div data-ng-include="'view/partials/alert.html'"></div>

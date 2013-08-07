@@ -398,7 +398,7 @@ class Password {
 	 * @param string $password Password
 	 * @return bool
 	 */
-	private function password_similarity($password, $text) {
+	public function password_similarity($password, $text) {
 		$return = true;
 		$str_array = preg_split("/[^a-z]/", strtolower($text));
 		
@@ -437,7 +437,7 @@ class Password {
 	 * @param string $email
 	 * @return string
 	 */
-	private function salt($password, $email = '') {
+	public function salt($password, $email = '') {
 		return $password.$email.PASSWORD_SALT;
 	}
 	

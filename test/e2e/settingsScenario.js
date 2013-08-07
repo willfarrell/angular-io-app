@@ -7,17 +7,30 @@ describe('E2E: Account Settings', function() {
 		new_pass = '1@3$Qwerty!NEW';
 	
 	beforeEach(function() {
-		browser().navigateTo('/');
+		// signup & signin
 		browser().navigateTo('#/sign/out');
+		browser().navigateTo('#/sign/up');
+		input('signup.email').enter(email);
+		input('signup.password').enter(pass);
+		element('[data-ng-view] .btn').click();
+		
 		browser().navigateTo('#/sign/in');
 		
-		input('signin.email').enter(email);
-		input('signin.password').enter(pass);
-		element('[data-ng-view] [data-ng-disabled]').click();
-		expect(browser().location().path()).not().toContain('/sign/');
+		//input('signin.email').enter(email);
+		//input('signin.password').enter(pass);
+		//element('[data-ng-view] [data-ng-disabled]').click();
+		browser().navigateTo('#/onboard/user/skip');
+		browser().navigateTo('#/onboard/company/skip');
+		expect(browser().location().path()).toBe('/app');
 	});
 	
 	afterEach(function() {
+		// delete account
+		browser().navigateTo('#/settings/account');
+		confirmOK();
+		element('[data-ng-view] .btn-danger').click();
+		// auto sign out
+		expect(browser().location().path()).toContain('/sign/in');
 	});
 	
 	it('should update account', function() {
@@ -119,7 +132,7 @@ describe('E2E: Account Settings', function() {
 		
 	});
 	
-	it('should update company profile', function() {
+	/*it('should update company profile', function() {
 		browser().navigateTo('#/settings/company');
 		
 		input('company.company_username').enter('karma-inc');
@@ -128,9 +141,9 @@ describe('E2E: Account Settings', function() {
 		input('company.company_phone').enter('9115555555');
 		input('company.company_details').enter('about details here');
 		element('[data-ng-view] .btn').click();
-		expect(element('.alert-fixed-top').text()).toContain('Saved');
+		sleep(2);pause();
+		expect(element('.alert-fixed-top .alert').text()).toContain('Company: Saved');
 		expect(input('company.user_default_ID').val()).toBeDefined();
-		
 		browser().navigateTo('#/');
 		browser().navigateTo('#/settings/company');
 		
@@ -139,10 +152,11 @@ describe('E2E: Account Settings', function() {
 		expect(input('company.company_url').val()).toBe('http://angulario.com');
 		expect(input('company.company_phone').val()).toBe('(911) 555-5555');
 		expect(input('company.company_details').val()).toBe('about details here');
+		pause();
 		
-	});
+	});*/
 	
-	it('should add a location', function() {
+	/*it('should add a location', function() {
 		browser().navigateTo('#/settings/locations');
 		
 		element('[data-ng-view] .btn').click(); // click new location
@@ -157,13 +171,13 @@ describe('E2E: Account Settings', function() {
 		input('location.location_phone').enter('9115555555');
 		
 		element('[data-ng-view] [data-ng-disabled]').click();
-		expect(element('.alert-fixed-top').text()).toContain('Saved');
+		expect(element('.alert-fixed-top .alert').text()).toContain('Location: Saved');
 		
 		browser().navigateTo('#/');
 		browser().navigateTo('#/settings/locations');
 		
 		element('[data-ng-view] td').click(); // click first location to confirm
-		
+		pause();
 		expect(input('location.location_name').val()).toBe('Head Office');
 		expect(input('location.address_1').val()).toBe('1 Young St.');
 		expect(input('location.address_2').val()).toBe('314159');
@@ -176,7 +190,7 @@ describe('E2E: Account Settings', function() {
 		// check default was set
 		browser().navigateTo('#/settings/company');
 		expect(input('company.location_default_ID').val()).toBeDefined();
-	});
+	});*/
 	
 	/*it('should add another location change default', function() {
 		browser().navigateTo('#/settings/locations');

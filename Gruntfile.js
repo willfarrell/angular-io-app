@@ -970,10 +970,16 @@ module.exports = function(grunt) {
 		},
 		shell: {
 			setup: {
-				//command: 'sh scripts/setup.sh'
+				command: 'sh scripts/setup.sh'
+			},
+			'karma-unit': {
+				command: 'karma start config/karma-unit.conf.js --single-run'
+			},
+			'karma-e2e': {
+				command: 'karma start config/karma-e2e.conf.js --single-run'
 			},
 			update: {
-				//command: 'sh scripts/update.sh'
+				command: 'sh scripts/update.sh'
 			}
 		}
 	});
@@ -992,6 +998,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('setup', [
 		'copy:setup',
 		'less:setup',
+		'icon_convert'
 	]);
 	grunt.registerTask('update', ['setup']);
 	
@@ -999,8 +1006,8 @@ module.exports = function(grunt) {
 		'lint',
 		'phpunit',
 		'mochaTest:all',
-		'karma:unit',
-		'karma:e2e'
+		'shell:karma-unit',//'karma:unit', // grunt-karma is broken 13/08/01
+		'shell:karma-e2e'//'karma:e2e'
 	]);
 	
 	// generate all icon files from icon.png
@@ -1085,7 +1092,7 @@ module.exports = function(grunt) {
 		//'test',
 		//'coffee',
 		//'compass:dist',
-		'less:dev',
+		'less:setup',
 
 		// Setup
 		'clean:dist',

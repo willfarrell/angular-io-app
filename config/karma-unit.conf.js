@@ -27,8 +27,7 @@ module.exports = function(config) {
 			'src/scripts/**/*.js',
 			'src/components/angular-io/src/scripts/**/*.js',
 			
-			//'test/unit/**/*.js'
-			'test/unit/**/api*.js'
+			'test/unit/**/*.js'
 		],
 		
 		// list of files to exclude
@@ -75,7 +74,7 @@ module.exports = function(config) {
 		// - Opera
 		// - PhantomJS
 		// - Safari
-		browsers: ['PhantomJS'],
+		browsers: ['Chrome'],
 		
 		// If browser does not capture in given timeout [ms], kill it
 		// CLI --capture-timeout 5000
@@ -100,14 +99,16 @@ module.exports = function(config) {
 			'karma-jasmine',
 			'karma-ng-scenario',
 			'karma-qunit',
+			'karma-junit-reporter',
 			'karma-chrome-launcher',
 			'karma-firefox-launcher',
 			//'karma-ie-launcher',
 			//'karma-opera-launcher',
 			'karma-phantomjs-launcher',
-			'karma-script-launcher',
-			//'karma-safari-launcher',
-			'karma-junit-reporter'
+			'karma-safari-launcher',
+			'karma-browserstack-launcher',
+			'karma-sauce-launcher',
+			'karma-script-launcher'
 		]
 	});
 };

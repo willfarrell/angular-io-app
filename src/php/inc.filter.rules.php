@@ -116,6 +116,79 @@ $filter_rules = array (
       'filters' => 'trim|sanitize_string|strip_tags[]',
     ),
   ),
+  'Location::post' => 
+  array (
+    'address_1' => 
+    array (
+      'field' => 'address_1',
+      'label' => 'Address 1',
+      'rules' => '',
+      'filters' => '',
+    ),
+    'address_2' => 
+    array (
+      'field' => 'address_2',
+      'label' => 'Address 2',
+      'rules' => '',
+      'filters' => '',
+    ),
+    'city' => 
+    array (
+      'field' => 'city',
+      'label' => 'City',
+      'rules' => '',
+      'filters' => '',
+    ),
+    'company_ID' => 
+    array (
+      'field' => 'company_ID',
+      'label' => 'Company  I D',
+      'rules' => '',
+      'filters' => '',
+    ),
+    'country_code' => 
+    array (
+      'field' => 'country_code',
+      'label' => 'Country Code',
+      'rules' => '',
+      'filters' => '',
+    ),
+    'location_name' => 
+    array (
+      'field' => 'location_name',
+      'label' => 'Location Name',
+      'rules' => '',
+      'filters' => '',
+    ),
+    'location_phone' => 
+    array (
+      'field' => 'location_phone',
+      'label' => 'Location Phone',
+      'rules' => '',
+      'filters' => '',
+    ),
+    'mail_code' => 
+    array (
+      'field' => 'mail_code',
+      'label' => 'Mail Code',
+      'rules' => '',
+      'filters' => '',
+    ),
+    'primary' => 
+    array (
+      'field' => 'primary',
+      'label' => 'Primary',
+      'rules' => '',
+      'filters' => '',
+    ),
+    'region_code' => 
+    array (
+      'field' => 'region_code',
+      'label' => 'Region Code',
+      'rules' => '',
+      'filters' => '',
+    ),
+  ),
   'User::getById' => 
   array (
     'user_ID' => 
@@ -148,10 +221,24 @@ $filter_rules = array (
   ),
   'User::put' => 
   array (
+    'user_ID' => 
+    array (
+      'field' => 'user_ID',
+      'label' => 'User  I D',
+      'rules' => '',
+      'filters' => '',
+    ),
     'user_details' => 
     array (
       'field' => 'user_details',
       'label' => 'User Details',
+      'rules' => '',
+      'filters' => '',
+    ),
+    'user_email' => 
+    array (
+      'field' => 'user_email',
+      'label' => 'User Email',
       'rules' => '',
       'filters' => '',
     ),
@@ -194,6 +281,51 @@ $filter_rules = array (
     array (
       'field' => 'user_username',
       'label' => 'User Username',
+      'rules' => '',
+      'filters' => '',
+    ),
+  ),
+  'User::put_notify' => 
+  array (
+    'new_follow' => 
+    array (
+      'field' => 'new_follow',
+      'label' => 'New Follow',
+      'rules' => '',
+      'filters' => '',
+    ),
+    0 => 
+    array (
+      'field' => 0,
+      'label' => '0',
+      'rules' => '',
+      'filters' => '',
+    ),
+    'new_message' => 
+    array (
+      'field' => 'new_message',
+      'label' => 'New Message',
+      'rules' => '',
+      'filters' => '',
+    ),
+    1 => 
+    array (
+      'field' => 1,
+      'label' => '1',
+      'rules' => '',
+      'filters' => '',
+    ),
+    2 => 
+    array (
+      'field' => 2,
+      'label' => '2',
+      'rules' => '',
+      'filters' => '',
+    ),
+    3 => 
+    array (
+      'field' => 3,
+      'label' => '3',
       'rules' => '',
       'filters' => '',
     ),
