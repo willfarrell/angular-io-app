@@ -4,6 +4,7 @@
 ### LAMP ###
 # runnable base
 FROM centos:6.4
+MAINTAINER will Farrell
 
 # REPOS
 #RUN rpm -Uvh http://mirror.webtatic.com/yum/centos/6/latest.rpm
@@ -82,7 +83,8 @@ service httpd restart
 
 ## CONFIG
 ENV RUNNABLE_USER_DIR /var/www
-#ENV RUNNABLE_SERVICE_CMDS memcached -d -u www-data; /etc/init.d/apache2 restart; mysqld
+# memcached -d -u www-data;
+ENV RUNNABLE_SERVICE_CMDS /etc/init.d/apache2 restart; mysqld
 
 EXPOSE 80
 
