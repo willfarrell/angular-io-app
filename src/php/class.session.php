@@ -16,11 +16,7 @@
 
 $_SERVER['HTTP_USER_AGENT'] = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
 
-require_once "inc.config.php";
-require_once "class.db.php";
-require_once "class.core.php";
 require_once 'class.password.php';	// password validation, hashing, and checking
-//require_once "class.redis.php";
 
 if(!defined("SESSION_EXPIRE")) define("SESSION_EXPIRE", 2592000); // 30 days
 /*
@@ -66,7 +62,7 @@ class Session extends Core {
 	 */
 	function __construct(){
 		parent::__construct();
-		//$this->cache = new Cache('session:');
+		$this->cache = new Cache('session');
 		$this->password = new Password;
 		
 		/*session_set_save_handler(
@@ -216,7 +212,7 @@ class Session extends Core {
 		if (!$result) { return false; }	// user / pass combo not found
 		$r = $this->db->fetch_assoc($result);
 
-		if (!$this->password->check($password, $r['password'], $r['user_email'])) {
+		if (!$this->password->check($password, $r['password_hash'], $r['user_email'])) {
 			return false;	// password doesn't match
 		}
 		
@@ -272,7 +268,6 @@ class Session extends Core {
 		//session_destroy();
 	}
 	
-
 	/**
 	 * Set a session cookie
 	 *

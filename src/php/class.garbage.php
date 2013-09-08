@@ -30,7 +30,7 @@ class Garbage extends Core {
 	}
 	
 	// calls $this->{$fct}($ID) for each missing element of collection
-	function missing($fct, $table, $table_id) {
+	static function missing($fct, $table, $table_id) {
 		// will not catch a start = 1
 		$missing_query = "SELECT start, stop FROM (
 				SELECT m.$table_id + 1 AS start,
@@ -51,7 +51,7 @@ class Garbage extends Core {
 	}
 	
 	// clean sessions table
-	function session() {
+	static function session() {
 		echo "DELETING SESSIONS\n";
 		$this->db->query("DELETE FROM sessions WHERE timestamp < ".($_SERVER['REQUEST_TIME'] - SESSION_EXPIRE));
 	}

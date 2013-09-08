@@ -26,6 +26,7 @@ header("Access-Control-Allow-Headers: Content-Type, X-Requested-With, X-Access-T
 
 // DEV / DEBUGING
 error_reporting(E_ALL); // 0 or E_ALL
+define("TESTING", FALSE);
 define("CONSOLE_FILE", FALSE);
 define("CONSOLE_FIREPHP", FALSE);
 define("CONSOLE_CHROMELOGGER", TRUE);

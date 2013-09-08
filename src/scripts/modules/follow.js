@@ -126,7 +126,7 @@ angular.module('io.modules')
 
 		$rest.http({
 				method:'get',
-				url: $rest.server+'follow/'+company_ID+'/'+user_ID
+				url: $rest.server+'follow/status/'+company_ID+'/'+user_ID
 			}, function(data) {
 				//console.log(data);
 				$scope.company[data.company_ID] = data;

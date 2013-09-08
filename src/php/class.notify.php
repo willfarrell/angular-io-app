@@ -115,6 +115,7 @@ class Notify {
 	 * @return bool
 	 */
 	public function send($user_ID, $message_ID, $args = array(), $types = "email") {
+		//if (!is_array($args)) { $types = $args; }
 		$types = explode(",", $types);
 		
 		// from user details

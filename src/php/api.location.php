@@ -40,6 +40,7 @@ class Location extends Core {
 	 * @param int $location_ID Location ID
 	 * @return array
 	 *
+	 * @url GET
 	 * @url GET {location_ID}
 	 * @access protected
 	 */
@@ -246,7 +247,7 @@ class Location extends Core {
 	 * @param int $location_ID Location ID
 	 * @return bool
 	 *
-	 * @url GET {location_ID}
+	 * @url GET delete/{location_ID}
 	 * @url DELETE {location_ID}
 	 * @access protected
 	 */

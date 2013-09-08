@@ -1,6 +1,6 @@
 
 angular.module('app.factories')
-.factory('$session', ['app.config', '$rootScope', '$cookies', '$http', '$localStorage', function(config, $rootScope, $cookies, $http, $localStorage) {
+.factory('$session', ['app.config', '$rootScope', '$cookies', '$http', '$sessionStorage', function(config, $rootScope, $cookies, $http, $sessionStorage) {
 	console.log('SessionFactory (', $rootScope.$id, ')');
 	
 	var $scope = {},
@@ -10,7 +10,7 @@ angular.module('app.factories')
 			user: {},
 			company: {}
 		}//,
-		//session_tmp = $localStorage.get('session', default_obj)
+		//session_tmp = $sessionStorage.get('session', default_obj)
 		;
 	
 	$scope.init = function() {
@@ -20,10 +20,10 @@ angular.module('app.factories')
 		$scope.user = session_tmp.user;
 		$scope.company = session_tmp.company;
 		*/
-		$scope.active = $localStorage.get('session.active', default_obj.active);
-		$scope.account = $localStorage.get('session.account', default_obj.account);
-		$scope.user = $localStorage.get('session.user', default_obj.user);
-		$scope.company = $localStorage.get('session.company', default_obj.company);
+		$scope.active = $sessionStorage.get('session.active', default_obj.active);
+		$scope.account = $sessionStorage.get('session.account', default_obj.account);
+		$scope.user = $sessionStorage.get('session.user', default_obj.user);
+		$scope.company = $sessionStorage.get('session.company', default_obj.company);
 	};
 	
 	$rootScope.$on('session', function(event, value){
@@ -39,27 +39,27 @@ angular.module('app.factories')
 		$scope.user = default_obj.user;
 		$scope.company = default_obj.company;
 		$scope.save(true);
-		/*$localStorage.set('session.active', false); // signed in bool
-		$localStorage.set('session.account', {});
-		$localStorage.set('session.user', {});
-		$localStorage.set('session.company', {});*/
+		/*$sessionStorage.set('session.active', false); // signed in bool
+		$sessionStorage.set('session.account', {});
+		$sessionStorage.set('session.user', {});
+		$sessionStorage.set('session.company', {});*/
 	};
 
 	$scope.save = function(force) {
 		console.log('saveSession(', $scope.account, $scope.user, $scope.company, ')');
 		if (($scope.account && $scope.account.remember) || force) {
 			/*
-			$localStorage.set('session', {
+			$sessionStorage.set('session', {
 				active: $scope.active,
 				account: $scope.account,
 				user: $scope.user,
 				company: $scope.company
 			}); // signed in bool
 			*/
-			$localStorage.set('session.active', $scope.active);
-			$localStorage.set('session.account', $scope.account);
-			$localStorage.set('session.user', $scope.user);
-			$localStorage.set('session.company', $scope.company);
+			$sessionStorage.set('session.active', $scope.active);
+			$sessionStorage.set('session.account', $scope.account);
+			$sessionStorage.set('session.user', $scope.user);
+			$sessionStorage.set('session.company', $scope.company);
 			console.log('Session saved');
 		}
 	};
@@ -74,9 +74,9 @@ angular.module('app.factories')
 					$rootScope.href('/sign/out');
 				} else {
 					//$scope.session = syncVar(data, $scope.db);
-					$scope.account = $localStorage.set('session.account', data.account);
-					$scope.user = $localStorage.set('session.user', data.user);
-					$scope.company = $localStorage.set('session.company', data.company);
+					$scope.account = $sessionStorage.set('session.account', data.account);
+					$scope.user = $sessionStorage.set('session.user', data.user);
+					$scope.company = $sessionStorage.set('session.company', data.company);
 					//$session.timestamp = +new Date();
 					$scope.save();
 					if (callback) { callback(); } // $rootScope.$eval();
@@ -129,9 +129,12 @@ angular.module('app.factories')
 			//console.log('email not confirmed = '+(config.onboard.required)+' && '+!$session.email_confirm+' && '+($rootScope.uri().match(/\/onboard/) === null));
 			$rootScope.href('/onboard/email');
 		// haven't completed manditory onboard steps -> onboard*/
-		} else if (config.onboard.required && !$scope.account.timestamp_create && $rootScope.uri().match(/\/onboard/) === null) {
-			//console.log('onboard not completed = '+(config.onboard.required)+' && '+!$session.timestamp_create+' && '+($rootScope.uri().match(/\/onboard/) === null));
+		} else if (config.onboard.required && !$scope.account.timestamp_onboard && $rootScope.uri().match(/\/onboard/) === null) {
+			//console.log('onboard not completed = '+(config.onboard.required)+' && '+!$session.timestamp_onboard+' && '+($rootScope.uri().match(/\/onboard/) === null));
 			$rootScope.href('/onboard/'+config.onboard.start);
+		// doesnt require onboard, set as complete
+		} else if (!config.onboard.required && !$scope.account.timestamp_onboard) {
+			$rootScope.href('/onboard/done');
 		// has an old password -> change pass
 		} else if (
 			(config.password.max_age && $scope.account.password_age > config.password.max_age) ||

@@ -30,7 +30,14 @@ $filter_rules = array (
     array (
       'field' => 'email',
       'label' => 'Email',
-      'rules' => 'required|email|is_unique[users.user_email]',
+      'rules' => 'required|email',
+      'filters' => '',
+    ),
+    'email_hash' => 
+    array (
+      'field' => 'email_hash',
+      'label' => 'Email',
+      'rules' => 'required|is_unique[users.email_hash]',
       'filters' => '',
     ),
     'password' => 
@@ -92,6 +99,51 @@ $filter_rules = array (
       'filters' => '',
     ),
   ),
+  'Company::post' => 
+  array (
+    'company_ID' => 
+    array (
+      'field' => 'company_ID',
+      'label' => 'Company  I D',
+      'rules' => '',
+      'filters' => '',
+    ),
+    'company_details' => 
+    array (
+      'field' => 'company_details',
+      'label' => 'Company Details',
+      'rules' => '',
+      'filters' => '',
+    ),
+    'company_name' => 
+    array (
+      'field' => 'company_name',
+      'label' => 'Company Name',
+      'rules' => '',
+      'filters' => '',
+    ),
+    'company_phone' => 
+    array (
+      'field' => 'company_phone',
+      'label' => 'Company Phone',
+      'rules' => '',
+      'filters' => '',
+    ),
+    'company_url' => 
+    array (
+      'field' => 'company_url',
+      'label' => 'Company Url',
+      'rules' => '',
+      'filters' => '',
+    ),
+    'company_username' => 
+    array (
+      'field' => 'company_username',
+      'label' => 'Company Username',
+      'rules' => '',
+      'filters' => '',
+    ),
+  ),
   'Contact::post' => 
   array (
     'email' => 
@@ -114,6 +166,16 @@ $filter_rules = array (
       'label' => 'Name',
       'rules' => 'required',
       'filters' => 'trim|sanitize_string|strip_tags[]',
+    ),
+  ),
+  'Follow::getGroup' => 
+  array (
+    'group_ID' => 
+    array (
+      'field' => 'group_ID',
+      'label' => 'Group  I D',
+      'rules' => '',
+      'filters' => '',
     ),
   ),
   'Location::post' => 
@@ -294,17 +356,17 @@ $filter_rules = array (
       'rules' => '',
       'filters' => '',
     ),
-    0 => 
-    array (
-      'field' => 0,
-      'label' => '0',
-      'rules' => '',
-      'filters' => '',
-    ),
     'new_message' => 
     array (
       'field' => 'new_message',
       'label' => 'New Message',
+      'rules' => '',
+      'filters' => '',
+    ),
+    0 => 
+    array (
+      'field' => 0,
+      'label' => '0',
       'rules' => '',
       'filters' => '',
     ),

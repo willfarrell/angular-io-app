@@ -28,36 +28,32 @@ function assert_commands {
 }
 
 echo "-----> Checking for required commands and tools"
-assert_commands git node npm vagrant composer 2>&1 | prefixed
+assert_commands git node npm composer 2>&1 | prefixed
 
 # Global Required Repos
-echo "-----> Installing required development commands and tools"
-echo "       After you enter your password it will take several minutes to run."
-sudo npm install -g grunt-cli bower karma mocha 2>&1 | prefixed
+#echo "-----> Installing required development commands and tools"
+#echo "       After you enter your password it will take several minutes to run."
+#sudo npm install -g grunt-cli bower karma mocha 2>&1 | prefixed
 
 # Load in npm & bower Repos
-echo "-----> Installing required npm, bower, and composer dependencies"
-npm install --save-dev && bower install 2>&1 | prefixed
+#echo "-----> Installing required npm, bower, and composer dependencies"
+#npm install --save-dev && bower install 2>&1 | prefixed
 
 # Load in Composer Repos
-cd src/php && composer install 2>&1 | prefixed && cd ../../
+#cd src/php && composer install 2>&1 | prefixed && cd ../../
 
 # Copy Deps to testing
-echo "-----> Moving dependencies into place and compile"
-grunt setup 2>&1 | prefixed
+#echo "-----> Moving dependencies into place and compile"
+#grunt setup 2>&1 | prefixed
 
 # Test and Compile
-echo "-----> Testing and compiling project ***** reenable"
+#echo "-----> Testing and compiling project ***** reenable"
 #grunt deploy --force 2>&1 | prefixed
 
-# Setup VM Env (Vagrant + docker)
+# Setup VM Env (docker)
 # Files from src/ will be synced
-echo "-----> Setting up Vagrant w/ docker"
-rm -rf .vagrant
-vagrant up 2>&1 | prefixed
-
-echo "-----> Building docker container"
-vagrant ssh --command "bash /vagrant/scripts/docker-build.sh " 2>&1 | prefixed
+#echo "-----> Building docker container"
+#bash scripts/docker-build.sh 2>&1 | prefixed
 
 #docker ps -a > docker_ps.txt
 #docker_get_ID

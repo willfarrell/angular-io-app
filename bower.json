@@ -15,14 +15,17 @@
 		"angular-strap":null,
 		"angular-modernizr":null,
 		"angular-io":null,
+		"ngprogress":null,
+		"keyStorage.js":null,
 		"marked":null,
 		"font-awesome":null,
-		"bootstrap":null,
+		"bootstrap":"~3.0.0",
 		"script.js":null
 	},
 	"devDependencies": {
 		"angular-mocks":null,
 		"angular-scenario":null,
 		"angular":null
-	}
+	},
+	"private": true
 }

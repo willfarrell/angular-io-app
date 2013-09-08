@@ -23,7 +23,7 @@ function CompanyCtrl($rootScope, $scope, $rest, $routeParams, $session) {
 		
 		$rest.http({
 				method:'get', // get,head,post,put,delete,jsonp
-				url: $rest.server+'company/'+profile_ID
+				url: $rest.server+'company/id/'+profile_ID
 			}, function(data){
 				$scope.company = data;
 				$scope.location = data.location_default_ID ? data.location : $scope.location;

@@ -16,15 +16,15 @@
 	<!-- build:css css/app.min.css -->
 	<link rel="stylesheet" href="styles/bootstrap.css"><!-- generated from styles/less/bootstrap.less -->
 	<link rel="stylesheet" href="styles/cookieMessage.css"><!-- Required if using Cookie Accepted Message -->
-	<link rel="stylesheet" href="components/font-awesome/css/font-awesome.css">
-	<!--<link rel="stylesheet" href="components/font-awesome/build/fontawesome.css">--><!-- doesn't catch var icons -->
-	<link rel="stylesheet" href="components/angular-io/src/styles/accessibility.css">
+	<link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css">
+	<!--<link rel="stylesheet" href="bower_components/font-awesome/build/fontawesome.css">--><!-- doesn't catch var icons -->
+	<link rel="stylesheet" href="bower_components/angular-io/src/styles/accessibility.css">
 	<link rel="stylesheet" href="styles/angular-io.css">
 	<link rel="stylesheet" href="styles/onboard.css">
 	<link rel="stylesheet" href="styles/pricing.css">
 
-	<link rel="stylesheet" href="components/angular-modernizr/src/styles/forms-reveal.text.css">
-	<link rel="stylesheet" href="components/angular-modernizr/src/styles/forms-placeholder.css">
+	<link rel="stylesheet" href="bower_components/angular-modernizr/src/styles/forms-reveal.text.css">
+	<link rel="stylesheet" href="bower_components/angular-modernizr/src/styles/forms-placeholder.css">
 	<!--<link rel="stylesheet" href="styles/forms-required.css">-->
 	<!-- endbuild -->
 
@@ -36,8 +36,7 @@
 	</script>
 	<![endif]-->
 </head>
-<!-- Break out of iFrame -->
-<body class="ng-cloak" data-ng-controller="AppCtrl">
+<body class="ng-cloak" onload="if(this!=top){top.location.href=this.location.href}" data-ng-controller="AppCtrl">
 
 <!-- !Loading Screen - to be phased out -->
 <div id="init-blanket" data-ng-show="loader.count < loader.total">
@@ -72,7 +71,7 @@
 		</div>
 	</div>
 	<![endif]-->
-	<div class="alert-fixed-top">
+	<div class="alert-fixed-top" data-ng-show="alerts.length">
 		<div class="container">
 			<div class="alert alert-{{alert.class}}" data-ng-repeat="alert in alerts">
 				<button class="close" data-dismiss="alert">&times;</button>
@@ -105,47 +104,48 @@
   // ...
 </script>
 
-<script src="components/angular-io/src/scripts/ie.js"></script>
+<script src="bower_components/angular-io/src/scripts/ie.js"></script>
 
 <!--[if lt IE 8]>
-<script src="components/json3/lib/json3.js"></script>
+<script src="bower_components/json3/lib/json3.js"></script>
 <![endif]-->
 
 <!-- Boilerplate - added to async -->
-<script src="components/html5-mobile-boilerplate/js/plugins.js"></script>
+<script src="bower_components/html5-mobile-boilerplate/js/plugins.js"></script>
 
 <!-- !Frameworks - Dev - do not build, have special min settings -->
-<!--<script src="components/angular-complete/angular-loader.js"></script>-->
-<script src="components/angular-complete/angular.js"></script>
+<!--<script src="bower_components/angular-complete/angular-loader.js"></script>-->
+<script src="bower_components/angular-complete/angular.js"></script>
 <script>
 	locale = localStorage.getItem('locale');
-	if (locale) document.write('<script src="components/angular-complete/i18n/angular-locale_'+locale+'.js"><\/script>');
+	if (locale) document.write('<script src="bower_components/angular-complete/i18n/angular-locale_'+locale+'.js"><\/script>');
 </script>
 <!-- end - do not build -->
 
 <!-- build:js js/modernizr.min.js -->
 <!-- http://modernizr.com/download/# -->
-<script src="components/modernizr/modernizr.js"></script>
-<script src="components/modernizr/feature-detects/cookies.js"></script>
-<script src="components/modernizr/feature-detects/json.js"></script>
-<script src="components/modernizr/feature-detects/forms-placeholder.js"></script>
-<script src="components/angular-modernizr/src/feature-detects/forms-reveal.js"></script>
+<script src="bower_components/modernizr/modernizr.js"></script>
+<script src="bower_components/modernizr/feature-detects/cookies.js"></script>
+<script src="bower_components/modernizr/feature-detects/json.js"></script>
+<script src="bower_components/modernizr/feature-detects/forms-placeholder.js"></script>
+<script src="bower_components/angular-modernizr/src/feature-detects/forms-reveal.js"></script>
 
 <!-- endbuild -->
 
 <!-- build:js js/app.min.js -->
-<!-- !Non-CDN Components -->
-<script src="components/angular-io/src/scripts/factories/cookies.js"></script>
+<!-- !Non-CDN bower_components -->
+<script src="bower_components/angular-io/src/scripts/factories/cookies.js"></script>
 
 <!-- !Liabraries -->
-<script src="components/marked/lib/marked.js"></script>
-<script src="scripts/lib.keydb.js"></script>
+<script src="bower_components/ngProgress/ngProgress.js"></script>
+<script src="bower_components/marked/lib/marked.js"></script>
+<script src="bower_components/keyStorage.js/keyStorage.min.js"></script>
 
 <!-- init -->
 <script src="scripts/app.js"></script><!-- this is where you pick your modules -->
 <script src="scripts/app.route.js"></script><!-- this is where you put your routing -->
 
-<!-- !App Components -->
+<!-- !App bower_components -->
 <!-- *************************************************** -->
 
 <script src="scripts/controllers/app.js"></script>
@@ -171,7 +171,7 @@
 <script src="scripts/modules/message.js"></script>
 
 <!-- *************************************************** -->
-<!-- !End App Components -->
+<!-- !End App bower_components -->
 
 <!-- !Angular Sapling -->
 <script src="scripts/app.run.js"></script>
@@ -181,56 +181,57 @@
 <script src="scripts/factories/session.js"></script>
 
 <!-- !AngularIO -->
-<script src="components/angular-io/src/scripts/bootstrap/alert.js"></script>
-<script src="components/angular-io/src/scripts/bootstrap/modal.js"></script>
-<script src="components/angular-io/src/scripts/bootstrap/tabs.js"></script><!-- from angular-js-bootstrap -->
+<script src="bower_components/angular-io/src/scripts/bootstrap/alert.js"></script>
+<script src="bower_components/angular-io/src/scripts/bootstrap/modal.js"></script>
+<script src="bower_components/angular-io/src/scripts/bootstrap/tabs.js"></script><!-- from angular-js-bootstrap -->
 
-<!--<script src="components/angular-io/src/scripts/directives/htmlExtend.js"></script>--><!-- IE8 bug -->
-<script src="components/angular-io/src/scripts/directives/inputMask.js"></script>
-<!--<script src="components/angular-io/src/scripts/directives/navbar.js"></script>-->
-<script src="components/angular-io/src/scripts/directives/passwordCheck.js"></script>
-<script src="components/angular-io/src/scripts/directives/requireChange.js"></script>
-<!--<script src="components/angular-io/src/scripts/directives/selectSize.js"></script>-->
+<!--<script src="bower_components/angular-io/src/scripts/directives/htmlExtend.js"></script>--><!-- IE8 bug -->
+<script src="bower_components/angular-io/src/scripts/directives/inputMask.js"></script>
+<!--<script src="bower_components/angular-io/src/scripts/directives/navbar.js"></script>-->
+<script src="bower_components/angular-io/src/scripts/directives/passwordCheck.js"></script>
+<script src="bower_components/angular-io/src/scripts/directives/requireChange.js"></script>
+<!--<script src="bower_components/angular-io/src/scripts/directives/selectSize.js"></script>-->
 
-<script src="components/angular-io/src/scripts/factories/config.js"></script>
-<script src="components/angular-io/src/scripts/factories/localStorage.js"></script>
-<script src="components/angular-io/src/scripts/factories/offline.js"></script>
-<script src="components/angular-io/src/scripts/factories/rest.js"></script>
-<script src="components/angular-io/src/scripts/factories/time.js"></script>
+<script src="bower_components/angular-io/src/scripts/factories/config.js"></script>
+<script src="bower_components/angular-io/src/scripts/factories/offline.js"></script>
+<script src="bower_components/angular-io/src/scripts/factories/rest.js"></script>
+<script src="bower_components/angular-io/src/scripts/factories/time.js"></script>
 
-<script src="components/angular-io/src/scripts/filters/format.js"></script>
-<script src="components/angular-io/src/scripts/filters/pad.js"></script>
+<script src="bower_components/angular-io/src/scripts/filters/format.js"></script>
+<script src="bower_components/angular-io/src/scripts/filters/pad.js"></script>
 
-<script src="components/angular-io/src/scripts/filters/colorHash.js"></script><!-- requires $filter('pad') -->
-<script src="components/angular-io/src/scripts/filters/duration.js"></script>
-<script src="components/angular-io/src/scripts/filters/markdown.js"></script><!-- Requires components/marked/lib/marked.js -->
-<script src="components/angular-io/src/scripts/filters/nl2br.js"></script>
-<script src="components/angular-io/src/scripts/filters/objectArray.js"></script>
-<script src="components/angular-io/src/scripts/filters/ordinal.js"></script>
-<script src="components/angular-io/src/scripts/filters/phone.js"></script><!-- requires $filter('format') -->
-<script src="components/angular-io/src/scripts/filters/range.js"></script>
-<script src="components/angular-io/src/scripts/filters/truncate.js"></script>
+<script src="bower_components/angular-io/src/scripts/filters/colorHash.js"></script><!-- requires $filter('pad') -->
+<script src="bower_components/angular-io/src/scripts/filters/duration.js"></script>
+<script src="bower_components/angular-io/src/scripts/filters/markdown.js"></script><!-- Requires bower_components/marked/lib/marked.js -->
+<script src="bower_components/angular-io/src/scripts/filters/nl2br.js"></script>
+<script src="bower_components/angular-io/src/scripts/filters/objectArray.js"></script>
+<script src="bower_components/angular-io/src/scripts/filters/ordinal.js"></script>
+<script src="bower_components/angular-io/src/scripts/filters/phone.js"></script><!-- requires $filter('format') -->
+<script src="bower_components/angular-io/src/scripts/filters/range.js"></script>
+<script src="bower_components/angular-io/src/scripts/filters/truncate.js"></script>
 
 
-<script src="components/angular-io/src/scripts/modules/404.js"></script>
-<script src="components/angular-io/src/scripts/modules/accessibility.js"></script>
-<script src="components/angular-io/src/scripts/modules/templateurl.js"></script>
+<script src="bower_components/angular-io/src/scripts/modules/404.js"></script>
+<script src="bower_components/angular-io/src/scripts/modules/accessibility.js"></script>
+<script src="bower_components/angular-io/src/scripts/modules/templateurl.js"></script>
+
+<script src="bower_components/keyStorage.js/angular.keyStorage.js"></script>
 
 <!-- !AngularUI -->
-<script src="components/angular-ui/modules/directives/if/if.js"></script>
+<script src="bower_components/angular-ui/modules/directives/if/if.js"></script>
 
 <!-- !AngularStrap -->
-<!--<script src="components/angular-strap/src/directives/navbar.js"></script><!-- rewrite own -->
+<!--<script src="bower_components/angular-strap/src/directives/navbar.js"></script><!-- rewrite own -->
 
 <!-- !AngularBS -->
-<script src="components/angular-ui-bootstrap/src/dropdownToggle/dropdownToggle.js"></script><!-- bootstrap replacement -->
+<script src="bower_components/angular-ui-bootstrap/src/dropdownToggle/dropdownToggle.js"></script><!-- bootstrap replacement -->
 
 <!-- endbuild -->
 
 <!-- !Async Modules -->
 <!-- Ensure these are copied over in grunt -->
-<script src="components/angular-modernizr/src/scripts/reveal.text.js"></script>
-<script src="components/angular-modernizr/src/scripts/placeholder.js"></script>
+<script src="bower_components/angular-modernizr/src/scripts/reveal.text.js"></script>
+<script src="bower_components/angular-modernizr/src/scripts/placeholder.js"></script>
 <!-- !End App Modules -->
 
 </body>

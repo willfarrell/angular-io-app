@@ -1,188 +1,20 @@
 <?php
 
-/*
-
-Add a timer for nested events
-
-If negative min value, you forgot to place a stop call
-
-*/
-
-class Timers {
-	var $id = "";
-	var $timers = array();
-	var $counter = 0;
-	
-	/**
-	 * Constructs a Timers object.
-	 */
-	function __construct($id="") {
-		$this->id = $id;
-	}
-	
-	/**
-	 * Destructs a Timers object.
-	 *
-	 * @return void
-	 */
-	function __destruct() {
-		// print to log files
-		if (TIMERS_FILE) {
-			$data = json_encode($this->results_all());
-			if ($data != "[]") {
-				$file = $_SERVER['DOCUMENT_ROOT'].'/timers.txt';
-				file_put_contents($file, "\n".$_SERVER['REQUEST_TIME']." (".date('r', $_SERVER['REQUEST_TIME']).")\n", FILE_APPEND);
-				file_put_contents($file, $data, FILE_APPEND);
-			}
-		}
-	}
-
-	/**
-	 * start the timer
-	 *
-	 * @param string $id
-	 * @return void
-	 */
-	public function start($id=NULL) {
-		if ($id==NULL) $id = $this->id;
-		if (isset($this->timers[$id])) {
-			$this->timers[$id]['count']++;
-		} else {
-			$this->timers[$id] = array(
-				'timer' => array(),
-				'count' => 0,
-			);
-		}
-
-		$this->timers[$id]['timer'][$this->timers[$id]['count']] = new Timer;
-		$this->timers[$id]['timer'][$this->timers[$id]['count']]->start();
-	}
-
-	/**
-	 * pause the timer
-	 *
-	 * @param string $id
-	 * @return void
-	 */
-	public function pause($id=NULL) {
-		if ($id==NULL) $id = $this->id;
-		$this->timers[$id]['timer'][$this->timers[$id]['count']]->pause();
-	}
-
-	/**
-	 * unpause the timer
-	 *
-	 * @param string $id
-	 * @return void
-	 */
-	public function unpause($id=NULL) {
-		if ($id==NULL) $id = $this->id;
-		$this->timers[$id]['timer'][$this->timers[$id]['count']]->unpause();
-	}
-
-	/**
-	 * stop the timer
-	 *
-	 * @param string $id
-	 * @return void
-	 */
-	public function stop($id=NULL) {
-		if ($id==NULL) $id = $this->id;
-		$this->timers[$id]['timer'][$this->timers[$id]['count']]->stop();
-	}
-	
-	/**
-	 * return results for an id
-	 *
-	 * @param string $id
-	 * @return array
-	 */
-	function results($id=NULL) {
-		if ($id==NULL) $id = $this->id;
-
-		$results = array();
-		$array_size = count($this->timers[$id]['timer']);
-		for($i = 0; $i < $array_size; $i++) {
-			$results[$i] = $this->timers[$id]['timer'][$i]->duration();
-		}
-
-		$return = array();
-		$return['total'] = array_sum($results);
-		$return['min'] = min($results);
-		$return['max'] = max($results);
-		$return['avg'] = $return['total'] / $array_size;
-		
-		return $return;
-	}
-	
-	/**
-	 * return all ID results
-	 *
-	 * @return array
-	 */
-	function results_all() {
-		$results = array();
-		foreach ($this->timers as $key => $value) {
-			$results[$key] = $this->results($key);
-		}
-		return $results;
-	}
-	
-	/**
-	 * return all ID results as string
-	 *
-	 * @param string $id
-	 * @return string
-	 */
-	function print_results($id = NULL) {
-		if ($id) $results = $this->results($id);
-		else $results = $this->results_all();
-		
-		echo "\n=== Timings ===\n";
-		echo "ID\t\tavg\tmin\tmax\ttotal\n";
-		
-		foreach($results as $key => $value) {
-			echo "$key\t\t"
-				.number_format($value['avg'], 3)."s\t"
-				.number_format($value['min'], 3)."s\t"
-				.number_format($value['max'], 3)."s\t"
-				.number_format($value['total'], 3)."s\n";
-		}
-	}
-
-	/**
-	 * clear id
-	 *
-	 * @param string $id
-	 * @return void
-	 */
-	function clear($id=NULL) {
-		if ($id==NULL) $id = $this->id;
-		unset($this->timers[$id]);
-	}
-	
-	/**
-	 * clear all ids
-	 *
-	 * @return void
-	 */
-	function clear_all() {
-		unset($this->timers);
-	}
-}
-
-// source http://davidwalsh.name/php-timer-benchmark
-// duration added by will Farrell
 class Timer {
-
+	
+	private static $start_time = 0;
+	private static $pause_time = 0;
+	private static $stop_time = 0;
+	private static $duration = 0;
+	
 	/**
 	 * start the timer
 	 *
 	 * @return void
 	 */
-	function start() {
-		$this->start_time = $this->get_time();
-		$this->pause_time = 0;
+	public static function start() {
+		self::$start_time = self::now();
+		self::$pause_time = 0;
 	}
 
 	/**
@@ -190,8 +22,10 @@ class Timer {
 	 *
 	 * @return void
 	 */
-	function pause() {
-		$this->pause_time = $this->get_time();
+	public static function pause() {
+		$now = self::now();
+		if (!self::$start_time) { self::$start_time = $now; }
+		self::$pause_time = $now;
 	}
 
 	/**
@@ -199,9 +33,12 @@ class Timer {
 	 *
 	 * @return void
 	 */
-	function unpause() {
-		$this->start_time += ($this->get_time() - $this->pause_time);
-		$this->pause_time = 0;
+	public static function unpause() {
+		$now = self::now();
+		if (!self::$start_time) { self::$start_time = $now; }
+		if (!self::$pause_time) { self::$pause_time = $now; }
+		self::$start_time += ($now - self::$pause_time);
+		self::$pause_time = 0;
 	}
 
 	/**
@@ -209,38 +46,85 @@ class Timer {
 	 *
 	 * @return void
 	 */
-	function stop() {
-		$this->stop_time = $this->get_time();
-		//return $this->stop_time;
+	public static function stop() {
+		$now = self::now();
+		if (!self::$start_time) { self::$start_time = $now; }
+		self::$stop_time = $now;
+		self::$duration = self::$stop_time - self::$start_time;
+		self::$start_time = 0;
 	}
 
 	/**
 	 * duration the timer
 	 *
-	 * @return decimal
+	 * @return float
 	 */
-	function duration() {
-		$this->duration = (isset($this->stop_time) ? $this->stop_time : 0) - $this->start_time;
-		return $this->duration;
+	public static function duration() {
+		self::$duration = (self::$stop_time ? self::$stop_time : 0) - self::$start_time;
+		return self::$duration;
 	}
 
 	/**
 	 * get the current timer value
 	 *
-	 * @return decimal
+	 * @return float
 	 */
- 	function get($decimals = 8) {
-		return round(($this->get_time() - $this->start),$decimals);
+ 	public static function get($decimals = 8) {
+		return round((self::now() - self::$start), $decimals);
 	}
 
 	/**
 	 * format the time in seconds
 	 *
-	 * @return int
+	 * @return float
 	 */
-	function get_time() {
+	public static function now() {
 		list($usec,$sec) = explode(' ', microtime());
 		return ((float)$usec + (float)$sec);
+	}
+	
+	/**
+	 * Formats the elapsed time as a string.
+	 *
+	 * @param  float $time
+	 * @return string
+	 */
+	public static function secondsToTimeString($time)
+	{
+		$ms = round($time * 1000);
+
+		foreach (self::$times as $unit => $value) {
+			if ($ms >= $value) {
+				$time = floor($ms / $value * 100.0) / 100.0;
+				return $time . ' ' . ($time == 1 ? $unit : $unit . 's');
+			}
+		}
+
+		return $ms . ' ms';
+	}
+
+	/**
+	 * Formats the elapsed time since the start of the request as a string.
+	 *
+	 * @return string
+	 */
+	public static function timeSinceStartOfRequest()
+	{
+		return self::secondsToTimeString(microtime(TRUE) - self::$requestTime);
+	}
+
+	/**
+	 * Returns the resources (time, memory) of the request as a string.
+	 *
+	 * @return string
+	 */
+	public static function resourceUsage()
+	{
+		return sprintf(
+		  'Time: %s, Memory: %4.2fMb',
+		  self::timeSinceStartOfRequest(),
+		  memory_get_peak_usage(TRUE) / 1048576
+		);
 	}
 }
 

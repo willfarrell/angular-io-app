@@ -39,7 +39,6 @@ company_ID
 
 */
 
-require_once 'class.db.php';
 include_once "inc.permission.php";
 
 /**
@@ -144,7 +143,7 @@ class Permission
 				preg_match("/(!?)([\w-]*)\[?([^\[\]]*)\]?/", $test_str, $matches);
 				
 				$test = $matches[2];
-				$params = explode(",", $matches[2]);
+				$params = explode(",", $matches[3]);
 				
 				if (method_exists($this, $test)) {
 					$test_return = $this->{$test}($args, $params);

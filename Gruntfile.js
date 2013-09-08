@@ -109,7 +109,7 @@ module.exports = function(grunt) {
 				imagesDir: '<%= yeoman.app %>/images',
 				javascriptsDir: '<%= yeoman.app %>/scripts',
 				fontsDir: '<%= yeoman.app %>/styles/fonts',
-				importPath: 'app/components',
+				importPath: 'app/bower_components',
 				relativeAssets: true
 			},
 			dist: {},
@@ -196,7 +196,7 @@ module.exports = function(grunt) {
 		htmllint: {
 			dist: [
 				'<%= yeoman.app %>/**/*.html',
-				'!<%= yeoman.app %>/components/**/*/html'
+				'!<%= yeoman.app %>/bower_components/**/*/html'
 			]
 		},
 		csslint: {
@@ -251,8 +251,8 @@ module.exports = function(grunt) {
 				preserveComments: 'some' // preserve !, @cc_on for IE var in scripts/async.js
 			}
 			// fallback scripts
-			//'<%= yeoman.dist %>/js/fallback/placeholder.min.js':'<%= yeoman.app %>/components/angular-modernizr/src/scripts/placeholder.js',
-			//'<%= yeoman.dist %>/js/fallback/reveal.min.js':'<%= yeoman.app %>/components/angular-modernizr/src/scripts/reveal.js'
+			//'<%= yeoman.dist %>/js/fallback/placeholder.min.js':'<%= yeoman.app %>/bower_components/angular-modernizr/src/scripts/placeholder.js',
+			//'<%= yeoman.dist %>/js/fallback/reveal.min.js':'<%= yeoman.app %>/bower_components/angular-modernizr/src/scripts/reveal.js'
 		},
 		useminPrepare: {
 			html: ['<%= yeoman.app %>/index.html', '<%= yeoman.app %>/index.web.html', '<%= yeoman.app %>/index.device.html'],
@@ -561,7 +561,7 @@ module.exports = function(grunt) {
 					// component font-awesome fonts (build)
 					{
 						expand: true,
-						cwd:'<%= yeoman.app %>/components/font-awesome/build',
+						cwd:'<%= yeoman.app %>/bower_components/font-awesome/build',
 						src: [
 							'**/*.{eot,ttf,woff,otf}'
 						],
@@ -569,13 +569,13 @@ module.exports = function(grunt) {
 					},
 					{
 						expand: true,
-						cwd:'<%= yeoman.app %>/components/json3/libs',
+						cwd:'<%= yeoman.app %>/bower_components/json3/libs',
 						src: ['json3.min.js'],
 						dest: '<%= yeoman.dist %>/js/fallback/json.min.js'
 					},
 					{
 						expand: true,
-						cwd:'<%= yeoman.app %>/components/angular-complete',
+						cwd:'<%= yeoman.app %>/bower_components/angular-complete',
 						src: ['angular.min.js', 'i18n/*.js'],
 						dest: '<%= yeoman.dist %>/js/vendor'
 					}
@@ -858,7 +858,7 @@ module.exports = function(grunt) {
 		},
 		modernizr: { // **fails waiting on reply
 			// [REQUIRED] Path to the build you're using for development.
-			'devFile' : '<%= yeoman.app %>/components/modernizr/modernizr.js',
+			'devFile' : '<%= yeoman.app %>/bower_components/modernizr/modernizr.js',
 
 			// [REQUIRED] Path to save out the built file.
 			'outputFile' : '<%= yeoman.dist %>/js/modernizr.min.js',
@@ -906,7 +906,7 @@ module.exports = function(grunt) {
 			'customTests' : [],
 
 			// Files added here will be excluded when looking for Modernizr refs.
-			'excludeFiles' : ['**/components/**/*']
+			'excludeFiles' : ['**/bower_components/**/*']
 		},
 		compress: {
 			phonegap: {
@@ -1089,6 +1089,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('build', [
 
 		// Dev
+		'lint',
 		//'test',
 		//'coffee',
 		//'compass:dist',

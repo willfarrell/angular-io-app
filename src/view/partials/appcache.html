@@ -1,13 +1,13 @@
-<div class="modal fade" id="appcacheModal" data-ng-show="appCache.percent">
+<div class="modal" id="appcacheModal" data-ng-show="appCache.percent > 0">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal">&times;</button>
 		<h3>New Version</h3>
 	</div>
 	<div class="modal-body">
-		A new version is available. Push the `Reload` button to load update.
 		<div class="progress" data-ng-class="{false: 'progress-striped active'}[appCache.percent == 100]">
 			<div class="bar" data-ng-style="{width: appCache.percent+'%'}"><!--{{appCache.loaded}} / {{appCache.total}}--></div>
 		</div>
+		A new version is available. Push the `Reload` button to load update.
 	</div>
 	<div class="modal-footer">
 		<div class="pull-right">

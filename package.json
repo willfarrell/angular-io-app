@@ -17,6 +17,8 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "bower": "~1.1.2",
+
     "grunt": "~0.4.1",
     "grunt-open": "~0.2.0",
     "grunt-regarde": "~0.1.1",

@@ -36,6 +36,8 @@ require_once "inc.config.php";
  * @link      http://willFarrell.ca
  */
 
+class Database extends MySQL {}
+
 class MySQL
 {
     private $connection_mysql; //The MySQL database connection
@@ -116,6 +118,7 @@ class MySQL
         $this->last_query = $query;
         //echo $query;
         if (mysql_error()) {
+        	//throw new Exception("DB Error", 30);
             echo $query."<br>";
             echo "<b>".mysql_error()."</b><br>";
         }

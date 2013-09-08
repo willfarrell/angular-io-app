@@ -1,5 +1,15 @@
 /*global $script:true, Modernizr:true, Stripe:true */
 
+function noscript() {
+	if (document.removeChild) {
+		var div = document.getElementById("noscript");
+		div.parentNode.removeChild(div);
+	} else if (document.getElementById) {
+		document.getElementById("noscript").style.display = "none";
+	}
+}
+noscript();
+
 //(function() {
 console.group('Async Load');
 

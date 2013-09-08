@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  *
  * Password
@@ -13,10 +14,7 @@
  *
  */
 
-require_once 'inc.config.php';
 require_once 'class.db.php';
-require_once 'class.console.php';
-require_once 'class.timer.php';
 
 if(!defined("PASSWORD_RESET_LENGTH"))	define("PASSWORD_RESET_LENGTH", 3600);	// The time one has to reset their password in seconds (1 hour)
 
@@ -55,19 +53,36 @@ class Password {
 	
 	/**
 	 * Constructs a Password object.
+	 *
+	 * @param array $config overwrite json settings
 	 */
-	function __construct($user_ID = 0, $user_email = '') {
+	function __construct($config = array()) {
 		global $database;
 		$this->db = $database;
 		
-		$this->user_ID = $user_ID;
-		$this->user_email = $user_email;
+		$this->config = sizeof($config) ? $config : json_decode(file_get_contents(dirname(__FILE__).'/../json/config.password.json'), true); // object
 		
-		$this->config = json_decode(file_get_contents(dirname(__FILE__).'/../json/config.password.json'), false); // object
-
-		// Dev
-		$this->console = new Console;
-		$this->timer = new Timers;
+		// Build tables if not done already
+		$this->db->query("CREATE  TABLE IF NOT EXISTS `angular_db`.`password_blacklist` (
+		  `password` VARCHAR(256) NOT NULL ,
+		  `length` INT NOT NULL DEFAULT 0 ,
+		  `upper_count` INT NOT NULL DEFAULT 0 ,
+		  `lower_count` INT NOT NULL DEFAULT 0 ,
+		  `number_count` INT NOT NULL DEFAULT 0 ,
+		  `special_count` INT NOT NULL DEFAULT 0 ,
+		  `other_count` INT NOT NULL DEFAULT 0 ,
+		  `identical_length` INT NOT NULL DEFAULT 0 ,
+		  `use_count` INT NOT NULL DEFAULT 0 ,
+		  PRIMARY KEY (`password`) ,
+		  INDEX `length` (`length` ASC) )
+		ENGINE = InnoDB");
+		
+		$this->db->query("CREATE  TABLE IF NOT EXISTS `angular_db`.`password_dictionary` (
+		  `word` VARCHAR(32) NOT NULL ,
+		  `lang` VARCHAR(5) NOT NULL DEFAULT 'en' ,
+		  PRIMARY KEY (`word`) ,
+		  INDEX `lang` (`lang` ASC) )
+		 ENGINE = InnoDB");
 	}
 	
 	/**
@@ -80,12 +95,36 @@ class Password {
 	}
 	
 	/**
+	 * make hash of email without dots
+	 * in the local-part
+	 *
+	 * @param string $email
+	 * @return string
+	 */
+	function hashEmail($email) {
+		$email_parts = explode("@", $email);
+		$email_parts[0] = str_replace(".", "", $email_parts[0]);
+		$email = implode("@", $email_parts);
+		return hash('sha512', $email);
+	}
+	
+	/**
 	 * Get User ID
 	 *
 	 * @return int
 	 */
-	private function getId() {
+	public function getId() {
 		return (USER_ID) ? USER_ID : $this->user_ID;
+	}
+	
+	/**
+	 * Set User ID
+	 *
+	 * @param int $user_ID
+	 * @return void
+	 */
+	public function setId($user_ID) {
+		$this->user_ID = $user_ID;
 	}
 	
 	/**
@@ -93,8 +132,18 @@ class Password {
 	 *
 	 * @return string
 	 */
-	private function getEmail() {
+	public function getEmail() {
 		return (USER_EMAIL) ? USER_EMAIL : $this->user_email;
+	}
+	
+	/**
+	 * Set User Email
+	 *
+	 * @params string $user_email
+	 * @return void
+	 */
+	public function setEmail($user_email) {
+		$this->user_email = $user_email;
 	}
 	
 	/**
@@ -128,14 +177,14 @@ class Password {
 	function update($password, $email) {
 		$password_hash = $this->hash($password, $email);
 		$query = "UPDATE users SET"
-				." password = '{{password}}',"
+				." password_hash = '{{password}}',"
 				." password_timestamp = '{{password_timestamp}}',"
 				." password_history = CONCAT(password_history, \",{{password}}\" ),"
 				." timestamp_update = '{{timestamp_update}}'"
 				." WHERE user_ID = '{{user_ID}}'";
 		$this->db->query($query,
 			array(
-				'password' => $password_hash,
+				'password_hash' => $password_hash,
 				'password_timestamp' => $_SERVER['REQUEST_TIME'],
 				'timestamp_update' => $_SERVER['REQUEST_TIME'],
 				'user_ID' => $this->getId()
@@ -151,29 +200,45 @@ class Password {
 	 */
 	function validate($password) {
 		
-		$this->timer->start('validate');
-		if ($this->length($password) && $this->charset($password)) {
-			$this->dictionary($password);
-			$this->black_list($password); // passwords on the black list don't meet the OWASP requ, thus not needed to be run
+		Timers::start('validate');
+		if ($this->checkStrength($password)) {
+			$this->checkDictionary($password);
+			$this->checkBlacklist($password);
 			
 			if ($this->getId()) {
 				$this->user_past_password($password);
 				$this->user_input_data($password);
 			}
 		}
-		$this->timer->stop('validate');
-		$this->console->log($this->errors);
+		Timers::stop('validate');
+		Console::log($this->errors);
 		return sizeof($this->errors) ? false : true;
 	}
 	
 	/**
-	 * Determine a password strength
+	 * Checks strength of password is long enough
+	 *
+	 * @param string $password Password
+	 * @return bool
+	 */
+	 function checkStrength($password) {
+		 return ($this->length($password) && $this->charset($password) && $this->entropy($password));
+	}
+	
+	/**
+	 * Determine a passwords entropy
 	 *
 	 * @param string $password Password
 	 * @return bool
 	 */
 	function entropy($password) {
 		// https://tech.dropbox.com/2012/04/zxcvbn-realistic-password-strength-estimation/
+		if (1) {
+			Console::log("Entropy PASSED");
+		} else {
+			$this->errors["entropy"] = "Password entropy too low.";
+			Console::log("Entropy FAILED");
+		}
 		return true;
 	}
 	
@@ -186,12 +251,12 @@ class Password {
 	function length($password) {
 		$length = strlen($password);
 		
-		if ($length < $this->config->min_length) {
-			$this->errors["min_length"] = "Password too short, must be ".$this->config->min_length." or more";
-			$this->console->log("Password Length FAILED");
+		if ($length < $this->config['min_length']) {
+			$this->errors["min_length"] = "Password too short, must be ".$this->config['min_length']." or more";
+			Console::log("Password Length FAILED");
 			return false;
 		}
-		$this->console->log("Password Length PASSED");
+		Console::log("Password Length PASSED");
 		return true;
 	}
 	
@@ -219,22 +284,22 @@ class Password {
 			$char = $password_chars[$i];
 			
 			if 		(strpos("abcdefghijklmnopqrstuvwxyz", $char) !== false)				{ ++$subsets['lower'];	}
-			else if (strpos("ABCDEFGHIJKLMNOPQRSTUVWXYZ", $char) !== false) 			{ ++$subsets['upper'];	}
+			else if (strpos("ABCDEFGHIJKLMNOPQRSTUVWXYZ", $char) !== false)				{ ++$subsets['upper'];	}
 			else if (strpos("0123456789", $char) !== false) 							{ ++$subsets['number'];	}
-			else if (strpos("~!@#$%^&*()_+{}|:\"<>? `-=[]\;',./£", $char) !== false) 	{ ++$subsets['special'];}
+			else if (strpos("~!@#$%^&*()_+{}|:\"<>? `-=[]\;',./£", $char) !== false)	{ ++$subsets['special'];}
 			else 																		{ ++$subsets['other'];	}
 			
 			// max_charset_identical check
-			if ($i >= $this->config->max_identical-1) {
+			if ($i >= $this->config['max_identical']-1) {
 				$charset_identical = true;
-				for ($j = $i-1, $k = $i - $this->config->max_identical; $j > $k; $j--) {
+				for ($j = $i-1, $k = $i - $this->config['max_identical']; $j > $k; $j--) {
 					if ($password_chars[$j] != $char) {
 						$charset_identical = false;
 					}
 				}
 				if ($charset_identical) {
-					$this->errors["max_charset_identical"] = "Password cannot have ".$this->config->max_identical." or more identical characters";
-					$this->console->log("Password Charset Identical FAILED");
+					$this->errors["max_charset_identical"] = "Password cannot have ".$this->config['max_identical']." or more identical characters";
+					Console::log("Password Charset Identical FAILED");
 					$return = false;
 				}
 			}
@@ -246,31 +311,31 @@ class Password {
 			if ($subset) $subset_count++;
 		}
 		
-		if ($subset_count < $this->config->min_subset) {
+		if ($subset_count < $this->config['min_subset']) {
 			$this->errors["min_charset_subset"] = "Password needs different types of characters";
-			if ($subsets['lower'] < $this->config->min_lower) {
+			if ($subsets['lower'] < $this->config['min_lower']) {
 				$this->errors["min_charset_lower"] = "Password needs at least one lower case letter";
-				$this->console->log("Password Charset Uppercase Letter FAILED");
+				Console::log("Password Charset Uppercase Letter FAILED");
 				$return = false;
 			}
-			if ($subsets['upper'] < $this->config->min_upper) {
+			if ($subsets['upper'] < $this->config['min_upper']) {
 				$this->errors["min_charset_upper"] = "Password needs at least one upper case letter";
-				$this->console->log("Password Charset Lowercase Letter FAILED");
+				Console::log("Password Charset Lowercase Letter FAILED");
 				$return = false;
 			}
-			if ($subsets['number'] < $this->config->min_number) {
+			if ($subsets['number'] < $this->config['min_number']) {
 				$this->errors["min_charset_number"] = "Password needs at least one number";
-				$this->console->log("Password Charset Number FAILED");
+				Console::log("Password Charset Number FAILED");
 				$return = false;
 			}
-			if ($subsets['special'] < $this->config->min_special) {
+			if ($subsets['special'] < $this->config['min_special']) {
 				$this->errors["min_charset_special"] = "Password needs an special character (!\"£$%&...)";
-				$this->console->log("Password Charset Special FAILED");
+				Console::log("Password Charset Special FAILED");
 				$return = false;
 			}
-			if ($subsets['other'] < $this->config->min_other) {
+			if ($subsets['other'] < $this->config['min_other']) {
 				$this->errors["min_charset_other"] = true;
-				$this->console->log("Password Charset Other FAILED");
+				Console::log("Password Charset Other FAILED");
 				$return = false;
 			}
 		}
@@ -284,7 +349,7 @@ class Password {
 	 * @param string $password Password
 	 * @return bool
 	 */
-	function dictionary($password) {
+	function checkDictionary($password) {
 		$words = preg_split("/[^a-z]/", strtolower($password));
 		$words = array_filter($words); // clean
 		array_walk($words, create_function('&$str', '$str = "\'$str\'";')); // add quotes
@@ -293,29 +358,87 @@ class Password {
 				." WHERE word IN (".implode(",", $words).") AND length > 2";
 		$r = $this->db->query($query);
 		if (!$r) {
-			$this->console->log("Password Dictionary PASSED");
+			Console::log("Password Dictionary PASSED");
 			return true;
 		}
 		$this->errors["dictionary"] = "Password is a dictionary word.";
-		$this->console->log("Password Dictionary FAILED");
+		Console::log("Password Dictionary FAILED");
 		return false;
 	}
 	
+	/**
+	 * Add word to dictionary
+	 *
+	 * @param string $password Password
+	 * @param sting $lang ISO 2 or 5 char lang code. ie en, en-ca
+	 * @return bool
+	 */
+	function AddToDictionary($password, $lang) {
+		$this->db->insert_update("password_dictionary", array(
+			"password" => $password,
+			"lang" => $lang,
+		));
+	}
 	/**
 	 * Checks if a password is on the black list - a list of most popular passwords
 	 *
 	 * @param string $password Password
 	 * @return bool
 	 */
-	function black_list($password) {
+	function checkBlacklist($password) {
 		$r = $this->db->select("password_blacklist", array("password" => $password));
 		if (!$r) {
-			$this->console->log("Password Black List PASSED");
+			Console::log("Password Black List PASSED");
 			return true;
 		}
+		$this->db->query("UPDATE password_blacklist SET use_count = use_count + 1 WHERE password = '{{password}}'", array("password" => $password));
 		$this->errors["black_list"] = "This password is on our password Black List.";
-		$this->console->log("Password Black List FAILED");
+		Console::log("Password Black List FAILED");
 		return false;
+	}
+	
+	/**
+	 * Add password to blacklist with stats
+	 *
+	 * @param string $password Password
+	 * @return bool
+	 */
+	function AddToBlacklist($password) {
+		$params = array(
+			"password" => $password,
+			"length" => sizeof($password),
+			"upper_count" => 0,
+			"lower_count" => 0,
+			"number_count" => 0,
+			"special_count" => 0,
+			"other_count" => 0,
+			"identical_length" => 0
+		);
+		
+		$password_chars = str_split($password);
+		
+		// count each charset subset
+		
+		for ($i = 0, $l = count($password_chars); $i < $l; $i++) {
+			$char = $password_chars[$i];
+			
+			if 		(strpos("abcdefghijklmnopqrstuvwxyz", $char) !== false)				{ ++$params['lower_count'];	}
+			else if (strpos("ABCDEFGHIJKLMNOPQRSTUVWXYZ", $char) !== false) 			{ ++$params['upper_count'];	}
+			else if (strpos("0123456789", $char) !== false) 							{ ++$params['number_count'];}
+			else if (strpos("~!@#$%^&*()_+{}|:\"<>? `-=[]\;',./£", $char) !== false)	{ ++$params['special_count'];}
+			else 																		{ ++$params['other_count'];	}
+			
+			// count indentical chars
+			for ($j = $i; $j < $l; $j++) {
+				if ($password_chars[$j] != $char) {
+					$params['identical_length'] = max($j - $i, $params['identical_length']);
+					break;
+				}
+			}
+			
+		}
+		$this->db->insert_update("password_blacklist", $params);
+		
 	}
 	
 	/**
@@ -326,13 +449,13 @@ class Password {
 	 */
 	function user_past_password($password) {
 		if (!$this->getId() || !$this->getEmail()) {
-			$this->console->log("Password Used Already (No User ID or Email) FAILED");
+			Console::log("Password Used Already (No User ID or Email) FAILED");
 			return false;
 		}
 		
 		$r = $this->db->select("users", array("user_ID" => $this->getId()), array("password_history"));
 		if (!$r) {
-			$this->console->log("Password Used Already (No User) FAILED");
+			Console::log("Password Used Already (No User) FAILED");
 			return false;
 		}
 		
@@ -342,11 +465,11 @@ class Password {
 		foreach ($history as $hash) {
 			if ($this->check($password, $hash, $this->getEmail())) {
 				$this->errors['user_past_password'] = "You have already used this password.  Please choose a new unique password.";
-				$this->console->log("Password Used Already FAILED");
+				Console::log("Password Used Already FAILED");
 				return false;
 			}
 		}
-		$this->console->log("Password Used Already PASSED");
+		Console::log("Password Used Already PASSED");
 		return true;
 	}
 	
@@ -358,7 +481,7 @@ class Password {
 	 */
 	function user_input_data($password) {
 		if (!$this->getId()) {
-			$this->console->log("Password Contain User Data (No User ID) FAILED");
+			Console::log("Password Contain User Data (No User ID) FAILED");
 			return false;
 		}
 		$return = true;
@@ -366,7 +489,7 @@ class Password {
 		
 		$r = $this->db->select("users", array("user_ID" => $this->getId()), $data);
 		if (!$r) {
-			$this->console->log("Password Contain User Data (No User) FAILED");
+			Console::log("Password Contain User Data (No User) FAILED");
 			return false;
 		}
 		
@@ -383,15 +506,15 @@ class Password {
 		}
 		
 		if ($return) {
-			$this->console->log("Password Contain User Data PASSED");
+			Console::log("Password Contain User Data PASSED");
 		} else {
 			$this->errors["user_input_data"] = "Too similar too ".implode(", ", $words).".";
-			$this->console->log("Password Contain User Data FAILED");
+			Console::log("Password Contain User Data FAILED");
 		}
 		
 		return $return;
 	}
-	
+    
 	/**
 	 * Checks the similarity of a string to the password
 	 *
@@ -438,7 +561,7 @@ class Password {
 	 * @return string
 	 */
 	public function salt($password, $email = '') {
-		return $password.$email.PASSWORD_SALT;
+		return $password.$this->hashEmail($email).PASSWORD_SALT;
 	}
 	
 	/**
@@ -449,7 +572,7 @@ class Password {
 	 * @return string
 	 */
 	function hash($password, $email = '') {
-		$this->timer->start('hash');
+		Timers::start('hash');
 
 		$password = $this->salt($password,$email);
 
@@ -461,7 +584,7 @@ class Password {
 			$return = $this->scrypt_hash($password, SCRYPT_SALT, SCRYPT_PEPPER, SCRYPT_CPU, SCRYPT_MEMORY, SCRYPT_PARALLEL, SCRYPT_KEY_LENGTH);
 		}
 
-		$this->timer->stop('hash');
+		Timers::stop('hash');
 		return $return;
 	}
 	
@@ -474,7 +597,7 @@ class Password {
 	 * @return bool
 	 */
 	function check($password, $hash, $email = '') {
-		$this->timer->start('hash_check');
+		Timers::start('hash_check');
 
 		$password = $this->salt($password,$email);
 
@@ -486,7 +609,7 @@ class Password {
 			$return = $this->scrypt_check($password, $hash, SCRYPT_PEPPER, SCRYPT_KEY_LENGTH);
 		}
 
-		$this->timer->stop('hash_check');
+		Timers::stop('hash_check');
 		return $return;
 	}
 
@@ -644,5 +767,14 @@ class Password {
 	}
 
 }
+
+function passowrdImportBlacklist() {
 	
+}
+
+function passwordImportDictionary() {
+	
+}
+
+
 ?>

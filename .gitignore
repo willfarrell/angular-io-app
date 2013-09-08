@@ -3,7 +3,7 @@
 # $ sh scripts/setup.sh # Run after fresh pull
 /node_modules/*
 /files/build/*
-/src/components/*
+/src/bower_components/*
 /src/php/vendor/*
 
 # VM #
@@ -26,6 +26,7 @@
 ###################
 _*
 /src/php/inc.config.php
+/src/php/composer.lock
 
 # Compiled source #
 ###################

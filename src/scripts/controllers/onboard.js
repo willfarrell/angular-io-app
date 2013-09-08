@@ -34,7 +34,7 @@ function OnboardCtrl($rootScope, $scope, $cookies, $rest, $routeParams, $session
 	};
 
 	$scope.done = function(redirect) {
-		$session.account.timestamp_create = 1;
+		$session.account.timestamp_onboard = 1;
 
 		$rest.http({
 				method:'get',

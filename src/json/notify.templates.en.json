@@ -3,6 +3,10 @@
 		"subject": "PHPUnit Test",
 		"message": "a{{args:b}}c{{args:b}}"
 	},
+	"signup_exists": {
+		"subject": "Signup Attempt Failed",
+		"message": "You (or someone else) entered this email address when trying to sign up for an account at {{global:site_name}}.\n\nHowever, this email address is in our database of registered users and therefore the attempted sign up has failed.\n\nIf you were expecting this email, please try again signing into your account at {{global:site_url}}#/sign/in.\n\nFor information about {{global:site_name}}, please visit {{global:site_url}}.{{global:signature}}{{global:footer}}"
+	},
 	"signup_confirm_email": {
 		"subject": "Action - Confirm Your Email",
 		"message": "You (or someone else) entered this email address when creating an account at {{global:site_name}}.\n\nIf you did not create an account, you can ignore this message.\n\nTo confirm your email, please proceed to\n {{global:site_url}}#/sign/confirm/{{args:hash}}\n\nor enter {{args:hash}} when requested after login.{{global:signature}}{{global:footer}}"

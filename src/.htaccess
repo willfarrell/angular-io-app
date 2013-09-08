@@ -1,3 +1,7 @@
+<IfModule mod_headers.c>
+  Header set X-will-Farrell "You need a yogurt break!"
+</IfModule>
+
 # http://html5boilerplate.com/
 #
 
@@ -661,17 +665,17 @@ ServerSignature Off
 	RewriteRule ^i18n/(.*)-(.*)/(.*) i18n/$1/$3
 </IfModule>
 
-# Redirect all requests through index.php
+# Redirect all requests through api.php
 <IfModule mod_rewrite.c>
-	RewriteCond %{REQUEST_URI} !(^index\.php|\.(gif|jpe?g|png|svg|svgz|ico|webp|ttf|woff|ttf|css|js|json|txt|xml|htm|html))$
+	RewriteCond %{REQUEST_URI} !(^api\.php|\.(gif|jpe?g|png|svg|svgz|ico|webp|ttf|woff|ttf|css|js|json|txt|xml|htm|html))$
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteRule . index.php [L]
+	RewriteRule . api.php [L]
 </IfModule>
 
 # Force filepicker to api - filenames in urls can cause routing issues
 <IfModule mod_rewrite.c>
-	RewriteRule ^filepicker/ index.php [L]
+	RewriteRule ^filepicker/ api.php [L]
 </IfModule>
 
 

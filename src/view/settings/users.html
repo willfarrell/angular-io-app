@@ -50,7 +50,7 @@
 		<div class="control-group" data-ng-class="{error: (errors.user_name_first)}">
 		<label class="control-label" for="user_name_first">First Name</label>
 		<div class="controls">
-				<input type="text" class="input-block-level" name="user_name_first" placeholder="required" data-ng-model="user.user_name_first" data-ng-disabled="user.timestamp_create" data-field-error="user_name_first" required>
+				<input type="text" class="input-block-level" name="user_name_first" placeholder="required" data-ng-model="user.user_name_first" data-ng-disabled="user.timestamp_onboard" data-field-error="user_name_first" required>
 				<span class="help-block error" data-ng-show="errors.user_name_first">{{errors.user_name_first}}</span>
 				<!--<span class="help-block error" data-ng-show="form.user_name_first.$error.required">Required</span>-->
 			</div>
@@ -59,7 +59,7 @@
 		<div class="control-group" data-ng-class="{error: (errors.user_name_last)}">
 		<label class="control-label" for="user_name_last">Last Name</label>
 		<div class="controls">
-				<input type="text" class="input-block-level" name="user_name_last" placeholder="optional" data-ng-model="user.user_name_last" data-ng-disabled="user.timestamp_create" data-field-error="user_name_last">
+				<input type="text" class="input-block-level" name="user_name_last" placeholder="optional" data-ng-model="user.user_name_last" data-ng-disabled="user.timestamp_onboard" data-field-error="user_name_last">
 				<span class="help-block error" data-ng-show="errors.user_name_last">{{errors.user_name_last}}</span>
 				<span class="help-block error" data-ng-show="form.user_name_last.$error.required">Required</span>
 			</div>
@@ -77,7 +77,7 @@
 			<label class="control-label" for="user_phone">Phone</label>
 			<div class="controls">
 				<div class="input-prepend">
-					<span class="add-on">+{{json.calling_codes[country_code]}}</span><input type="text" class="input-medium" name="user_phone" placeholder="(000) 000-0000" data-ng-model="user.user_phone" data-input-mask="(999) 999-9999 x999999" data-ng-disabled="user.timestamp_create" data-field-error="user_phone">
+					<span class="add-on">+{{json.calling_codes[country_code]}}</span><input type="text" class="input-medium" name="user_phone" placeholder="(000) 000-0000" data-ng-model="user.user_phone" data-input-mask="(999) 999-9999 x999999" data-ng-disabled="user.timestamp_onboard" data-field-error="user_phone">
 				</div>
 				<span class="help-block error" data-ng-show="errors.user_phone">{{errors.user_phone}}</span>
 			</div>

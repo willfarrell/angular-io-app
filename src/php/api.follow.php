@@ -35,10 +35,8 @@ class Follow extends Core {
 	 * @url GET search/{keyword}
 	 */
 	function get_search($keyword = '') {
-		// Check permissions
-		/*if(!$this->permission->check()) {
-			return $this->permission->errorMessage();
-		};*/
+		$request_data = $this->filter->run(array("keyword" => $keyword));
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
 		
 		$return = array();
 		
@@ -52,7 +50,7 @@ class Follow extends Core {
 		
 		if ($limit > 0) {
 			if (COMPANY_ID) {
-				/*$query = "SELECT C.company_ID, C.company_name" // , GROUP_CONCAT(UF.group_ID) AS groups
+				$query = "SELECT C.company_ID, C.company_name" // , GROUP_CONCAT(UF.group_ID) AS groups
 					." FROM companies C"
 					." LEFT JOIN ".$this->table." CF ON CF.follow_company_ID = C.company_ID AND CF.company_ID = '{{company_ID}}'"
 					." WHERE C.company_ID != '{{company_ID}}'"
@@ -60,7 +58,7 @@ class Follow extends Core {
 					." GROUP BY C.company_ID"
 					." LIMIT 0,$limit";
 
-				$suggestions = $this->db->query($query, array('company_ID' => COMPANY_ID, 'keyword' => $keyword));*/
+				$suggestions = $this->db->query($query, array('company_ID' => COMPANY_ID, 'keyword' => $keyword));
 			} else {
 				$query = "SELECT U.user_ID, U.company_ID, user_username, CONCAT(user_name_first, ' ', user_name_last) AS name, UF.timestamp as following, FU.timestamp as follower" // , UF.group_ID
 						." FROM users U"
@@ -68,6 +66,7 @@ class Follow extends Core {
 						." LEFT JOIN ".$this->table." FU ON (UF.user_ID = FU.follow_user_ID AND UF.follow_user_ID = FU.user_ID)"
 						
 						." WHERE (UF.user_ID = '{{user_ID}}' OR UF.user_ID IS NULL)"
+						." AND U.user_level > 0"
 						." $db_where"
 						." GROUP BY U.user_ID"
 						." LIMIT 0,$limit";
@@ -94,6 +93,8 @@ class Follow extends Core {
 	 * @url GET suggestions/{keyword}
 	 */
 	function get_suggestions($keyword = '') {
+		$request_data = $this->filter->run(array("keyword" => $keyword));
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
 		
 		$return = array();
 		
@@ -128,7 +129,8 @@ class Follow extends Core {
 				$query = "SELECT U.user_ID, U.company_ID, U.user_username, CONCAT(U.user_name_first, ' ', U.user_name_last) AS name" // , GROUP_CONCAT(UF.group_ID) AS groups
 					." FROM users U"
 					." LEFT JOIN ".$this->table." UF ON UF.follow_user_ID = U.user_ID AND UF.user_ID = '{{user_ID}}'"
-					." WHERE U.user_ID != '{{user_ID}}' AND U.timestamp_create != 0 AND UF.follow_user_ID IS NULL"
+					." WHERE U.user_ID != '{{user_ID}}' AND UF.follow_user_ID IS NULL"
+					." AND U.user_level > 0"
 					." $db_where"
 					." GROUP BY U.user_ID"
 					." ORDER BY RAND()"
@@ -156,6 +158,8 @@ class Follow extends Core {
 	 * @access protected
 	 */
 	function get_referral() {
+		$request_data = $this->filter->run();
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
 		
 		$return = array();
 		
@@ -186,15 +190,17 @@ class Follow extends Core {
 	 * @access protected
 	 */
 	function get_referrals() {
-
+		$request_data = $this->filter->run();
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
+		
 		$return = array();
 		
 		$query = "SELECT U.company_ID, U.user_ID, U.user_username, CONCAT(U.user_name_first, ' ', U.user_name_last) AS name" // , GROUP_CONCAT(UF.group_ID) AS groups
 			." FROM users U"
 			." LEFT JOIN ".$this->table." UF ON UF.follow_user_ID = U.user_ID AND UF.user_ID = '{{user_ID}}'"
-			." WHERE U.user_ID != '{{user_ID}}' AND U.timestamp_create != 0 AND  UF.follow_user_ID IS NULL"
+			." WHERE U.user_ID != '{{user_ID}}' AND  UF.follow_user_ID IS NULL"
 			." AND U.referral_user_ID = '{{user_ID}}'"
-			." ORDER BY RAND()"
+			." ORDER BY U.user_ID DESC"
 			." LIMIT 0,10";
 
 		$suggestions = $this->db->query($query, array('user_ID' => USER_ID));
@@ -219,7 +225,10 @@ class Follow extends Core {
 	 * @url GET ers/{company_ID}/{user_ID}/{keyword}
 	 * @access protected
 	 */
-	function get_ers($company_ID = 0, $user_ID = 0, $keyword = '') { // $type='user'
+	function getFollowers($company_ID = 0, $user_ID = 0, $keyword = '') { // $type='user'
+		$request_data = $this->filter->run(array("company_ID" => $company_ID, "user_ID" => $user_ID, "keyword" => $keyword));
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
+		
 		$company_ID = preg_replace( '/[^0-9]+/', '', $company_ID);
 		$user_ID = preg_replace( '/[^0-9]+/', '', $user_ID);
 		if (!$company_ID) $company_ID = COMPANY_ID;
@@ -265,7 +274,10 @@ class Follow extends Core {
 	 * @url GET ing/{company_ID}/{user_ID}/{keyword}
 	 * @access protected
 	 */
-	function get_ing($company_ID = 0, $user_ID = 0, $keyword = '') { // $type='user'
+	function getFollowing($company_ID = 0, $user_ID = 0, $keyword = '') { // $type='user'
+		$request_data = $this->filter->run(array("company_ID" => $company_ID, "user_ID" => $user_ID, "keyword" => $keyword));
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
+		
 		$company_ID = preg_replace( '/[^0-9]+/', '', $company_ID);
 		$user_ID = preg_replace( '/[^0-9]+/', '', $user_ID);
 		if (!$company_ID) $company_ID = COMPANY_ID;
@@ -309,7 +321,10 @@ class Follow extends Core {
 	 * @url GET friends/{company_ID}/{user_ID}/{keyword}
 	 * @access protected
 	 */
-	function get_friends($company_ID = 0, $user_ID = 0, $keyword = '') { // $type='user'
+	function getFriends($company_ID = 0, $user_ID = 0, $keyword = '') { // $type='user'
+		$request_data = $this->filter->run(array("company_ID" => $company_ID, "user_ID" => $user_ID, "keyword" => $keyword));
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
+		
 		$company_ID = preg_replace( '/[^0-9]+/', '', $company_ID);
 		$user_ID = preg_replace( '/[^0-9]+/', '', $user_ID);
 		if (!$company_ID) $company_ID = COMPANY_ID;
@@ -355,7 +370,10 @@ class Follow extends Core {
 	 * @url GET group/{group_ID}
 	 * @access protected
 	 */
-	function get_group($group_ID=NULL) { // $type='user'
+	function getGroup($group_ID=NULL) { // $type='user'
+		$request_data = $this->filter->run(array("group_ID" => $group_ID));
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
+		
 		$group_ID = preg_replace( '/[^0-9]+/', '', $group_ID);
 		$return = array();
 		
@@ -391,7 +409,9 @@ class Follow extends Core {
 	 * @url POST group
 	 * @access protected
 	 */
-	function post_group($request_data=NULL) { // $type='user'
+	function AddGroup($request_data=NULL) { // $type='user'
+		$request_data = $this->filter->run($request_data);
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
 		
 		$insert = array(
 			'user_ID' => USER_ID,
@@ -413,7 +433,10 @@ class Follow extends Core {
 	 * @url DELETE group/{group_ID}
 	 * @access protected
 	 */
-	function delete_group($group_ID=NULL) {
+	function deleteGroup($group_ID=NULL) {
+		$request_data = $this->filter->run(array("group_ID" => $group_ID));
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
+		
 		$group_ID = preg_replace( '/[^0-9]+/', '', $group_ID);
 		if (!$group_ID || $group_ID < 0) return FALSE;
 		
@@ -431,10 +454,13 @@ class Follow extends Core {
 	 * @param int $user_ID
 	 * @return array
 	 *
-	 * @url GET {company_ID}/{user_ID}
+	 * @url GET status/{company_ID}/{user_ID}
 	 * @access protected
 	 */
-	function get($company_ID = 0, $user_ID = 0) {
+	function status($company_ID = 0, $user_ID = 0) {
+		$request_data = $this->filter->run(array("company_ID" => $company_ID, "user_ID" => $user_ID));
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
+		
 		$company_ID = preg_replace( '/[^0-9]+/', '', $company_ID);
 		$user_ID = preg_replace( '/[^0-9]+/', '', $user_ID);
 		if (!$company_ID && !$user_ID) return FALSE;
@@ -495,6 +521,9 @@ class Follow extends Core {
 	 * @access protected
 	 */
 	function put($company_ID = 0, $user_ID = 0, $group_ID=0) {
+		$request_data = $this->filter->run(array("company_ID" => $company_ID, "user_ID" => $user_ID, "group_ID" => $group_ID));
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
+		
 		$company_ID = preg_replace( '/[^0-9]+/', '', $company_ID);
 		$user_ID = preg_replace( '/[^0-9]+/', '', $user_ID);
 		$group_ID = preg_replace( '/[^0-9]+/', '', $group_ID);
@@ -529,6 +558,9 @@ class Follow extends Core {
 	 * @access protected
 	 */
 	function delete($company_ID = 0, $user_ID = 0, $group_ID=0) {
+		$request_data = $this->filter->run(array("company_ID" => $company_ID, "user_ID" => $user_ID, "group_ID" => $group_ID));
+		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
+		
 		$company_ID = preg_replace( '/[^0-9]+/', '', $company_ID);
 		$user_ID = preg_replace( '/[^0-9]+/', '', $user_ID);
 		$group_ID = preg_replace( '/[^0-9]+/', '', $group_ID);

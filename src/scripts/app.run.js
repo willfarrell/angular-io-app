@@ -1,8 +1,8 @@
 /*global syncVar:true, db:true, objectIsEmpty:true, objectLength:true, numberPadding:true, device:true */
 
 angular.module('app')
-.run(['app.config', '$rootScope', '$timeout', '$locale', '$cookies', '$http', '$window', '$location',
-function(config, $rootScope, $timeout, $locale, $cookies, $http, $window, $location) {
+.run(['app.config', '$rootScope', '$timeout', '$locale', '$cookies', '$http', '$window', '$location', '$localStorage', '$sessionStorage',
+function(config, $rootScope, $timeout, $locale, $cookies, $http, $window, $location, $localStorage, $sessionStorage) {
 	console.group('app.rootScope (', $rootScope.$id, ')');
 	
 	// appCache - from outside of angular (appCache.js)
@@ -146,25 +146,30 @@ function(config, $rootScope, $timeout, $locale, $cookies, $http, $window, $locat
 	//!-- Lang --//
 	$rootScope.initLocale = function() {
 		//$rootScope.locale= localStorage.getItem('locale');		//$rootScope.locale || ($rootScope.locale = localStorage.setItem('locale', $locale.id));// en-ca
-		$rootScope.locale = db.get('locale', $locale.id);
-		$rootScope.language = db.get('language', $rootScope.locale.substr(0,2));// en
-		db.set('language', $rootScope.language);
+		console.log('******************');
+		console.log('locale', $localStorage.get('locale'));
+		$rootScope.locale = $localStorage.get('locale', $locale.id);
+		console.log('locale', $localStorage.get('locale'));
+		$rootScope.language = $localStorage.get('language', $rootScope.locale.substr(0,2));// en
+		$localStorage.set('language', $rootScope.language);
 		if ($rootScope.locale.length > 2) {
 			$rootScope.country_code = $rootScope.locale.substr(3,2).toUpperCase();
-			db.set('country_code', $rootScope.country_code);
+			$localStorage.set('country_code', $rootScope.country_code);
 		} else {
-			$rootScope.country_code = db.get('country_code', $locale.id.substr(3,2).toUpperCase());
+			$rootScope.country_code = $localStorage.get('country_code', $locale.id.substr(3,2).toUpperCase());
 		}
 	};
 	$rootScope.saveLocale = function(locale) {
-		//localStorage.setItem('locale', locale);
+		console.log('saveLocale', locale);
+		$rootScope.locale = locale;
 		$cookies.locale = locale;
-		db.set('locale', locale);
+		$localStorage.set('locale', locale);
+		console.log('locale = ', $localStorage.get('locale'));
 		$cookies.lang = locale.substr(0,2).toLowerCase();
-		db.set('language', $cookies.lang);
+		$localStorage.set('language', $cookies.lang);
 		if (locale.length > 2) {
 			$cookies.country = locale.substr(3,2).toUpperCase();
-			db.set('country_code', $cookies.country);
+			$localStorage.set('country_code', $cookies.country);
 		}
 	};
 	$rootScope.changeLocale = function(locale) {

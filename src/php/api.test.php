@@ -51,6 +51,26 @@ class Test extends Core {
 	}*/
 	
 	/**
+	 * cache test call
+	 *
+	 * @param string $input
+	 * @return bool
+	 *
+	 * @url GET cache
+	 * @access public
+	 */
+	function testCache($input = '') {
+		
+		$redis = new Cache('test', 'redis', array());
+		$r[] = $redis->get('key');
+		$r[] = $redis->set('key', 'value');
+		$r[] = $redis->get('key');
+		$r[] = $redis->del('key');
+		
+		return $r;
+	}
+	
+	/**
 	 * Get TOTP Code 
 	 *
 	 * @param string $secret

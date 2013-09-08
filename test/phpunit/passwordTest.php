@@ -1,8 +1,5 @@
 <?php
 
-// php src/php/vendor/phpunit/phpunit/phpunit.php test/phpunit/validateTest.php
-
-//require "src/php/vendor/phpunit/phpunit/phpunit.php";
 require_once "src/php/class.password.php";
 
 class PasswordTest extends PHPUnit_Framework_TestCase
@@ -10,7 +7,29 @@ class PasswordTest extends PHPUnit_Framework_TestCase
 	var $obj;
 	
 	function __construct() {
-		$this->obj = new Password();
+		$this->obj = new Password(array(
+			"min_timestamp"	=> 0,
+			"max_age"		=> 0,
+			
+			"min_length"	=> 10,
+			"max_identical"	=> 3,
+			"min_subset"	=> 3,
+			"min_upper"		=> 1,
+			"min_lower"		=> 1,
+			"min_number"	=> 1,
+			"min_special"	=> 1,
+			"min_other"		=> 1
+		));
+	}
+	
+	/**
+	 * hashEmail($email)
+	 */
+	public function testHashEmail()
+	{
+		$this->assertEquals($this->obj->hashEmail('qwerty@domain.ca'), 'e8eb37067c886c7b2f104c3762bf14ff');
+		$this->assertEquals($this->obj->hashEmail('q.werty@domain.ca'), 'e8eb37067c886c7b2f104c3762bf14ff');
+		$this->assertEquals($this->obj->hashEmail('q.w.e.r.t.y@domain.ca'), 'e8eb37067c886c7b2f104c3762bf14ff');
 	}
 	
 	/**
@@ -97,7 +116,7 @@ class PasswordTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testSalt()
 	{
-		$this->assertEquals('passwordiam@email.com'.PASSWORD_SALT, $this->obj->salt('password', 'iam@email.com'));
+		$this->assertEquals('password'.$this->obj->hashEmail('qwerty@domain.com').PASSWORD_SALT, $this->obj->salt('password', 'qwerty@domain.com'));
 	}
 	
 	/**
@@ -105,8 +124,8 @@ class PasswordTest extends PHPUnit_Framework_TestCase
 	 */
 	/*public function testHash()
 	{
-		$this->assertTrue($this->obj->hash('password', 'iam@email.com'));
-		$this->assertFalse($this->obj->hash('password', 'iam@email.com'));
+		$this->assertTrue($this->obj->hash('password', 'qwerty@domain.com'));
+		$this->assertFalse($this->obj->hash('password', 'qwerty@domain.com'));
 	}*/
 	
 	/**

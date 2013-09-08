@@ -2,6 +2,9 @@
 	"signup_confirm_email": {
 		"email":true
 	},
+	"signup_exists": {
+		"email":true
+	},
 	"password_reset_request": {
 		"email":true
 	},

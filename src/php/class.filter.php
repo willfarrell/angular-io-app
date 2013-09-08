@@ -88,7 +88,6 @@ sanitize_string			No	Runs filter_var($str, FILTER_SANITIZE_STRING)
 
 */
 
-require_once 'class.db.php';
 require_once 'class.password.php';
 
 include_once 'inc.filter.rules.php';

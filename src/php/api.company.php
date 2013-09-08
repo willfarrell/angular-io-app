@@ -55,7 +55,7 @@ class Company extends Core {
 		if (!$limit) $limit = 10;
 		$return = array();
 		
-		$this->console->log("test");
+		Console::log("test");
 		
 		$query = "SELECT company_ID, company_name, company_url, company_phone" //
 				." FROM companies C"
@@ -97,7 +97,7 @@ class Company extends Core {
 
 		$results = $this->db->select('users',
 			$db_where,
-			array("user_ID", "user_level", "user_username", "user_name_first", "user_name_last", "user_email", "user_phone", "user_function", "user_details", "timestamp_create")
+			array("user_ID", "user_level", "user_username", "user_name_first", "user_name_last", "user_email", "user_phone", "user_function", "user_details", "timestamp_onboard")
 		);
 		if ($results) {
 			while($user = $this->db->fetch_assoc($results, array("user_phone"))) {
@@ -243,6 +243,7 @@ class Company extends Core {
 	 * @param string $username Username of user
 	 * @return array
 	 *
+	 * @url GET name/
 	 * @url GET name/{username}
 	 * @access protected
 	 */
@@ -325,8 +326,8 @@ class Company extends Core {
 	 * @param int $company_ID Company ID
 	 * @return array
 	 *
-	 * @url GET
-	 * @url GET {company_ID}
+	 * @url GET id/
+	 * @url GET id/{company_ID}
 	 * @access protected
 	 */
 	function get($company_ID=NULL) {

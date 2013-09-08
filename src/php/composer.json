@@ -17,12 +17,14 @@
 	],
 	"support": {},
 	"require": {
-		"luracast/restler": "3.0.0",
+		"luracast/restler": "3.*@dev",
+		"predis/predis": "0.8.*@dev",
 		"stripe/stripe-php": "1.7.x"
 	},
 	"require-dev": {
 		"ccampbell/chromephp": "4.0.x",
 		"firephp/firephp-core": "0.4.x",
+		"phpunit/php-timer": "*",
 		"phpunit/phpunit": "3.7.*"
 	},
 	"autoload": {}

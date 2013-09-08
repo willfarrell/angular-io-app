@@ -101,5 +101,5 @@ angular.module('app.factories', ['app.config']);
 angular.module('app.filters', ['app.config']);
 angular.module('app.modules', ['app.config']);
 
-var app = angular.module('app', ['ngCookies', 'io', 'ui', 'bs', '$strap',
+var app = angular.module('app', ['ngCookies', 'ngProgress', 'io', 'ui', 'bs', '$strap',
 	'app.controllers', 'app.directives', 'app.factories', 'app.filters', 'app.modules', 'app.config']);

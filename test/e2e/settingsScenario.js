@@ -152,7 +152,6 @@ describe('E2E: Account Settings', function() {
 		expect(input('company.company_url').val()).toBe('http://angulario.com');
 		expect(input('company.company_phone').val()).toBe('(911) 555-5555');
 		expect(input('company.company_details').val()).toBe('about details here');
-		pause();
 		
 	});*/
 	

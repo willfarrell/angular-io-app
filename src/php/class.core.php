@@ -1,5 +1,6 @@
 <?php
 
+require_once 'class.cache.php';
 require_once 'class.db.php';
 require_once 'class.filter.php';
 require_once 'class.permission.php';
@@ -22,10 +23,6 @@ class Core {
 		//$this->filter		= new Filter;
 		$this->permission	= new Permission;
 		$this->notify		= new Notify;
-		
-		//-- Development classes --//
-		$this->console		= new Console;
-		$this->timer		= new Timers;
 	}
 	
 	/**

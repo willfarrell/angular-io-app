@@ -3,7 +3,7 @@
 //.controller('AppCtrl',
 //['$rootScope', '$scope', '$rest', '$follow', '$filepicker',
 //function(rootScope, $scope, $http, follow, filepicker) {
-function AppCtrl(config, $rootScope, $scope, $window, $cookies, $location, $session, $rest, $filepicker, $accessibility, $message, $follow, $timeout) {
+function AppCtrl(config, $rootScope, $scope, $window, $cookies, $location, $session, $rest, $filepicker, $accessibility, $message, $follow, $timeout, progressbar) {
 	console.log('AppCtrl (', $scope.$id, ')');
 
 	// Route Events
@@ -41,6 +41,9 @@ function AppCtrl(config, $rootScope, $scope, $window, $cookies, $location, $sess
 		else { $scope.slideNavBool *= -1; }
 	};
 	
+	// Progress Bar - http://victorbjelkholm.github.io/ngProgress/
+	//$progressbar
+	
 	// Cookies Accepted Message
 	$rootScope.cookies = $cookies;
 	console.log('Modernizr.cookies', Modernizr.cookies);
@@ -63,5 +66,5 @@ function AppCtrl(config, $rootScope, $scope, $window, $cookies, $location, $sess
 	};
 	*/
 }
-AppCtrl.$inject = ['app.config', '$rootScope', '$scope', '$window', '$cookies', '$location', '$session', '$rest', '$filepicker', '$accessibility', '$message', '$follow', '$timeout'];
+AppCtrl.$inject = ['app.config', '$rootScope', '$scope', '$window', '$cookies', '$location', '$session', '$rest', '$filepicker', '$accessibility', '$message', '$follow', '$timeout', 'progressbar'];
 //}]);

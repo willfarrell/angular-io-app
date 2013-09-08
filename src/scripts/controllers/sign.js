@@ -1,9 +1,9 @@
-/*global objectLength:true, syncVar:true, db:true */
+/*global objectLength:true, syncVar:true */
 
 //angular.module('io.controller.sign', [])
 //.controller('SignCtrl', ['$scope', '$rest', '$cookies', '$routeParams', function($scope, $http, $cookies, $routeParams) {
 
-function SignCtrl($config, $rootScope, $scope, $cookies, $routeParams, $rest, $session) {
+function SignCtrl($config, $rootScope, $scope, $cookies, $routeParams, $rest, $session, $localStorage, $sessionStorage) {
 	console.log('SignCtrl (', $scope.$id, ')');
 	$scope.page = $routeParams.page ? $routeParams.page : 'in';
 	
@@ -184,7 +184,8 @@ function SignCtrl($config, $rootScope, $scope, $cookies, $routeParams, $rest, $s
 			$rootScope.href('/sign/in');
 		}
 		
-		db.clear(); // clear localstorage
+		$localStorage.clear();
+		$sessionStorage.clear();
 		$rootScope.$emit('session', false);
 		$session.reset();
 	};
@@ -200,5 +201,5 @@ function SignCtrl($config, $rootScope, $scope, $cookies, $routeParams, $rest, $s
 	}
 
 }
-SignCtrl.$inject = ['$config', '$rootScope', '$scope', '$cookies', '$routeParams', '$rest', '$session'];
+SignCtrl.$inject = ['$config', '$rootScope', '$scope', '$cookies', '$routeParams', '$rest', '$session', '$localStorage', '$sessionStorage'];
 //}]);

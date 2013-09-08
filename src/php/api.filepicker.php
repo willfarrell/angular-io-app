@@ -290,7 +290,7 @@ class Filepicker extends FilepickerConfig {
 	 * @param array $request_data POST data
 	 * @return array
 	 *
-	 * @url POST computer/{action}/{ID}
+	 * @url POST url/{action}/{ID}
 	 * @access protected
 	 */
 	function post_url($action = '', $ID=NULL, $request_data=NULL) {

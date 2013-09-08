@@ -50,7 +50,7 @@ class Account extends Core {
 	function get_signcheck() {
 		return USER_ID;
 	}
-
+	
 	/**
 	 * change session ID
 	 *
@@ -72,7 +72,7 @@ class Account extends Core {
 	 * @url GET session
 	 * @access protected
 	 */
-	function get_session() {		
+	function get_session() {
 		$return = array();
 		
 		// same as in session - refactor
@@ -85,7 +85,7 @@ class Account extends Core {
 		$return["account"] = array(
 			"password_timestamp" => $r['password_timestamp'], // for password reset reminder
 			"password_age" => floor(($_SERVER["REQUEST_TIME"] - $r['password_timestamp'])/86400),
-			"timestamp_create" => $r['timestamp_create'], // for onboard trigger
+			"timestamp_onboard" => $r['timestamp_onboard'], // for onboard trigger
 			
 			"referral" => base_convert($r['user_ID'], 10, 32),
 			"email_confirm" => ($r['timestamp_confirm']) ? true : false,
@@ -132,59 +132,59 @@ class Account extends Core {
 	 */
 	function post_signup($request_data=NULL) {
 		$return = array();
-
-		/*// validate and sanitize
-		$this->filter->set_request_data($request_data);
-		//$this->filter->set_group_rules('table_users');
-		if(!$this->filter->run()) {
-			$return["errors"] = $this->filter->get_errors('error');
+		$alerts = array("alerts" => array(array('class' => 'info', 'label' => 'Account created!', 'message' => 'Check your email for an activation link.')));
+		
+		// hash email to prevent duplicate emails (qwerty@domain.com == q.w.e.r.t.y@domain.com)
+		if (isset($request_data['email'])) {
+			$request_data['email_hash'] = $this->password->hashEmail($request_data['email']);
 		}
-		$request_data = $this->filter->get_request_data();*/
+		
 		$request_data = $this->filter->run($request_data);
-		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
-		
-		/*// validate password
-		if (isset($request_data['password']) && $this->password->validate($request_data['password'])) {
-			$return["errors"]["password"] = $this->password->get_errors();
+		if ($this->filter->hasErrors()) { 
+			$errors = $this->filter->getErrorsReturn();
+			//print_r($errors);
+			if (isset($errors['errors']['email_hash'])) {
+				$users = $this->db->select('users', array('email_hash' => $request_data['email_hash']));
+				$user = $this->db->fetch_assoc($users);
+				$this->notify->send($user['user_ID'], 'signup_exists', array(), "email");
+				return $alerts;
+			}
+			return $errors;
 		}
-		
-		if (isset($return["errors"])) { return $return; }*/
-		
-		$email = $request_data["email"];
 
 		// referral
 		$referral_user_ID = (isset($request_data['referral'])) ? base_convert($request_data['referral'],32,10) : 0;
 
 		// user //
-		$password_hash = $this->password->hash($request_data["password"], $email);
+		$password_hash = $this->password->hash($request_data["password"], $request_data["email"]);
 		$user = array(
-			"user_email"   		  => $request_data["email"],
-			"user_level"		  => 9,
-			//"user_username"   		  => $request_data["user_username"],
+			"user_email"			=> $request_data["email"],
+			"user_level"			=> 9,
+			//"user_username"		=> $request_data["user_username"],
 			
 			//'notify_json'	=> '{}',
 			//'security_json'	=> '{}',
 			
-			"password"	 		  => $password_hash,
-			"password_history"	=> $password_hash,
-			'password_timestamp'  => $_SERVER['REQUEST_TIME'],
-			'referral_user_ID'	=> $referral_user_ID,
+			"email_hash"			=> $this->password->hashEmail($request_data["email"]),
+			"password_hash"			=> $password_hash,
+			"password_history"		=> $password_hash,
+			'password_timestamp'	=> $_SERVER['REQUEST_TIME'],
+			'referral_user_ID'		=> $referral_user_ID,
 			
-			//'timestamp_confirm'   => 0,
-			//'timestamp_create'	=> $_SERVER['REQUEST_TIME'],
+			'timestamp_create'	=> $_SERVER['REQUEST_TIME'],
 			//'timestamp_update'	=> $_SERVER['REQUEST_TIME'],
 		);
 		$user_ID = $this->db->insert('users', $user);
 		
 		// send confirm email
-		$hash = $this->makeHash($email);
+		$hash = $this->makeHash($request_data["email"]);
 	
 		$insert = array('user_ID' => $user_ID, 'hash' => $hash);
 		$this->db->insert_update('user_confirm', $insert, $insert);
 
 		$this->notify->send($user_ID, 'signup_confirm_email', array("hash" => $hash), "email");
 		
-		//$return = array("alerts" => array(array('class' => 'success', 'label' => 'Account created!', 'message' => 'Check your email for an activation link.')));
+		$return = $alerts;
 		
 		return TRUE;
 	}
@@ -201,13 +201,6 @@ class Account extends Core {
 	function post_signin($request_data=NULL) {
 		$return = array();
 
-		// validate and sanitize
-		/*$this->filter->set_request_data($request_data);
-		if(!$this->filter->run()) {
-			$return["errors"] = $this->filter->get_errors('error');
-			return $return;
-		}
-		$request_data = $this->filter->get_request_data();*/
 		$request_data = $this->filter->run($request_data);
 		if ($this->filter->hasErrors()) { return $this->filter->getErrorsReturn(); }
 		
@@ -338,8 +331,7 @@ class Account extends Core {
 		$this->db->update(
 			'users',
 			array(
-				'timestamp_create'  => $_SERVER['REQUEST_TIME'],
-				'timestamp_update'  => $_SERVER['REQUEST_TIME'],
+				'timestamp_onboard'  => $_SERVER['REQUEST_TIME']
 			),
 			array('user_ID' => USER_ID)
 		);
@@ -501,7 +493,8 @@ class Account extends Core {
 		$user_email = $result['user_email'];
 	
 		// new Password w/ $user_ID, $user_email - because not signed in
-		$this->password = new Password($user_ID, $user_email); 
+		$this->password->setId($user_ID);
+		$this->password->setEmail($user_email);
 		
 		// update user password
 		$this->password->update($request_data['new_password'], $user_email);
@@ -547,6 +540,7 @@ class Account extends Core {
 			$return["errors"]["new_password"] = $this->password->get_errors();
 		}*/
 		
+		// Check old password is valid 
 		$query = "SELECT password FROM users WHERE user_ID = '{{user_ID}}' LIMIT 0,1";
 		$result = $this->db->query($query, array('user_ID' => USER_ID));
 		if (!$result) return FALSE; // will not fire
@@ -558,6 +552,7 @@ class Account extends Core {
 		}
 		
 		if (isset($return["errors"])) { return $return; }
+		// End check
 		
 		$this->password->update($request_data['new_password'], USER_EMAIL);
 
@@ -597,13 +592,18 @@ class Account extends Core {
 		}
 		
 		// update email
-		$this->db->update('users', array('user_email' => $email), array('user_ID' => USER_ID));
+		$this->db->update('users', array(
+			"user_email" => $email,
+			"email_hash" => $this->password->hashEmail($email)
+		), array('user_ID' => USER_ID));
 		
 		// updte password
 		$this->password->update($request_data['password'], $email);
 		
 		// update session
-		$this->session->update(array("user_email" => $email));	// update user_email into session
+		$this->session->update(array(
+			"user_email" => $email
+		)); // update user_email into session
 		
 		// confirm email
 		$hash = $this->makeHash($email);
@@ -618,6 +618,8 @@ class Account extends Core {
 	
 	/**
 	 * Delete own account
+	 * ***********************************
+	 * Can be replaced with api.delete.php
 	 *
 	 * @return bool
 	 *
@@ -630,9 +632,6 @@ class Account extends Core {
 		$this->db->delete('users',
 			array('user_ID' => USER_ID)
 		);
-		
-		//** add in hooks to delete entire footprint
-		
 		return TRUE;
 	}
 	
